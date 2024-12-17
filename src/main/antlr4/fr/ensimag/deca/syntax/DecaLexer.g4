@@ -11,6 +11,14 @@ options {
 @members {
 }
 
+fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
+fragment DIGIT : '1' .. '9';
+fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
+
 // Deca lexer rules.
-DUMMY_TOKEN: .; // A FAIRE : Règle bidon qui reconnait tous les caractères.
-                // A FAIRE : Il faut la supprimer et la remplacer par les vraies règles.
+ESPACE : ' ' {skip();};
+STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
+PRINTLN : 'println';
+OPARENT : '(';
+CPARENT : ')';
+SEMI : ';';

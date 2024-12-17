@@ -113,7 +113,8 @@ inst returns[AbstractInst tree]
             assert($list_expr.tree != null);
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
-            assert($list_expr.tree != null);
+            //TODO changer le false en un truc qui dépend
+            $tree = new Println(false,$list_expr.tree);  
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
