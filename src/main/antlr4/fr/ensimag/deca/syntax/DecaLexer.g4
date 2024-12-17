@@ -16,9 +16,26 @@ fragment DIGIT : '1' .. '9';
 fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
 
 // Deca lexer rules.
+
+//SKIP
+EOL : ('\n' | '\r' | '\t') {skip();};
+COMMENT : '//' (~('\n'))* { skip(); };
 ESPACE : ' ' {skip();};
-STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
-PRINTLN : 'println';
+
+// SINGLE SYMBOLS
+OBRACE : '{';
+CBRACE : '}';
 OPARENT : '(';
 CPARENT : ')';
 SEMI : ';';
+COMMA : ',';
+EQUALS : '=';
+OR : '||';
+AND : '&&';
+
+// WORDS
+PRINTLN : 'println';
+
+// EXPRESSIONS
+STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
+

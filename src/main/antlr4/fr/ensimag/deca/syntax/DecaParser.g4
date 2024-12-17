@@ -97,8 +97,10 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 
 list_inst returns[ListInst tree]
 @init {
+    $tree = new ListInst();
 }
-    : (inst {
+    : (i=inst {
+        $tree.add($i.tree);
         }
       )*
     ;
@@ -114,7 +116,8 @@ inst returns[AbstractInst tree]
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             //TODO changer le false en un truc qui dépend
-            $tree = new Println(false,$list_expr.tree);  
+            assert($list_expr.tree != null);
+            $tree = new Println(false,$list_expr.tree);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -151,6 +154,8 @@ list_expr returns[ListExpr tree]
 @init   {
         }
     : (e1=expr {
+        $tree = new ListExpr();
+        $tree.add($e1.tree);
         }
        (COMMA e2=expr {
         }
@@ -158,8 +163,9 @@ list_expr returns[ListExpr tree]
     ;
 
 expr returns[AbstractExpr tree]
-    : assign_expr {
+    : e=assign_expr {
             assert($assign_expr.tree != null);
+            $tree = $e.tree;
         }
     ;
 
@@ -176,6 +182,7 @@ assign_expr returns[AbstractExpr tree]
         }
       | /* epsilon */ {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
       )
     ;
@@ -183,6 +190,7 @@ assign_expr returns[AbstractExpr tree]
 or_expr returns[AbstractExpr tree]
     : e=and_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=or_expr OR e2=and_expr {
             assert($e1.tree != null);
@@ -193,6 +201,7 @@ or_expr returns[AbstractExpr tree]
 and_expr returns[AbstractExpr tree]
     : e=eq_neq_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     |  e1=and_expr AND e2=eq_neq_expr {
             assert($e1.tree != null);                         
@@ -203,6 +212,7 @@ and_expr returns[AbstractExpr tree]
 eq_neq_expr returns[AbstractExpr tree]
     : e=inequality_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=eq_neq_expr EQEQ e2=inequality_expr {
             assert($e1.tree != null);
@@ -217,6 +227,7 @@ eq_neq_expr returns[AbstractExpr tree]
 inequality_expr returns[AbstractExpr tree]
     : e=sum_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=inequality_expr LEQ e2=sum_expr {
             assert($e1.tree != null);
@@ -244,6 +255,7 @@ inequality_expr returns[AbstractExpr tree]
 sum_expr returns[AbstractExpr tree]
     : e=mult_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=sum_expr PLUS e2=mult_expr {
             assert($e1.tree != null);
@@ -258,6 +270,7 @@ sum_expr returns[AbstractExpr tree]
 mult_expr returns[AbstractExpr tree]
     : e=unary_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=mult_expr TIMES e2=unary_expr {
             assert($e1.tree != null);                                         
@@ -280,14 +293,16 @@ unary_expr returns[AbstractExpr tree]
     | op=EXCLAM e=unary_expr {
             assert($e.tree != null);
         }
-    | select_expr {
+    | s=select_expr {
             assert($select_expr.tree != null);
+            $tree = $s.tree;
         }
     ;
 
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
@@ -325,8 +340,9 @@ primary_expr returns[AbstractExpr tree]
             assert($type.tree != null);
             assert($expr.tree != null);
         }
-    | literal {
+    | e=literal {
             assert($literal.tree != null);
+            $tree = $e.tree;
         }
     ;
 
@@ -342,6 +358,7 @@ literal returns[AbstractExpr tree]
     | fd=FLOAT {
         }
     | STRING {
+            $tree = new StringLiteral($STRING.text);
         }
     | TRUE {
         }
@@ -361,8 +378,11 @@ ident returns[AbstractIdentifier tree]
 /****     Class related rules     ****/
 
 list_classes returns[ListDeclClass tree]
-    :
+    @init{
+        $tree = new ListDeclClass();
+    }:
       (c1=class_decl {
+
         }
       )*
     ;
