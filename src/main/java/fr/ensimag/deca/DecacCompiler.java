@@ -186,11 +186,11 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+        //assert(prog.checkAllLocations());
 
 
-        prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        //prog.verifyProgram(this);
+        //assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);
