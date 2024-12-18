@@ -39,7 +39,14 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // if (returnType.isInt() || returnType.isFloat() || returnType.isString()) {
+
+        // }
+        // // TODO : faire des tests qui levent cette erreur
+        // throw new ContextualError("type attendu : int, float ou string");
+        for (AbstractExpr a : getArguments().getList()) {
+            a.verifyExpr(compiler, localEnv, currentClass);
+        }
     }
 
     @Override
