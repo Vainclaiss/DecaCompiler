@@ -22,7 +22,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
-    
+
     abstract String getSuffix();
 
     public AbstractPrint(boolean printHex, ListExpr arguments) {
@@ -39,8 +39,17 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+
+        for (AbstractExpr a : getArguments().getList()) {
+            Type returnExprType = a.verifyExpr(compiler, localEnv, currentClass);
+            if (!(returnExprType.isInt() || returnExprType.isFloat() || returnExprType.isString())) {
+                // TODO : faire des tests qui levent cette erreur
+                throw new ContextualError("type attendu : int, float ou string", a.getLocation());
+
+            }
+
+        }
+    } // TODO : faire des tests qui levent cette erreur
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
