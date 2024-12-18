@@ -118,6 +118,7 @@ inst returns[AbstractInst tree]
             //TODO changer le false en un truc qui dépend
             assert($list_expr.tree != null);
             $tree = new Println(false,$list_expr.tree);
+            setLocation($tree,$PRINTLN);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -359,6 +360,8 @@ literal returns[AbstractExpr tree]
         }
     | STRING {
             $tree = new StringLiteral($STRING.text);
+            setLocation($tree,$STRING);
+
         }
     | TRUE {
         }
