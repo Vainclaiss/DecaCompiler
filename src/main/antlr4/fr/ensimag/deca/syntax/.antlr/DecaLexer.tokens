@@ -1,0 +1,25 @@
+EOL=1
+COMMENT=2
+ESPACE=3
+OBRACE=4
+CBRACE=5
+OPARENT=6
+CPARENT=7
+SEMI=8
+COMMA=9
+EQUALS=10
+OR=11
+AND=12
+PRINTLN=13
+STRING=14
+' '=3
+'{'=4
+'}'=5
+'('=6
+')'=7
+';'=8
+','=9
+'='=10
+'||'=11
+'&&'=12
+'println'=13
