@@ -32,9 +32,32 @@ COMMA : ',';
 EQUALS : '=';
 OR : '||';
 AND : '&&';
+EQEQ : '==';
+NEQ : '!=';
+LEQ : '<=';
+GEQ : '>=';
+LT : '<';
+GT : '>';
+PLUS : '+';
+MINUS : '-';
+TIMES : '*';
+SLASH : '/';
+PERCENT : '%';
+EXCLAM : '!';
+DOT : '.';
 
 // WORDS
+PRINT : 'print';
+PRINTX : 'printx';
 PRINTLN : 'println';
+PRINTLNX : 'printlnx';
+WHILE : 'while';
+RETURN : 'return';
+IF : 'if';
+ELSE : 'else';
+INSTANCEOF : 'instanceof';
+READINT :'readInt';
+READFLOAT :'readFloat';
 
 // EXPRESSIONS
 STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
