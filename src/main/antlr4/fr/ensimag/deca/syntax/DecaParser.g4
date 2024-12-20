@@ -89,7 +89,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
         }
     : i=ident {
-            //$tree = new DeclVar($t,$i.tree,new NoInitilization());
+            $tree = new DeclVar($t,$i.tree,new NoInitialization());
         }
       (EQUALS e=expr {
             $tree = new DeclVar($t,$i.tree,new Initialization($e.tree));
@@ -165,26 +165,22 @@ if_then_else returns[IfThenElse tree]
             ListInst precThen = $li_if.tree;
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
-            IfThenElse subtree = new IfThenElse($elsif_cond.tree,$elsif_li.tree,noElse);
-            if(elifSequence.size == 1){
-                $tree = new IfThenElse(precCond,precThen,subtree);
-                setLocation($tree,$if1);
-            }
-            elifSequence.remove(elifSequence.size()-1);
-            elifSequence.add(new IfThenElse(precCond,precThen,subtree));
-            setLocation(subtree, $elsif);
-            precCond = elsif_cond.tree;
-            precThen = elsif_li.tree;
-        }
-      )*
-      (ELSE OBRACE li_else=list_inst CBRACE {
-
             if(elifSequence.size == 1){
                 $tree = new IfThenElse(precCond,precThen,li_else);
                 setLocation($tree,$if1);
             }
             elifSequence.remove(elifSequence.size()-1);
             elifSequence.add(new IfThenElse(precCond,precThen,li_else.tree));
+        }
+      )*
+      (ELSE OBRACE li_else=list_inst CBRACE {
+            if(elifSequence.size == 1){
+                $tree = new IfThenElse(precCond,precThen,li_else);
+                setLocation($tree,$if1);
+            }
+            elifSequence.remove(elifSequence.size()-1);
+            elifSequence.add(new IfThenElse(precCond,precThen,li_else.tree));
+
         }
       )?
     ;

@@ -24,6 +24,9 @@ public class NoInitialization extends AbstractInitialization {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    public NoInitialization(){
+
+    }
 
     /**
      * Node contains no real information, nothing to check.
