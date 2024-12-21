@@ -16,8 +16,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class IfThenElse extends AbstractInst {
-    
-    private final AbstractExpr condition; 
+
+    private final AbstractExpr condition;
     private final ListInst thenBranch;
     private ListInst elseBranch;
 
@@ -29,11 +29,27 @@ public class IfThenElse extends AbstractInst {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
-    
+
+    public AbstractExpr getCondition() {
+        return this.condition;
+    }
+
+    public ListInst getThenBranch() {
+        return this.thenBranch;
+
+    }
+
+    public ListInst getElseBranch() {
+        return this.elseBranch;
+    }
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        this.getCondition().verifyExpr(compiler, localEnv, currentClass);
+        this.getThenBranch().verifyListInst(compiler, localEnv, currentClass, returnType);
+        this.getElseBranch().verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
@@ -47,8 +63,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         condition.iter(f);
         thenBranch.iter(f);
         elseBranch.iter(f);
