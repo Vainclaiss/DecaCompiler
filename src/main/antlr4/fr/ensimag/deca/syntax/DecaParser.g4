@@ -148,39 +148,31 @@ inst returns[AbstractInst tree]
     | RETURN expr SEMI {
             assert($expr.tree != null);
             $tree = $expr.tree;
+            setLocation($tree,$RETURN);
         }
     ;
 
 if_then_else returns[IfThenElse tree]
 @init {
         ListInst noElse = new ListInst();
-        ListInst elifSequence = new ListInst();
 
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
             $tree = new IfThenElse($condition.tree,$li_if.tree,noElse);
-            elifSequence.add($tree);
+            IfThenElse subtree = $tree;
             setLocation($tree,$if1);
-            AbstractExpr precCond = $condition.tree;
-            ListInst precThen = $li_if.tree;
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
-            if(elifSequence.size == 1){
-                $tree = new IfThenElse(precCond,precThen,li_else);
-                setLocation($tree,$if1);
-            }
-            elifSequence.remove(elifSequence.size()-1);
-            elifSequence.add(new IfThenElse(precCond,precThen,li_else.tree));
+            ListInst Elif = new ListInst();
+            IfThenElse tempTree = new IfThenElse($elsif_cond.tree,$elsif_li.tree,noElse);
+            Elif.add(tempTree);
+            subtree.setElseBranch(Elif);
+            subtree = tempTree;
+            setLocation(subtree,$elsif);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
-            if(elifSequence.size == 1){
-                $tree = new IfThenElse(precCond,precThen,li_else);
-                setLocation($tree,$if1);
-            }
-            elifSequence.remove(elifSequence.size()-1);
-            elifSequence.add(new IfThenElse(precCond,precThen,li_else.tree));
-
+            subtree.setElseBranch($li_else.tree);
         }
       )?
     ;
@@ -278,18 +270,26 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr LEQ e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
+            $tree = new LowerOrEqual($e1.tree,$e2.tree);
+            setLocation($tree,$LEQ);
         }
     | e1=inequality_expr GEQ e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
+            $tree = new GreaterOrEqual($e1.tree,$e2.tree);
+            setLocation($tree,$GEQ);
         }
     | e1=inequality_expr GT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
+            $tree = new Greater($e1.tree,$e2.tree);
+            setLocation($tree,$GT);
         }
     | e1=inequality_expr LT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
+            $tree = new Lower($e1.tree,$e2.tree);
+            setLocation($tree,$LT);
         }
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
@@ -345,9 +345,14 @@ mult_expr returns[AbstractExpr tree]
 unary_expr returns[AbstractExpr tree]
     : op=MINUS e=unary_expr {
             assert($e.tree != null);
+            $tree = new UnaryMinus($e.tree);
+            setLocation($tree,$op);
         }
     | op=EXCLAM e=unary_expr {
             assert($e.tree != null);
+            $tree = new Not($e.tree);
+            setLocation($tree,$op);
+
         }
     | s=select_expr {
             assert($select_expr.tree != null);

@@ -2,7 +2,13 @@
     if(10 == 10){
         return 10;
     }
-    else{
+    else if(9==9){
         return 11;
+    }
+    else if(8==8){
+        return 4;
+    }
+    else{
+        return 2;
     }
 }

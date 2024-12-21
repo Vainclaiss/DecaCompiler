@@ -32,6 +32,7 @@ public class IfThenElse extends AbstractInst {
         this.elseBranch = elseBranch;
     }
 
+<<<<<<< HEAD
     public ListInst getThenBranch() {
         return thenBranch;
     }
@@ -40,6 +41,12 @@ public class IfThenElse extends AbstractInst {
         return condition;
     }
     
+=======
+    public void setElseBranch(ListInst elseBranch) {
+        this.elseBranch = elseBranch;
+    }
+
+>>>>>>> feature/SansObjet/A
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
