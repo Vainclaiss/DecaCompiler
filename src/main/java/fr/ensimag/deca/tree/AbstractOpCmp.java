@@ -35,9 +35,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         codeExp(compiler, indexR);
 
         Label printTrue = new Label("print_true");
-        printTrue.addSuffixeUnique();
+        String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();
         Label finPrint = new Label("fin_print");
-        finPrint.addSuffixeUnique();
+        finPrint.addSuffixe(suffixeIdPrintTrue);
 
         codeGenBool(compiler, true, printTrue);
         compiler.addInstruction(new WSTR("false"));

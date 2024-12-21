@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -29,6 +31,14 @@ public class IfThenElse extends AbstractInst {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
+
+    public ListInst getThenBranch() {
+        return thenBranch;
+    }
+
+    public AbstractExpr getCondition() {
+        return condition;
+    }
     
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -36,10 +46,13 @@ public class IfThenElse extends AbstractInst {
             throws ContextualError {
     }
 
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    // @Override
+    // protected void codeGenInst(DecacCompiler compiler) {
+    //     Label finIf = new Label("fin_if");
+    //     finIf.addSuffixeUnique();
+
+    //     condition.codeGenBool(compiler, false, finIf);
+    // }
 
     @Override
     public void decompile(IndentPrintStream s) {

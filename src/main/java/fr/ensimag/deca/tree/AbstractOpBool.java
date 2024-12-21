@@ -25,9 +25,10 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         Label printTrue = new Label("print_true");
-        printTrue.addSuffixeUnique();
+        String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();
+
         Label finPrint = new Label("fin_print");
-        finPrint.addSuffixeUnique();
+        finPrint.addSuffixe(suffixeIdPrintTrue);
 
         codeGenBool(compiler, true, printTrue);
         compiler.addInstruction(new WSTR("false"));
@@ -42,12 +43,13 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         Label e = new Label("binaryBool_eval_true");
-        e.addSuffixeUnique();
+        String suffixe = e.getAndAddNewSuffixe();
+
         //si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0 dans Rn
         codeGenBool(compiler, true, e);
         compiler.addInstruction(new LOAD(0, Register.getR(n)));
         Label skipEvalTrue = new Label("skip_eval_true");
-        skipEvalTrue.addSuffixeUnique();
+        skipEvalTrue.addSuffixe(suffixe);
         compiler.addInstruction(new BRA(skipEvalTrue));
 
         compiler.addLabel(e);

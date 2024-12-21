@@ -25,8 +25,18 @@ public class Label extends Operand {
         this.name = name;
     }
 
-    public void addSuffixeUnique() {
-        name += "." + suffixeId++;
+    public String getNewSuffixeId() {
+        return String.valueOf(suffixeId++);
+    }
+
+    public void addSuffixe(String suffixe) {
+        name += "." + suffixe;
+    }
+
+    public String getAndAddNewSuffixe() {
+        String suffixe = getNewSuffixeId();
+        addSuffixe(suffixe);
+        return suffixe;
     }
 
     private String name;
