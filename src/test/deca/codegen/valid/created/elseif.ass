@@ -1,0 +1,22 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	BRA else.1
+	WSTR "a"
+	WNL
+	BRA fin_if.0
+else.1:
+	BRA else.2
+	WSTR "b"
+	WNL
+	BRA fin_if.0
+else.2:
+	WSTR "c"
+	WNL
+	BRA fin_if.0
+else.3:
+	WSTR "d"
+	WNL
+fin_if.0:
+	HALT
+; end main program

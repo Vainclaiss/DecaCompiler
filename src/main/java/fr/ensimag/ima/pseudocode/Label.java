@@ -11,7 +11,7 @@ import org.apache.commons.lang.Validate;
  */
 public class Label extends Operand {
 
-    int suffixeId = 0;
+    static int suffixeId = 0;
 
     @Override
     public String toString() {

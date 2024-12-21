@@ -35,6 +35,10 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
 
+    public boolean isIfThenElse() {
+        return false;
+    }
+
 
     /**
      * Decompile the tree, considering it as an instruction.

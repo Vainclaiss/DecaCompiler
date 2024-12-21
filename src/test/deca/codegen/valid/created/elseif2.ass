@@ -1,0 +1,14 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	BNE else.1
+	WSTR "a"
+	WNL
+	BRA fin_if.0
+else.1:
+	BNE fin_if.0
+	WSTR "b"
+	WNL
+fin_if.0:
+	HALT
+; end main program
