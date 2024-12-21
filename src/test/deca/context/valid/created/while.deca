@@ -1,5 +1,5 @@
 {
-    while (TRUE) {
+    while (1) {
         println("Hello, world!");
     }
 }

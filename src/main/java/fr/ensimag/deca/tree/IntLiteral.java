@@ -28,9 +28,8 @@ public class IntLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        return compiler.environmentType.INT;
     }
-
 
     @Override
     String prettyPrintNode() {
