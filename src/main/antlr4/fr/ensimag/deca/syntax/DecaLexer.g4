@@ -60,6 +60,8 @@ INSTANCEOF : 'instanceof';
 READINT :'readInt';
 READFLOAT :'readFloat';
 NEW : 'new';
+TRUE : 'true';
+FALSE : 'false';
 
 
 // EXPRESSIONS
