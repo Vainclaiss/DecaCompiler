@@ -6,6 +6,15 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.Register;
+
 import java.io.PrintStream;
 
 /**
@@ -19,16 +28,34 @@ public class IntLiteral extends AbstractExpr {
         return value;
     }
 
+    @Override
+    protected DVal getDVal() {
+        return dVal;
+    }
+
     private int value;
+    private ImmediateInteger dVal;
 
     public IntLiteral(int value) {
         this.value = value;
+        this.dVal = new ImmediateInteger(value);
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(value, Register.R1));
+        compiler.addInstruction(new WINT());
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
     }
 
 

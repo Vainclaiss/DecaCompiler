@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -108,6 +109,19 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    protected DVal getDVal() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Load the value of the expression in Rn
+     * @param compiler
+     * @param n
+     */
+    protected void codeExp(DecacCompiler compiler, int n) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
     /**
      * Generate code to print the expression
      *
@@ -119,6 +133,16 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Code generation for boolean expression
+     * @param compiler
+     * @param branchIfTrue
+     * @param e
+     */
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         throw new UnsupportedOperationException("not yet implemented");
     }
     

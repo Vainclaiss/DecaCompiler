@@ -11,6 +11,8 @@ import org.apache.commons.lang.Validate;
  */
 public class Label extends Operand {
 
+    int suffixeId = 0;
+
     @Override
     public String toString() {
         return name;
@@ -22,5 +24,10 @@ public class Label extends Operand {
         Validate.isTrue(name.matches("^[a-zA-Z][a-zA-Z0-9_.]*$"), "Invalid label name " + name);
         this.name = name;
     }
+
+    public void addSuffixeUnique() {
+        name += "." + suffixeId++;
+    }
+
     private String name;
 }
