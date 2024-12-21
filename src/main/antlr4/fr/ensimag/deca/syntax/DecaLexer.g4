@@ -12,7 +12,8 @@ options {
 }
 
 fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
-fragment DIGIT : '1' .. '9';
+fragment DIGIT : '0' .. '9';
+fragment NUMPOS : '1' .. '9';
 fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
 
 // Deca lexer rules.
@@ -58,7 +59,12 @@ ELSE : 'else';
 INSTANCEOF : 'instanceof';
 READINT :'readInt';
 READFLOAT :'readFloat';
+NEW : 'new';
+
 
 // EXPRESSIONS
 STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
+MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+INT : ('0' | NUMPOS DIGIT*);
+IDENT :(LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 
