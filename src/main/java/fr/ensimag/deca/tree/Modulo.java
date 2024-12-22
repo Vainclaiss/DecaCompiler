@@ -21,14 +21,17 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
+        compiler.addInstruction(new REM(op1, r));
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
-        compiler.addInstruction(new REM(op1, r));
+    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
+        if (type1.isInt() && type2.isInt()) {
+            return type1;
+        }
+
+        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
     }
 
     @Override

@@ -37,9 +37,8 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Symbol stringSymb = compiler.createSymbol("string");
-        StringType STRING = new StringType(stringSymb);
-        return STRING;
+
+        return compiler.environmentType.STRING;
     }
 
     @Override

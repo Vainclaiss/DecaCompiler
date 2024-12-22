@@ -50,6 +50,15 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
+    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
+        if ((type1.isInt() || type1.isFloat()) && (type2.isInt() || type2.isFloat())) {
+            return compiler.environmentType.BOOLEAN;
+        }
+        // A FAIRE: gerer le cas de eq et neq pour les classes cf p76
+        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
+    }
+
+    @Override
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
         compiler.addInstruction(new CMP(op1, r));
     }

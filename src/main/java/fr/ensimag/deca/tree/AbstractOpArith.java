@@ -39,6 +39,27 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     }
 
     @Override
+    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
+        if (type1.isInt() && type2.isInt()) {
+            return compiler.environmentType.INT;
+        }
+
+        if (type1.isInt() && type2.isFloat()) {
+            return compiler.environmentType.FLOAT;
+        }
+
+        if (type1.isFloat() && type2.isInt()) {
+            return compiler.environmentType.FLOAT;
+        }
+
+        if (type1.isFloat() && type2.isFloat()) {
+            return compiler.environmentType.FLOAT;
+        }
+
+        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");

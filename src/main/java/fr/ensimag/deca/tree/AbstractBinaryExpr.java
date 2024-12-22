@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ContextualError;
+ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -93,6 +97,20 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         else {
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
+    }
+
+    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type t2) throws ContextualError {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        
+        Type type1 = leftOperand.verifyExpr(compiler, localEnv, currentClass);
+        Type type2 = rightOperand.verifyExpr(compiler, localEnv, currentClass);
+
+        return getTypeBinaryOp(compiler, type1, type2);
     }
 
 
