@@ -1,0 +1,15 @@
+{
+    if (true && false) {
+        print("Erreur");
+    } else {
+        print("true ET false est false");
+    }
+
+    if (true || false) {
+        print("true OU false est true");
+    }
+
+    if (!false) {
+        print("Non false est true");
+    }
+}

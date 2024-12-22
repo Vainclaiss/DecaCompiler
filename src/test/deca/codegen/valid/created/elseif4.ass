@@ -1,0 +1,21 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	BLE else.8
+	WSTR "10 est plus grand que 5"
+	WNL
+	BRA fin_if.7
+else.8:
+	WSTR "Erreur"
+	WNL
+fin_if.7:
+	BNE else.10
+	WSTR "Erreur"
+	WNL
+	BRA fin_if.9
+else.10:
+	WSTR "2 n'est pas égal à 3"
+	WNL
+fin_if.9:
+	HALT
+; end main program
