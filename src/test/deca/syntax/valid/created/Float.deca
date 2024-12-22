@@ -1,0 +1,5 @@
+{
+    float a = 0.66;
+    float b = 1.5e4f;
+    float c = 0xA4Ef.abP-3f;
+}

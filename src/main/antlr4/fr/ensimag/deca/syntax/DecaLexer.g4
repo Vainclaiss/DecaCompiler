@@ -11,10 +11,21 @@ options {
 @members {
 }
 
+//fragment
 fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
 fragment DIGIT : '0' .. '9';
 fragment NUMPOS : '1' .. '9';
 fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
+    //fragment FLOAT
+fragment SIGN : ('+' | '-' )?;
+fragment EXP : ('E' | 'e') SIGN? DIGIT+;
+fragment DEC : DIGIT+ '.' DIGIT+;
+fragment FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
+fragment DIGITHEX : DIGIT | 'A'..'F' | 'a' .. 'f';
+fragment NUMHEX : DIGITHEX+;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN DIGIT+ ('F' | 'f')?;
+
+
 
 // Deca lexer rules.
 
@@ -22,6 +33,7 @@ fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
 EOL : ('\n' | '\r' | '\t') {skip();};
 COMMENT : '//' (~('\n'))* { skip(); };
 ESPACE : ' ' {skip();};
+
 
 // SINGLE SYMBOLS
 OBRACE : '{';
@@ -62,11 +74,14 @@ READFLOAT :'readFloat';
 NEW : 'new';
 TRUE : 'true';
 FALSE : 'false';
-
+THIS : 'this';
+NULL : 'null';
 
 // EXPRESSIONS
 STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
 MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 INT : ('0' | NUMPOS DIGIT*);
 IDENT :(LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+FLOAT : FLOATDEC | FLOATHEX;
+
 
