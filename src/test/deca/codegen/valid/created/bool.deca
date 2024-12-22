@@ -1,15 +1,15 @@
 {
     if (true && false) {
-        print("Erreur");
+        println("Erreur");
     } else {
-        print("true ET false est false");
+        println("true ET false est false");
     }
 
     if (true || false) {
-        print("true OU false est true");
+        println("true OU false est true");
     }
 
     if (!false) {
-        print("Non false est true");
+        println("Non false est true");
     }
 }
