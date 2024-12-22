@@ -147,7 +147,7 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
-            $tree = $expr.tree;
+            $tree = new Return($expr.tree);
             setLocation($tree,$RETURN);
         }
     ;
@@ -428,8 +428,12 @@ literal returns[AbstractExpr tree]
 
         }
     | TRUE {
+            $tree = new BooleanLiteral(true);
+            setLocation($tree,$TRUE);
         }
     | FALSE {
+            $tree = new BooleanLiteral(false);
+            setLocation($tree,$FALSE);
         }
     | THIS {
         }
