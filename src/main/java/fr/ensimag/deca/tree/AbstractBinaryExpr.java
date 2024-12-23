@@ -110,7 +110,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         Type type1 = leftOperand.verifyExpr(compiler, localEnv, currentClass);
         Type type2 = rightOperand.verifyExpr(compiler, localEnv, currentClass);
 
-        return getTypeBinaryOp(compiler, type1, type2);
+        Type resType = getTypeBinaryOp(compiler, type1, type2);
+        return resType;
     }
 
 

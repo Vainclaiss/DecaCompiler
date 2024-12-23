@@ -50,10 +50,9 @@ public class Main extends AbstractMain {
         // On est dans le main bloc donc null, a changer dans le cas général
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
-        VoidType VOID = new VoidType(voidSymb);
+        VoidType voidType = new VoidType(voidSymb);
         this.getDeclVariables().verifyListDeclVariable(compiler, mainEnv, null);
-        this.getInsts().verifyListInst(compiler, mainEnv, null, VOID);
-        // throw new UnsupportedOperationException("not yet implemented");
+        this.getInsts().verifyListInst(compiler, mainEnv, null, voidType);
     }
 
     @Override

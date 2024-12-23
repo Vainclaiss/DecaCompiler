@@ -83,7 +83,12 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // A FAIRE: rajouter les classes
+        Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
+        if (expectedType.sameType(typeRvalue)) return this;
+        if (expectedType.isFloat() && typeRvalue.isInt()) return new ConvFloat(this);
+
+        throw new ContextualError("Error : Illegal assignments between " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
     }
     
     
@@ -91,7 +96,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        verifyExpr(compiler, localEnv, currentClass);
     }
 
     /**
@@ -106,7 +111,11 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        
+        assert(type!=null);
+        if (!type.sameType(compiler.environmentType.BOOLEAN)) {
+            throw new ContextualError("Error : Expected expression type is boolean, got " + type.toString(), getLocation());
+        }
     }
 
     protected DVal getDVal() {

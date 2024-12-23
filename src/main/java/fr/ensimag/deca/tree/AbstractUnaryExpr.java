@@ -53,8 +53,9 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
             ClassDefinition currentClass) throws ContextualError {
         
         Type type = operand.verifyExpr(compiler, localEnv, currentClass);
-
-        return getTypeUnaryOp(compiler, type);
+        setType(type);
+        
+        return type;
     }
 
     protected abstract String getOperatorName();
