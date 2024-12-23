@@ -15,6 +15,10 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -172,7 +176,8 @@ public class Identifier extends AbstractIdentifier {
 
         if (localEnv.get(name) == null) throw new ContextualError("Error : Identifier " + name.toString() + " must have a definition", getLocation());
         setDefinition(localEnv.get(name));
-        
+        setType(getDefinition().getType());
+
         return getDefinition().getType();
     }
 
@@ -186,6 +191,36 @@ public class Identifier extends AbstractIdentifier {
         definition = new TypeDefinition(type, getLocation());
 
         return type;
+    }
+
+    @Override
+    protected DVal getDVal() {
+        return getVariableDefinition().getOperand();
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
+    }
+
+    /**
+     * Generate code to print the expression
+     *
+     * @param compiler
+     */
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(getDVal(), Register.R1));
+        Type type = getType();
+        if (type.isInt()) {
+            compiler.addInstruction(new WINT());
+        }
+        else if (type.isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
+        else {
+            throw new UnsupportedOperationException("Print of this type identifier not yet implemented");
+        }
     }
     
     

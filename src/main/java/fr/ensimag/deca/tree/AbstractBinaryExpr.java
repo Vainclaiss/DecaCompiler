@@ -72,6 +72,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         
         if (dvalExp2 == null) {
             if (n == Register.RMAX) {
+                // A FAIRE: généraliser si plusieurs opérandes dans la stack
                 //sauvegarde de op1
                 compiler.addInstruction(new PUSH(Register.getR(n)));
 
@@ -111,6 +112,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         Type type2 = rightOperand.verifyExpr(compiler, localEnv, currentClass);
 
         Type resType = getTypeBinaryOp(compiler, type1, type2);
+        setType(resType);
         return resType;
     }
 

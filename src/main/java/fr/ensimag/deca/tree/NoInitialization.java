@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+
 import java.io.PrintStream;
 
 /**
@@ -22,6 +24,11 @@ public class NoInitialization extends AbstractInitialization {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenInitialization(DecacCompiler compiler, DAddr adresse) {
+      // nothing to do 
     }
 
     /**

@@ -7,6 +7,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -30,6 +33,14 @@ public class DeclVar extends AbstractDeclVar {
         this.initialization = initialization;
     }
 
+    public AbstractIdentifier getVarName() {
+        return varName;
+    }
+
+    public AbstractInitialization getInitialization() {
+        return initialization;
+    }
+
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -45,6 +56,14 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Error: Multiple declaration of " + varName.getName().toString() + ", first declaration at " + varName.getDefinition().getLocation().toString(), getLocation());
         }
         varName.setDefinition(varDef);
+        
+        initialization.verifyInitialization(compiler, realType, localEnv, currentClass);
+    }
+
+    @Override
+    protected void codeGenDeclVar(DecacCompiler compiler, DAddr adresse) {
+        varName.getVariableDefinition().setOperand(adresse);
+        initialization.codeGenInitialization(compiler, adresse);
     }
 
     

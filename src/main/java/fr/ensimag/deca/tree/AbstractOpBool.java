@@ -66,10 +66,10 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
     }
 
-    @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    // @Override
+    // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    //         ClassDefinition currentClass) throws ContextualError {
+    //     throw new UnsupportedOperationException("not yet implemented");
+    // }
 
 }

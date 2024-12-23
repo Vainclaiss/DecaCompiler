@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.NullaryInstruction;
 
 /**
  * Deca Type (internal representation of the compiler)
@@ -67,6 +68,7 @@ public abstract class Type {
     public boolean isClassOrNull() {
         return false;
     }
+
 
     /**
      * Returns the same object, as type ClassType, if possible. Throws
