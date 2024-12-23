@@ -1,0 +1,13 @@
+{
+    if (10 > 5) {
+        println("10 est plus grand que 5");
+    } else {
+        println("Erreur");
+    }
+
+    if (2 == 3) {
+        println("Erreur");
+    } else {
+        println("2 n'est pas égal à 3");
+    }
+}

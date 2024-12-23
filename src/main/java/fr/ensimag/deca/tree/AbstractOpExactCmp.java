@@ -1,5 +1,8 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 
 /**
  *
@@ -12,5 +15,13 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
         super(leftOperand, rightOperand);
     }
 
-
+    @Override
+    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
+        if (type1.isBoolean() && type1.isBoolean()) {
+            return compiler.environmentType.BOOLEAN;
+        }
+        super.getTypeBinaryOp(compiler, type1, type2);
+        
+        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
+    }
 }

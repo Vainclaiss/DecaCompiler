@@ -390,6 +390,7 @@ primary_expr returns[AbstractExpr tree]
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
+            $tree = $expr.tree;
         }
     | READINT OPARENT CPARENT {
         }
@@ -421,6 +422,8 @@ literal returns[AbstractExpr tree]
             setLocation($tree,$INT);
         }
     | fd=FLOAT {
+            $tree = new FloatLiteral(Float.parseFloat($fd.text));
+            setLocation($tree,$fd);
         }
     | STRING {
             $tree = new StringLiteral($STRING.text.substring(1,$STRING.text.length()-1).replace("\\\\","\\").replace("\\\"","\""));

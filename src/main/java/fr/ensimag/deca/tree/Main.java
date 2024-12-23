@@ -48,11 +48,11 @@ public class Main extends AbstractMain {
         // this.getDeclVariables().verifyListDeclVariable(compiler,)
 
         // On est dans le main bloc donc null, a changer dans le cas général
-        EnvironmentExp localEnv = new EnvironmentExp(null);
+        EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
-        VoidType VOID = new VoidType(voidSymb);
-        this.getInsts().verifyListInst(compiler, localEnv, null, VOID);
-        // throw new UnsupportedOperationException("not yet implemented");
+        VoidType voidType = new VoidType(voidSymb);
+        this.getDeclVariables().verifyListDeclVariable(compiler, mainEnv, null);
+        this.getInsts().verifyListInst(compiler, mainEnv, null, voidType);
         LOG.debug("verify Main: end");
 
     }

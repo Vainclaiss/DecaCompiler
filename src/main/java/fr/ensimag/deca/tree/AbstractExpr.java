@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -84,14 +85,19 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // A FAIRE: rajouter les classes
+        Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
+        if (expectedType.sameType(typeRvalue)) return this;
+        if (expectedType.isFloat() && typeRvalue.isInt()) return new ConvFloat(this);
+
+        throw new ContextualError("Error : Illegal assignments between " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
     }
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        verifyExpr(compiler, localEnv, currentClass);
     }
 
     /**
@@ -107,10 +113,24 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type calculedType = this.verifyExpr(compiler, localEnv, currentClass);
-        if (calculedType != compiler.environmentType.BOOLEAN) {
-            throw new ContextualError("Expected BOOLEAN, got " + calculedType, getLocation());
+        
+        assert(type!=null);
+        if (!type.isBoolean()) {
+            throw new ContextualError("Error : Expected expression type is boolean, got " + type.toString(), getLocation());
         }
+    }
+
+    protected DVal getDVal() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Load the value of the expression in Rn
+     * @param compiler
+     * @param n
+     */
+    protected void codeExp(DecacCompiler compiler, int n) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -124,6 +144,15 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    /**
+     * Code generation for boolean expression
+     * @param compiler
+     * @param branchIfTrue
+     * @param e
+     */
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

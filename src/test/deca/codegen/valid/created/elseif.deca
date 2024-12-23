@@ -1,0 +1,14 @@
+{
+    if (false) {
+        println("a");
+    }
+    else if (false) {
+        println("b");
+    }
+    else if (true) {
+        println("c");
+    }
+    else {
+        println("d");
+    }
+}

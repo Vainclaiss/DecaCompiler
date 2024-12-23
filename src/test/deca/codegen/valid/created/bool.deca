@@ -1,0 +1,15 @@
+{
+    if (true && false) {
+        println("Erreur");
+    } else {
+        println("true ET false est false");
+    }
+
+    if (true || false) {
+        println("true OU false est true");
+    }
+
+    if (!false) {
+        println("Non false est true");
+    }
+}
