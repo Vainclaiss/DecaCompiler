@@ -58,6 +58,12 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        
+        Type type = condition.verifyExpr(compiler, localEnv, currentClass);
+        if (type != compiler.environmentType.BOOLEAN) throw new ContextualError("Error : If condition must be a boolean expression, found " + type.toString() , getLocation());
+        
+        thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+        elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
