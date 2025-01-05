@@ -1,15 +1,12 @@
+// Description:
+//    test des expressions booleennes
+// Resultat:
+//    ok
+
 {
     if (true && false) {
-        println("Erreur");
+        println("ERRONE");
     } else {
-        println("true ET false est false");
-    }
-
-    if (true || false) {
-        println("true OU false est true");
-    }
-
-    if (!false) {
-        println("Non false est true");
+        println("ok");
     }
 }

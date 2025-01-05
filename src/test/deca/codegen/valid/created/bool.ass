@@ -1,0 +1,22 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	BRA else.1
+	WSTR "Erreur"
+	WNL
+	BRA fin_if.0
+else.1:
+	WSTR "true ET false est false"
+	WNL
+fin_if.0:
+	BRA fin_if.2_fin
+	BRA fin_if.2
+fin_if.2_fin:
+	WSTR "true OU false est true"
+	WNL
+fin_if.2:
+	WSTR "Non false est true"
+	WNL
+fin_if.4:
+	HALT
+; end main program

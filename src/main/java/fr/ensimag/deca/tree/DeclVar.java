@@ -50,12 +50,12 @@ public class DeclVar extends AbstractDeclVar {
         if (realType.isVoid()) throw new ContextualError("Error: 'void' cannot be used as a type for variable declaration", getLocation());
 
         VariableDefinition varDef = new VariableDefinition(realType, varName.getLocation());
+        varName.setDefinition(varDef);
         try {
             localEnv.declare(varName.getName(), varDef);
         } catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Error: Multiple declaration of " + varName.getName().toString() + ", first declaration at " + varName.getDefinition().getLocation().toString(), getLocation());
+            throw new ContextualError("Error: Multiple declaration of " + varName.getName().toString() + ", first declaration at " + localEnv.get(varName.getName()).getLocation(), varName.getLocation());
         }
-        varName.setDefinition(varDef);
         
         initialization.verifyInitialization(compiler, realType, localEnv, currentClass);
     }

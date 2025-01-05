@@ -1,0 +1,11 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+while_debut.22:
+	LOAD #1, R1
+	WINT
+	WNL
+while_cond.21:
+	BRA while_debut.22
+	HALT
+; end main program

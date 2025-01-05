@@ -1,0 +1,11 @@
+// Description
+//    test les manipulations de variables
+// Resultats:
+//    13.2
+
+{
+    int a = 10;
+    int b = a;
+    float c = 3.2;
+    println(a + c);
+}

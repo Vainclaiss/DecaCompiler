@@ -1,10 +1,10 @@
 // Description:
-//    test des expressions IfThenElse
-// Resultats:
+//    test des expressions booleennes
+// Resultat:
 //    ok
 
 {
-    if (1==1) {
+    if (!false) {
         println("ok");
     }
     else {

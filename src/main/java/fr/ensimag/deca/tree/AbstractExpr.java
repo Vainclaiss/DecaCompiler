@@ -94,7 +94,7 @@ public abstract class AbstractExpr extends AbstractInst {
             return conv;
         }
 
-        throw new ContextualError("Error : Illegal assignments between " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
+        throw new ContextualError("Error : Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
     }
     
     

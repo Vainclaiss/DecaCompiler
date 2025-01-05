@@ -1,0 +1,9 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 6 : If condition must be a boolean expression
+
+{
+    if(3.7) {
+        println(23);
+    }
+}

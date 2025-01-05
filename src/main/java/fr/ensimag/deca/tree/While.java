@@ -54,7 +54,7 @@ public class While extends AbstractInst {
             throws ContextualError {
 
         Type type = condition.verifyExpr(compiler, localEnv, currentClass);
-        if (type != compiler.environmentType.BOOLEAN) throw new ContextualError("Error : While condition must be a boolean expression, found " + type.toString() , getLocation());
+        if (type != compiler.environmentType.BOOLEAN) throw new ContextualError("Error : While condition must be a boolean expression, " + type.toString() + " found", getLocation());
         
         body.verifyListInst(compiler, localEnv, currentClass, returnType);
     }

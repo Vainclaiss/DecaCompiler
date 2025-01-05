@@ -1,0 +1,14 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 10 : Icompatible types for boolean operation : boolean || int
+
+{
+    if(true && false) {
+
+    }
+    else {
+        if((2 == 2) || (1+1)) {
+            println("noooo");
+        }
+    }
+}
