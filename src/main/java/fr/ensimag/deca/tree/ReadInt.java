@@ -7,6 +7,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
@@ -23,6 +26,11 @@ public class ReadInt extends AbstractReadExpr {
         
         setType(compiler.environmentType.INT);
         return compiler.environmentType.INT;
+    }
+
+    protected void codeExp(DecacCompiler compiler, int n) {
+        compiler.addInstruction(new RINT());
+        compiler.addInstruction(new LOAD(Register.R1, Register.getR(n)));
     }
 
     @Override
