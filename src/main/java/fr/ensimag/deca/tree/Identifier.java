@@ -188,7 +188,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Type type = compiler.environmentType.defOfType(name).getType();
-        definition = new TypeDefinition(type, getLocation());
+        definition = new TypeDefinition(type, compiler.environmentType.defOfType(name).getLocation());
 
         return type;
     }
