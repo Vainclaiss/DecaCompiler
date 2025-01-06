@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-{
-    while (1) {
-        println("Hello, world!");
-=======
 // Resultats:
 //    Erreur contextuelle
 //    Ligne 15: while condition must be a boolean expression
@@ -10,6 +5,5 @@
 {
     while(1+1) {
         println("aaa");
->>>>>>> feature/SansObjet/C
     }
 }

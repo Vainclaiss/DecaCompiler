@@ -120,7 +120,7 @@ public abstract class AbstractExpr extends AbstractInst {
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         
-        assert(type!=null);
+        type = verifyExpr(compiler, localEnv, currentClass);
         if (!type.isBoolean()) {
             throw new ContextualError("Error : Expected expression type is boolean, got " + type.toString(), getLocation());
         }
