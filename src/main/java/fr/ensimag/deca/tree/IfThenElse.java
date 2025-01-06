@@ -33,19 +33,6 @@ public class IfThenElse extends AbstractInst {
         this.elseBranch = elseBranch;
     }
 
-    public AbstractExpr getCondition() {
-        return this.condition;
-    }
-
-    public ListInst getThenBranch() {
-        return this.thenBranch;
-
-    }
-
-    public ListInst getElseBranch() {
-        return this.elseBranch;
-    }
-
     public void setElseBranch(ListInst elseBranch) {
         this.elseBranch = elseBranch;
     }
@@ -72,11 +59,7 @@ public class IfThenElse extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
 
-        Type type = condition.verifyExpr(compiler, localEnv, currentClass);
-        if (type != compiler.environmentType.BOOLEAN)
-            throw new ContextualError("Error : If condition must be a boolean expression, found " + type.toString(),
-                    getLocation());
-
+        condition.verifyCondition(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
