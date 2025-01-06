@@ -125,7 +125,7 @@ public class DecacCompiler {
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
     public Symbol createSymbol(String name) {
-         return symbolTable.create(name);
+        return symbolTable.create(name);
     }
 
     /**
@@ -184,11 +184,19 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        // assert(prog.checkAllLocations());
+        if (compilerOptions.getStopAfterParse()) {
+            LOG.info("Stopped after parsing");
+            return false;
+        }
+        assert (prog.checkAllLocations());
 
-        // prog.verifyProgram(this);
-        // assert(prog.checkAllDecorations());
+        prog.verifyProgram(this);
+        assert (prog.checkAllDecorations());
 
+        if (compilerOptions.getStopAfterVerification()){
+            LOG.info("Stopped after verification");
+            return false;
+        }
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
