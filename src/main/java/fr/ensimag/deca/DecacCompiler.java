@@ -193,7 +193,7 @@ public class DecacCompiler {
         prog.verifyProgram(this);
         assert (prog.checkAllDecorations());
 
-        if (compilerOptions.getStopAfterVerification()){
+        if (compilerOptions.getStopAfterVerification()) {
             LOG.info("Stopped after verification");
             return false;
         }

@@ -2,6 +2,8 @@ package fr.ensimag.ima.pseudocode;
 
 import static org.mockito.ArgumentMatchers.intThat;
 
+import fr.ensimag.deca.CompilerOptions;
+
 /**
  * Register operand (including special registers like SP).
  * 
@@ -10,6 +12,7 @@ import static org.mockito.ArgumentMatchers.intThat;
  */
 public class Register extends DVal {
     private String name;
+
     protected Register(String name) {
         this.name = name;
     }
@@ -22,7 +25,8 @@ public class Register extends DVal {
     /**
      * Max register number
      */
-    public static final int RMAX = 15;
+    // TODO : find a better way to retreive the number of register to use
+    public static final int RMAX = CompilerOptions.getNumRegisters() - 1;
     /**
      * Global Base register
      */
@@ -44,9 +48,11 @@ public class Register extends DVal {
      * made immutable, use getR(i) to access it.
      */
     private static final GPRegister[] R = initRegisters();
+
     /**
      * Return the index of a usable register >= 2
      * Return -1 if there is no free registers
+     * 
      * @return
      */
     public static int getIndexRegistreLibre() {
@@ -57,20 +63,24 @@ public class Register extends DVal {
         }
         return -1;
     }
+
     /**
      * set the state of registreLibre[indexRegister at estLibre]
+     * 
      * @param indexRegister
      * @param estLibre
      */
     public static void setRegistreLibre(int indexRegister, boolean estLibre) {
         registreLibre[indexRegister] = estLibre;
     }
+
     /**
      * General Purpose Registers
      */
     public static GPRegister getR(int i) {
         return R[i];
     }
+
     /**
      * Convenience shortcut for R[0]
      */
@@ -79,8 +89,9 @@ public class Register extends DVal {
      * Convenience shortcut for R[1]
      */
     public static final GPRegister R1 = R[1];
-    static private GPRegister[] initRegisters() {
-        GPRegister [] res = new GPRegister[16];
+
+    private static GPRegister[] initRegisters() {
+        GPRegister[] res = new GPRegister[16];
         for (int i = 0; i < 16; i++) {
             res[i] = new GPRegister("R" + i, i);
             registreLibre[i] = true;

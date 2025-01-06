@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Arrays;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -44,7 +45,7 @@ public class CompilerOptions {
         return arithmeticalPrecision;
     }
 
-    public int getNumRegisters() {
+    public static int getNumRegisters() {
         return numRegisters;
     }
 
@@ -62,7 +63,7 @@ public class CompilerOptions {
 
     private int debugValue = 0;
     private int arithmeticalPrecision = 2;
-    private int numRegisters = 16;
+    private static int numRegisters = 16; // TODO : chiant mais pratique le static
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean skipDecaCompilationErrors = false;
@@ -102,6 +103,12 @@ public class CompilerOptions {
         }
 
         Set<String> options = new HashSet<>(Arrays.asList(args));
+
+        // TODO : finir les arguments pour decac
+        if (options.contains("-n") || options.contains("-w") || options.contains("-d") || options.contains("-a")) {
+            throw new NotImplementedException("Argument not yet implemented");
+        }
+
         if (options.contains("-r")) {
             parseRCommand(args);
         }
@@ -131,7 +138,7 @@ public class CompilerOptions {
 
     }
 
-    private void parseRCommand(String[] args) throws CLIException {
+    private static void parseRCommand(String[] args) throws CLIException {
         int rArgumentIndex = Arrays.asList(args).indexOf("-r");
         if (args.length - 1 < rArgumentIndex + 1) {
             throw new CLIException("Cannot use the -r option without specifying the number of registers");
