@@ -1,0 +1,8 @@
+// Description:
+//    test de la conversion entier -> flottant
+// Resultats:
+//    ok
+
+{
+    println(3*0.5);
+}

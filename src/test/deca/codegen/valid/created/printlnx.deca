@@ -1,0 +1,8 @@
+// Description
+//    teste un appel a printlnx
+// Resultats:
+//    jsp
+
+{
+    printlnx(0.5);
+}
