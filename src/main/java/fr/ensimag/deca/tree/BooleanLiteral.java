@@ -6,6 +6,15 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
+
 import java.io.PrintStream;
 
 /**
@@ -16,21 +25,41 @@ import java.io.PrintStream;
 public class BooleanLiteral extends AbstractExpr {
 
     private boolean value;
+    private ImmediateInteger dVal;
 
     public BooleanLiteral(boolean value) {
         this.value = value;
+        this.dVal = new ImmediateInteger(value ? 1 : 0);
     }
 
     public boolean getValue() {
         return value;
     }
-
+    
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        setType(compiler.environmentType.BOOLEAN);
+        return compiler.environmentType.BOOLEAN;
     }
 
+    @Override
+    protected DVal getDVal() {
+        return dVal;
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler,int n) {
+        compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
+    }
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
+        if ((value && branchIfTrue) || (!value && !branchIfTrue)) {
+            compiler.addInstruction(new BRA(e));
+        }
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

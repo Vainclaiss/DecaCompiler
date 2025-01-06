@@ -1,0 +1,13 @@
+// Description:
+//    test des expressions IfThenElse
+// Resultats:
+//    ok
+
+{
+    if (1==1) {
+        println("ok");
+    }
+    else {
+        println("ERRONE");
+    }
+}

@@ -1,0 +1,9 @@
+// Resultats :
+//    Erreur contextuelle
+//    Ligne 8 : Incompatible types for arithmetic operation: int + boolean
+
+{
+    int a = 1;
+    boolean b = false;
+    print(a + b);
+}

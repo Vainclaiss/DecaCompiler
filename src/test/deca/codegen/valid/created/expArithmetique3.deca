@@ -1,0 +1,8 @@
+// Description:
+//    test des expressions arithmetiques quand tous les registres sont utilisés 
+// Resultats:
+//    25
+
+{
+    println(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+(1+1))))))))))))))))))))))));
+}

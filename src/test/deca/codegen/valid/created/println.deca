@@ -1,0 +1,9 @@
+// Description
+//    teste si appel vide a println saute bien une ligne
+// Resultats:
+//
+//
+
+{
+    println();
+}

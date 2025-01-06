@@ -1,0 +1,18 @@
+; start main program
+; Main program
+	ADDSP #1
+	LOAD #5, R2
+	STORE R2, 1(GB)
+; Beginning of main instructions:
+while_debut.20:
+	LOAD 1(GB), R2
+	SUB #1, R2
+	STORE R2, 1(GB)
+while_cond.19:
+	LOAD 1(GB), R2
+	CMP #0, R2
+	BGT while_debut.20
+	WSTR "ok"
+	WNL
+	HALT
+; end main program

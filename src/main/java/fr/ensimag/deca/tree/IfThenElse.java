@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -16,8 +19,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class IfThenElse extends AbstractInst {
-    
-    private final AbstractExpr condition; 
+
+    private final AbstractExpr condition;
     private final ListInst thenBranch;
     private ListInst elseBranch;
 
@@ -29,16 +32,75 @@ public class IfThenElse extends AbstractInst {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
-    
+
+    public void setElseBranch(ListInst elseBranch) {
+        this.elseBranch = elseBranch;
+    }
+
+    public AbstractExpr getCondition() {
+        return condition;
+    }
+
+    public ListInst getThenBranch() {
+        return thenBranch;
+    }
+
+    public ListInst getElseBranch() {
+        return elseBranch;
+    }
+
+    @Override
+    public boolean isIfThenElse() {
+        return true;
+    }
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+
+        condition.verifyCondition(compiler, localEnv, currentClass);
+        thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+        elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        Label finIf = new Label("fin_if");
+        finIf.getAndAddNewSuffixe();
+
+        IfThenElse currIf = this;
+        boolean hasElseBranch = currIf.getElseBranch().size() > 0;
+
+        while ((currIf.getElseBranch().size() == 1) && currIf.getElseBranch().getList().get(0).isIfThenElse()) {
+            Label elseLabel = new Label("else");
+            elseLabel.getAndAddNewSuffixe();
+
+            IfThenElse nextIf = (IfThenElse) currIf.getElseBranch().getList().get(0);
+            boolean hasNextElseBranch = nextIf.getElseBranch().size() > 0;
+
+            currIf.getCondition().codeGenBool(compiler, false, elseLabel);
+            currIf.getThenBranch().codeGenListInst(compiler);
+            compiler.addInstruction(new BRA(finIf));
+            compiler.addLabel(elseLabel);
+
+            currIf = nextIf;
+            hasElseBranch = hasNextElseBranch;
+        }
+
+        Label elseLabel = new Label("else");
+        elseLabel.getAndAddNewSuffixe();
+
+        currIf.getCondition().codeGenBool(compiler, false, hasElseBranch ? elseLabel : finIf);
+        currIf.getThenBranch().codeGenListInst(compiler);
+        if (hasElseBranch) {
+            compiler.addInstruction(new BRA(finIf));
+            compiler.addLabel(elseLabel);
+            currIf.getElseBranch().codeGenListInst(compiler);
+        }
+
+        // Ajoute l'étiquette de fin
+        compiler.addLabel(finIf);
     }
 
     @Override
@@ -47,8 +109,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         condition.iter(f);
         thenBranch.iter(f);
         elseBranch.iter(f);

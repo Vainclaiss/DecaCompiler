@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.OPP;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -17,11 +21,20 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    protected Type getTypeUnaryOp(DecacCompiler compiler, Type type) throws ContextualError {
+        if (type.isInt() || type.isFloat()) {
+            return type;
+        }
 
+        throw new ContextualError("Error: Incompatible type for operator " + getOperatorName() + " and type " + type,
+                getLocation());
+    }
+    
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        getOperand().codeExp(compiler, n);
+        compiler.addInstruction(new OPP(Register.getR(n), Register.getR(n)));
+    }
 
     @Override
     protected String getOperatorName() {

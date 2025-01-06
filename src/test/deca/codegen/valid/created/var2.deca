@@ -1,0 +1,11 @@
+// Description
+//    teste un appel vide a print
+// Resultats:
+//    10
+
+{
+    int a = 10;
+    int b = 2;
+    b = a;
+    println(b);
+}
