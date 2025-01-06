@@ -28,7 +28,8 @@ public class Not extends AbstractUnaryExpr {
             return type;
         }
 
-        throw new ContextualError("Incompatible type for operator " + getOperatorName() + " and type " + type, getLocation());
+        throw new ContextualError("Error: Incompatible type for operator " + getOperatorName() + " and type " + type,
+                getLocation());
     }
 
     @Override
@@ -40,7 +41,8 @@ public class Not extends AbstractUnaryExpr {
     protected void codeExp(DecacCompiler compiler, int n) {
         Label e = new Label("not_eval_true");
         String suffixe = e.getAndAddNewSuffixe();
-        //si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0 dans Rn
+        // si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0
+        // dans Rn
         codeGenBool(compiler, true, e);
         compiler.addInstruction(new LOAD(0, Register.getR(n)));
         Label skipEvalTrue = new Label("skip_eval_true");
@@ -49,9 +51,9 @@ public class Not extends AbstractUnaryExpr {
 
         compiler.addLabel(e);
         compiler.addInstruction(new LOAD(1, Register.getR(n)));
-        compiler.addLabel(skipEvalTrue);        
+        compiler.addLabel(skipEvalTrue);
     }
-    
+
     @Override
     protected String getOperatorName() {
         return "!";

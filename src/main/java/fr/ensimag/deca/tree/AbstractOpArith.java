@@ -33,16 +33,14 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         int indexR = Register.getIndexRegistreLibre();
         codeExp(compiler, indexR);
 
-        //on la met dans R1 pour l'afficher
+        // on la met dans R1 pour l'afficher
         compiler.addInstruction(new LOAD(Register.getR(indexR), Register.R1));
         Register.setRegistreLibre(indexR, true);
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
-        }
-        else if (getType().isFloat()) {
+        } else if (getType().isFloat()) {
             compiler.addInstruction(new WFLOAT());
-        }
-        else {
+        } else {
             throw new IllegalAccessError("Arithmetic expression must have int or float type");
         }
     }
@@ -57,7 +55,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             ConvFloat convLeft = new ConvFloat(getLeftOperand());
             convLeft.setType(compiler.environmentType.FLOAT);
             setLeftOperand(convLeft);
-            
+
             return compiler.environmentType.FLOAT;
         }
 
@@ -73,12 +71,14 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             return compiler.environmentType.FLOAT;
         }
 
-        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + " " + getOperatorName() + " " + type2, getLocation());
+        throw new ContextualError(
+                "Error: Incompatible types for arithmetic operation: " + type1 + " " + getOperatorName() + " " + type2,
+                getLocation());
     }
 
     // @Override
     // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-    //         ClassDefinition currentClass) throws ContextualError {
-    //     throw new UnsupportedOperationException("not yet implemented");
+    // ClassDefinition currentClass) throws ContextualError {
+    // throw new UnsupportedOperationException("not yet implemented");
     // }
 }
