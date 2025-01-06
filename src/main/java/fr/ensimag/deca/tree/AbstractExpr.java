@@ -98,7 +98,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
 
         throw new ContextualError(
-                "Error : Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
+                "Error: Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
                 getLocation());
     }
 

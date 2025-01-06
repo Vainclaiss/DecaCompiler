@@ -22,16 +22,15 @@ public class Divide extends AbstractOpArith {
         Type t1 = getLeftOperand().getType();
         Type t2 = getRightOperand().getType();
         if (!t1.sameType(t2)) {
-            throw new IllegalArgumentException("Illegal operation Divide between " + t1.toString() + " and " + t2.toString());
+            throw new IllegalArgumentException(
+                    "Illegal operation Divide between " + t1.toString() + " and " + t2.toString());
         }
         if (t1.isFloat() && t2.isFloat()) {
             compiler.addInstruction(new DIV(op1, r));
-        }
-        else if (t1.isInt() && t2.isInt()) {
+        } else if (t1.isInt() && t2.isInt()) {
             compiler.addInstruction(new QUO(op1, r));
         }
     }
-
 
     @Override
     protected String getOperatorName() {
