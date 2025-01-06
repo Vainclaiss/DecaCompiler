@@ -2,10 +2,14 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.VoidType;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
 
 /**
  * @author gl01
@@ -24,6 +28,14 @@ public class Main extends AbstractMain {
         this.insts = insts;
     }
 
+    public ListDeclVar getDeclVariables() {
+        return this.declVariables;
+    }
+
+    public ListInst getInsts() {
+        return this.insts;
+    }
+
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
@@ -31,7 +43,16 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         LOG.debug("verify Main: end");
-        throw new UnsupportedOperationException("not yet implemented");
+
+        // Pas nécéssaire pour HelloWorld, mais pour plus tard : 2 autres argument avec Environnements
+        // this.getDeclVariables().verifyListDeclVariable(compiler, ..., ...)
+
+        // On est dans le main bloc donc null, a changer dans le cas général
+        EnvironmentExp localEnv = new EnvironmentExp(null);
+        Symbol voidSymb = compiler.createSymbol("void");
+        VoidType VOID = new VoidType(voidSymb);
+        this.getInsts().verifyListInst(compiler, localEnv, null, VOID);
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

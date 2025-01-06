@@ -32,6 +32,7 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        // Jamais appellée pour HelloWorld, mais vérifications a faire pour plus tard, avec les tests qui déclenchent les erreurs contextuelles.
         throw new UnsupportedOperationException("not yet implemented");
     }
 
