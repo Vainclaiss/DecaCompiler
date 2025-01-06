@@ -4,16 +4,16 @@
 ; Beginning of main instructions:
 	LOAD #1, R2
 	CMP #2, R2
-	BNE else.1
-	WSTR "a"
+	BNE else.7
+	WSTR "ERRONE"
 	WNL
-	BRA fin_if.0
-else.1:
+	BRA fin_if.6
+else.7:
 	LOAD #2, R2
 	CMP #2, R2
-	BNE fin_if.0
-	WSTR "b"
+	BNE fin_if.6
+	WSTR "ok"
 	WNL
-fin_if.0:
+fin_if.6:
 	HALT
 ; end main program

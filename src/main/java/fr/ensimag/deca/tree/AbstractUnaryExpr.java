@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
@@ -53,6 +54,11 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         setType(type);
         
         return type;
+    }
+
+    @Override
+    protected DVal getDVal() {
+        return null;
     }
 
     protected abstract String getOperatorName();

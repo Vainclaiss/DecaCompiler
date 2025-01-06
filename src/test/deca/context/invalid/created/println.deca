@@ -1,0 +1,7 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 7: type attendu : int, float ou string
+
+{
+    println(true);
+}

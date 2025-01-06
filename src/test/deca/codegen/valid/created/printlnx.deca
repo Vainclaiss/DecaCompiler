@@ -1,8 +1,8 @@
 // Description
 //    teste un appel a printlnx
 // Resultats:
-//    jsp
+//    0x1p+1
 
 {
-    printlnx(0.5);
+    printlnx(2.0);
 }

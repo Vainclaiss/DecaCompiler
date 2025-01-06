@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
 import fr.ensimag.deca.DecacCompiler;
@@ -27,7 +28,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
 
         throw new ContextualError("Incompatible type for operator " + getOperatorName() + " and type " + type, getLocation());
     }
-
+    
     @Override
     protected void codeExp(DecacCompiler compiler,int n) {
         getOperand().codeExp(compiler, n);

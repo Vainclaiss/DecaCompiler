@@ -148,6 +148,15 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    /**
+     * Generate code to print the expression in hex if "this" is a float
+     *
+     * @param compiler
+     */
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        codeGenPrint(compiler);
+    }
+
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");

@@ -1,21 +1,13 @@
 ; start main program
 ; Main program
+	ADDSP #0
 ; Beginning of main instructions:
-	BRA else.1
-	WSTR "Erreur"
+	BRA else.5
+	WSTR "ERRONE"
 	WNL
-	BRA fin_if.0
-else.1:
-	WSTR "true ET false est false"
-	WNL
-fin_if.0:
-	BRA fin_if.2_fin
-	BRA fin_if.2
-fin_if.2_fin:
-	WSTR "true OU false est true"
-	WNL
-fin_if.2:
-	WSTR "Non false est true"
+	BRA fin_if.4
+else.5:
+	WSTR "ok"
 	WNL
 fin_if.4:
 	HALT
