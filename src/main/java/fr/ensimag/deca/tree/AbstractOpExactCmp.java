@@ -20,8 +20,6 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
         if (type1.isBoolean() && type1.isBoolean()) {
             return compiler.environmentType.BOOLEAN;
         }
-        super.getTypeBinaryOp(compiler, type1, type2);
-        
-        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
+        return super.getTypeBinaryOp(compiler, type1, type2);   
     }
 }

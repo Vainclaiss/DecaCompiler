@@ -1,0 +1,7 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 7 : Identifier a must have a definition
+
+{
+    a = 1;
+}

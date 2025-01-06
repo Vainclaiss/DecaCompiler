@@ -1,5 +1,11 @@
+// Description
+//    test sur les while
+// Resultats:
+//    ok
+
 {
-    while(true) {
+    while(false) {
         println(1);
     }
+    println("ok");
 }

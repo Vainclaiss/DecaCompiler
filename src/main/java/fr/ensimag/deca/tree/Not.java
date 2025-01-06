@@ -23,9 +23,12 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected Type getTypeUnaryOp(DecacCompiler compiler, Type type) throws ContextualError {
+        if (type.isBoolean()) {
+            return type;
+        }
+
+        throw new ContextualError("Incompatible type for operator " + getOperatorName() + " and type " + type, getLocation());
     }
 
     @Override

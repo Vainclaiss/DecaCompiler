@@ -1,0 +1,7 @@
+// Resultats :
+//    Erreur contextuelle
+//    Ligne 6 : 'void' cannot be used as a type for variable declaration
+
+{
+    void a;
+}

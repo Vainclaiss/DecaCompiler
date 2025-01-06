@@ -5,6 +5,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.VoidType;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -45,21 +49,24 @@ public class Main extends AbstractMain {
 
         // Pas nécéssaire pour HelloWorld, mais pour plus tard : 2 autres argument avec
         // Environnements
-        // this.getDeclVariables().verifyListDeclVariable(compiler,)
+        // this.getDeclVariables().verifyListDeclVariable(compiler, ..., ...)
 
         // On est dans le main bloc donc null, a changer dans le cas général
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
         VoidType voidType = new VoidType(voidSymb);
-        this.getDeclVariables().verifyListDeclVariable(compiler, mainEnv, null);
-        this.getInsts().verifyListInst(compiler, mainEnv, null, voidType);
-        LOG.debug("verify Main: end");
+        declVariables.verifyListDeclVariable(compiler, mainEnv, null);
+        insts.verifyListInst(compiler, mainEnv, null, voidType);
 
+        LOG.debug("verify Main: end");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
+        compiler.addInstruction(new ADDSP(declVariables.size()));
+        declVariables.codeGenListDeclVar(compiler, null);
+
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }

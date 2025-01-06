@@ -1,7 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.OPP;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -20,7 +24,20 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // operand est de type int par construction
+        setType(compiler.environmentType.FLOAT);
+        return compiler.environmentType.FLOAT;
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler,int n) {
+        getOperand().codeExp(compiler, n);
+        compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
+    }
+
+    @Override
+    protected DVal getDVal() {
+        return getOperand().getDVal();
     }
 
     @Override

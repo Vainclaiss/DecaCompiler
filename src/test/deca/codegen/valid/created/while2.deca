@@ -1,8 +1,12 @@
+// Description
+//    test sur les while
+// Resultats:
+//    ok
+
 {
     int counter = 5;
     while (counter > 0) {
-        println(counter);
         counter = counter - 1;
     }
-    println("Boucle terminée");
+    println("ok");
 }

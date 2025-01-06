@@ -1,0 +1,7 @@
+// Resultats :
+//    Erreur generation code
+//    Ligne 6 : Division by 0
+
+{
+    int a = 3 % 0;
+}

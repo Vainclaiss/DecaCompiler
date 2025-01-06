@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -35,7 +36,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         //on la met dans R1 pour l'afficher
         compiler.addInstruction(new LOAD(Register.getR(indexR), Register.R1));
         Register.setRegistreLibre(indexR, true);
-        compiler.addInstruction(new WINT());
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
+        else if (getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
+        else {
+            throw new IllegalAccessError("Arithmetic expression must have int or float type");
+        }
     }
 
     @Override
@@ -45,10 +54,18 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
 
         if (type1.isInt() && type2.isFloat()) {
+            ConvFloat convLeft = new ConvFloat(getLeftOperand());
+            convLeft.setType(compiler.environmentType.FLOAT);
+            setLeftOperand(convLeft);
+            
             return compiler.environmentType.FLOAT;
         }
 
         if (type1.isFloat() && type2.isInt()) {
+            ConvFloat convRight = new ConvFloat(getRightOperand());
+            convRight.setType(compiler.environmentType.FLOAT);
+            setRightOperand(convRight);
+
             return compiler.environmentType.FLOAT;
         }
 
@@ -56,12 +73,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             return compiler.environmentType.FLOAT;
         }
 
-        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
+        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + " " + getOperatorName() + " " + type2, getLocation());
     }
 
-    @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    // @Override
+    // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    //         ClassDefinition currentClass) throws ContextualError {
+    //     throw new UnsupportedOperationException("not yet implemented");
+    // }
 }

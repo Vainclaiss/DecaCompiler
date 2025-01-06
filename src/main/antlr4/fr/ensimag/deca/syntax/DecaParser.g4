@@ -89,10 +89,18 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
         }
     : i=ident {
-            $tree = new DeclVar($t,$i.tree,new NoInitialization());
+            NoInitialization noInit = new NoInitialization();
+            //noInit.setLocation($t.getLocation());
+
+            $tree = new DeclVar($t,$i.tree, noInit);
+            $tree.setLocation($t.getLocation());
         }
       (EQUALS e=expr {
+            Initialization init = new Initialization($e.tree);
+            setLocation(init, $EQUALS);
+
             $tree = new DeclVar($t,$i.tree,new Initialization($e.tree));
+            $tree.setLocation($t.getLocation());
         }
       )? {
         }
@@ -393,8 +401,12 @@ primary_expr returns[AbstractExpr tree]
             $tree = $expr.tree;
         }
     | READINT OPARENT CPARENT {
+            $tree = new ReadInt();
+            setLocation($tree, $READINT);
         }
     | READFLOAT OPARENT CPARENT {
+            $tree = new ReadFloat();
+            setLocation($tree, $READFLOAT);
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);

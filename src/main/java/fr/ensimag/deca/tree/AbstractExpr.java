@@ -88,9 +88,15 @@ public abstract class AbstractExpr extends AbstractInst {
         // A FAIRE: rajouter les classes
         Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
         if (expectedType.sameType(typeRvalue)) return this;
-        if (expectedType.isFloat() && typeRvalue.isInt()) return new ConvFloat(this);
+        if (expectedType.isFloat() && typeRvalue.isInt()) {
+            ConvFloat conv = new ConvFloat(this);
+            // l'expression this a déja été vérifié précédemment pas besoin de le refaire
+            // on initialise juste le type
+            conv.setType(compiler.environmentType.FLOAT);
+            return conv;
+        }
 
-        throw new ContextualError("Error : Illegal assignments between " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
+        throw new ContextualError("Error : Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
     }
 
     @Override

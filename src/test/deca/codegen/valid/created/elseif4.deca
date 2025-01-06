@@ -1,13 +1,18 @@
+// Description:
+//    test des expressions IfThenElse
+// Resultats:
+//    ok
+
 {
     if (10 > 5) {
-        println("10 est plus grand que 5");
+        println("ok");
     } else {
-        println("Erreur");
+        println("ERRONE");
     }
 
     if (2 == 3) {
-        println("Erreur");
+        println("ERRONE");
     } else {
-        println("2 n'est pas égal à 3");
+        println("ok");
     }
 }

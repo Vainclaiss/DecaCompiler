@@ -41,18 +41,15 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     }
 
     protected Type getTypeUnaryOp(DecacCompiler compiler, Type type) throws ContextualError {
-        if (type.isBoolean() || type.isInt() || type.isFloat()) {
-            return type;
-        }
-
-        throw new ContextualError("Incompatible types for arithmetic operation: " + getOperatorName() + type, getLocation());
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         
-        Type type = operand.verifyExpr(compiler, localEnv, currentClass);
+        Type type1 = operand.verifyExpr(compiler, localEnv, currentClass);
+        Type type = getTypeUnaryOp(compiler, type1);
         setType(type);
         
         return type;

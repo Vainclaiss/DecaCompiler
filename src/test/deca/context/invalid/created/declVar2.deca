@@ -1,0 +1,8 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 7: Multiple declaration of 'a'
+
+{
+    int a;
+    int a;
+}

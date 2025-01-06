@@ -1,0 +1,26 @@
+; start main program
+; Main program
+	ADDSP #0
+; Beginning of main instructions:
+	LOAD #10, R2
+	CMP #5, R2
+	BLE else.1
+	WSTR "10 est plus grand que 5"
+	WNL
+	BRA fin_if.0
+else.1:
+	WSTR "Erreur"
+	WNL
+fin_if.0:
+	LOAD #2, R2
+	CMP #3, R2
+	BNE else.3
+	WSTR "Erreur"
+	WNL
+	BRA fin_if.2
+else.3:
+	WSTR "2 n'est pas égal à 3"
+	WNL
+fin_if.2:
+	HALT
+; end main program

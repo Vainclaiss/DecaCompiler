@@ -1,0 +1,7 @@
+// Resultats :
+//    Erreur contextuelle
+//    Ligne 6
+
+{
+    boolean b = "aaa";
+}

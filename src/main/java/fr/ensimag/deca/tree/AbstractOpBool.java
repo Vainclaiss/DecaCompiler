@@ -59,17 +59,17 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
-        if (type1.isBoolean() && type1.isBoolean()) {
+        if (type1.isBoolean() && type2.isBoolean()) {
             return compiler.environmentType.BOOLEAN;
         }
         
-        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2, getLocation());
+        throw new ContextualError("Incompatible types for boolean operation: " + type1 + " " + getOperatorName() + " " + type2, getLocation());
     }
 
-    @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    // @Override
+    // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    //         ClassDefinition currentClass) throws ContextualError {
+    //     throw new UnsupportedOperationException("not yet implemented");
+    // }
 
 }
