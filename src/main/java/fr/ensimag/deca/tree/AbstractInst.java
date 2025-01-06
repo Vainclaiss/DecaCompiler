@@ -15,16 +15,19 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 01/01/2025
  */
 public abstract class AbstractInst extends Tree {
-    
+
     /**
      * Implements non-terminal "inst" of [SyntaxeContextuelle] in pass 3
-     * @param compiler contains the "env_types" attribute
-     * @param localEnv corresponds to the "env_exp" attribute
-     * @param currentClass 
-     *          corresponds to the "class" attribute (null in the main bloc).
+     * 
+     * @param compiler     contains the "env_types" attribute
+     * @param localEnv     corresponds to the "env_exp" attribute
+     * @param currentClass
+     *                     corresponds to the "class" attribute (null in the main
+     *                     bloc).
      * @param returnType
-     *          corresponds to the "return" attribute (void in the main bloc).
-     */    
+     *                     corresponds to the "return" attribute (void in the main
+     *                     bloc).
+     */
     protected abstract void verifyInst(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError;
 
@@ -38,12 +41,12 @@ public abstract class AbstractInst extends Tree {
     public boolean isIfThenElse() {
         return false;
     }
-
-
+    
     /**
      * Decompile the tree, considering it as an instruction.
      *
-     * In most case, this simply calls decompile(), but it may add a semicolon if needed
+     * In most case, this simply calls decompile(), but it may add a semicolon if
+     * needed
      */
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);

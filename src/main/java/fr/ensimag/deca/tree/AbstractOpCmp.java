@@ -55,7 +55,8 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             return compiler.environmentType.BOOLEAN;
         }
         // A FAIRE: gerer le cas de eq et neq pour les classes cf p76
-        throw new ContextualError("Incompatible types for comparison: " + type1 + " " + getOperatorName() + " " + type2, getLocation());
+        throw new ContextualError("Incompatible types for comparison: " + type1 + " " + getOperatorName() + " " + type2,
+                getLocation());
     }
 
     @Override
@@ -65,9 +66,8 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     // @Override
     // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-    //         ClassDefinition currentClass) throws ContextualError {
-    //     throw new UnsupportedOperationException("not yet implemented");
+    // ClassDefinition currentClass) throws ContextualError {
+    // throw new UnsupportedOperationException("not yet implemented");
     // }
-
 
 }

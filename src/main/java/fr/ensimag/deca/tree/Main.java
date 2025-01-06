@@ -14,16 +14,16 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
-
 /**
  * @author gl01
  * @date 01/01/2025
  */
 public class Main extends AbstractMain {
     private static final Logger LOG = Logger.getLogger(Main.class);
-    
+
     private ListDeclVar declVariables;
     private ListInst insts;
+
     public Main(ListDeclVar declVariables,
             ListInst insts) {
         Validate.notNull(declVariables);
@@ -46,17 +46,18 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
-        
-        // Pas nécéssaire pour HelloWorld, mais pour plus tard : 2 autres argument avec Environnements
+
+        // Pas nécéssaire pour HelloWorld, mais pour plus tard : 2 autres argument avec
+        // Environnements
         // this.getDeclVariables().verifyListDeclVariable(compiler, ..., ...)
-        
+
         // On est dans le main bloc donc null, a changer dans le cas général
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
         VoidType voidType = new VoidType(voidSymb);
         declVariables.verifyListDeclVariable(compiler, mainEnv, null);
         insts.verifyListInst(compiler, mainEnv, null, voidType);
-        
+
         LOG.debug("verify Main: end");
     }
 
@@ -69,7 +70,7 @@ public class Main extends AbstractMain {
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.println("{");
@@ -85,7 +86,7 @@ public class Main extends AbstractMain {
         declVariables.iter(f);
         insts.iter(f);
     }
- 
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVariables.prettyPrint(s, prefix, false);

@@ -60,7 +60,6 @@ public class IntLiteral extends AbstractExpr {
         compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
     }
 
-
     @Override
     String prettyPrintNode() {
         return "Int (" + getValue() + ")";

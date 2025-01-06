@@ -19,8 +19,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class IfThenElse extends AbstractInst {
-    
-    private final AbstractExpr condition; 
+
+    private final AbstractExpr condition;
     private final ListInst thenBranch;
     private ListInst elseBranch;
 
@@ -58,10 +58,8 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        
-        Type type = condition.verifyExpr(compiler, localEnv, currentClass);
-        if (type != compiler.environmentType.BOOLEAN) throw new ContextualError("Error : If condition must be a boolean expression, found " + type.toString() , getLocation());
-        
+
+        condition.verifyCondition(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
@@ -70,29 +68,29 @@ public class IfThenElse extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         Label finIf = new Label("fin_if");
         finIf.getAndAddNewSuffixe();
-    
+
         IfThenElse currIf = this;
         boolean hasElseBranch = currIf.getElseBranch().size() > 0;
-    
+
         while ((currIf.getElseBranch().size() == 1) && currIf.getElseBranch().getList().get(0).isIfThenElse()) {
             Label elseLabel = new Label("else");
             elseLabel.getAndAddNewSuffixe();
-    
+
             IfThenElse nextIf = (IfThenElse) currIf.getElseBranch().getList().get(0);
             boolean hasNextElseBranch = nextIf.getElseBranch().size() > 0;
-    
+
             currIf.getCondition().codeGenBool(compiler, false, elseLabel);
             currIf.getThenBranch().codeGenListInst(compiler);
             compiler.addInstruction(new BRA(finIf));
             compiler.addLabel(elseLabel);
-    
+
             currIf = nextIf;
             hasElseBranch = hasNextElseBranch;
         }
-    
+
         Label elseLabel = new Label("else");
         elseLabel.getAndAddNewSuffixe();
-    
+
         currIf.getCondition().codeGenBool(compiler, false, hasElseBranch ? elseLabel : finIf);
         currIf.getThenBranch().codeGenListInst(compiler);
         if (hasElseBranch) {
@@ -100,11 +98,10 @@ public class IfThenElse extends AbstractInst {
             compiler.addLabel(elseLabel);
             currIf.getElseBranch().codeGenListInst(compiler);
         }
-    
+
         // Ajoute l'étiquette de fin
         compiler.addLabel(finIf);
     }
-    
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -112,8 +109,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         condition.iter(f);
         thenBranch.iter(f);
         elseBranch.iter(f);
