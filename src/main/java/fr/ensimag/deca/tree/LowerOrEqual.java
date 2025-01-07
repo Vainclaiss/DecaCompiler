@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
@@ -27,8 +29,7 @@ public class LowerOrEqual extends AbstractOpIneq {
         Register.setRegistreLibre(indexR, true);
         if (branchIfTrue) {
             compiler.addInstruction(new BLE(e));
-        }
-        else {
+        } else {
             compiler.addInstruction(new BGT(e));
         }
     }
@@ -36,6 +37,12 @@ public class LowerOrEqual extends AbstractOpIneq {
     @Override
     protected String getOperatorName() {
         return "<=";
+    }
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
 
 }

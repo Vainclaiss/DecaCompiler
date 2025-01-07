@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import org.objectweb.asm.MethodVisitor;
+
 /**
  * Instruction
  *
@@ -37,13 +38,13 @@ public abstract class AbstractInst extends Tree {
      * @param compiler
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
-    //protected abstract void codeGenBool(MethodVisitor mv);
+
     protected abstract void codeGenByteInst(MethodVisitor mv);
 
     public boolean isIfThenElse() {
         return false;
     }
-    
+
     /**
      * Decompile the tree, considering it as an instruction.
      *

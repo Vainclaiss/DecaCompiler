@@ -13,6 +13,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * @author gl01
@@ -91,5 +92,11 @@ public class Main extends AbstractMain {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVariables.prettyPrint(s, prefix, false);
         insts.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenMainBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenMainBytecode'");
     }
 }

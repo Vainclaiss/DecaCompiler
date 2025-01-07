@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -25,8 +27,7 @@ public class Lower extends AbstractOpIneq {
         Register.setRegistreLibre(indexR, true);
         if (branchIfTrue) {
             compiler.addInstruction(new BLT(e));
-        }
-        else {
+        } else {
             compiler.addInstruction(new BGE(e));
         }
     }
@@ -34,6 +35,18 @@ public class Lower extends AbstractOpIneq {
     @Override
     protected String getOperatorName() {
         return "<";
+    }
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
+    }
+
+    @Override
+    protected void codeGenBool(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
     }
 
 }

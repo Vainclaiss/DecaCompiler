@@ -71,8 +71,6 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
-    protected abstract void codeGenBytecode(MethodVisitor mv);
-
     /**
      * Verify the expression in right hand-side of (implicit) assignments
      * 
@@ -90,7 +88,8 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
         // A FAIRE: rajouter les classes
         Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
-        if (expectedType.sameType(typeRvalue)) return this;
+        if (expectedType.sameType(typeRvalue))
+            return this;
         if (expectedType.isFloat() && typeRvalue.isInt()) {
             ConvFloat conv = new ConvFloat(this);
             // l'expression this a déja été vérifié précédemment pas besoin de le refaire
@@ -99,7 +98,9 @@ public abstract class AbstractExpr extends AbstractInst {
             return conv;
         }
 
-        throw new ContextualError("Error : Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(), getLocation());
+        throw new ContextualError(
+                "Error : Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
+                getLocation());
     }
 
     @Override
@@ -122,10 +123,11 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+
         type = verifyExpr(compiler, localEnv, currentClass);
         if (!type.isBoolean()) {
-            throw new ContextualError("Error : Expected expression type is boolean, got " + type.toString(), getLocation());
+            throw new ContextualError("Error : Expected expression type is boolean, got " + type.toString(),
+                    getLocation());
         }
     }
 
@@ -135,6 +137,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Load the value of the expression in Rn
+     * 
      * @param compiler
      * @param n
      */
@@ -151,17 +154,32 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    protected void codeGenBytePrint(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
     /**
      * Code generation for boolean expression
+     * 
      * @param compiler
      * @param branchIfTrue
      * @param e
      */
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    protected void codeGenByteBool(MethodVisitor mv) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

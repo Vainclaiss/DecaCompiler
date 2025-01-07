@@ -4,7 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ContextualError;
- import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -16,6 +16,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * Binary expressions.
@@ -59,6 +60,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    protected void codeGenByteInst(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
     @Override
     protected DVal getDVal() {
         return null;
@@ -69,33 +74,31 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         getLeftOperand().codeExp(compiler, n);
         Register.setRegistreLibre(n, false);
         DVal dvalExp2 = getRightOperand().getDVal();
-        
+
         if (dvalExp2 == null) {
             if (n == Register.RMAX) {
                 // A FAIRE: généraliser si plusieurs opérandes dans la stack
-                //sauvegarde de op1
+                // sauvegarde de op1
                 compiler.addInstruction(new PUSH(Register.getR(n)));
 
-                //calcul de op2 dans R0
+                // calcul de op2 dans R0
                 getRightOperand().codeExp(compiler, n);
                 Register.setRegistreLibre(n, false);
                 compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
 
-                //restoration de la valeur de op1 dans Rn
+                // restoration de la valeur de op1 dans Rn
                 compiler.addInstruction(new POP(Register.getR(n)));
 
                 codeGenInst(compiler, Register.R0, Register.getR(n));
                 Register.setRegistreLibre(n, true);
+            } else {
+                getRightOperand().codeExp(compiler, n + 1);
+                Register.setRegistreLibre(n + 1, false);
+
+                codeGenInst(compiler, Register.getR(n + 1), Register.getR(n));
+                Register.setRegistreLibre(n + 1, true);
             }
-            else { 
-                getRightOperand().codeExp(compiler, n+1);
-                Register.setRegistreLibre(n+1, false);
-                
-                codeGenInst(compiler, Register.getR(n+1), Register.getR(n));
-                Register.setRegistreLibre(n+1, true);
-            }
-        }
-        else {
+        } else {
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
     }
@@ -107,7 +110,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+
         Type type1 = leftOperand.verifyExpr(compiler, localEnv, currentClass);
         Type type2 = rightOperand.verifyExpr(compiler, localEnv, currentClass);
 
@@ -115,7 +118,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         setType(resType);
         return resType;
     }
-
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -127,7 +129,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
     abstract protected String getOperatorName();
-
 
     @Override
     protected void iterChildren(TreeFunction f) {

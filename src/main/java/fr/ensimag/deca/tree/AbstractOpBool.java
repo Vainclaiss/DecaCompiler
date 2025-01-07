@@ -45,7 +45,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Label e = new Label("binaryBool_eval_true");
         String suffixe = e.getAndAddNewSuffixe();
 
-        //si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0 dans Rn
+        // si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0
+        // dans Rn
         codeGenBool(compiler, true, e);
         compiler.addInstruction(new LOAD(0, Register.getR(n)));
         Label skipEvalTrue = new Label("skip_eval_true");
@@ -54,7 +55,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
         compiler.addLabel(e);
         compiler.addInstruction(new LOAD(1, Register.getR(n)));
-        compiler.addLabel(skipEvalTrue);        
+        compiler.addLabel(skipEvalTrue);
     }
 
     @Override
@@ -62,14 +63,16 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         if (type1.isBoolean() && type2.isBoolean()) {
             return compiler.environmentType.BOOLEAN;
         }
-        
-        throw new ContextualError("Incompatible types for boolean operation: " + type1 + " " + getOperatorName() + " " + type2, getLocation());
+
+        throw new ContextualError(
+                "Incompatible types for boolean operation: " + type1 + " " + getOperatorName() + " " + type2,
+                getLocation());
     }
 
     // @Override
     // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-    //         ClassDefinition currentClass) throws ContextualError {
-    //     throw new UnsupportedOperationException("not yet implemented");
+    // ClassDefinition currentClass) throws ContextualError {
+    // throw new UnsupportedOperationException("not yet implemented");
     // }
 
 }
