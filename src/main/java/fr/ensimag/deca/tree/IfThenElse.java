@@ -11,6 +11,7 @@ import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * Full if/else if/else statement.
@@ -120,5 +121,11 @@ public class IfThenElse extends AbstractInst {
         condition.prettyPrint(s, prefix, false);
         thenBranch.prettyPrint(s, prefix, false);
         elseBranch.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
     }
 }
