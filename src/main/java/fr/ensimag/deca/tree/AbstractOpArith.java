@@ -52,7 +52,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
         if (type1.isInt() && type2.isInt()) {
