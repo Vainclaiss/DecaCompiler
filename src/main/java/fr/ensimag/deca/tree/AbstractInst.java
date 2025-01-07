@@ -37,8 +37,8 @@ public abstract class AbstractInst extends Tree {
      * @param compiler
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
-    protected abstract void codeGenBool(MethodVisitor mv);
-    protected abstract void codeGenBytecode(MethodVisitor mv);
+    //protected abstract void codeGenBool(MethodVisitor mv);
+    protected abstract void codeGenByteInst(MethodVisitor mv);
 
     public boolean isIfThenElse() {
         return false;
