@@ -1,0 +1,9 @@
+// Description:
+//    test de readInt avec une conversion int -> float
+// Resultats:
+//    "affiche x"
+
+{   
+    float x = readInt() + readInt();
+    println(x);
+}

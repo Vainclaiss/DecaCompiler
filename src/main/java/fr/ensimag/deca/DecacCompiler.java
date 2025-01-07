@@ -26,6 +26,7 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
@@ -246,9 +247,10 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
-        genCodeAllExecErrors();     // genere le code de toutes les erreurs d'exécution à la fin du programme
+        program.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel()));      // ordre des 2 instructions inversé à cause de addFirst()
         program.addFirst(new TSTO(stackOverflowCounter.getMaxTSTO()), stackOverflowCounter.getDetailsMaxTSTO());      // on rajoute le test de stack overflow au debut
         addExecError(StackOverflowExecError.INSTANCE);
+        genCodeAllExecErrors();     // genere le code de toutes les erreurs d'exécution à la fin du programme
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
