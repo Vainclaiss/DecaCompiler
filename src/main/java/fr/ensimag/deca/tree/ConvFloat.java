@@ -33,7 +33,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeExp(DecacCompiler compiler,int n) {
+    protected void codeExp(DecacCompiler compiler, int n) {
         getOperand().codeExp(compiler, n);
         compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
     }
@@ -47,12 +47,4 @@ public class ConvFloat extends AbstractUnaryExpr {
     protected String getOperatorName() {
         return "/* conv float */";
     }
-
-    @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
-    }
-
-
 }

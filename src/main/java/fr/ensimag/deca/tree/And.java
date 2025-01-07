@@ -24,8 +24,7 @@ public class And extends AbstractOpBool {
             getLeftOperand().codeGenBool(compiler, false, eFin);
             getRightOperand().codeGenBool(compiler, true, e);
             compiler.addLabel(eFin);
-        }
-        else {
+        } else {
             getLeftOperand().codeGenBool(compiler, false, e);
             getRightOperand().codeGenBool(compiler, false, e);
         }
@@ -37,11 +36,9 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenByteBool(MethodVisitor mv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
-
-
 
 }

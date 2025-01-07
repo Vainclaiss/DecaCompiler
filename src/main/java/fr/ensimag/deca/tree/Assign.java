@@ -42,7 +42,7 @@ public class Assign extends AbstractBinaryExpr {
         Type type1 = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, type1));
         setType(type1);
-        
+
         return type1;
     }
 
@@ -51,8 +51,8 @@ public class Assign extends AbstractBinaryExpr {
         int indexR = Register.getIndexRegistreLibre();
         Register.setRegistreLibre(indexR, false);
         getRightOperand().codeExp(compiler, indexR);
-        
-        compiler.addInstruction(new STORE(Register.getR(indexR), (DAddr)getLeftOperand().getDVal()));
+
+        compiler.addInstruction(new STORE(Register.getR(indexR), (DAddr) getLeftOperand().getDVal()));
         Register.setRegistreLibre(indexR, true);
     }
 
@@ -62,11 +62,9 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenByteInst(MethodVisitor mv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
-
-
 
 }

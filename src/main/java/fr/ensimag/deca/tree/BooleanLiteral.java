@@ -37,7 +37,7 @@ public class BooleanLiteral extends AbstractExpr {
     public boolean getValue() {
         return value;
     }
-    
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -52,7 +52,7 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeExp(DecacCompiler compiler,int n) {
+    protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
     }
 
@@ -65,7 +65,7 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction((value) ? new WSTR("true"): new WSTR("false"));
+        compiler.addInstruction((value) ? new WSTR("true") : new WSTR("false"));
     }
 
     @Override
@@ -89,10 +89,14 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenByteBool(MethodVisitor mv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
 
+    @Override
+    protected void codeGenBytePrint(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
 }

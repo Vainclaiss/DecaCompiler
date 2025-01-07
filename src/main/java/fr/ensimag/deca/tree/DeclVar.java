@@ -12,6 +12,7 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * @author gl01
@@ -19,7 +20,6 @@ import org.apache.commons.lang.Validate;
  */
 public class DeclVar extends AbstractDeclVar {
 
-    
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
@@ -45,18 +45,20 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        
+
         Type realType = type.verifyType(compiler);
-        if (realType.isVoid()) throw new ContextualError("Error: 'void' cannot be used as a type for variable declaration", getLocation());
+        if (realType.isVoid())
+            throw new ContextualError("Error: 'void' cannot be used as a type for variable declaration", getLocation());
 
         VariableDefinition varDef = new VariableDefinition(realType, varName.getLocation());
         varName.setDefinition(varDef);
         try {
             localEnv.declare(varName.getName(), varDef);
         } catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Error: Multiple declaration of " + varName.getName().toString() + ", first declaration at " + localEnv.get(varName.getName()).getLocation(), varName.getLocation());
+            throw new ContextualError("Error: Multiple declaration of " + varName.getName().toString()
+                    + ", first declaration at " + localEnv.get(varName.getName()).getLocation(), varName.getLocation());
         }
-        
+
         initialization.verifyInitialization(compiler, realType, localEnv, currentClass);
     }
 
@@ -66,24 +68,28 @@ public class DeclVar extends AbstractDeclVar {
         initialization.codeGenInitialization(compiler, adresse);
     }
 
-    
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         type.iter(f);
         varName.iter(f);
         initialization.iter(f);
     }
-    
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenByteDeclVar(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteDeclVar'");
     }
 }

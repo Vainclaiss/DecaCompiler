@@ -28,8 +28,7 @@ public class Equals extends AbstractOpExactCmp {
         Register.setRegistreLibre(indexR, true);
         if (branchIfTrue) {
             compiler.addInstruction(new BEQ(e));
-        }
-        else {
+        } else {
             compiler.addInstruction(new BNE(e));
         }
     }
@@ -40,9 +39,9 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenByteBool(MethodVisitor mv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
-    }    
-    
+    }
+
 }

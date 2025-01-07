@@ -44,7 +44,7 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+
         setType(compiler.environmentType.FLOAT);
         return compiler.environmentType.FLOAT;
     }
@@ -86,7 +86,7 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenBytePrint(MethodVisitor mv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
