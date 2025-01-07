@@ -10,6 +10,9 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
+import fr.ensimag.deca.syntax.DecaLexer;
+import fr.ensimag.ima.pseudocode.Label;
+
 /**
  * Main class for the command-line Deca compiler.
  *
@@ -49,9 +52,8 @@ public class DecacMain {
         boolean error = false;
         for (File source : options.getSourceFiles()) {
             DecacCompiler compiler = new DecacCompiler(options, source);
-            if (compiler.compile()) {
-                error = true;
-            }
+            Label.resetSuffixId();
+            error = compiler.compile();
         }
         return error;
     }

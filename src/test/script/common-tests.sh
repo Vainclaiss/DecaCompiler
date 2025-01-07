@@ -28,6 +28,8 @@ mkdir "$tmpdir" || die "Impossible de créer le répertoire de test"
     echo '{println(}' >source/syntax-ko.deca
     echo '{println(x);}' >source/syntax-ok-verif-ko.deca
     echo '{println("Hello");}' >source/hello.deca
+
+
     decac -p source/hello.deca >hello-p.deca || die "Échec de la compilation d'un programme Deca simple avec -p"
     [ -s hello-p.deca ] || die "decac -p n'a pas généré de sortie sur un programme Deca simple"
     decac -p hello-p.deca >/dev/null || die "decac -p a produit une sortie qui n'est pas un programme Deca valide"

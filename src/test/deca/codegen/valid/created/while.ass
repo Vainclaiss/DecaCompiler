@@ -2,11 +2,11 @@
 ; Main program
 	ADDSP #0
 ; Beginning of main instructions:
-while_debut.22:
+while_debut.19:
 	LOAD #1, R1
 	WINT
 	WNL
-while_cond.21:
+while_cond.18:
 	WSTR "ok"
 	WNL
 	HALT

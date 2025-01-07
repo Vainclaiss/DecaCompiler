@@ -186,6 +186,7 @@ public class DecacCompiler {
         }
         if (compilerOptions.getStopAfterParse()) {
             LOG.info("Stopped after parsing");
+            prog.decompile(out);
             return false;
         }
         assert (prog.checkAllLocations());

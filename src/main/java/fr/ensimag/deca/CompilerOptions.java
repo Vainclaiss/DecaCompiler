@@ -73,6 +73,8 @@ public class CompilerOptions {
 
     public void parseArgs(String[] args) throws CLIException {
         Logger logger = Logger.getRootLogger();
+        Set<String> options = new HashSet<>(Arrays.asList(args));
+        debugValue = Collections.frequency(Arrays.asList(args), "-d");
         // map command-line debug option to log4j's level.
         switch (getDebugValue()) {
             case QUIET:
@@ -102,10 +104,8 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        Set<String> options = new HashSet<>(Arrays.asList(args));
-
         // TODO : finir les arguments pour decac
-        if (options.contains("-n") || options.contains("-w") || options.contains("-d") || options.contains("-a")) {
+        if (options.contains("-n") || options.contains("-w") || options.contains("-a")) {
             throw new NotImplementedException("Argument not yet implemented");
         }
 
