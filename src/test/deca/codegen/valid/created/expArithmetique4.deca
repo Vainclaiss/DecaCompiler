@@ -1,5 +1,5 @@
 // Description:
-//    test des expressions arithmetiques quand tous les registres sont utilisés 
+//    test des expressions arithmetiques sur UnaryMinus
 // Resultats:
 //    -6
 

@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.execerrors.ExecError;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -12,11 +13,18 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -44,10 +52,16 @@ public class DecacCompiler {
      */
     private static final String nl = System.getProperty("line.separator", "\n");
 
+    private Set<ExecError> execErrors = new HashSet<ExecError>();
+
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+    }
+
+    public void addExecError(ExecError error) {
+        execErrors.add(error);
     }
 
     /**
@@ -111,6 +125,26 @@ public class DecacCompiler {
      */
     public String displayIMAProgram() {
         return program.display();
+    }
+
+    /**
+     * Generate the code to handle error in the program
+     * @param error
+     */
+    public void genCodeExecError(ExecError error) {
+        addLabel(error.getLabel());
+        addInstruction(new WSTR(error.getErrorMsg()));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+    }
+
+    /**
+     * Generate the code to handle all the execution errors of the program 
+     */
+    public void genCodeAllExecErrors() {
+        for (ExecError error : execErrors) {
+            genCodeExecError(error);
+        }
     }
 
     private final CompilerOptions compilerOptions;
@@ -200,6 +234,7 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+        genCodeAllExecErrors();     // genere le code de toutes les erreurs d'exécution à la fin du programme
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

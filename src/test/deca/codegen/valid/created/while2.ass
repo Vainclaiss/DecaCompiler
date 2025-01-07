@@ -4,14 +4,15 @@
 	LOAD #5, R2
 	STORE R2, 1(GB)
 ; Beginning of main instructions:
-while_debut.20:
+	BRA while_cond.0
+while_debut.1:
 	LOAD 1(GB), R2
 	SUB #1, R2
 	STORE R2, 1(GB)
-while_cond.19:
+while_cond.0:
 	LOAD 1(GB), R2
 	CMP #0, R2
-	BGT while_debut.20
+	BGT while_debut.1
 	WSTR "ok"
 	WNL
 	HALT
