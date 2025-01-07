@@ -75,9 +75,9 @@ public class DecacMain {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                e.printStackTrace();
+                LOG.error("Thread interrupted", e);
             } catch (ExecutionException e) {
-                e.printStackTrace();
+                LOG.error("Error during parallel compilation", e);
             }
         }
         return error;

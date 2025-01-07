@@ -2,15 +2,15 @@
 ; Main program
 	ADDSP #0
 ; Beginning of main instructions:
-	LOAD #1, R3
-	CMP #1, R3
-	BNE else.13
+	LOAD #1, R2
+	CMP #1, R2
+	BNE else.1
 	WSTR "ok"
 	WNL
-	BRA fin_if.11
-else.13:
+	BRA fin_if.0
+else.1:
 	WSTR "ERRONE"
 	WNL
-fin_if.11:
+fin_if.0:
 	HALT
 ; end main program

@@ -2,13 +2,13 @@
 ; Main program
 	ADDSP #0
 ; Beginning of main instructions:
-	BRA else.10
+	BRA else.1
 	WSTR "ERRONE"
 	WNL
-	BRA fin_if.9
-else.10:
+	BRA fin_if.0
+else.1:
 	WSTR "ok"
 	WNL
-fin_if.9:
+fin_if.0:
 	HALT
 ; end main program
