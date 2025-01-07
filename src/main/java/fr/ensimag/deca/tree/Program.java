@@ -5,26 +5,25 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.TraceClassVisitor;
 
 
-/**
- * Deca complete program (class definition plus main block)
- *
- * @author gl01
- * @date 01/01/2025
- */
+
 public class Program extends AbstractProgram {
     private static final Logger LOG = Logger.getLogger(Program.class);
+
+    private ListDeclClass classes;
+    private AbstractMain main;
 
     public Program(ListDeclClass classes, AbstractMain main) {
         Validate.notNull(classes);
@@ -41,102 +40,110 @@ public class Program extends AbstractProgram {
         return main;
     }
 
-    private ListDeclClass classes;
-    private AbstractMain main;
-
-    /*
-     * Correspond au verifyProgram de la passe 3 (car pas de valeur renvoyée /
-     * synthétisée)
-     */
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        // Rien a verifier, voir règle (3.1)
-
-        // Directement la passe 3 pour l'instant
+        // For now, we just call verifyListClassBody + verifyMain
         this.getClasses().verifyListClassBody(compiler);
         this.getMain().verifyMain(compiler);
         LOG.debug("verify program: end");
     }
 
-
-
-    /**
-     * New method: Java bytecode generation using ASM.
-     * Produces a "Main.class" file with:
-     *   public static void main(String[] args) { ... }
-     * inside it, by calling main.codeGenMainBytecode(...).
-     */
-
-     // UNE ENTREE NECESSAIRE POUR LA GENERATION BYTECODE
-     // ICI on a imperativement besoin du main -- JVM en a besoin.
     public void codeGenByteProgram(DecacCompiler compiler) {
+        try (FileOutputStream textFileOut = new FileOutputStream("MainBytecode.txt");
+             PrintWriter textPrintWriter = new PrintWriter(textFileOut, true))
+        {
+          
+            ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 
+          
+            TraceClassVisitor tcv = new TraceClassVisitor(cw, textPrintWriter);
 
-        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+            
+            tcv.visit(
+                Opcodes.V17,                // Java 17
+                Opcodes.ACC_PUBLIC,         // public class
+                "Main",                     // internal class name
+                null,                       // signature (no generics)
+                "java/lang/Object",         // superclass: Object
+                null                        // interfaces: none
+            );
 
-       // on definit ici les métadonnées de la classe
-        cw.visit(
-            Opcodes.V17, // JAVA 17            
-            Opcodes.ACC_PUBLIC,    // PUBLIC      
-            "Main",       // class main              
-            null,                     
-            "java/lang/Object",         
-            null                       
-        );
+            // 4) Constructor: public Main() { super(); }
+            MethodVisitor ctor = tcv.visitMethod(
+                Opcodes.ACC_PUBLIC,
+                "<init>",
+                "()V",
+                null,
+                null
+            );
+            ctor.visitCode();
+            ctor.visitVarInsn(Opcodes.ALOAD, 0); // "this"
+            ctor.visitMethodInsn(
+                Opcodes.INVOKESPECIAL,
+                "java/lang/Object",
+                "<init>",
+                "()V",
+                false
+            );
+            ctor.visitInsn(Opcodes.RETURN);
+            ctor.visitMaxs(1, 1);
+            ctor.visitEnd();
 
-        MethodVisitor ctor = cw.visitMethod( // on est en train de créer un methodvisitor different pour chaque "methode"
-            Opcodes.ACC_PUBLIC, 
-            "<init>", // constructeur
-            "()V",  // prend rien retoruen rien
-            null, 
-            null
-        );
-        ctor.visitCode();
-        // this.super();
-        ctor.visitVarInsn(Opcodes.ALOAD, 0); // on load la variable local
-        ctor.visitMethodInsn(
-            Opcodes.INVOKESPECIAL, // on invoke le constructeur
-            "java/lang/Object", // classe objet
-            "<init>", // le constructeur qu'on appelle
-            "()V", 
-            false
-        );
-        ctor.visitInsn(Opcodes.RETURN); // return void
-        ctor.visitMaxs(1, 1);
-        ctor.visitEnd();
+            // 5) Main method: public static void main(String[] args)
+            MethodVisitor mv = tcv.visitMethod(
+                Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC,
+                "main",
+                "([Ljava/lang/String;)V",
+                null,
+                null
+            );
+            mv.visitCode();
 
-        MethodVisitor mv = cw.visitMethod( 
-            Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, // public - static
-            "main",// fonction main
-            "([Ljava/lang/String;)V", // prend un array de string
-            null,
-            null
-        );
-        mv.visitCode(); // on declare qu'on va aller ddans le body de la méthode
+            // Example instructions: System.out.println("Hello, from ASM!");
+            mv.visitFieldInsn(
+                Opcodes.GETSTATIC,
+                "java/lang/System",
+                "out",
+                "Ljava/io/PrintStream;"
+            );
+            mv.visitLdcInsn("Hello");
+            mv.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(Ljava/lang/String;)V",
+                false
+            );
 
-        this.main.codeGenByteMain(mv); 
+           
+            mv.visitInsn(Opcodes.RETURN);
+            mv.visitMaxs(0, 0); //Pour le dynamique ASM
+            mv.visitEnd();
 
-        mv.visitInsn(Opcodes.RETURN);
+            // End the class
+            tcv.visitEnd();
 
-        mv.visitMaxs(0, 0); // ici le maxstack et maxlocal sont calculés dynamiquepent par la librairie
-        mv.visitEnd();
+            // 6) Changer to .byte
+            byte[] bytecode = cw.toByteArray();
 
-        cw.visitEnd();
+    
+            try (FileOutputStream fos = new FileOutputStream("Main.class")) {
+                fos.write(bytecode);
+                LOG.info("Successfully wrote Main.class");
+            }
 
-        byte[] b = cw.toByteArray();
-        try (FileOutputStream fos = new FileOutputStream("Main.class")) {
-            fos.write(b);
-            LOG.info("Main program");
+            LOG.info("MainBytecode.txt was created containing the textual ASM instructions.");
+            LOG.info("Main.class was created - you can run with 'java Main'.");
+
         } catch (IOException e) {
-            throw new RuntimeException("Failed to write Main.class", e);
+            throw new RuntimeException("Error writing bytecode output", e);
         }
     }
 
-
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
+
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
