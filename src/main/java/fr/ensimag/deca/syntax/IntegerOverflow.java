@@ -10,6 +10,6 @@ public class IntegerOverflow extends DecaRecognitionException{
 
     @Override
     public String getMessage() {
-        return "Error: the size of your integer is over 32 bits";
+        return "Error: Integer Overflow";
     }
 }
