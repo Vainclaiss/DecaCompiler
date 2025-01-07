@@ -44,10 +44,13 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     protected void codeGenListDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
         Register baseRegister = (currentClass==null) ? Register.GB : Register.LB;
+        
         int offset = 1;
         for (AbstractDeclVar declVar : getList()) {
             declVar.codeGenDeclVar(compiler, new RegisterOffset(offset++, baseRegister));
         }
+        
+        compiler.getStackOverflowCounter().addVariables(getList().size());
     }
 
 

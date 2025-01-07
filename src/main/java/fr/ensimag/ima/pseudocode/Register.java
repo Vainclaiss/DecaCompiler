@@ -26,7 +26,7 @@ public class Register extends DVal {
      * Max register number
      */
     // TODO : find a better way to retreive the number of register to use
-    public static final int RMAX = CompilerOptions.getNumRegisters() - 1;
+    public static int RMAX = 15;
     /**
      * Global Base register
      */

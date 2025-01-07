@@ -4,8 +4,8 @@
 //    ok
 
 {
-
-    if (2*0.5 <= 2) {
+    int a = 1;
+    if (a == 1.0) {
         print("ok") ;
     } else {
         print("ERRONE") ;

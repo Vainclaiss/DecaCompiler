@@ -13,6 +13,8 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import fr.ensimag.ima.pseudocode.Register;
+
 /**
  * User-specified options influencing the compilation.
  *
@@ -45,9 +47,9 @@ public class CompilerOptions {
         return arithmeticalPrecision;
     }
 
-    public static int getNumRegisters() {
-        return numRegisters;
-    }
+    // public static int getNumRegisters() {
+    //     return numRegisters;
+    // }
 
     public boolean getStopAfterParse() {
         return stopAfterParse;
@@ -63,7 +65,7 @@ public class CompilerOptions {
 
     private int debugValue = 0;
     private int arithmeticalPrecision = 2;
-    private static int numRegisters = 16; // TODO : chiant mais pratique le static
+    //private static int numRegisters = 16; // TODO : chiant mais pratique le static
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean skipExecErrors = false;
@@ -145,12 +147,12 @@ public class CompilerOptions {
         }
 
         try {
-            numRegisters = Integer.parseInt(args[rArgumentIndex + 1]);
+            Register.RMAX = Integer.parseInt(args[rArgumentIndex + 1])-1;
         } catch (NumberFormatException e) {
             throw new CLIException("The argument for -r must be an integer");
         }
 
-        if (numRegisters < 4 || numRegisters > 16) {
+        if (Register.RMAX < 3 || Register.RMAX > 15) {      // RMAX = nbRegisters-1
             throw new CLIException("Invalid number of registers (must be between 4 and 16)");
         }
     }
@@ -201,15 +203,26 @@ public class CompilerOptions {
     }
 
     protected void displayBanner() {
-        System.err.println("      /\\  ___  /\\             Équipe 1                    ");
-        System.err.println("     // \\/   \\/ \\\\              GL01                      ");
-        System.err.println("    ((    O O    ))                                         ");
-        System.err.println("     \\\\ /     \\ //           RABALLAND       Cyprien     ");
-        System.err.println("      \\/  | |  \\/            ROBOAM          Guillaume   ");
-        System.err.println("       |  | |  |             TALBI EL        Mehdi       ");
-        System.err.println("       |  | |  |             CHARLES-MENNIER Matéo       ");
-        System.err.println("       |   o   |             ALTIERI         Aubin       ");
-        System.err.println("       | |   | |                                            ");
-        System.err.println("       |m|   |m|                                            ");
+        System.err.println("                                _                       ");
+        System.err.println("                              .' `'.__                  ");
+        System.err.println("                             /      \\ `'\"-,             Équipe 1");
+        System.err.println("            .-''''--...__..-/ .     |      \\            GL01");
+        System.err.println("          .'               ; :'     '.  a   |           ");
+        System.err.println("         /                 | :.       \\     =\\          ROBOAM          Guillaume");
+        System.err.println("        ;                   \\':.      /  ,-.__;.-;`     TALBI           Mehdi");
+        System.err.println("       /|     .              '--._   /-.7`._..-;`       CHARLES-MENNIER Matéo");
+        System.err.println("      ; |       '                |`-'      \\  =|        ALTIERI         Aubin");
+        System.err.println("      |/\\        .   -' /     /  ;         |  =/        RABALLAND       Cyprien");
+        System.err.println("      (( ;.       ,_  .:|     | /     /\\   | =|         ");
+        System.err.println("       ) / `\\     | `\"\"`;     / |    | /   / =/         ");
+        System.err.println("         | ::|    |      \\    \\ \\    \\ `--' =/          ");
+        System.err.println("        /  '/\\    /       )    |/     `-...-`           ");
+        System.err.println("       /    | |  `\\    /-'    /;                        ");
+        System.err.println("       \\  ,,/ |    \\   D    .'  \\                       ");
+        System.err.println("        `\"\"`   \\  nnh  D_.-'L__nnh                      ");
+        System.err.println();
+        System.err.println("Art by Joan G. Stark");
     }
 }
+
+

@@ -74,6 +74,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             if (n == Register.RMAX) {
                 //sauvegarde de op1
                 compiler.addInstruction(new PUSH(Register.getR(n)));
+                compiler.getStackOverflowCounter().addTemporaryOnStack(1);
 
                 //calcul de op2 dans R0
                 getRightOperand().codeExp(compiler, n);
@@ -82,6 +83,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
                 //restoration de la valeur de op1 dans Rn
                 compiler.addInstruction(new POP(Register.getR(n)));
+                compiler.getStackOverflowCounter().addTemporaryOnStack(-1);
 
                 codeGenInst(compiler, Register.R0, Register.getR(n));
                 Register.setRegistreLibre(n, true);
