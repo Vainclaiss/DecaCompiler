@@ -67,7 +67,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         getLeftOperand().codeExp(compiler, n);
-        Register.setRegistreLibre(n, false);
         DVal dvalExp2 = getRightOperand().getDVal();
         
         if (dvalExp2 == null) {
@@ -78,7 +77,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
                 //calcul de op2 dans R0
                 getRightOperand().codeExp(compiler, n);
-                Register.setRegistreLibre(n, false);
                 compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
 
                 //restoration de la valeur de op1 dans Rn
@@ -86,14 +84,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.getStackOverflowCounter().addTemporaryOnStack(-1);
 
                 codeGenInst(compiler, Register.R0, Register.getR(n));
-                Register.setRegistreLibre(n, true);
             }
             else { 
                 getRightOperand().codeExp(compiler, n+1);
-                Register.setRegistreLibre(n+1, false);
                 
                 codeGenInst(compiler, Register.getR(n+1), Register.getR(n));
-                Register.setRegistreLibre(n+1, true);
             }
         }
         else {

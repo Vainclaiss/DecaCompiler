@@ -39,40 +39,12 @@ public class Register extends DVal {
      * Stack Pointer
      */
     public static final Register SP = new Register("SP");
-    /**
-     * To manage if a register can be use or not
-     */
-    private static final boolean[] registreLibre = new boolean[16];
+
     /**
      * General Purpose Registers. Array is private because Java arrays cannot be
      * made immutable, use getR(i) to access it.
      */
     private static final GPRegister[] R = initRegisters();
-
-    /**
-     * Return the index of a usable register >= 2
-     * Return -1 if there is no free registers
-     * 
-     * @return
-     */
-    public static int getIndexRegistreLibre() {
-        for (int i = 2; i < registreLibre.length; i++) {
-            if (registreLibre[i]) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * set the state of registreLibre[indexRegister at estLibre]
-     * 
-     * @param indexRegister
-     * @param estLibre
-     */
-    public static void setRegistreLibre(int indexRegister, boolean estLibre) {
-        registreLibre[indexRegister] = estLibre;
-    }
 
     /**
      * General Purpose Registers
@@ -94,7 +66,6 @@ public class Register extends DVal {
         GPRegister[] res = new GPRegister[16];
         for (int i = 0; i < 16; i++) {
             res[i] = new GPRegister("R" + i, i);
-            registreLibre[i] = true;
         }
         return res;
     }

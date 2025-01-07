@@ -31,8 +31,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        int indexR = Register.getIndexRegistreLibre();
-        codeExp(compiler, indexR);
+        codeExp(compiler, 2);
 
         Label printTrue = new Label("print_true");
         String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();

@@ -45,12 +45,9 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInitialization(DecacCompiler compiler, DAddr adresse) {
-        int indexR = Register.getIndexRegistreLibre();
-        Register.setRegistreLibre(indexR, false);
-        expression.codeExp(compiler, indexR);
+        expression.codeExp(compiler, 2);
 
-        compiler.addInstruction(new STORE(Register.getR(indexR), adresse));
-        Register.setRegistreLibre(indexR, true);
+        compiler.addInstruction(new STORE(Register.getR(2), adresse));
     }
 
     @Override
