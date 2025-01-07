@@ -82,14 +82,10 @@ public class StringLiteral extends AbstractStringLiteral {
         return "StringLiteral (" + value + ")";
     }
 
-    @Override
-    protected void codeGenBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
-    }
+
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenBytePrint(MethodVisitor mv) {
         mv.visitLdcInsn(value); 
         mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
         mv.visitInsn(Opcodes.SWAP);

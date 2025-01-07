@@ -9,6 +9,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+
 /**
  * 
  * @author gl01
@@ -41,6 +43,12 @@ public class NoOperation extends AbstractInst {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
     }
 
 }

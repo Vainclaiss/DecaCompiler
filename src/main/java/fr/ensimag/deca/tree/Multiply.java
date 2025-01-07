@@ -25,11 +25,11 @@ public class Multiply extends AbstractOpArith {
 
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenByteInst(MethodVisitor mv) {
 
-        getLeftOperand().codeGenBytecode(mv);
+        getLeftOperand().codeGenByteInst(mv);
 
-        getRightOperand().codeGenBytecode(mv);
+        getRightOperand().codeGenByteInst(mv);
 
        
         if (getType().isFloat()) {
@@ -46,10 +46,6 @@ public class Multiply extends AbstractOpArith {
         return "*";
     }
 
-    @Override
-    protected void codeGenBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
-    }
+
 
 }

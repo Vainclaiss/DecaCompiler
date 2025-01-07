@@ -10,6 +10,8 @@ import fr.ensimag.ima.pseudocode.DAddr;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+
 /**
  * Absence of initialization (e.g. "int x;" as opposed to "int x =
  * 42;").
@@ -52,6 +54,12 @@ public class NoInitialization extends AbstractInitialization {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    protected void codeGenByteInitialization(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInitialization'");
     }
 
 }
