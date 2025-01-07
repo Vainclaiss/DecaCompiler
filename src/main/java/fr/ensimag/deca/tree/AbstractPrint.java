@@ -9,6 +9,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import org.objectweb.asm.MethodVisitor;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -56,6 +58,14 @@ public abstract class AbstractPrint extends AbstractInst {
             a.codeGenPrint(compiler);
         }
     }
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+    for (AbstractExpr arg : getArguments().getList()) {
+
+        arg.codeGenBytecode(mv); // chaque argument appel codegenbytecode
+    }
+}
+
 
     private boolean getPrintHex() {
         return printHex;

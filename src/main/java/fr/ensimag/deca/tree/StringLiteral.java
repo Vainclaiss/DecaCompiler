@@ -11,6 +11,9 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -47,6 +50,8 @@ public class StringLiteral extends AbstractStringLiteral {
         compiler.addInstruction(new WSTR(new ImmediateString(value)));
     }
 
+
+
     @Override
     protected DVal getDVal() {
         throw new UnsupportedOperationException("not yet implemented");
@@ -76,5 +81,23 @@ public class StringLiteral extends AbstractStringLiteral {
     String prettyPrintNode() {
         return "StringLiteral (" + value + ")";
     }
+
+    @Override
+    protected void codeGenBool(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
+    }
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+        mv.visitLdcInsn(value); 
+        mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitInsn(Opcodes.SWAP);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V", false);
+    }
+
+
+
+
 
 }

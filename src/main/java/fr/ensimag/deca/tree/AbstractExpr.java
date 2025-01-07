@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
+import org.objectweb.asm.MethodVisitor;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -69,6 +70,8 @@ public abstract class AbstractExpr extends AbstractInst {
     public abstract Type verifyExpr(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
+
+    protected abstract void codeGenBytecode(MethodVisitor mv);
 
     /**
      * Verify the expression in right hand-side of (implicit) assignments

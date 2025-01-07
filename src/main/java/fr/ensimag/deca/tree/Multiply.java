@@ -5,6 +5,9 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 
 /**
  * @author gl01
@@ -20,9 +23,33 @@ public class Multiply extends AbstractOpArith {
         compiler.addInstruction(new MUL(op1, r));
     }
 
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+
+        getLeftOperand().codeGenBytecode(mv);
+
+        getRightOperand().codeGenBytecode(mv);
+
+       
+        if (getType().isFloat()) {
+            mv.visitInsn(Opcodes.FMUL); 
+        } else if (getType().isInt()) {
+            mv.visitInsn(Opcodes.IMUL); 
+        }
+    }
+
+
+
     @Override
     protected String getOperatorName() {
         return "*";
+    }
+
+    @Override
+    protected void codeGenBool(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
     }
 
 }
