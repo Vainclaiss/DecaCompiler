@@ -4,6 +4,9 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.REM;
+
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -23,6 +26,10 @@ public class Modulo extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
         compiler.addInstruction(new REM(op1, r));
+    }
+    @Override
+    protected void codeGenByteInst(MethodVisitor methodVisitor){
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

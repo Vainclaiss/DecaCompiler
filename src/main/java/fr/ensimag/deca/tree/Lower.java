@@ -37,16 +37,7 @@ public class Lower extends AbstractOpIneq {
         return "<";
     }
 
-    @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
-    }
 
-    @Override
-    protected void codeGenBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
-    }
+
 
 }

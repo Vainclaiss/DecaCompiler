@@ -11,6 +11,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
 
 public class Return extends AbstractInst{
     private AbstractExpr argument;
@@ -50,6 +51,12 @@ public class Return extends AbstractInst{
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         argument.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
     }
 
 }

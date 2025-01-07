@@ -94,9 +94,10 @@ public class Main extends AbstractMain {
         insts.prettyPrint(s, prefix, true);
     }
 
+
     @Override
-    protected void codeGenMainBytecode(MethodVisitor mv) {
+    protected void codeGenByteMain(MethodVisitor mv) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenMainBytecode'");
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteMain'");
     }
 }

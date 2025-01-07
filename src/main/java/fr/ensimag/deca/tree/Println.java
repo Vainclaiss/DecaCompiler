@@ -28,8 +28,8 @@ public class Println extends AbstractPrint {
 
 
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
-        super.codeGenBytecode(mv);
+    protected void codeGenByteInst(MethodVisitor mv) {
+        super.codeGenByteInst(mv);
 
         mv.visitFieldInsn(
             Opcodes.GETSTATIC, // la fonction est statique
