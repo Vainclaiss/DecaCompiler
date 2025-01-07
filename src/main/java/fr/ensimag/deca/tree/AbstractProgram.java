@@ -18,6 +18,6 @@ public abstract class AbstractProgram extends Tree {
 
     public abstract void codeGenProgram(DecacCompiler compiler);
 
-    public abstract void codeGenByteProgram(MethodVisitor mv);
+    public abstract void codeGenByteProgram(DecacCompiler compiler);
 
 }

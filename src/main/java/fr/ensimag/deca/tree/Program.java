@@ -70,7 +70,7 @@ public class Program extends AbstractProgram {
 
      // UNE ENTREE NECESSAIRE POUR LA GENERATION BYTECODE
      // ICI on a imperativement besoin du main -- JVM en a besoin.
-    public void codeGenBytecode(DecacCompiler compiler) {
+    public void codeGenByteProgram(DecacCompiler compiler) {
 
 
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -115,7 +115,7 @@ public class Program extends AbstractProgram {
         );
         mv.visitCode(); // on declare qu'on va aller ddans le body de la méthode
 
-        this.main.codeGenMainBytecode(mv); 
+        this.main.codeGenByteMain(mv); 
 
         mv.visitInsn(Opcodes.RETURN);
 
