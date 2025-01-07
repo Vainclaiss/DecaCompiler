@@ -396,6 +396,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -431,12 +432,26 @@ type returns[AbstractIdentifier tree]
 
 literal returns[AbstractExpr tree]
     : INT {
-            $tree = new IntLiteral(Integer.parseInt($INT.text));
-            setLocation($tree,$INT);
+            try{
+                $tree = new IntLiteral(Integer.parseInt($INT.text));
+                setLocation($tree,$INT);
+            }
+            catch(NumberFormatException e){
+                throw new IntegerOverflow(this,$ctx);
+            }
         }
     | fd=FLOAT {
-            $tree = new FloatLiteral(Float.parseFloat($fd.text));
-            setLocation($tree,$fd);
+            try {
+                float temp = Float.parseFloat($fd.text);
+                $tree = new FloatLiteral(temp);
+                if((Double.compare(-0.0f,temp)==0 || Double.compare(+0.0f,temp)==0) && temp != 0.0){
+                    throw new FloatUnderflow(this,$ctx);
+                }
+                setLocation($tree,$fd);
+            }
+            catch(IllegalArgumentException e){
+                throw new FloatOverflow(this,$ctx);
+            }
         }
     | STRING {
             $tree = new StringLiteral($STRING.text.substring(1,$STRING.text.length()-1).replace("\\\\","\\").replace("\\\"","\""));
