@@ -56,8 +56,7 @@ public abstract class AbstractPrint extends AbstractInst {
             for (AbstractExpr a : getArguments().getList()) {
                 a.codeGenPrintHex(compiler);
             }
-        }
-        else {
+        } else {
             for (AbstractExpr a : getArguments().getList()) {
                 a.codeGenPrint(compiler);
             }
@@ -70,7 +69,11 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for (AbstractExpr a : arguments.getList()) {
+            s.print("print" + getSuffix() + (printHex ? "x" : "") + "(");
+            a.decompile(s);
+            s.println(");");
+        }
     }
 
     @Override

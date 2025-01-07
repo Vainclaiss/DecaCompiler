@@ -9,3 +9,5 @@
 .metadata
 .settings
 .antlr
+.vscode
+*.ass

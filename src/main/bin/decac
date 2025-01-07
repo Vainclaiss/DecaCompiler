@@ -9,4 +9,3 @@ CP="$DECAC_HOME"/target/classes/:$(cat "$CP_FILE")
 #echo "$0" "$@" >> /tmp/decac.txt
 
 exec java -enableassertions -cp "$CP" fr.ensimag.deca.DecacMain "$@"
-

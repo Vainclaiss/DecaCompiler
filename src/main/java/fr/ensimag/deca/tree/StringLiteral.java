@@ -53,13 +53,13 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
-    protected void codeExp(DecacCompiler compiler,int n) {
+    protected void codeExp(DecacCompiler compiler, int n) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("\"" + getValue() + "\"");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class StringLiteral extends AbstractStringLiteral {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
-    
+
     @Override
     String prettyPrintNode() {
         return "StringLiteral (" + value + ")";

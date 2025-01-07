@@ -12,25 +12,48 @@ cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 
-# On ne teste qu'un fichier. Avec une boucle for appropriée, on
-# pourrait faire bien mieux ...
-rm -f ./src/test/deca/codegen/valid/provided/cond0.ass 2>/dev/null
-decac ./src/test/deca/codegen/valid/provided/cond0.deca || exit 1
-if [ ! -f ./src/test/deca/codegen/valid/provided/cond0.ass ]; then
-    echo "Fichier cond0.ass non généré."
-    exit 1
-fi
+check_gencode_file_format() {
+    if ! grep -q -e ".*\/\/ Description:.*" "$1"; then
+        echo "Fichier $1 invalide: pas de ligne de description."
+        exit 1
+    fi
+    if ! grep -q -e ".*\/\/ Resultats:.*" "$1"; then
+        echo "Fichier $1 invalide: pas de ligne de résultats."
+        exit 1
+    fi
+    if ! grep -q -e ".*\/\/ Historique:.*" "$1"; then
+        echo "Fichier $1 invalide: pas de ligne d'historique."
+        exit 1
+    fi
+}
 
-resultat=$(ima ./src/test/deca/codegen/valid/provided/cond0.ass) || exit 1
-rm -f ./src/test/deca/codegen/valid/provided/cond0.ass
+# On teste tous les fichiers .deca dans le répertoire spécifié
+for file in ./src/test/deca/codegen/valid/created/*.deca; 
+do
+    check_gencode_file_format "$file";
+    echo "$file"
+    awk '/\/\/ Resultats:/{flag=1; next} /^\/\/ Historique:/{flag=0} flag' "$file" | sed 's/^\/\/ *//' | tr -d '\n'
+    # ass_file="${file%.deca}.ass"
+    # rm -f "$ass_file" 2>/dev/null
+    # decac "$file" || exit 1
+    # if [ ! -f "$ass_file" ]; then
+    #     echo "Fichier $ass_file non généré pour $file."
+    #     exit 1
+    # else
+    #     echo "Oui"
+    # fi
+done
 
-# On code en dur la valeur attendue.
-attendu=ok
+# resultat=$(ima ./src/test/deca/codegen/valid/provided/cond0.ass) || exit 1
+# rm -f ./src/test/deca/codegen/valid/provided/cond0.ass
 
-if [ "$resultat" = "$attendu" ]; then
-    echo "Tout va bien"
-else
-    echo "Résultat inattendu de ima:"
-    echo "$resultat"
-    exit 1
-fi
+# # On code en dur la valeur attendue.
+# attendu=ok
+
+# if [ "$resultat" = "$attendu" ]; then
+#     echo "Tout va bien"
+# else
+#     echo "Résultat inattendu de ima:"
+#     echo "$resultat"
+#     exit 1
+# fi

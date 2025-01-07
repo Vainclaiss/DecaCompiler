@@ -48,6 +48,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.environmentType = new EnvironmentType(this);
     }
 
     /**
@@ -122,10 +123,10 @@ public class DecacCompiler {
 
     /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
-    public final EnvironmentType environmentType = new EnvironmentType(this);
+    public final EnvironmentType environmentType;
 
     public Symbol createSymbol(String name) {
-         return symbolTable.create(name);
+        return symbolTable.create(name);
     }
 
     /**
@@ -184,11 +185,20 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+        if (compilerOptions.getStopAfterParse()) {
+            LOG.info("Stopped after parsing");
+            prog.decompile(out);
+            return false;
+        }
+        assert (prog.checkAllLocations());
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        assert (prog.checkAllDecorations());
 
+        if (compilerOptions.getStopAfterVerification()) {
+            LOG.info("Stopped after verification");
+            return false;
+        }
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");

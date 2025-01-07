@@ -39,7 +39,7 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        
+
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
     }
 
@@ -48,21 +48,18 @@ public class Initialization extends AbstractInitialization {
         int indexR = Register.getIndexRegistreLibre();
         Register.setRegistreLibre(indexR, false);
         expression.codeExp(compiler, indexR);
-        
+
         compiler.addInstruction(new STORE(Register.getR(indexR), adresse));
         Register.setRegistreLibre(indexR, true);
     }
 
-
-
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" = " + expression.decompile());
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         expression.iter(f);
     }
 
