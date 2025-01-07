@@ -15,86 +15,92 @@
         <jacoco.report_dir>${project.build.directory}/site/jacoco</jacoco.report_dir>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <!-- ANTLR: runtime library -->
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>4.13.2</version>
-        </dependency>
+<dependencies>
+    <!-- ANTLR: runtime library -->
+    <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>4.13.2</version>
+    </dependency>
 
-        <dependency>
-            <!-- log4j: logging API for Java -->
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+    <!-- log4j: logging API for Java -->
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.17</version>
+    </dependency>
 
-        <dependency>
-            <!-- We use the class Validate, to check preconditions -->
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
+    <!-- We use the class Validate, to check preconditions -->
+    <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.11.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.11.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.11.3</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>5.11.3</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>5.11.3</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.11.3</version>
+        <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <!-- Mockito: mock framework -->
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.14.2</version>
-        </dependency>
+    <!-- Mockito: mock framework -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.14.2</version>
+    </dependency>
 
-        <dependency>
-            <!-- JaCoCo agent for code coverage -->
-            <groupId>org.jacoco</groupId>
-            <artifactId>org.jacoco.agent</artifactId>
-            <classifier>runtime</classifier>
-            <version>0.8.12</version>
-            <scope>test</scope>
-        </dependency>        
+    <!-- JaCoCo agent for code coverage -->
+    <dependency>
+        <groupId>org.jacoco</groupId>
+        <artifactId>org.jacoco.agent</artifactId>
+        <classifier>runtime</classifier>
+        <version>0.8.12</version>
+        <scope>test</scope>
+    </dependency>        
 
-        <dependency>
-            <!-- Clojure, only if you truly need it -->
-            <groupId>org.clojure</groupId>
-            <artifactId>clojure</artifactId>
-            <version>1.10.1</version>
-        </dependency>
+    <!-- Clojure, only if you truly need it -->
+    <dependency>
+        <groupId>org.clojure</groupId>
+        <artifactId>clojure</artifactId>
+        <version>1.10.1</version>
+    </dependency>
 
-        <dependency>
-            <!-- ASM: main library for bytecode manipulation -->
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>9.5</version>
-        </dependency>
+    <!-- ASM: main library for bytecode manipulation -->
+    <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>9.5</version>
+    </dependency>
 
-        <dependency>
-            <!-- ByteBuddy (optional). 
-                 Provides a higher-level API and repackaged ASM. -->
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>1.14.7</version>
-        </dependency>
+    <!-- ASM utilities (TraceClassVisitor, etc.) -->
+    <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm-util</artifactId>
+        <version>9.5</version>
+    </dependency>
 
-    </dependencies>
+    <!-- ByteBuddy (optional) -->
+    <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy</artifactId>
+        <version>1.14.7</version>
+    </dependency>
+</dependencies>
+
 
     <build>
         <plugins>
