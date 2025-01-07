@@ -288,7 +288,7 @@ public abstract class Tree {
      * @return Decompilation, or the empty string.
      */
     protected String decompileIfDebug(DecacCompiler compiler) {
-        if (compiler.getCompilerOptions().getDebug() > 1) {
+        if (compiler.getCompilerOptions().getDebugValue() > 1) {
             return decompile();
         } else {
             return "";
