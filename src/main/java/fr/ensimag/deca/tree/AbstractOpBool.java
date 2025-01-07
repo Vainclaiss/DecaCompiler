@@ -6,6 +6,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import org.objectweb.asm.MethodVisitor;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -38,6 +39,11 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         compiler.addInstruction(new WSTR("true"));
 
         compiler.addLabel(finPrint);
+    }
+
+      @Override
+    protected void codeGenBytePrint(MethodVisitor mv){
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

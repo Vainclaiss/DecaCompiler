@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
@@ -35,6 +37,12 @@ public class Equals extends AbstractOpExactCmp {
     @Override
     protected String getOperatorName() {
         return "==";
+    }
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }    
     
 }

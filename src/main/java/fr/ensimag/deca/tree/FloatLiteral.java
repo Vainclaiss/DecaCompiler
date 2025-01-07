@@ -15,6 +15,7 @@ import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * Single precision, floating-point literal
@@ -82,6 +83,12 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
 
 }

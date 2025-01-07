@@ -17,6 +17,8 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+
 /**
  *
  * @author gl01
@@ -85,5 +87,12 @@ public class BooleanLiteral extends AbstractExpr {
     String prettyPrintNode() {
         return "BooleanLiteral (" + value + ")";
     }
+
+    @Override
+    protected void codeGenBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
+    }
+
 
 }

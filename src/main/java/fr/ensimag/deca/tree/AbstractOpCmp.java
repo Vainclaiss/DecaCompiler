@@ -13,6 +13,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import org.objectweb.asm.MethodVisitor;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -50,6 +51,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
+    protected void codeGenBytePrint(MethodVisitor mv){
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
         if ((type1.isInt() || type1.isFloat()) && (type2.isInt() || type2.isFloat())) {
             return compiler.environmentType.BOOLEAN;
@@ -62,6 +68,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
         compiler.addInstruction(new CMP(op1, r));
+    }
+
+    @Override 
+    protected void codeGenByteInst(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     // @Override

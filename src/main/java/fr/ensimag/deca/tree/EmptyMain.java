@@ -5,6 +5,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+
 /**
  * Empty main Deca program
  *
@@ -44,4 +46,11 @@ public class EmptyMain extends AbstractMain {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
+
+    @Override
+    protected void codeGenMainBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenMainBytecode'");
+    }
+
 }

@@ -11,6 +11,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * Unary expression.
@@ -38,6 +39,11 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         //on la met dans R1 pour l'afficher
         compiler.addInstruction(new LOAD(Register.getR(indexR), Register.R1));
         Register.setRegistreLibre(indexR, true);
+    }
+
+    @Override
+    protected void codeGenBytePrint(MethodVisitor mv){
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     protected Type getTypeUnaryOp(DecacCompiler compiler, Type type) throws ContextualError {
