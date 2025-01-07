@@ -2,6 +2,7 @@
 ; Main program
 	ADDSP #0
 ; Beginning of main instructions:
+	BRA while_cond.0
 while_debut.1:
 	LOAD #1, R1
 	WINT

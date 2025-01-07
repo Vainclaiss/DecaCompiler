@@ -37,8 +37,8 @@ public class CompilerOptions {
         return printBanner;
     }
 
-    public boolean getSkipDecaCompilationErrors() {
-        return skipDecaCompilationErrors;
+    public boolean getSkipExecErrors() {
+        return skipExecErrors;
     }
 
     public int getArithmeticalPrecision() {
@@ -66,7 +66,7 @@ public class CompilerOptions {
     private static int numRegisters = 16; // TODO : chiant mais pratique le static
     private boolean parallel = false;
     private boolean printBanner = false;
-    private boolean skipDecaCompilationErrors = false;
+    private boolean skipExecErrors = false;
     private boolean stopAfterParse = false;
     private boolean stopAfterVerification = false;
     private List<File> sourceFiles = new ArrayList<>();
@@ -105,7 +105,7 @@ public class CompilerOptions {
         }
 
         // TODO : finir les arguments pour decac
-        if (options.contains("-n") || options.contains("-w") || options.contains("-a")) {
+        if (options.contains("-w") || options.contains("-d") || options.contains("-a")) {
             throw new NotImplementedException("Argument not yet implemented");
         }
 
@@ -125,7 +125,7 @@ public class CompilerOptions {
 
         parallel = options.contains("-P");
         printBanner = options.contains("-b");
-        skipDecaCompilationErrors = options.contains("-n");
+        skipExecErrors = options.contains("-n");
         stopAfterParse = options.contains("-p");
         stopAfterVerification = options.contains("-v");
 

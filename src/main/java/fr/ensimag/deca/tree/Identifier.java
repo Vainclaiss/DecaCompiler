@@ -18,6 +18,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
@@ -225,6 +226,23 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+        /**
+     * Generate code to print the expression
+     *
+     * @param compiler
+     */
+    @Override
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        Type type = getType();
+        if (type.isFloat()) {
+            compiler.addInstruction(new WFLOATX());
+        }
+        else {
+            codeGenPrint(compiler);
+        }
+    }
+    
+    
     private Definition definition;
 
     @Override
