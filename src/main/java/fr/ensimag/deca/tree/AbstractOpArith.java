@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
+import org.objectweb.asm.MethodVisitor;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -44,6 +45,11 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         } else {
             throw new IllegalAccessError("Arithmetic expression must have int or float type");
         }
+    }
+
+    @Override
+    protected void codeGenBytePrint(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

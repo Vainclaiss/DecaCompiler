@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 
@@ -16,6 +18,6 @@ public abstract class AbstractProgram extends Tree {
 
     public abstract void codeGenProgram(DecacCompiler compiler);
 
-    public abstract void codeGenByteProgram(DecacCompiler compiler);
+    public abstract void codeGenByteProgram(MethodVisitor mv);
 
 }

@@ -59,7 +59,7 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
     @Override
-    protected void codeGenBytecode(MethodVisitor mv) {
+    protected void codeGenByteInst(MethodVisitor mv) {
     for (AbstractExpr arg : getArguments().getList()) {
 
         arg.codeGenBytecode(mv); // chaque argument appel codegenbytecode

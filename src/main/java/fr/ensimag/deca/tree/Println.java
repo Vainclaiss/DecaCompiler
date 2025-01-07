@@ -55,9 +55,5 @@ public class Println extends AbstractPrint {
         return "ln";
     }
 
-    @Override
-    protected void codeGenBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBool'");
-    }
+
 }
