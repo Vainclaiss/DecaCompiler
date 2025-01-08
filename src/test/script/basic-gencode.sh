@@ -38,7 +38,7 @@ check_compilation() {
 check_result() {
     ass_file="${1%.deca}.ass"
     awk '/\/\/ Resultats:/{flag=1; next} /^$/{flag=0} flag' "$1" | sed 's/^\s*//' | sed 's/\/\///' >"${1%.deca}.expected"
-    ima "$ass_file" > "${1%.deca}.res"
+    ./global/bin/ima "$ass_file" > "${1%.deca}.res"
 
     if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
         failure "Incorrect result for $1."
