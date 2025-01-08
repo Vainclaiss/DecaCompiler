@@ -24,7 +24,8 @@ public class DeclClass extends AbstractDeclClass {
     final private ListDeclField declFields;
     final private ListDeclMethod declMethods;
 
-    public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField declFields, ListDeclMethod declMethods) {
+    public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField declFields,
+            ListDeclMethod declMethods) {
         Validate.notNull(name);
         Validate.notNull(superClass);
         Validate.notNull(declFields);
@@ -38,7 +39,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
-        
+
     }
 
     @Override
@@ -57,10 +58,13 @@ public class DeclClass extends AbstractDeclClass {
         TypeDefinition previousDef = compiler.environmentType.defOfType(name.getName());
         if (previousDef != null) {
             throw new ContextualError("Error: Multiple declaration of " + name.getName().toString()
-            + ", first declaration at " + previousDef.getLocation(), name.getLocation());
+                    + ", first declaration at " + previousDef.getLocation(), name.getLocation());
         }
-        
-        ClassType newType = new ClassType(name.getName(), getLocation(), (ClassDefinition) superDef);   // the cast succeed because of the precedent check
+
+        ClassType newType = new ClassType(name.getName(), getLocation(), (ClassDefinition) superDef); // the cast
+                                                                                                      // succeed because
+                                                                                                      // of the
+                                                                                                      // precedent check
         ClassDefinition newDef = newType.getDefinition();
         name.setDefinition(newDef);
 
@@ -71,15 +75,19 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    
-    @Override
-    protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        // Jamais appellée pour HelloWorld, mais vérifications a faire pour plus tard, avec les tests qui déclenchent les erreurs contextuelles.
-        throw new UnsupportedOperationException("not yet implemented");
+        // name.getClassDefinition().getSuperClass()
+        // compiler.environmentType.defOfType(superClass.getName())
+        this.declFields.verifyListDeclField(compiler, name.getClassDefinition().getSuperClass(),
+                name.getClassDefinition());
+        this.declMethods.verifyListDeclMethod(compiler, name.getClassDefinition().getSuperClass());
     }
 
+    @Override
+    protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        // Jamais appellée pour HelloWorld, mais vérifications a faire pour plus tard,
+        // avec les tests qui déclenchent les erreurs contextuelles.
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {

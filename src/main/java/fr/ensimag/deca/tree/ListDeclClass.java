@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class ListDeclClass extends TreeList<AbstractDeclClass> {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {
@@ -36,9 +36,11 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Pass 2 of [SyntaxeContextuelle]
      */
     public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for (AbstractDeclClass c : getList()) {
+            c.verifyClassMembers(compiler);
+        }
     }
-    
+
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
@@ -50,6 +52,5 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             c.verifyClassBody(compiler);
         }
     }
-
 
 }

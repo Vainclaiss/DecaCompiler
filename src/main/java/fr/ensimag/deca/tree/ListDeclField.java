@@ -15,14 +15,14 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void verifyListDeclField(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType){
-        //TODO
+    public void verifyListDeclField(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass)
+            throws ContextualError {
+        for (AbstractDeclField f : getList()) {
+            f.verifyDeclField(compiler, currentClass, superClass);
+        }
     }
 
     public void codeGenListDeclField(DecacCompiler compiler, ClassDefinition currentClass) {
-        //TODO
+        // TODO
     }
-
-
 }

@@ -15,14 +15,14 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void verifyListDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType){
-        //TODO
+    public void verifyListDeclMethod(DecacCompiler compiler, ClassDefinition superClass) throws ContextualError {
+        for (AbstractDeclMethod m : getList()) {
+            m.verifyDeclMethod(compiler, superClass);
+        }
     }
 
-    public void codeGenListDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
-        //TODO
+    public void codeGenListDeclMethod(DecacCompiler compiler, ClassDefinition superCLass) {
+        // TODO
     }
-
 
 }

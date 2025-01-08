@@ -8,17 +8,18 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
-
-
-
 public class DeclField extends AbstractDeclField {
-    public DeclField(Identifier type,Identifier name,Initialization init ) {
-        super(type,name,init);
+    public DeclField(Identifier type, Identifier name, Initialization init) {
+        super(type, name, init);
+    }
+
+    public void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass, ClassDefinition superClass)
+            throws ContextualError {
+        // TODO
     }
 
     public void decompile(IndentPrintStream s) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
-
 
 }
