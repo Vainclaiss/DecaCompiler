@@ -1,4 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (mauvais argument dans println)
+//
+// Resultats:
+//    ligne 7 : Erreur, symbole non reconnu
 {
-    println("\blj");
     println("\");
 }

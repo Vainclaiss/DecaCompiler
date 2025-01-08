@@ -1,3 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (valeur trop grande)
+//
+// Resultats:
+//    ligne 7 : Erreur, Int Overflow
 {
     int a = 4294967296; //2^32
 }

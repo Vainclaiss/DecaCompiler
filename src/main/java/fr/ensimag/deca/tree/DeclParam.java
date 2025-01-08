@@ -50,7 +50,8 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        type.prettyPrint(s,prefix,true);
+        name.prettyPrint(s,prefix,false);
     }
 
     @Override

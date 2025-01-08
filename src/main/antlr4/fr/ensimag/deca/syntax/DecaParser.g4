@@ -303,6 +303,8 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
+            $tree = new Instanceof($e1.tree,$type.tree);
+            setLocation($tree,$INSTANCEOF);
         }
     ;
 
@@ -505,9 +507,11 @@ class_decl returns[AbstractDeclClass tree]
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
          $tree = $ident.tree;
+         setLocation($tree,$EXTENDS);
         }
     | /* epsilon */ {
-
+            $tree = new Identifier(getDecacCompiler().symbolTable.create("Object"));
+            $tree.setLocation(Location.BUILTIN);
         }
     ;
 
