@@ -82,9 +82,8 @@ public class DeclClass extends AbstractDeclClass {
         // superDef != null et c'est une class d'après la passe 1
         superClass.setDefinition(superDef);
 
-        //TODO : à terminer
-        //declFields.verifyListDeclField(compiler, superClass.getName(), name.getName());
-        //declMethods.verifyListDeclMethod(compiler, name.getClassDefinition().getSuperClass());
+        EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
+        EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass);
     }
 
     @Override
