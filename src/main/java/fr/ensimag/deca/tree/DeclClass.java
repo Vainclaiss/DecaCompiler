@@ -77,7 +77,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        
+
         TypeDefinition superDef = compiler.environmentType.defOfType(superClass.getName());
         // superDef != null et c'est une class d'après la passe 1
         superClass.setDefinition(superDef);
@@ -88,9 +88,12 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        // Jamais appellée pour HelloWorld, mais vérifications a faire pour plus tard,
-        // avec les tests qui déclenchent les erreurs contextuelles.
-        throw new UnsupportedOperationException("not yet implemented");
+        TypeDefinition def = compiler.environmentType.defOfType(name.getName()); // Always defined at this point
+        name.setDefinition(def);
+
+        // Passe 3
+        // verifyListDeclFieldBody()
+        // verifyListDeclMethodBody()
     }
 
     @Override
