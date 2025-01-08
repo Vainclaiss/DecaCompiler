@@ -53,6 +53,10 @@ public class EnvironmentExp {
         return res;
     }
 
+    public Map<Symbol, ExpDefinition> getCurrEnv() {
+        return currentEnvironment;
+    }
+
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 

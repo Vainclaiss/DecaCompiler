@@ -17,10 +17,10 @@ import fr.ensimag.ima.pseudocode.Label;
 
 public class DeclParam extends AbstractDeclParam {
 
-    final Identifier type;
-    final Identifier name;
+    final AbstractIdentifier type;
+    final AbstractIdentifier name;
 
-    public DeclParam(Identifier type,Identifier name ) {
+    public DeclParam(AbstractIdentifier type,AbstractIdentifier name ) {
         this.name = name;
         this.type = type;
     }
