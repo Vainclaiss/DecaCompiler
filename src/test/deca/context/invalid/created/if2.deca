@@ -1,6 +1,6 @@
 // Resultats:
 //    Erreur contextuelle
-//    Ligne 10 : Icompatible types for boolean operation : boolean || int
+//    Ligne 10 : Error: Incompatible types for boolean operation: boolean || int
 
 {
     if(true && false) {

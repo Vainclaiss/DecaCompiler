@@ -1,0 +1,8 @@
+// Description:
+//    test des expressions arithmetiques pour les Overflow
+// Resultats:
+//    5.0
+
+{
+    println(2+3.0);
+}

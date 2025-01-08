@@ -1,0 +1,10 @@
+// Description:
+//    test de readInt
+// Resultats:
+//    "affiche le resulat de x + y"
+
+{   
+    int x = readInt();
+    float y = readFloat();
+    println(x+y);
+}

@@ -1,0 +1,16 @@
+// Description:
+//    test basique sur la passe 1 pour les class
+// Resultats:
+//    
+
+class A {
+
+}
+
+class B extends A {
+
+}
+
+{
+
+}
