@@ -73,7 +73,7 @@ public class DeclClass extends AbstractDeclClass {
                                                                                                       // of the
                                                                                                       // precedent check
         ClassDefinition newDef = newType.getDefinition();
-        name.setDefinition(newDef);
+        name.setDefinition(newDef);     // à faire en passe 3 ??
 
         compiler.environmentType.addType(name.getName(), newDef);
 
@@ -90,7 +90,7 @@ public class DeclClass extends AbstractDeclClass {
         EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
         EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass);
 
-        EnvironmentExp envName = name.getClassDefinition().getMembers();
+        EnvironmentExp envName = name.getClassDefinition().getMembers(); //TODO: à modifier si modif passe 1 faite (cf au dessus)
 
         for (Map.Entry<Symbol, ExpDefinition> entry : envFields.getCurrEnv().entrySet()) {
             Symbol symbol = entry.getKey();
