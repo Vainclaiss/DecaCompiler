@@ -65,7 +65,7 @@ make_invalid_tests() {
     for file in ./src/test/deca/codegen/invalid/created/*.deca; do
         check_gencode_file_format "$file"
         check_compilation "$file" false
-        # check_result "$file" false
+        check_result "$file" false
         rm -f "${file%.deca}.ass" 2>/dev/null
         rm -f "${file%.deca}.res" 2>/dev/null
         rm -f "${file%.deca}.expected" 2>/dev/null
