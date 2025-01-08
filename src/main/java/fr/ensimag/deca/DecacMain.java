@@ -36,6 +36,7 @@ public class DecacMain {
         }
         if (options.getPrintBanner()) {
             options.displayBanner();
+            System.exit(0);
         } else if (options.getSourceFiles().isEmpty()) {
             options.displayUsage();
         }

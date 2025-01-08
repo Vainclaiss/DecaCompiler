@@ -132,7 +132,7 @@ public class CompilerOptions {
         stopAfterParse = options.contains("-p");
         stopAfterVerification = options.contains("-v");
 
-        for (String arg : args) {
+        for (String arg : options) {
             if (arg.endsWith(".deca")) {
                 logger.debug("Added file with path :" + arg);
                 sourceFiles.add(new File(arg));

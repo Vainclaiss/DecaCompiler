@@ -1,7 +1,5 @@
 // Description:
 //    Division par 0 (par modulo)
-// TODO:
-// Rajouter la ligne d'erreur
 // Resultats:
 //    Error: division by 0
 

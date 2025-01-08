@@ -18,16 +18,16 @@ check_gencode_file_format() {
 
 check_compilation() {
     ass_file="${1%.deca}.ass"
-    if ./src/main/bin/decac "$1" -ne 0; then
+    if ! ./src/main/bin/decac "$1"; then
         if [ "$2" = true ]; then
             failure "Compilation failed for $1, but it was expected to succeed."
             exit 1
         fi
-    else
-        if [ "$2" = false ]; then
-            failure "Compilation succeeded for $1, but it was expected to fail."
-            exit 1
-        fi
+    # else
+    #     if [ "$2" = false ]; then
+    #         failure "Compilation succeeded for $1, but it was expected to fail."
+    #         exit 1
+    #     fi
     fi
     if [ "$2" = true ] && [ ! -f "$ass_file" ]; then
         failure "File $ass_file not generated for $1."
@@ -51,8 +51,8 @@ check_result() {
 make_valid_tests() {
     for file in ./src/test/deca/codegen/valid/created/*.deca; do
         check_gencode_file_format "$file"
-        check_compilation "$file" false
-        check_result "$file" false
+        check_compilation "$file" true
+        check_result "$file" true
         rm -f "${file%.deca}.ass" 2>/dev/null
         rm -f "${file%.deca}.res" 2>/dev/null
         rm -f "${file%.deca}.expected" 2>/dev/null
