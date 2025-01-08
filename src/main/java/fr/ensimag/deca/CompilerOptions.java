@@ -48,7 +48,7 @@ public class CompilerOptions {
     }
 
     // public static int getNumRegisters() {
-    //     return numRegisters;
+    // return numRegisters;
     // }
 
     public boolean getStopAfterParse() {
@@ -65,7 +65,8 @@ public class CompilerOptions {
 
     private int debugValue = 0;
     private int arithmeticalPrecision = 2;
-    //private static int numRegisters = 16; // TODO : chiant mais pratique le static
+    // private static int numRegisters = 16; // TODO : chiant mais pratique le
+    // static
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean skipExecErrors = false;
@@ -107,9 +108,9 @@ public class CompilerOptions {
         }
 
         // TODO : finir les arguments pour decac
-        if (options.contains("-w") || options.contains("-d") || options.contains("-a")) {
-            throw new NotImplementedException("Argument not yet implemented");
-        }
+        // if (options.contains("-w")) {
+        //     throw new NotImplementedException("Argument not yet implemented");
+        // }
 
         if (options.contains("-r")) {
             parseRCommand(args);
@@ -147,12 +148,12 @@ public class CompilerOptions {
         }
 
         try {
-            Register.RMAX = Integer.parseInt(args[rArgumentIndex + 1])-1;
+            Register.RMAX = Integer.parseInt(args[rArgumentIndex + 1]) - 1;
         } catch (NumberFormatException e) {
             throw new CLIException("The argument for -r must be an integer");
         }
 
-        if (Register.RMAX < 3 || Register.RMAX > 15) {      // RMAX = nbRegisters-1
+        if (Register.RMAX < 3 || Register.RMAX > 15) { // RMAX = nbRegisters-1
             throw new CLIException("Invalid number of registers (must be between 4 and 16)");
         }
     }
@@ -165,7 +166,7 @@ public class CompilerOptions {
         try {
             arithmeticalPrecision = Integer.parseInt(args[aArgumentIndex + 1]);
         } catch (NumberFormatException e) {
-            throw new CLIException("The argument for -r must be an integer");
+            throw new CLIException("The argument for -a must be an integer");
         }
 
         if (arithmeticalPrecision < 0) {
@@ -174,55 +175,54 @@ public class CompilerOptions {
     }
 
     protected void displayUsage() {
-        System.err.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] [-a] <fichier .deca>...] | [-b]");
-        System.err.println(
+        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] [-a] <fichier .deca>...] | [-b]");
+        System.out.println(
                 "La commande decac, sans argument, affichera les options disponibles. On peut appeler la commande");
-        System.err.println("decac avec un ou plusieurs fichiers sources Deca.");
-        System.err.println("Options:");
-        System.err.println("  -b (banner) : affiche une bannière indiquant le nom de l'équipe");
-        System.err.println("  -p (parse) : arrête decac après l'étape de construction de");
-        System.err.println("               l'arbre, et affiche la décompilation de ce dernier");
-        System.err.println("               (i.e. s'il n'y a qu'un fichier source à");
-        System.err.println("               compiler, la sortie doit être un programme");
-        System.err.println("               deca syntaxiquement correct)");
-        System.err.println("  -v (verification) : arrête decac après l'étape de vérifications");
-        System.err.println("                      (ne produit aucune sortie en l'absence d'erreur)");
-        System.err.println("  -n (no check) : supprime les tests à l'exécution spécifiés dans");
-        System.err.println("                  les points 11.1 et 11.3 de la sémantique de Deca.");
-        System.err.println("  -r X (registers) : limite les registres banalisés disponibles à");
-        System.err.println("                     R0 ... R{X-1}, avec 4 <= X <= 16");
-        System.err.println("  -d (debug) : active les traces de debug. Répéter");
-        System.err.println("               l'option plusieurs fois pour avoir plus de");
-        System.err.println("               traces.");
-        System.err.println("  -P (parallel) : s'il y a plusieurs fichiers sources,");
-        System.err.println("                  lance la compilation des fichiers en");
-        System.err.println("                  parallèle (pour accélérer la compilation)");
-        System.err.println("  -w (warning) : active l'affichage des messages d'avertissement.");
-        System.err.println("  -a X (arithmetic rounding) : fixe le mode d'arrondi à X chiffres après");
-        System.err.println("                la virgule pour les opérations arithmétiques. DÉFAUT À 2");
+        System.out.println("decac avec un ou plusieurs fichiers sources Deca.");
+        System.out.println("Options:");
+        System.out.println("  -b (banner) : affiche une bannière indiquant le nom de l'équipe");
+        System.out.println("  -p (parse) : arrête decac après l'étape de construction de");
+        System.out.println("               l'arbre, et affiche la décompilation de ce dernier");
+        System.out.println("               (i.e. s'il n'y a qu'un fichier source à");
+        System.out.println("               compiler, la sortie doit être un programme");
+        System.out.println("               deca syntaxiquement correct)");
+        System.out.println("  -v (verification) : arrête decac après l'étape de vérifications");
+        System.out.println("                      (ne produit aucune sortie en l'absence d'erreur)");
+        System.out.println("  -n (no check) : supprime les tests à l'exécution spécifiés dans");
+        System.out.println("                  les points 11.1 et 11.3 de la sémantique de Deca.");
+        System.out.println("  -r X (registers) : limite les registres banalisés disponibles à");
+        System.out.println("                     R0 ... R{X-1}, avec 4 <= X <= 16");
+        System.out.println("  -d (debug) : active les traces de debug. Répéter");
+        System.out.println("               l'option plusieurs fois pour avoir plus de");
+        System.out.println("               traces.");
+        System.out.println("  -P (parallel) : s'il y a plusieurs fichiers sources,");
+        System.out.println("                  lance la compilation des fichiers en");
+        System.out.println("                  parallèle (pour accélérer la compilation)");
+        System.out.println("  -w (warning) : active l'affichage des messages d'avertissement");
+        System.out.println("                 en cours de compilation.");
+        System.out.println("  -a X (arithmetic rounding) : fixe le mode d'arrondi à X chiffres après");
+        System.out.println("                la virgule pour les opérations arithmétiques. DÉFAUT À 2");
     }
 
     protected void displayBanner() {
-        System.err.println("                                _                       ");
-        System.err.println("                              .' `'.__                  ");
-        System.err.println("                             /      \\ `'\"-,             Équipe 1");
-        System.err.println("            .-''''--...__..-/ .     |      \\            GL01");
-        System.err.println("          .'               ; :'     '.  a   |           ");
-        System.err.println("         /                 | :.       \\     =\\          ROBOAM          Guillaume");
-        System.err.println("        ;                   \\':.      /  ,-.__;.-;`     TALBI           Mehdi");
-        System.err.println("       /|     .              '--._   /-.7`._..-;`       CHARLES-MENNIER Matéo");
-        System.err.println("      ; |       '                |`-'      \\  =|        ALTIERI         Aubin");
-        System.err.println("      |/\\        .   -' /     /  ;         |  =/        RABALLAND       Cyprien");
-        System.err.println("      (( ;.       ,_  .:|     | /     /\\   | =|         ");
-        System.err.println("       ) / `\\     | `\"\"`;     / |    | /   / =/         ");
-        System.err.println("         | ::|    |      \\    \\ \\    \\ `--' =/          ");
-        System.err.println("        /  '/\\    /       )    |/     `-...-`           ");
-        System.err.println("       /    | |  `\\    /-'    /;                        ");
-        System.err.println("       \\  ,,/ |    \\   D    .'  \\                       ");
-        System.err.println("        `\"\"`   \\  nnh  D_.-'L__nnh                      ");
-        System.err.println();
-        System.err.println("Art by Joan G. Stark");
+        System.out.println("                                _                       ");
+        System.out.println("                              .' `'.__                  ");
+        System.out.println("                             /      \\ `'\"-,             Équipe 1");
+        System.out.println("            .-''''--...__..-/ .     |      \\            ");
+        System.out.println("          .'               ; :'     '.  a   |           ROBOAM          Guillaume");
+        System.out.println("         /                 | :.       \\     =\\          TALBI           Mehdi");
+        System.out.println("        ;                   \\':.      /  ,-.__;.-;`     CHARLES-MENNIER Matéo");
+        System.out.println("       /|     .              '--._   /-.7`._..-;`       ALTIERI         Aubin");
+        System.out.println("      ; |       '                |`-'      \\  =|        RABALLAND       Cyprien");
+        System.out.println("      |/\\        .   -' /     /  ;         |  =/        ");
+        System.out.println("      (( ;.       ,_  .:|     | /     /\\   | =|          _____ _         __ ");
+        System.out.println("       ) / `\\     | `\"\"`;     / |    | /   / =/         / ____| |       /_ |");
+        System.out.println("         | ::|    |      \\    \\ \\    \\ `--' =/         | |  __| |        | | ");
+        System.out.println("        /  '/\\    /       )    |/     `-...-`          | | |_ | |        | |");
+        System.out.println("       /    | |  `\\    /-'    /;                       | |__| | |_____   | |");
+        System.out.println("       \\  ,,/ |    \\   D    .'  \\                       \\_____|______|   |_|");
+        System.out.println("        `\"\"`   \\  nnh  D_.-'L__nnh                    ");
+        System.out.println();
+        System.out.println("Art by Joan G. Stark");
     }
 }
-
-

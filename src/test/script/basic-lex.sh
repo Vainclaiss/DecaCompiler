@@ -13,30 +13,48 @@
 
 # On se place dans le répertoire du projet (quel que soit le
 # répertoire d'où est lancé le script) :
-cd "$(dirname "$0")"/../../.. || exit 1
-
-PATH=./src/test/script/launchers:"$PATH"
+. "$(dirname "$0")/utils.sh"
 
 # /!\ test valide lexicalement, mais invalide pour l'étape A.
 # test_lex peut au choix afficher les messages sur la sortie standard
 # (1) ou sortie d'erreur (2). On redirige la sortie d'erreur sur la
 # sortie standard pour accepter les deux (2>&1)
-if test_lex src/test/deca/syntax/invalid/provided/simple_lex.deca 2>&1 \
-    | head -n 1 | grep -q 'simple_lex.deca:[0-9]'
-then
-    echo "Echec inattendu de test_lex"
-    exit 1
-else
-    echo "OK"
-fi
 
-# Ligne 10 codée en dur. Il faudrait stocker ça quelque part ...
-if test_lex src/test/deca/syntax/invalid/provided/chaine_incomplete.deca 2>&1 \
-    | grep -q -e 'chaine_incomplete.deca:10:'
-then
-    echo "Echec attendu pour test_lex"
-else
-    echo "Erreur non detectee par test_lex pour chaine_incomplete.deca"
-    exit 1
-fi
+check_lex() {
+    if test_lex "$1" 2>&1 | grep -q "$1:[0-9]"; then
+        if [ "$2" = false ]; then
+            failure "Lexer failed for $1, but it was expected to succeed."
+            exit 1
+        fi
+    else
+        if [ "$2" = true ]; then
+            failure "Lexer succeeded for $1, but it was expected to fail."
+            exit 1
+        fi
+    fi
+}
 
+# Valid tests
+make_valid_tests(){
+    for file in ./src/test/deca/syntax/lexer/valid/created/*.deca; do
+        check_lex "$file" false
+        success "[valid] Test passed for $file"
+    done
+}
+
+# Invalid tests
+make_invalid_tests() {
+    for file in ./src/test/deca/syntax/lexer/invalid/created/*.deca; do
+        check_lex "$file" true
+        success "[invalid] Test passed for $file"
+    done
+}
+
+main() {
+    prompt_strong "Running basic-lex tests..."
+    setup_path_and_cd
+    make_valid_tests
+    make_invalid_tests
+}
+
+main
