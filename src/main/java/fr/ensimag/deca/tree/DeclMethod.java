@@ -22,12 +22,12 @@ import fr.ensimag.ima.pseudocode.Label;
 
 public class DeclMethod extends AbstractDeclMethod {
 
-    final private Identifier type;
-    final private Identifier name;
+    final private AbstractIdentifier type;
+    final private AbstractIdentifier name;
     final private ListDeclParam params;
     final private MethodBody body;
 
-    public DeclMethod(Identifier type, Identifier name, ListDeclParam params, MethodBody body) {
+    public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam params, MethodBody body) {
         Validate.notNull(type);
         Validate.notNull(name);
         Validate.notNull(params);

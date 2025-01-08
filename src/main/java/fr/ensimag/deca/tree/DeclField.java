@@ -71,6 +71,9 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
+    protected String prettyPrintNode(){return "DeclField (" + visibility +")";}
+
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s,prefix,false);
         name.prettyPrint(s,prefix,false);

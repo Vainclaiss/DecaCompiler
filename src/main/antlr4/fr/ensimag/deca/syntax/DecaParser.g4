@@ -505,9 +505,11 @@ class_decl returns[AbstractDeclClass tree]
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
          $tree = $ident.tree;
+         setLocation($tree,$EXTENDS);
         }
     | /* epsilon */ {
-
+            $tree = new Identifier(getDecacCompiler().symbolTable.create("Object"));
+            $tree.setLocation(Location.BUILTIN);
         }
     ;
 
