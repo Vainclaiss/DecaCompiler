@@ -12,8 +12,8 @@ import fr.ensimag.ima.pseudocode.Label;
 
 
 public class DeclField extends AbstractDeclField {
-    public DeclField(Identifier type,Identifier name,Initialization init ) {
-        super(type,name,init);
+    public DeclField(Identifier type,Identifier name,Initialization init,AbstractVisibility visibility ) {
+        super(visibility,type,name,init);
     }
 
     public void decompile(IndentPrintStream s) {

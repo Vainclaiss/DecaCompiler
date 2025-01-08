@@ -10,13 +10,15 @@ import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 public abstract class AbstractDeclField extends Tree{
 
-    final Identifier type;
-    final Identifier name;
+    final AbstractIdentifier type;
+    final AbstractIdentifier name;
     final  Initialization init;
-    public AbstractDeclField(Identifier type, Identifier name, Initialization init) {
+    final AbstractVisibility visibility;
+    public AbstractDeclField(AbstractVisibility visibility,AbstractIdentifier type, AbstractIdentifier name, Initialization init) {
         this.name = name;
         this.type = type;
         this.init = init;
+        this.visibility = visibility;
     }
 
 

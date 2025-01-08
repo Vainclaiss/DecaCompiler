@@ -15,6 +15,9 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
 
+
+    public DeclClass(Identifier name, Identifier extension,ListDeclField ldf,MethodBody body ) {super(name,extension,ldf,body);}
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("class { ... A FAIRE ... }");
