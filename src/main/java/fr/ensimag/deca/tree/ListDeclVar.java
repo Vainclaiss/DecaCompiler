@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -48,5 +50,11 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         }
     }
 
+    protected void codeGenListDeclVarByte(MethodVisitor mv) {
+        for (AbstractDeclVar declVar : getList()) {
+            declVar.codeGenByteDeclVar(mv); 
+        }
+
+    }
 
 }

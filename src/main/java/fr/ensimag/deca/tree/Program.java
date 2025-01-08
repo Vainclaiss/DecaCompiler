@@ -53,23 +53,22 @@ public class Program extends AbstractProgram {
         try (FileOutputStream textFileOut = new FileOutputStream("MainBytecode.txt");
              PrintWriter textPrintWriter = new PrintWriter(textFileOut, true))
         {
-          
             ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-
-          
+    
+            //Pour afficher le bytecode en forme readable
             TraceClassVisitor tcv = new TraceClassVisitor(cw, textPrintWriter);
-
-            
+    
+            // 1) Define the class header
             tcv.visit(
-                Opcodes.V17,                // Java 17
+                Opcodes.V17,                // Java 17 class file version
                 Opcodes.ACC_PUBLIC,         // public class
                 "Main",                     // internal class name
                 null,                       // signature (no generics)
                 "java/lang/Object",         // superclass: Object
-                null                        // interfaces: none
+                null                        // no interfaces
             );
-
-            // 4) Constructor: public Main() { super(); }
+    
+            // 2) Constructor: public Main() { super(); }
             MethodVisitor ctor = tcv.visitMethod(
                 Opcodes.ACC_PUBLIC,
                 "<init>",
@@ -78,19 +77,19 @@ public class Program extends AbstractProgram {
                 null
             );
             ctor.visitCode();
-            ctor.visitVarInsn(Opcodes.ALOAD, 0); // "this"
+            ctor.visitVarInsn(Opcodes.ALOAD, 0);
             ctor.visitMethodInsn(
-                Opcodes.INVOKESPECIAL,
+                Opcodes.INVOKESPECIAL, // le invokespecial ici pour dire qu'on va appeler le constructeur
                 "java/lang/Object",
-                "<init>",
-                "()V",
+                "<init>", // pour dire constructeur
+                "()V",// prend rien, retourne rien
                 false
             );
-            ctor.visitInsn(Opcodes.RETURN);
+            ctor.visitInsn(Opcodes.RETURN); // visitInsn car on insere une instruction sans argument ici return
             ctor.visitMaxs(1, 1);
             ctor.visitEnd();
-
-            // 5) Main method: public static void main(String[] args)
+    
+            // 3) Main method
             MethodVisitor mv = tcv.visitMethod(
                 Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC,
                 "main",
@@ -99,47 +98,42 @@ public class Program extends AbstractProgram {
                 null
             );
             mv.visitCode();
-
-            // Example instructions: System.out.println("Hello, from ASM!");
-            mv.visitFieldInsn(
-                Opcodes.GETSTATIC,
-                "java/lang/System",
-                "out",
-                "Ljava/io/PrintStream;"
-            );
-            mv.visitLdcInsn("Hello");
-            mv.visitMethodInsn(
-                Opcodes.INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(Ljava/lang/String;)V",
-                false
-            );
-
-           
-            mv.visitInsn(Opcodes.RETURN);
-            mv.visitMaxs(0, 0); //Pour le dynamique ASM
-            mv.visitEnd();
-
-            // End the class
-            tcv.visitEnd();
-
-            // 6) Changer to .byte
-            byte[] bytecode = cw.toByteArray();
-
     
+            // on entre dans la main method
+
+            this.getMain().codeGenByteMain(mv); // on appelle cette fct pour generer le bytecode suivant l'arbre
+    
+            // 5) On retourne du main
+            mv.visitInsn(Opcodes.RETURN); // on ajoute le return pour le compter dans le stack en bas
+            mv.visitMaxs(0, 0); // vu qu'on ne sera pas sûr de la profondeur de la pile on rajoute 0,0
+            mv.visitEnd();
+    
+            // 6) La classe est finit
+            tcv.visitEnd();
+    
+            // 7) Get the raw bytecode
+            byte[] bytecode = cw.toByteArray();
+    
+            // 8) Write the standard Main.class (binary file)
             try (FileOutputStream fos = new FileOutputStream("Main.class")) {
                 fos.write(bytecode);
-                LOG.info("Successfully wrote Main.class");
+                LOG.info("Wrote Main.class successfully.");
             }
-
-            LOG.info("MainBytecode.txt was created containing the textual ASM instructions.");
-            LOG.info("Main.class was created - you can run with 'java Main'.");
-
+    
+           
+            try (PrintWriter rawByteWriter = new PrintWriter("MainRawBytes.txt")) {
+                for (byte b : bytecode) {
+                    rawByteWriter.printf("%02X ", b);
+                }
+                rawByteWriter.println();
+                LOG.info("Wrote MainRawBytes.txt with a hex dump of the .class file");
+            }
+    
         } catch (IOException e) {
             throw new RuntimeException("Error writing bytecode output", e);
         }
     }
+    
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {

@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -39,6 +42,12 @@ public class ListInst extends TreeList<AbstractInst> {
     public void codeGenListInst(DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
             i.codeGenInst(compiler);
+        }
+    }
+
+    public void codeGenListInstByte(MethodVisitor mv) {
+        for (AbstractInst i : getList()) {
+            i.codeGenByteInst(mv); 
         }
     }
 

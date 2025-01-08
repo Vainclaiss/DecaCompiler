@@ -190,6 +190,7 @@ public class DecacCompiler {
         assert(prog.checkAllDecorations());
 
         addComment("start main program");
+        
         prog.codeGenProgram(this);
         prog.codeGenByteProgram(this);
         addComment("end main program");

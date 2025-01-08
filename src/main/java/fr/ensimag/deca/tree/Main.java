@@ -10,10 +10,19 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.TraceClassVisitor;
 
 /**
  * @author gl01
@@ -97,7 +106,10 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenByteMain(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteMain'");
+        declVariables.codeGenListDeclVarByte(mv); // On genere le bytecode pour les variables
+        for (AbstractInst inst : insts.getList()) {
+            inst.codeGenByteInst(mv); // On genere le bytecode pour toute les instructions
+        }
     }
+    
 }
