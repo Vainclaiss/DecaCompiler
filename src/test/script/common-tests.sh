@@ -47,7 +47,7 @@ mkdir "$tmpdir" || die "Impossible de créer le répertoire de test"
     [ ! -s sortie.txt ] || die "deca a produit une sortie sur un programme correct"
     [ ! -f hello.ass ] || die "decac a généré le fichier .ass dans le répertoire courant.;Il devrait être généré au même endroit que le fichier source."
     [ -f source/hello.ass ] || die "decac n'a pas généré le fichier .ass au bon endroit"
-    ima source/hello.ass >sortie || die "Erreur lors de l'exécution du code généré"
+    ./../../../../global/bin/ima source/hello.ass >sortie || die "Erreur lors de l'exécution du code généré"
     echo "Hello" >attendu
     diff sortie attendu || die "L'exécution du code généré pour un hello-world est incorrecte"
     echo "Les fonctionnalités de base semblent opérationnelles."
