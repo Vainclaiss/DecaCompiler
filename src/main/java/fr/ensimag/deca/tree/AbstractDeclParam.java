@@ -11,36 +11,8 @@ import java.io.PrintStream;
 
 public abstract class AbstractDeclParam extends Tree{
 
-    final AbstractIdentifier type;
-    final AbstractIdentifier name;
-    public AbstractDeclParam(AbstractIdentifier type,AbstractIdentifier name ) {
-        this.name = name;
-        this.type = type;
-    }
+    public abstract Type verifyDeclParam(DecacCompiler compiler) throws ContextualError;
 
-
-    public void decompileDeclParam(IndentPrintStream s) {
-        decompile(s);
-    }
-
-
-    @Override
-    protected void prettyPrintChildren(PrintStream s, String prefix) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
-
-    @Override
-    protected void iterChildren(TreeFunction f) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
-
-    public void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType){
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
-
-    public void codeGenDeclParam(DecacCompiler compiler){
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
+    public abstract void codeGenDeclParam(DecacCompiler compiler) ;
 
 }

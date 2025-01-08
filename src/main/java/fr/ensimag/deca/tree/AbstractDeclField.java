@@ -15,7 +15,7 @@ public abstract class AbstractDeclField extends Tree {
 
 
     /**
-     * Implements non-terminal "decl_field" of [SyntaxeContextuelle] in pass 1
+     * Implements non-terminal "decl_field" of [SyntaxeContextuelle] in pass 2
      * @param compiler contains "env_types" attribute
      * @param currentClass the class that contains the field
      * @param superClass the super class of the current class

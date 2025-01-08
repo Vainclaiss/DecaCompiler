@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import java.io.PrintStream;
+import java.lang.reflect.Method;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -12,13 +16,48 @@ import fr.ensimag.ima.pseudocode.Label;
 
 
 public class DeclParam extends AbstractDeclParam {
-    public DeclParam(AbstractIdentifier type,AbstractIdentifier name ){
-        super(type,name);
+
+    final Identifier type;
+    final Identifier name;
+
+    public DeclParam(Identifier type,Identifier name ) {
+        this.name = name;
+        this.type = type;
     }
 
-    public void decompile(IndentPrintStream s) {
+
+    public void decompileDeclParam(IndentPrintStream s) {
+        decompile(s);
+    }
+
+    @Override
+    public Type verifyDeclParam(DecacCompiler compiler) throws ContextualError {
+
+        Type paramType = type.verifyType(compiler);
+        if (paramType.isVoid()) {
+            throw new ContextualError("Error: Method parameters cannot have a void type", getLocation());
+        }
+
+        return paramType;
+    }
+
+
+    @Override
+    public void codeGenDeclParam(DecacCompiler compiler) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenDeclParam'");
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
         //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
 
-
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+    }
+    public void decompile(IndentPrintStream s) {
+        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+    }
 }
