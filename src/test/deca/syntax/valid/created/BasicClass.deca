@@ -1,0 +1,6 @@
+class Basic extends BetterBasic{
+    protected int a;
+    int method(int arg1,int arg2){
+        return arg1;
+    }
+}
