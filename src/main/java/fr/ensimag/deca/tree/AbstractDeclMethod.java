@@ -11,12 +11,12 @@ import java.io.PrintStream;
 
 public abstract class AbstractDeclMethod extends Tree {
 
-    final Identifier type;
-    final Identifier name;
+    final AbstractIdentifier type;
+    final AbstractIdentifier name;
     final ListDeclParam params;
     final MethodBody body;
 
-    public AbstractDeclMethod(Identifier type, Identifier name, ListDeclParam params, MethodBody body) {
+    public AbstractDeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam params, MethodBody body) {
         this.name = name;
         this.type = type;
         this.params = params;

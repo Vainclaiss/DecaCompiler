@@ -11,9 +11,9 @@ import java.io.PrintStream;
 
 public abstract class AbstractDeclParam extends Tree{
 
-    final Identifier type;
-    final Identifier name;
-    public AbstractDeclParam(Identifier type,Identifier name ) {
+    final AbstractIdentifier type;
+    final AbstractIdentifier name;
+    public AbstractDeclParam(AbstractIdentifier type,AbstractIdentifier name ) {
         this.name = name;
         this.type = type;
     }

@@ -12,19 +12,7 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class AbstractDeclClass extends Tree {
 
-    final Identifier extension;
-    final Identifier name;
-    final  ListDeclField fields;
-    final MethodBody body;
-    public AbstractDeclClass(Identifier name, Identifier extension,ListDeclField ldf,MethodBody body ) {
-        Validate.notNull(name);
-        Validate.notNull(ldf);
-        Validate.notNull(body);
-        this.extension = extension;
-        this.name = name;
-        this.fields = ldf;
-        this.body = body;
-    }
+
 
 
     /**
