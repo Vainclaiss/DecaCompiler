@@ -20,10 +20,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
-        int indexR = Register.getIndexRegistreLibre();
-        Register.setRegistreLibre(indexR, false);
-        codeExp(compiler, indexR);
-        Register.setRegistreLibre(indexR, true);
+        codeExp(compiler, 2);
         if (branchIfTrue) {
             compiler.addInstruction(new BGE(e));
         }

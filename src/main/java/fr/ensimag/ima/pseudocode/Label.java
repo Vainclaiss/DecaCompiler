@@ -11,7 +11,7 @@ import org.apache.commons.lang.Validate;
  */
 public class Label extends Operand {
 
-    static int suffixeId = 0;
+    private static int suffixeId = 0;
 
     @Override
     public String toString() {
@@ -25,7 +25,11 @@ public class Label extends Operand {
         this.name = name;
     }
 
-    public String getNewSuffixeId() {
+    public static void resetSuffixId() {
+        suffixeId = 0;
+    }
+
+    public static String getNewSuffixeId() {
         return String.valueOf(suffixeId++);
     }
 

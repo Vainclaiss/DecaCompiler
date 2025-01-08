@@ -1,4 +1,0 @@
-// BEGIN LEXER //
-OBRACE: [@0,0:0='{',<4>,1:0]
-CBRACE: [@1,1:1='}',<5>,1:1]
-// END LEXER //

@@ -1,6 +1,6 @@
 // Resultats:
 //    Erreur contextuelle
-//    Ligne 6 : If condition must be a boolean expression
+//    Ligne 6 : Error: Expected expression type is boolean, got float
 
 {
     if(3.7) {
