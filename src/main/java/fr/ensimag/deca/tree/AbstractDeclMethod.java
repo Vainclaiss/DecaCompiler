@@ -20,7 +20,7 @@ public abstract class AbstractDeclMethod extends Tree {
      * @return
      * @throws ContextualError
      */
-    public abstract MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass)
+    public abstract MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, int index)
             throws ContextualError;
 
 

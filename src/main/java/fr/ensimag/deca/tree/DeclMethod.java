@@ -10,7 +10,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
@@ -37,12 +39,33 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     
     @Override
-    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass)
+    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, int index)
     throws ContextualError {
 
         Type methodType = type.verifyType(compiler);
+        Signature sig = params.verifyListDeclParam(compiler);
+
+        ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
+        // superDef != null et c'est une class d'après la passe 1
+        superClass.setDefinition(superDef);
+
+        EnvironmentExp envExpSuper = superDef.getMembers();
+        MethodDefinition superMethodDef = envExpSuper.get(name.getName()).asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation());
         
-        params.verifyListDeclParam(compiler, null, null, methodType);
+        if (superMethodDef != null) {
+            name.setDefinition(superMethodDef);
+            if (!sig.equals(superMethodDef.getSignature())) {
+                throw new ContextualError("Error: redefinition of a method with a different signature", getLocation());
+            }
+            
+            Type superMethodType = superMethodDef.getType();
+            if (superMethodType.subType(methodType)) {
+                throw new ContextualError("Error: redefinition of a method with incompatible type", getLocation());
+            }
+        }
+
+        return new MethodDefinition(methodType, getLocation(), sig, index);
+
     }
     
     @Override

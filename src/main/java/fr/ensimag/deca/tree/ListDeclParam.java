@@ -2,12 +2,10 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 
-import java.security.Signature;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
@@ -30,9 +28,14 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
      *                     corresponds to "return" attribute (void in the main
      *                     bloc).
      */
-    public Signature verifyListDeclParam(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType){
-        //TODO
+    public Signature verifyListDeclParam(DecacCompiler compiler) throws ContextualError {
+        Signature sig = new Signature();
+        for (AbstractDeclParam param : getList()) {
+            Type paramType = param.verifyDeclParam(compiler);
+            sig.add(paramType);
+        }
+
+        return sig;
     }
 
     public void codeGenListDeclParam(DecacCompiler compiler) {

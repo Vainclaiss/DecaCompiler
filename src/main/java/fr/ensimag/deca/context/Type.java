@@ -82,4 +82,31 @@ public abstract class Type {
         throw new ContextualError(errorMessage, l);
     }
 
+    public boolean subType(Type otherType) {
+        if (this.sameType(otherType)) {
+            return true;
+        }
+
+        if (this.isClass() && otherType.isClass()) {
+            ClassType thisType = (ClassType) this;
+            ClassType thatType = (ClassType) otherType;
+            return thisType.isSubClassOf(thatType);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Type)) {
+            return false;
+        }
+        return this.sameType((Type)other);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
 }
