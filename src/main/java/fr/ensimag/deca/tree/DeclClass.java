@@ -5,9 +5,11 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 
 import org.apache.commons.lang.Validate;
 
@@ -75,11 +77,14 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        // name.getClassDefinition().getSuperClass()
-        // compiler.environmentType.defOfType(superClass.getName())
-        this.declFields.verifyListDeclField(compiler, name.getClassDefinition().getSuperClass(),
-                name.getClassDefinition());
-        this.declMethods.verifyListDeclMethod(compiler, name.getClassDefinition().getSuperClass());
+        
+        TypeDefinition superDef = compiler.environmentType.defOfType(superClass.getName());
+        // superDef != null et c'est une class d'après la passe 1
+        superClass.setDefinition(superDef);
+
+        //TODO : à terminer
+        //declFields.verifyListDeclField(compiler, superClass.getName(), name.getName());
+        //declMethods.verifyListDeclMethod(compiler, name.getClassDefinition().getSuperClass());
     }
 
     @Override

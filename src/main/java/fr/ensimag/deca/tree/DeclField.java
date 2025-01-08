@@ -1,24 +1,82 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.TypeDefinition;
+
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 
 public class DeclField extends AbstractDeclField {
-    public DeclField(Identifier type, Identifier name, Initialization init) {
-        super(type, name, init);
+    final private Visibility visibility;
+    final private AbstractIdentifier type;
+    final private AbstractIdentifier name;
+    final private AbstractInitialization init;
+
+    public DeclField(Visibility visibility, AbstractIdentifier type, AbstractIdentifier name, AbstractInitialization init) {
+        Validate.notNull(visibility);
+        Validate.notNull(type);
+        Validate.notNull(name);
+        Validate.notNull(init);
+        this.visibility = visibility;
+        this.type = type;
+        this.name = name;
+        this.init = init;
     }
 
-    public void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass, ClassDefinition superClass)
+    @Override
+    public Symbol getName() {
+        return name.getName();
+    }
+
+    @Override
+    protected FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass, int index)
             throws ContextualError {
-        // TODO
+        Type nameType = name.verifyType(compiler);
+        
+        if (nameType.isVoid()) {
+            throw new ContextualError("Error: void cannot be used as a type for field declaration ", getLocation());
+        }
+
+        ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
+        // superDef != null et c'est une class d'après la passe 1
+        superClass.setDefinition(superDef);
+        ExpDefinition envExpSuperName = superDef.getMembers().get(name.getName());
+        if (envExpSuperName != null && !envExpSuperName.isField()) {
+            throw new ContextualError("Error: This name is already used for a non field objet at " + envExpSuperName.getLocation(), getLocation());
+        }
+
+        return new FieldDefinition(nameType, getLocation(), visibility, superDef, index);
     }
 
+
+    protected void codeGenDeclField(DecacCompiler compiler) {
+        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'decompile'");
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
         // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
 

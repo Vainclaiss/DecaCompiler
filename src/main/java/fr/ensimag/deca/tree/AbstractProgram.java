@@ -13,7 +13,6 @@ import fr.ensimag.deca.context.EnvironmentType;
  *
  */
 public abstract class AbstractProgram extends Tree {
-    public abstract EnvironmentType verifyProgramPasse1(DecacCompiler compiler) throws ContextualError;
 
     public abstract void verifyProgram(DecacCompiler compiler) throws ContextualError;
 
