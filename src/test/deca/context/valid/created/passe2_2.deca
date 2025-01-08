@@ -1,0 +1,22 @@
+// Description:
+//    teste l'empilement des classes
+// Resultats:
+//    ok
+
+class A {
+    int x;
+    int y() {
+        return 0;
+    }
+}
+
+class B extends A {
+    int x;
+    int y() {
+        return 1;
+    }
+}
+
+{
+
+}

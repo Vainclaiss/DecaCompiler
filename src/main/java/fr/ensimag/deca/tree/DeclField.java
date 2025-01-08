@@ -42,7 +42,7 @@ public class DeclField extends AbstractDeclField {
     @Override
     protected FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass, int index)
             throws ContextualError {
-        Type nameType = name.verifyType(compiler);
+        Type nameType = type.verifyType(compiler);
         
         if (nameType.isVoid()) {
             throw new ContextualError("Error: void cannot be used as a type for field declaration ", getLocation());
@@ -56,7 +56,10 @@ public class DeclField extends AbstractDeclField {
             throw new ContextualError("Error: This name is already used for a non field objet at " + envExpSuperName.getLocation(), getLocation());
         }
 
-        return new FieldDefinition(nameType, getLocation(), visibility, superDef, index);
+        FieldDefinition newFieldDefinition = new FieldDefinition(nameType, getLocation(), visibility, superDef, index);
+        name.setDefinition(newFieldDefinition);
+
+        return newFieldDefinition;
     }
 
 

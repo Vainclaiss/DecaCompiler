@@ -54,11 +54,11 @@ public class DeclClass extends AbstractDeclClass {
 
         TypeDefinition superDef = compiler.environmentType.defOfType(superClass.getName());
         if (superDef == null) {
-            throw new ContextualError("Error : The parent is not defined", getLocation());
+            throw new ContextualError("Error: The parent is not defined", getLocation());
         }
 
         if (!superDef.isClass()) {
-            throw new ContextualError("Error : The parent is not a class", getLocation());
+            throw new ContextualError("Error: The parent is not a class", getLocation());
         }
 
         // Multiple declarations of the class
@@ -98,7 +98,8 @@ public class DeclClass extends AbstractDeclClass {
             try {
                 envName.declare(symbol, definition);
             } catch (DoubleDefException e) {
-                throw new ContextualError("Error: Name conflict", getLocation());
+                // normalement imposible d'en arriver là car exception l
+                throw new ContextualError("Error: A field with the same name is already declared", definition.getLocation());
             }
         }
 
@@ -109,7 +110,8 @@ public class DeclClass extends AbstractDeclClass {
             try {
                 envName.declare(symbol, definition);
             } catch (DoubleDefException e) {
-                throw new ContextualError("Error: Name conflict", getLocation());
+                throw new ContextualError("Error: A field with the same name is already declared at " 
+                                        + envFields.get(symbol).getLocation().toString(), definition.getLocation());
             }
         }
     }

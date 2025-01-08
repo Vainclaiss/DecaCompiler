@@ -29,7 +29,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
                 envExp.declare(name, newField);
             }
             catch (EnvironmentExp.DoubleDefException e) {
-                throw new ContextualError("Error: Multiple declaration of " + name.toString()
+                throw new ContextualError("Error: Multiple declaration of field " + name.toString()
                         + ", first declaration at " + envExp.get(name).getLocation(), f.getLocation());
             }
         }
