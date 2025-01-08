@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import java.security.Signature;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -27,7 +30,7 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
      *                     corresponds to "return" attribute (void in the main
      *                     bloc).
      */
-    public void verifyListDeclParam(DecacCompiler compiler, EnvironmentExp localEnv,
+    public Signature verifyListDeclParam(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType){
         //TODO
     }
@@ -39,7 +42,7 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclParam i : getList()) {
-            i.decompileDeclParam(s);
+            i.decompile(s);
             s.println();
         }
     }

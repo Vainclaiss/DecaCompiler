@@ -47,11 +47,7 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
 
-        // Pas nécéssaire pour HelloWorld, mais pour plus tard : 2 autres argument avec
-        // Environnements
-        // this.getDeclVariables().verifyListDeclVariable(compiler, ..., ...)
-
-        // On est dans le main bloc donc null, a changer dans le cas général
+        // On est dans le main bloc donc null
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
         VoidType voidType = new VoidType(voidSymb);
