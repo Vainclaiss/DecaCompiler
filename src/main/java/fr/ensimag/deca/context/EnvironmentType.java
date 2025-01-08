@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 import java.util.HashMap;
 import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
@@ -38,7 +40,23 @@ public class EnvironmentType {
         Symbol stringSymb = compiler.createSymbol("string");
         STRING = new StringType(stringSymb);
         // not added to envTypes, it's not visible for the user.
-        
+
+        // creation of Object
+        Symbol objectSymb = compiler.createSymbol("Object");
+        OBJECT = new ClassType(objectSymb, Location.BUILTIN, null);
+
+        // creation of the equals method
+        Signature equalsSignature = new Signature();
+        equalsSignature.add(OBJECT);
+        MethodDefinition equals = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
+
+        try {
+            OBJECT.getDefinition().getMembers().declare(compiler.createSymbol("equals"), equals);
+        } catch (DoubleDefException e) {
+            // impossible case
+        }
+        envTypes.put(objectSymb, OBJECT.getDefinition());
+
     }
 
     private final Map<Symbol, TypeDefinition> envTypes;
@@ -47,9 +65,14 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public void addType(Symbol s, TypeDefinition typeDef) {
+        envTypes.put(s, typeDef);
+    }
+
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public final ClassType OBJECT;
 }
