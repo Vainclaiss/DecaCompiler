@@ -4,3 +4,5 @@ class Basic extends BetterBasic{
         return arg1;
     }
 }
+{
+}
