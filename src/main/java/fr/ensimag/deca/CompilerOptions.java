@@ -109,7 +109,7 @@ public class CompilerOptions {
 
         // TODO : finir les arguments pour decac
         // if (options.contains("-w")) {
-        //     throw new NotImplementedException("Argument not yet implemented");
+        // throw new NotImplementedException("Argument not yet implemented");
         // }
 
         if (options.contains("-r")) {
@@ -138,12 +138,15 @@ public class CompilerOptions {
                 sourceFiles.add(new File(arg));
             }
         }
+        if (!options.contains("-b") && sourceFiles.isEmpty()) {
+            throw new CLIException("No source file .deca specified");
+        }
 
     }
 
     private static void parseRCommand(String[] args) throws CLIException {
         int rArgumentIndex = Arrays.asList(args).indexOf("-r");
-        if (args.length - 1 < rArgumentIndex + 1) {
+        if (args.length - 2 < rArgumentIndex + 1) {
             throw new CLIException("Cannot use the -r option without specifying the number of registers");
         }
 
@@ -160,7 +163,7 @@ public class CompilerOptions {
 
     private void parseACommand(String[] args) throws CLIException {
         int aArgumentIndex = Arrays.asList(args).indexOf("-a");
-        if (args.length - 1 < aArgumentIndex + 1) {
+        if (args.length - 2 < aArgumentIndex + 1) {
             throw new CLIException("Cannot use the -a option without specifying the precision");
         }
         try {

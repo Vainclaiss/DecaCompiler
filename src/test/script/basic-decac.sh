@@ -106,13 +106,29 @@ test_decac_b() {
     success "Pas de probleme detecte avec decac -b."
 }
 
+check_decompilation_idempotence() {
+    prompt_check "- decac -p [idempotence]"
+    echo "$1" 1>"${2%.deca}_p2.deca"
+    decac -p "${2%.deca}_p2.deca" 1>"${2%.deca}_p3.deca"
+    if ! diff "${2%.deca}_p2.deca" "${2%.deca}_p3.deca"; then
+        failure "$3"
+        exit 1
+    fi
+}
+
 test_decac_p() {
     prompt_strong "[decac -p]"
-    decac_moins_p=$(decac -p ./src/test/deca/codegen/valid/created/bool.deca)
-    check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero."
-    check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie."
-    check_no_error "$decac_moins_p" "ERREUR: decac -p a produit une erreur."
-    # TODO : add verification of composé de la décompilation
+    for file in ./src/test/deca/codegen/valid/created/*.deca; do
+        prompt "- decac -p $file"
+        decac_moins_p=$(decac -p "$file")
+        check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
+        check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
+        check_no_error "$decac_moins_p" "ERREUR: decac -p a produit une erreur pour le fichier $file."
+        check_decompilation_idempotence "$decac_moins_p" "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
+        rm -f "${file%.deca}_p2.deca" "${file%.deca}_p3.deca"
+        
+    done
+    success "SUCCESS: test_decac_p"
 }
 
 test_decac_v() {
@@ -122,6 +138,7 @@ test_decac_v() {
     check_no_output "$decac_moins_v" "ERREUR: decac -v a produit une sortie."
     check_no_error "$decac_moins_v" "ERREUR: decac -v a produit une erreur."
     # TODO : check also present of error message with an invalid file
+    success "SUCCESS: test_decac_v"
 }
 
 test_decac_n() {
@@ -133,6 +150,7 @@ test_decac_n() {
     # TODO : vérifier l'absence des checks :
     # supprime les tests à l'exécution spécifiés dans
     # les points 11.1 et 11.3 de la sémantique de Deca.
+    success "SUCCESS: test_decac_n"
 }
 
 test_decac_r() {
@@ -178,6 +196,7 @@ test_decac_r() {
     check_output "$decac_moins_r_error" "ERREUR: decac -r ? n'a produit aucune sortie."
     check_error "$decac_moins_r_error" "ERREUR: decac -r ? a produit une erreur."
 
+    success "SUCCESS: test_decac_r"
 }
 
 test_decac_d() {
@@ -216,6 +235,7 @@ test_decac_d() {
     echo "$decac_moins_d"
     check_log_level "$decac_moins_d" "ALL" "ERREUR: decac -d n'a pas produit de log de niveau ALL."
 
+    success "SUCCESS: test_decac_d"
 }
 
 test_decac_P() {
@@ -225,6 +245,8 @@ test_decac_P() {
     check_zero_status "$?" "ERREUR: decac -P a termine avec un status different de zero."
     check_no_output "$decac_moins_P" "ERREUR: decac -P a produit une sortie."
     check_no_error "$decac_moins_P" "ERREUR: decac -P a produit une erreur."
+
+    success "SUCCESS: test_decac_d"
 }
 
 test_decac_w() {
@@ -234,6 +256,8 @@ test_decac_w() {
     check_zero_status "$?" "ERREUR: decac -w a termine avec un status different de zero."
     check_no_output "$decac_moins_w" "ERREUR: decac -w a produit une sortie."
     check_no_error "$decac_moins_w" "ERREUR: decac -w a produit une erreur."
+
+    success "SUCCESS: test_decac_w"
 }
 
 test_decac_a() {
@@ -276,6 +300,7 @@ test_decac_a() {
         check_error "$decac_moins_r_error" "ERREUR: decac -a $i a produit une erreur."
     done
 
+    success "SUCCESS: test_decac_a"
 }
 
 main() {

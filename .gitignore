@@ -11,3 +11,5 @@
 .antlr
 .vscode
 *.ass
+*.lis
+*.res
