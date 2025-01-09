@@ -1,0 +1,9 @@
+// Description:
+//    tests de programme lexicalement correct.
+//    wrong #include
+//
+// Resultats:
+//    include2.deca:9:33: FichierInexistant.deca: include file not found
+
+
+#include "FichierInexistant.deca"

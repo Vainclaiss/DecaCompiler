@@ -21,7 +21,7 @@
 # sortie standard pour accepter les deux (2>&1)
 
 check_lex() {
-    if test_lex "$1" 2>&1 | grep -q "$1:[0-9]"; then
+    if test_lex "$1" 2>&1 | grep -q -e ".deca:[0-9]" -e ".decah:[0-9]"; then
         if [ "$2" = false ]; then
             failure "Lexer failed for $1, but it was expected to succeed."
             exit 1
@@ -36,7 +36,7 @@ check_lex() {
 
 # Valid tests
 make_valid_tests(){
-    for file in ./src/test/deca/syntax/lexer/valid/created/*.deca; do
+    find src/test/deca/syntax/lexer/valid -type f -name '*.deca' | while read -r file; do
         check_lex "$file" false
         success "[valid] Test passed for $file"
     done
@@ -44,7 +44,7 @@ make_valid_tests(){
 
 # Invalid tests
 make_invalid_tests() {
-    for file in ./src/test/deca/syntax/lexer/invalid/created/*.deca; do
+    find src/test/deca/syntax/lexer/invalid -type f -name '*.deca' | while read -r file; do
         check_lex "$file" true
         success "[invalid] Test passed for $file"
     done

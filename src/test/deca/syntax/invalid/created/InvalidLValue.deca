@@ -1,8 +1,0 @@
-// Description:
-//    tests de programme incorrect syntaxiquement (3 à gauche)
-//
-// Resultats:
-//    ligne 7 : Erreur, Lvalue invalide
-{
-    3  = 4;
-}

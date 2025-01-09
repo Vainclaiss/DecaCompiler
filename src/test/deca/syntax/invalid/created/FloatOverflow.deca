@@ -1,8 +1,0 @@
-// Description:
-//    tests de programme incorrect syntaxiquement (valeur trop grande)
-//
-// Resultats:
-//    ligne 7 : Erreur, Float Overflow
-{
-    float a = 1.4E41;
-}

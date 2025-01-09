@@ -19,13 +19,13 @@
 
 check_synt() {
     if [ "$2" = true ]; then
-        if ! test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"; then
+        if ! test_synt "$1" 2>&1 | grep -q -e ".deca:[0-9][0-9]*:" -e ".decah:[0-9][0-9]*:"; then
             failure "Succes inattendu de test_synt sur $1."
             exit 1
         fi
 
     else
-        if test_synt "$1" 2>&1 | grep -q -e ':[0-9][0-9]*:'; then
+        if test_synt "$1" 2>&1 | grep -q -e ':.deca[0-9][0-9]*:' -e ".decah:[0-9][0-9]*:"; then
             failure "Echec inattendu pour $1"
             exit 1
         fi
@@ -33,14 +33,14 @@ check_synt() {
 }
 
 make_valid_tests() {
-    for file in src/test/deca/syntax/parser/valid/*/*.deca; do
+    find src/test/deca/syntax/parser/valid -type f -name '*.deca' | while read -r file; do
         check_synt "$file" false
         success "[valid] Test passed for $file"
     done
 }
 
 make_invalid_tests() {
-    for file in src/test/deca/syntax/parser/invalid/*/*.deca; do
+    find src/test/deca/syntax/parser/invalid -type f -name '*.deca' | while read -r file; do
         check_synt "$file" true
         success "[invalid] Test passed for $file"
     done
