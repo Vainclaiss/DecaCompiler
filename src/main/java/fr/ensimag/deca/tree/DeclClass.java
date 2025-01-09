@@ -125,8 +125,8 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition def = name.getClassDefinition();
 
         // Passe 3
-        // declFields.verifyListDeclFieldBody(def.getMembers());
-        // declMethods.verifyListDeclMethodBody();
+        declFields.verifyListDeclFieldBody(def.getMembers());
+        declMethods.verifyListDeclMethodBody();
     }
 
     @Override
