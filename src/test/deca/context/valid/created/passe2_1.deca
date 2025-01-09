@@ -6,7 +6,7 @@
 class A {
     int x;
     int y() {
-        return 0
+        return 0;
     }
 }
 
