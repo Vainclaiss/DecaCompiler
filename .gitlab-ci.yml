@@ -29,6 +29,5 @@ sonarqube_scan:
   only:
     - develop
     - main
-    - merge_requests
   variables:
     GIT_DEPTH: "0" # Ensure full repository history is available for SonarQube analysis
