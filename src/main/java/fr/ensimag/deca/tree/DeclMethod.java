@@ -39,7 +39,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     
     @Override
-    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, int index)
+    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass)
     throws ContextualError {
 
         Type methodType = type.verifyType(compiler);
@@ -53,7 +53,6 @@ public class DeclMethod extends AbstractDeclMethod {
         ExpDefinition superMethodDef = envExpSuper.get(name.getName());
         
         if (superMethodDef != null) {
-            name.setDefinition(superMethodDef);
             if (!sig.equals(superMethodDef.asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation()).getSignature())) {
                 throw new ContextualError("Error: redefinition of a method with a different signature", getLocation());
             }
@@ -64,6 +63,15 @@ public class DeclMethod extends AbstractDeclMethod {
             }
         }
 
+        ClassDefinition currentClassDef = currentClass.getClassDefinition();
+        int index;
+        if (superMethodDef == null) {
+            currentClassDef.incNumberOfMethods();
+            index = currentClassDef.getNumberOfMethods();
+        }
+        else {
+            index = superMethodDef.asMethodDefinition("Error: Cast failed from ExpDefinition to MethodDefinition", getLocation()).getIndex();
+        }
         MethodDefinition newMethodDefinition = new MethodDefinition(methodType, getLocation(), sig, index);
         name.setDefinition(newMethodDefinition);
 

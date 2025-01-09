@@ -40,20 +40,32 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    protected FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass, int index)
+    protected FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass)
             throws ContextualError {
+                
         Type nameType = type.verifyType(compiler);
         
         if (nameType.isVoid()) {
             throw new ContextualError("Error: void cannot be used as a type for field declaration ", getLocation());
         }
 
-        ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
+        ClassDefinition superDef = superClass.getClassDefinition();
         // superDef != null et c'est une class d'après la passe 1
         superClass.setDefinition(superDef);
-        ExpDefinition envExpSuperName = superDef.getMembers().get(name.getName());
-        if (envExpSuperName != null && !envExpSuperName.isField()) {
-            throw new ContextualError("Error: This name is already used for a non field objet at " + envExpSuperName.getLocation(), getLocation());
+
+        ExpDefinition envExpSupeDef = superDef.getMembers().get(name.getName());
+        if (envExpSupeDef != null && !envExpSupeDef.isField()) {
+            throw new ContextualError("Error: This name is already used for a non field objet at " + envExpSupeDef.getLocation(), getLocation());
+        }
+
+        ClassDefinition currentClassDef = currentClass.getClassDefinition();
+        int index;
+        if (envExpSupeDef == null) {
+            currentClassDef.incNumberOfFields();
+            index = currentClassDef.getNumberOfFields();
+        }
+        else {
+            index = envExpSupeDef.asFieldDefinition("Error: Cast failed from ExpDefinition to FieldDefinition", getLocation()).getIndex();
         }
 
         FieldDefinition newFieldDefinition = new FieldDefinition(nameType, getLocation(), visibility, superDef, index);

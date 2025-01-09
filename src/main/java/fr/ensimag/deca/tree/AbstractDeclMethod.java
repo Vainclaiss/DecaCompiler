@@ -17,10 +17,11 @@ public abstract class AbstractDeclMethod extends Tree {
      * Implements non-terminal "decl_method" of [SyntaxeContextuelle] in pass 2
      * @param compiler contains "env_types" attribute
      * @param superClass the super class of the current class
+     * @param current the class that contains the method
      * @return
      * @throws ContextualError
      */
-    public abstract MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, int index)
+    public abstract MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass)
             throws ContextualError;
 
 

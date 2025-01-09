@@ -21,9 +21,9 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     throws ContextualError {
         
         EnvironmentExp envExp = new EnvironmentExp(null);
-        int index = 0;
+
         for (AbstractDeclField f : getList()) {
-            FieldDefinition newField =  f.verifyDeclField(compiler, superClass, currentClass, index++);
+            FieldDefinition newField =  f.verifyDeclField(compiler, superClass, currentClass);
             Symbol name = f.getName();
             try {
                 envExp.declare(name, newField);
@@ -36,6 +36,11 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         
         return envExp;
     }
+
+    public void verifyListDeclFieldBody() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'verifyListDeclFieldBody'");
+    }
     
     public void codeGenListDeclField(DecacCompiler compiler, ClassDefinition currentClass) {
         // TODO
@@ -45,5 +50,5 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
+    
 }

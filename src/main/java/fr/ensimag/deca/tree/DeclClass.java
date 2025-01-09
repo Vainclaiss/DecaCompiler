@@ -73,7 +73,7 @@ public class DeclClass extends AbstractDeclClass {
                                                                                                       // of the
                                                                                                       // precedent check
         ClassDefinition newDef = newType.getDefinition();
-        name.setDefinition(newDef);     // à faire en passe 3 ??
+        name.setDefinition(newDef);
 
         compiler.environmentType.addType(name.getName(), newDef);
 
@@ -83,14 +83,18 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
 
-        TypeDefinition superDef = compiler.environmentType.defOfType(superClass.getName());
+        ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
         // superDef != null et c'est une class d'après la passe 1
-        superClass.setDefinition(superDef);
+        superClass.setDefinition(superDef); // deja init d'apres l'ordre de declaration des classes
 
         EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
-        EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass);
+        EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass, name);
 
-        EnvironmentExp envName = name.getClassDefinition().getMembers(); //TODO: à modifier si modif passe 1 faite (cf au dessus)
+        ClassDefinition nameDef = name.getClassDefinition();
+        nameDef.setNumberOfFields(superDef.getNumberOfFields());
+        nameDef.setNumberOfMethods(superDef.getNumberOfMethods());
+
+        EnvironmentExp envName = nameDef.getMembers();
 
         for (Map.Entry<Symbol, ExpDefinition> entry : envFields.getCurrEnv().entrySet()) {
             Symbol symbol = entry.getKey();
@@ -118,12 +122,11 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        TypeDefinition def = compiler.environmentType.defOfType(name.getName()); // Always defined at this point
-        name.setDefinition(def);
+        ClassDefinition def = name.getClassDefinition();
 
         // Passe 3
-        // verifyListDeclFieldBody()
-        // verifyListDeclMethodBody()
+        // declFields.verifyListDeclFieldBody(def.getMembers());
+        // declMethods.verifyListDeclMethodBody();
     }
 
     @Override
