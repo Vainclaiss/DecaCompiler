@@ -60,6 +60,7 @@ public class DeclClass extends AbstractDeclClass {
         if (!superDef.isClass()) {
             throw new ContextualError("Error: The parent is not a class", getLocation());
         }
+        superClass.setDefinition(superDef);
 
         // Multiple declarations of the class
         TypeDefinition previousDef = compiler.environmentType.defOfType(name.getName());
@@ -85,7 +86,9 @@ public class DeclClass extends AbstractDeclClass {
 
         ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
         // superDef != null et c'est une class d'après la passe 1
-        superClass.setDefinition(superDef); // deja init d'apres l'ordre de declaration des classes
+        if (!superDef.equals(superClass.getClassDefinition())) {
+            throw new ContextualError("Error: Super definitions missmatch", getLocation());
+        }
 
         EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
         EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass, name);
@@ -122,11 +125,15 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        ClassDefinition def = name.getClassDefinition();
+        ClassDefinition classDef = (ClassDefinition) compiler.environmentType.defOfType(name.getName());
+        if (!classDef.equals(name.getClassDefinition())) {
+            throw new ContextualError("Error: Class definitions missmatch", getLocation());
+        }
 
+        EnvironmentExp envExp = classDef.getMembers();
         // Passe 3
-        // declFields.verifyListDeclFieldBody(def.getMembers());
-        // declMethods.verifyListDeclMethodBody();
+        declFields.verifyListDeclFieldBody(compiler, envExp, name);
+        declMethods.verifyListDeclMethodBody(compiler, envExp, name);
     }
 
     @Override

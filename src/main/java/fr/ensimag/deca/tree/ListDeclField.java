@@ -37,9 +37,10 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         return envExp;
     }
 
-    public void verifyListDeclFieldBody() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verifyListDeclFieldBody'");
+    public void verifyListDeclFieldBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass) throws ContextualError {
+        for (AbstractDeclField f : getList()) {
+            f.verifyDeclFieldBody(compiler, envExp, currentClass);
+        }
     }
     
     public void codeGenListDeclField(DecacCompiler compiler, ClassDefinition currentClass) {

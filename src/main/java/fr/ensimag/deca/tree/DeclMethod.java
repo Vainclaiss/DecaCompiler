@@ -78,6 +78,14 @@ public class DeclMethod extends AbstractDeclMethod {
         return newMethodDefinition;
 
     }
+
+    @Override
+    protected void verifyDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
+            throws ContextualError {
+        
+        Type returnType = type.verifyType(compiler);
+        EnvironmentExp envExpParams = params.verifyListDeclParamBody(compiler);
+    }
     
     @Override
     public Symbol getName() {

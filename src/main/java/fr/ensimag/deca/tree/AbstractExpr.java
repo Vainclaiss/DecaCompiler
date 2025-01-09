@@ -85,10 +85,12 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
-        // A FAIRE: rajouter les classes
+
         Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
-        if (expectedType.sameType(typeRvalue))
+        
+        if (typeRvalue.subType(expectedType))
             return this;
+
         if (expectedType.isFloat() && typeRvalue.isInt()) {
             ConvFloat conv = new ConvFloat(this);
             // l'expression this a déja été vérifié précédemment pas besoin de le refaire

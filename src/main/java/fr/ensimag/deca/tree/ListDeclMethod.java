@@ -43,9 +43,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void verifyListDeclMethodBody() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verifyListDeclMethodBody'");
+    public void verifyListDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass) throws ContextualError {
+        for (AbstractDeclMethod m : getList()) {
+            m.verifyDeclMethodBody(compiler, envExp, currentClass);
+        }
     }
-
 }

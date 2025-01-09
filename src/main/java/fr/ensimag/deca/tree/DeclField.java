@@ -75,6 +75,15 @@ public class DeclField extends AbstractDeclField {
     }
 
 
+    @Override
+    protected void verifyDeclFieldBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
+            throws ContextualError {
+        
+        Type nameType = type.verifyType(compiler);
+        init.verifyInitialization(compiler, nameType, envExp, currentClass.getClassDefinition());
+    }
+
+
     protected void codeGenDeclField(DecacCompiler compiler) {
         // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }

@@ -51,6 +51,7 @@ public class Main extends AbstractMain {
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
         VoidType voidType = new VoidType(voidSymb);
+        
         declVariables.verifyListDeclVariable(compiler, mainEnv, null);
         insts.verifyListInst(compiler, mainEnv, null, voidType);
 

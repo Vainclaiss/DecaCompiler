@@ -5,8 +5,12 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 
 
@@ -38,6 +42,25 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         return sig;
     }
 
+    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler) throws ContextualError {
+            
+        EnvironmentExp envExp = new EnvironmentExp(null);
+
+        for (AbstractDeclParam param : getList()) {
+            ParamDefinition newParamDef =  param.verifyDeclParamBody(compiler);
+            Symbol name = param.getName();
+            try {
+                envExp.declare(name, newParamDef);
+            }
+            catch (EnvironmentExp.DoubleDefException e) {
+                throw new ContextualError("Error: Multiple declaration of parameter " + name.toString()
+                        + ", first declaration at " + envExp.get(name).getLocation(), param.getLocation());
+            }
+        }
+        
+        return envExp;
+    }
+
     public void codeGenListDeclParam(DecacCompiler compiler) {
         //TODO
     }
@@ -49,4 +72,5 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
             s.println();
         }
     }
+
 }
