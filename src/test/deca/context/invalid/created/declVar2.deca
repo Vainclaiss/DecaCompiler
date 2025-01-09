@@ -1,0 +1,8 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 7: Error: Multiple declaration of a, first declaration at [6, 8]
+
+{
+    int a;
+    int a;
+}

@@ -1,0 +1,18 @@
+// Description:
+//    test des expressions IfThenElse
+// Resultats:
+//    ok
+
+{
+    if (10 > 5) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (2 == 3) {
+        println("ERRONE");
+    } else {
+        println("ok");
+    }
+}

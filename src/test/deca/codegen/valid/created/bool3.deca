@@ -1,0 +1,13 @@
+// Description:
+//    test des expressions booleennes
+// Resultat:
+//    ok
+
+{
+    if (!false) {
+        println("ok");
+    }
+    else {
+        println("ERRONE");
+    }
+}

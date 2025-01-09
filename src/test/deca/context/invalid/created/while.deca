@@ -1,0 +1,9 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 15: while condition must be a boolean expression
+
+{
+    while(1+1) {
+        println("aaa");
+    }
+}

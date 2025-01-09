@@ -1,0 +1,14 @@
+// Description:
+//    test de la conversion entier -> flottant
+// Resultats:
+//    ok
+
+{
+    float a;
+    a = 1;
+    if (a == 1.0) {
+        print("ok") ;
+    } else {
+        print("ERRONE") ;
+    }
+}

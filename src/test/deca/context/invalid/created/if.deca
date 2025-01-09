@@ -1,0 +1,9 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 6 : Error: Expected expression type is boolean, got float
+
+{
+    if(3.7) {
+        println(23);
+    }
+}

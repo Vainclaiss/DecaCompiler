@@ -1,0 +1,7 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 6: Error: Expected expression type is int, float or string, got boolean
+
+{
+    println(true);
+}

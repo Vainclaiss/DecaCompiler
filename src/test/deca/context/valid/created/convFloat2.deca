@@ -1,0 +1,13 @@
+// Description:
+//    test de la conversion entier -> flottant
+// Resultats:
+//    ok
+
+{
+
+    if (2*0.5 <= 2) {
+        print("ok") ;
+    } else {
+        print("ERRONE") ;
+    }
+}

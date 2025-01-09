@@ -1,0 +1,9 @@
+// Description:
+//    test des expressions arithmetiques
+// Resultats:
+//    5
+
+
+{
+    println(1*2+4-1);
+}

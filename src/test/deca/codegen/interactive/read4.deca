@@ -1,0 +1,9 @@
+// Description:
+//    test de readInt dans des expressions arithmétiques
+// Resultats:
+//    "affiche x"
+
+{   
+    float x = readInt() + readInt();
+    println(x);
+}

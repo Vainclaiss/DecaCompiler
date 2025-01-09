@@ -1,0 +1,8 @@
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 7 : Illegal assignment beetween int and boolean
+
+{
+    int a;
+    a = true;
+}
