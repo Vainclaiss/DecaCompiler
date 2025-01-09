@@ -16,16 +16,14 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-/**
- *
- * @author gl01
- * @date 01/01/2025
- */
-public class New extends AbstractExpr {
-
-    final private AbstractIdentifier name;
-    public New(AbstractIdentifier name) {
-        this.name = name;
+public class MethodCall extends AbstractExpr{
+    final private AbstractIdentifier methodName;
+    final private AbstractExpr leftOperand;
+    final private ListExpr rightOperand;
+    public MethodCall(AbstractExpr leftOperand,AbstractIdentifier methodName,ListExpr rightOperand) {
+        this.methodName = methodName;
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
     }
 
     @Override
@@ -48,7 +46,7 @@ public class New extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("New()");
+        s.print("MethodCall()");
     }
 
     @Override
@@ -58,7 +56,9 @@ public class New extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        name.prettyPrint(s,prefix,false);
+        methodName.prettyPrint(s, prefix,false);
+        leftOperand.prettyPrint(s, prefix,false);
+        rightOperand.prettyPrint(s, prefix,false);
     }
 
 }
