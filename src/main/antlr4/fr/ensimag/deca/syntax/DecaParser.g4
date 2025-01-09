@@ -414,6 +414,9 @@ primary_expr returns[AbstractExpr tree]
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
+            $tree = new New();
+            setLocation($tree, $NEW);
+
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
@@ -455,6 +458,7 @@ literal returns[AbstractExpr tree]
                 throw new FloatOverflow(this,$ctx);
             }
         }
+
     | STRING {
             $tree = new StringLiteral($STRING.text.substring(1,$STRING.text.length()-1).replace("\\\\","\\").replace("\\\"","\""));
             setLocation($tree,$STRING);
