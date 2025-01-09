@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import org.apache.commons.lang.Validate;
 
 /**
  * Class declaration.
@@ -10,6 +11,9 @@ import fr.ensimag.deca.context.ContextualError;
  * @date 01/01/2025
  */
 public abstract class AbstractDeclClass extends Tree {
+
+
+
 
     /**
      * Pass 1 of [SyntaxeContextuelle]. Verify that the class declaration is OK

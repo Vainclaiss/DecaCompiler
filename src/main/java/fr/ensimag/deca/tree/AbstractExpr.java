@@ -135,6 +135,14 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     /**
+     * Generate the code for ReadExpr, the result is stored in R1
+     * @param compiler
+     */
+    protected void codeExp(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
      * Load the value of the expression in Rn
      * 
      * @param compiler

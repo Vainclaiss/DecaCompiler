@@ -11,6 +11,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
@@ -30,9 +31,17 @@ public class ReadInt extends AbstractReadExpr {
         return compiler.environmentType.INT;
     }
 
-    protected void codeExp(DecacCompiler compiler, int n) {
+    @Override
+    protected void codeExp(DecacCompiler compiler) {
         compiler.addInstruction(new RINT());
-        super.codeExp(compiler, n);
+        compiler.addExecError(IOError.INSTANCE);
+        compiler.addInstruction(new BOV(IOError.INSTANCE.getLabel()));
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        codeExp(compiler);
+        compiler.addInstruction(new LOAD(Register.R1, Register.getR(n)));
     }
 
     @Override

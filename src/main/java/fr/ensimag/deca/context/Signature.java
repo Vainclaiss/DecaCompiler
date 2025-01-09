@@ -24,4 +24,19 @@ public class Signature {
         return args.size();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Signature)) {
+            return false;
+        }
+        Signature otherSignature = (Signature) other;
+
+        return args.equals(otherSignature.args);
+    }
+
+    @Override
+    public int hashCode() {
+        return args.hashCode();
+    }
+
 }

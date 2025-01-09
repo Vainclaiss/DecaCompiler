@@ -1,5 +1,5 @@
 // Description:
-//    test de readInt avec une conversion int -> float
+//    test de readInt dans des expressions arithmétiques
 // Resultats:
 //    "affiche x"
 

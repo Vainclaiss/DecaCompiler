@@ -91,6 +91,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 codeGenInst(compiler, Register.getR(n+1), Register.getR(n));
             }
         }
+        else if (dvalExp2 == Register.R1) {
+            getRightOperand().codeExp(compiler);
+            codeGenInst(compiler, dvalExp2, Register.getR(n));
+        }
         else {
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }

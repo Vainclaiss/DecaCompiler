@@ -35,16 +35,13 @@ public class Program extends AbstractProgram {
     private ListDeclClass classes;
     private AbstractMain main;
 
-    /*
-     * Correspond au verifyProgram de la passe 3 (car pas de valeur renvoyée /
-     * synthétisée)
-     */
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
         // Rien a verifier, voir règle (3.1)
 
-        // Directement la passe 3 pour l'instant
+        this.getClasses().verifyListClass(compiler);
+        this.getClasses().verifyListClassMembers(compiler);
         this.getClasses().verifyListClassBody(compiler);
         this.getMain().verifyMain(compiler);
         LOG.debug("verify program: end");
