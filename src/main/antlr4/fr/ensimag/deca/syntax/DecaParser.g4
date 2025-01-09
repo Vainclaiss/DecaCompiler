@@ -576,11 +576,15 @@ decl_method returns[AbstractDeclMethod tree]
     ListDeclParam declParams = new ListDeclParam();
 }
     : type ident OPARENT params=list_params[declParams] CPARENT (block {
-            MethodBody body = new MethodBody($block.decls,$block.insts);
-            $tree = new DeclMethod($type.tree,$ident.tree,declParams,body);
+            MethodBody mBody = new MethodBody($block.decls,$block.insts);
+            $tree = new DeclMethod($type.tree,$ident.tree,declParams,mBody);
             $tree.setLocation($type.tree.getLocation());
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            StringLiteral string = new StringLiteral($code.text.substring(1,$code.text.length()-1).replace("\\\\","\\").replace("\\\"","\""));
+            MethodAsmBody aBody = new MethodAsmBody(string);
+            $tree = new DeclMethod($type.tree,$ident.tree,declParams,aBody);
+            $tree.setLocation($code.location);
         }
       ) {
         }
