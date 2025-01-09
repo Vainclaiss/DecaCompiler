@@ -10,4 +10,8 @@
 .settings
 .antlr
 .vscode
+
 *.ass
+*.lis
+*.res
+*.expected

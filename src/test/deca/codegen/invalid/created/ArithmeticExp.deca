@@ -1,6 +1,8 @@
-// Resultats :
-//    Erreur generation code
-//    Ligne 6 : Division by 0
+// Description:
+//    Division par 0
+// Resultats:
+//    Error: division by 0
+
 
 {
     print(2/0);
