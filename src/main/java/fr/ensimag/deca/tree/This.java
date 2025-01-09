@@ -16,16 +16,10 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-/**
- *
- * @author gl01
- * @date 01/01/2025
- */
-public class New extends AbstractExpr {
-
-    final private AbstractIdentifier name;
-    public New(AbstractIdentifier name) {
-        this.name = name;
+public class This extends AbstractExpr{
+    final private Boolean bool;
+    public This(Boolean bool) {
+        this.bool = bool;
     }
 
     @Override
@@ -48,7 +42,7 @@ public class New extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("New()");
+        s.print("This()");
     }
 
     @Override
@@ -57,8 +51,13 @@ public class New extends AbstractExpr {
     }
 
     @Override
+    String prettyPrintNode() {
+        return "This (" + bool.toString() + ")";
+    }
+
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        name.prettyPrint(s,prefix,false);
+        // leaf node => nothing to do
     }
 
 }

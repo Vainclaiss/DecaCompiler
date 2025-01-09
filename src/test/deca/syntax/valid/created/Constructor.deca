@@ -1,0 +1,29 @@
+class Construc extends Smth{
+    int a;
+    int b;
+    void Construc(){
+        this.a = 10;
+        this.b = 11;
+    }
+    int add(){
+        return this.a + this.b;
+    }
+    void jenefaisrien(){
+    }
+
+    int val4(){
+        int val = add();
+        jenefaisrien();
+        return 4;
+    }
+}
+
+{
+    int var1 = 9;
+    int var2 = 6;
+    Construc test = new Construc ();
+    int var3 = test.add();
+    int val4 = test.val4();
+
+
+}

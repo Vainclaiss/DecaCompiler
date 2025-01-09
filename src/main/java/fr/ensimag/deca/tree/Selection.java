@@ -16,16 +16,12 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-/**
- *
- * @author gl01
- * @date 01/01/2025
- */
-public class New extends AbstractExpr {
-
-    final private AbstractIdentifier name;
-    public New(AbstractIdentifier name) {
-        this.name = name;
+public class Selection extends AbstractLValue{
+    final private AbstractExpr leftOperand;
+    final private AbstractIdentifier rightOperand;
+    public Selection(AbstractExpr leftOperand, AbstractIdentifier rightOperand) {
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
     }
 
     @Override
@@ -48,17 +44,18 @@ public class New extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("New()");
+        s.print("Selection()");
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // leaf node => nothing to do
+       //TODO
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        name.prettyPrint(s,prefix,false);
+        leftOperand.prettyPrint(s, prefix,false);
+        rightOperand.prettyPrint(s, prefix,false);
     }
 
 }
