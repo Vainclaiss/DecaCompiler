@@ -1,0 +1,6 @@
+class test{
+
+}
+{
+    test a = new test();
+}
