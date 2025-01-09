@@ -17,7 +17,7 @@ before_script:
 
 build:
   stage: build
-  image: maven:3.8.5-jdk-17
+  image: maven:3.8.5-openjdk-17
   script:
     - mvn $MAVEN_CLI_OPTS clean verify
 
