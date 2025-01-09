@@ -13,6 +13,7 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * @author gl01
@@ -71,10 +72,24 @@ public class Initialization extends AbstractInitialization {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         expression.prettyPrint(s, prefix, true);
     }
-
     @Override
-    protected void codeGenByteInitialization(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInitialization'");
+    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex) {
+        this.expression.codeGenByteInst(mv);
+    
+        Type exprType = this.expression.getType();
+    
+        if (exprType.isInt()) {
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);  
+        } else if (exprType.isFloat()) {
+            mv.visitVarInsn(Opcodes.FSTORE, localIndex);  
+        } else if (exprType.isBoolean()) {
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);  
+        } else if (exprType.isString()) {
+            mv.visitVarInsn(Opcodes.ASTORE, localIndex);  
+        } else {
+            throw new UnsupportedOperationException("Unsupported type for initialization: " + exprType);
+        }
     }
+    
+    
 }

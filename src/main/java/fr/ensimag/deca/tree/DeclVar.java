@@ -68,6 +68,8 @@ public class DeclVar extends AbstractDeclVar {
         initialization.codeGenInitialization(compiler, adresse);
     }
 
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
@@ -87,9 +89,17 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-    @Override
-    protected void codeGenByteDeclVar(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteDeclVar'");
+    private static int nextLocalIndex = 0; // Local to DeclVar
+
+
+    protected void codeGenByteDeclVar(MethodVisitor mv, DecacCompiler compiler) {
+        int localIndex = compiler.allocateLocalIndex();
+        varName.getVariableDefinition().setLocalIndex(localIndex);
+
+        initialization.codeGenByteInitialization(mv, localIndex);
     }
+    
+
+
+
 }

@@ -179,7 +179,7 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    protected void codeGenByteBool(MethodVisitor mv) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

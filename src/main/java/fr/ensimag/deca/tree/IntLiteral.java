@@ -17,6 +17,8 @@ import fr.ensimag.ima.pseudocode.Register;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+
 /**
  * Integer literal
  *
@@ -59,6 +61,15 @@ public class IntLiteral extends AbstractExpr {
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
     }
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+ 
+        mv.visitLdcInsn(value);
+    }
+    
+
+    
 
     @Override
     String prettyPrintNode() {

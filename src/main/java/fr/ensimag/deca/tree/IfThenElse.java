@@ -12,6 +12,7 @@ import fr.ensimag.ima.pseudocode.instructions.BRA;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * Full if/else if/else statement.
@@ -122,10 +123,24 @@ public class IfThenElse extends AbstractInst {
         thenBranch.prettyPrint(s, prefix, false);
         elseBranch.prettyPrint(s, prefix, true);
     }
-
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
+        org.objectweb.asm.Label elseLabel = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label endLabel  = new org.objectweb.asm.Label();
+    
+        // Instead of pushing 0/1, we do short-circuit branching:
+        condition.codeGenByteBool(mv, /* branchIfTrue = */ false, elseLabel);
+    
+        // Then branch
+        thenBranch.codeGenListInstByte(mv);
+        mv.visitJumpInsn(Opcodes.GOTO, endLabel);
+    
+        // Else
+        mv.visitLabel(elseLabel);
+        elseBranch.codeGenListInstByte(mv);
+    
+        mv.visitLabel(endLabel);
     }
+    
+    
 }

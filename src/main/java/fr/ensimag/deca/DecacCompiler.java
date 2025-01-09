@@ -43,6 +43,7 @@ public class DecacCompiler {
      * Portable newline character.
      */
     private static final String nl = System.getProperty("line.separator", "\n");
+    int nextLocalIndex = 0;
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
@@ -237,6 +238,19 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+ /**
+     * Reset the local variable index before generating bytecode for a new method.
+     */
+    public void resetLocalIndex() {
+        nextLocalIndex = 0;
+    }
+
+    /**
+     * Allocate and return the next free local variable index (for bytecode).
+     */
+    public int allocateLocalIndex() {
+        return nextLocalIndex++;
     }
 
 }

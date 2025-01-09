@@ -9,6 +9,9 @@ import fr.ensimag.deca.tree.Location;
  * @date 01/01/2025
  */
 public class VariableDefinition extends ExpDefinition {
+
+    private int localIndex = -1;
+
     public VariableDefinition(Type type, Location location) {
         super(type, location);
     }
@@ -21,5 +24,13 @@ public class VariableDefinition extends ExpDefinition {
     @Override
     public boolean isExpression() {
         return true;
+    }
+
+    public void setLocalIndex(int index) {
+        this.localIndex = index;
+    }
+
+    public int getLocalIndex() {
+        return this.localIndex;
     }
 }

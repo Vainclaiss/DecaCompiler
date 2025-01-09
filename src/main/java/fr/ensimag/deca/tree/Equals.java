@@ -39,9 +39,8 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+        
     }
 
 }

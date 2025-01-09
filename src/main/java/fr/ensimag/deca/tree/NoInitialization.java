@@ -57,9 +57,8 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     @Override
-    protected void codeGenByteInitialization(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInitialization'");
+    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex) {
+        // nothing to do
     }
 
 }

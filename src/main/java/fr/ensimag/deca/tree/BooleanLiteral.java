@@ -89,14 +89,28 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
-    }
-
-    @Override
     protected void codeGenBytePrint(MethodVisitor mv) {
-        throw new UnsupportedOperationException("not yet implemented");
+        mv.visitFieldInsn(
+            org.objectweb.asm.Opcodes.GETSTATIC,
+            "java/lang/System",
+            "out",
+            "Ljava/io/PrintStream;"
+        );
+    
+        mv.visitLdcInsn(value ? "true" : "false");
+    
+        mv.visitMethodInsn(
+            org.objectweb.asm.Opcodes.INVOKEVIRTUAL,
+            "java/io/PrintStream",
+            "println",          // or "print"
+            "(Ljava/lang/String;)V",
+            false
+        );
     }
+    
+
+    
+
+
 
 }

@@ -23,6 +23,8 @@ import fr.ensimag.ima.pseudocode.instructions.WINT;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * Deca Identifier
@@ -202,6 +204,44 @@ public class Identifier extends AbstractIdentifier {
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
     }
+
+    @Override
+    protected void codeGenBytePrint(MethodVisitor mv) {
+        Type type = getType();
+        mv.visitFieldInsn(
+            Opcodes.GETSTATIC,
+            "java/lang/System",
+            "out",
+            "Ljava/io/PrintStream;"
+        );
+    
+        int localIndex = getVariableDefinition().getLocalIndex();
+        
+        if (type.isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        mv.visitMethodInsn(
+            Opcodes.INVOKEVIRTUAL,
+            "java/io/PrintStream",
+            "println",
+            "(I)V",
+            false
+        );
+    }
+        else if(type.isFloat()){
+            mv.visitVarInsn(Opcodes.FLOAD, localIndex);
+            mv.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(F)V",
+                false
+            );
+
+        }
+}
+
+    
+
 
     /**
      * Generate code to print the expression

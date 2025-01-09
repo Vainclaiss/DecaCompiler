@@ -36,9 +36,23 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+        if (branchIfTrue) {
+          
+            org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
+    
+            getLeftOperand().codeGenByteBool(mv, false, skipRight);
+    
+            getRightOperand().codeGenByteBool(mv, true, e);
+    
+            mv.visitLabel(skipRight);
+        } else {
+
+            getLeftOperand().codeGenByteBool(mv, false, e);
+            getRightOperand().codeGenByteBool(mv, false, e);
+        }
     }
 
+    
+    
 }

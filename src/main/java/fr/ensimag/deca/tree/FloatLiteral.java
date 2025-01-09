@@ -75,6 +75,13 @@ public class FloatLiteral extends AbstractExpr {
         return "Float (" + getValue() + ")";
     }
 
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+ 
+        mv.visitLdcInsn(value);
+    }
+
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
@@ -83,12 +90,6 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
-    }
-
-    @Override
-    protected void codeGenBytePrint(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
     }
 
 }

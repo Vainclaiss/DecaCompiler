@@ -28,39 +28,13 @@ public class Println extends AbstractPrint {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-        System.out.println("DEBUG: Println.codeGenByteInst is invoked");
+protected void codeGenByteInst(MethodVisitor mv) {
+
+    super.codeGenByteInst(mv);
+
+}
+
     
-        // Load System.out
-        mv.visitFieldInsn(
-            Opcodes.GETSTATIC,
-            "java/lang/System",
-            "out",
-            "Ljava/io/PrintStream;"
-        );
-    
-        
-        if (!getArguments().isEmpty()) {
-            AbstractExpr firstArg = getArguments().get(0);
-            if (firstArg instanceof StringLiteral) {
-                StringLiteral str = (StringLiteral) firstArg;
-                mv.visitLdcInsn(str.getValue());
-            } else {
-                throw new UnsupportedOperationException("Unsupported arg type in println");
-            }
-        } else {
-            mv.visitLdcInsn("");
-        }
-    
-        // call println(String)
-        mv.visitMethodInsn(
-            Opcodes.INVOKEVIRTUAL,
-            "java/io/PrintStream",
-            "println",
-            "(Ljava/lang/String;)V",
-            false
-        );
-    }
     
 
     @Override

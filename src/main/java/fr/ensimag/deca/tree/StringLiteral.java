@@ -91,6 +91,12 @@ public class StringLiteral extends AbstractStringLiteral {
         mv.visitInsn(Opcodes.SWAP);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V", false);
     }
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        mv.visitLdcInsn(value); 
+    }
+    
+
 
 
 

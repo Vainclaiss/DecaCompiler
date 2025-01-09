@@ -69,6 +69,8 @@ public class Program extends AbstractProgram {
             );
     
             // 2) Constructor: public Main() { super(); }
+
+            // on declare le constructeur et on retourne un method visitor
             MethodVisitor ctor = tcv.visitMethod(
                 Opcodes.ACC_PUBLIC,
                 "<init>",
@@ -76,9 +78,9 @@ public class Program extends AbstractProgram {
                 null,
                 null
             );
-            ctor.visitCode();
+            ctor.visitCode(); // on entre dans le corps du constructeur c comme ouvrir {}
             ctor.visitVarInsn(Opcodes.ALOAD, 0);
-            ctor.visitMethodInsn(
+            ctor.visitMethodInsn( // fait appel à super() dans java
                 Opcodes.INVOKESPECIAL, // le invokespecial ici pour dire qu'on va appeler le constructeur
                 "java/lang/Object",
                 "<init>", // pour dire constructeur
@@ -101,7 +103,7 @@ public class Program extends AbstractProgram {
     
             // on entre dans la main method
 
-            this.getMain().codeGenByteMain(mv); // on appelle cette fct pour generer le bytecode suivant l'arbre
+            this.getMain().codeGenByteMain(mv,compiler); // on appelle cette fct pour generer le bytecode suivant l'arbre
     
             // 5) On retourne du main
             mv.visitInsn(Opcodes.RETURN); // on ajoute le return pour le compter dans le stack en bas
@@ -111,10 +113,9 @@ public class Program extends AbstractProgram {
             // 6) La classe est finit
             tcv.visitEnd();
     
-            // 7) Get the raw bytecode
+            
             byte[] bytecode = cw.toByteArray();
     
-            // 8) Write the standard Main.class (binary file)
             try (FileOutputStream fos = new FileOutputStream("Main.class")) {
                 fos.write(bytecode);
                 LOG.info("Wrote Main.class successfully.");
