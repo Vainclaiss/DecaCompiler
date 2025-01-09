@@ -26,9 +26,11 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    public Type verifyMethodBody(DecacCompiler compiler) throws ContextualError {
-         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenMethodBody'");
+    public void verifyMethodBody(DecacCompiler compiler, EnvironmentExp envExpParams,
+                ClassDefinition currentClass, Type returnType) throws ContextualError {
+
+        variables.verifyListDeclVariable(compiler, envExpParams, currentClass);
+        body.verifyListInst(compiler, envExpParams, currentClass, returnType);
     }
 
 

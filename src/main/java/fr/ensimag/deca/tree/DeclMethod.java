@@ -84,7 +84,7 @@ public class DeclMethod extends AbstractDeclMethod {
             throws ContextualError {
         
         Type returnType = type.verifyType(compiler);
-        EnvironmentExp envExpParams = params.verifyListDeclParamBody(compiler);
+        EnvironmentExp envExpParams = params.verifyListDeclParamBody(compiler, envExp);
     }
     
     @Override

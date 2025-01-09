@@ -25,12 +25,6 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
      * Implements non-terminal "list_DeclParam" of [SyntaxeContextuelle] in pass 3
      * 
      * @param compiler     contains "env_types" attribute
-     * @param localEnv     corresponds to "env_exp" attribute
-     * @param currentClass
-     *                     corresponds to "class" attribute (null in the main bloc).
-     * @param returnType
-     *                     corresponds to "return" attribute (void in the main
-     *                     bloc).
      */
     public Signature verifyListDeclParam(DecacCompiler compiler) throws ContextualError {
         Signature sig = new Signature();
@@ -42,23 +36,23 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         return sig;
     }
 
-    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler) throws ContextualError {
+    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler, EnvironmentExp envExp) throws ContextualError {
             
-        EnvironmentExp envExp = new EnvironmentExp(null);
+        EnvironmentExp envExpParam = new EnvironmentExp(envExp);
 
         for (AbstractDeclParam param : getList()) {
             ParamDefinition newParamDef =  param.verifyDeclParamBody(compiler);
             Symbol name = param.getName();
             try {
-                envExp.declare(name, newParamDef);
+                envExpParam.declare(name, newParamDef);
             }
             catch (EnvironmentExp.DoubleDefException e) {
                 throw new ContextualError("Error: Multiple declaration of parameter " + name.toString()
-                        + ", first declaration at " + envExp.get(name).getLocation(), param.getLocation());
+                        + ", first declaration at " + envExpParam.get(name).getLocation(), param.getLocation());
             }
         }
         
-        return envExp;
+        return envExpParam;
     }
 
     public void codeGenListDeclParam(DecacCompiler compiler) {

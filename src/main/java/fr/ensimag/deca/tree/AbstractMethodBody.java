@@ -11,7 +11,8 @@ import java.io.PrintStream;
 
 public abstract class AbstractMethodBody extends Tree{
 
-    public abstract Type verifyMethodBody(DecacCompiler compiler) throws ContextualError;
+    public abstract void verifyMethodBody(DecacCompiler compiler, EnvironmentExp envExpParams,
+        ClassDefinition currentClass, Type returnType) throws ContextualError;
 
     public abstract void codeGenMethodBody(DecacCompiler compiler) ;
 
