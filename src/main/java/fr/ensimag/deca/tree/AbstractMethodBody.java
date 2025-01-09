@@ -9,29 +9,10 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-public class AbstractMethodBody extends Tree{
+public abstract class AbstractMethodBody extends Tree{
 
-    final ListDeclVar variables;
-    final ListInst body;
-    public AbstractMethodBody(ListDeclVar ldv, ListInst li ) {
-        this.variables = ldv;
-        this.body = li;
-    }
+    public abstract Type verifyMethodBody(DecacCompiler compiler) throws ContextualError;
 
-    @Override
-    public void decompile(IndentPrintStream s) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
-
-
-    @Override
-    protected void prettyPrintChildren(PrintStream s, String prefix) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
-
-    @Override
-    protected void iterChildren(TreeFunction f) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
-    }
+    public abstract void codeGenMethodBody(DecacCompiler compiler) ;
 
 }

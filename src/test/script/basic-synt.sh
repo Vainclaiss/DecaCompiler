@@ -15,36 +15,42 @@
 # automatiquement. Un exemple d'automatisation est donné avec une
 # boucle for sur les tests invalides, il faut aller encore plus loin.
 
-cd "$(dirname "$0")"/../../.. || exit 1
+. "$(dirname "$0")/utils.sh"
 
-PATH=./src/test/script/launchers:"$PATH"
+check_synt() {
+    if [ "$2" = true ]; then
+        if ! test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"; then
+            failure "Succes inattendu de test_synt sur $1."
+            exit 1
+        fi
 
-# exemple de définition d'une fonction
-test_synt_invalide() {
-    # $1 = premier argument.
-    if test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"; then
-        echo "Echec attendu pour test_synt sur $1."
     else
-        echo "Succes inattendu de test_synt sur $1."
-        exit 1
+        if test_synt "$1" 2>&1 | grep -q -e ':[0-9][0-9]*:'; then
+            failure "Echec inattendu pour $1"
+            exit 1
+        fi
     fi
 }
 
-test_synt_valide() {
-    # $1 = first argument.
-    if test_synt "$1" 2>&1 | grep -q -e ':[0-9][0-9]*:'; then
-        echo "Echec inattendu pour $1"
-        exit 1
-    else
-        echo "Succes attendu de $1"
-    fi
-
+make_valid_tests() {
+    for file in src/test/deca/syntax/parser/valid/*/*.deca; do
+        check_synt "$file" false
+        success "[valid] Test passed for $file"
+    done
 }
 
-for cas_de_test in src/test/deca/syntax/invalid/*/*.deca; do
-    test_synt_invalide "$cas_de_test"
-done
+make_invalid_tests() {
+    for file in src/test/deca/syntax/parser/invalid/*/*.deca; do
+        check_synt "$file" true
+        success "[invalid] Test passed for $file"
+    done
+}
 
-for cas_de_test in src/test/deca/syntax/valid/*/*.deca; do
-    test_synt_valide "$cas_de_test"
-done
+main() {
+    prompt_strong "Running basic-synt tests..."
+    setup_path_and_cd
+    make_valid_tests
+    make_invalid_tests
+}
+
+main

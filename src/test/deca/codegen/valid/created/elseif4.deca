@@ -2,6 +2,7 @@
 //    test des expressions IfThenElse
 // Resultats:
 //    ok
+//    ok
 
 {
     if (10 > 5) {
