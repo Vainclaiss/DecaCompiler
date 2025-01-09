@@ -18,6 +18,7 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import java.io.PrintStream;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  *
@@ -107,10 +108,13 @@ public class BooleanLiteral extends AbstractExpr {
             false
         );
     }
-    
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    if ((value && branchIfTrue) || (!value && !branchIfTrue)) {
+        mv.visitJumpInsn(Opcodes.GOTO, e);
+    }
+}
 
     
-
-
-
 }
