@@ -16,12 +16,10 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-public class MethodCall extends AbstractExpr{
-    final private AbstractIdentifier methodName;
+public class Selection extends AbstractLValue{
     final private AbstractExpr leftOperand;
-    final private ListExpr rightOperand;
-    public MethodCall(AbstractExpr leftOperand,AbstractIdentifier methodName,ListExpr rightOperand) {
-        this.methodName = methodName;
+    final private AbstractIdentifier rightOperand;
+    public Selection(AbstractExpr leftOperand, AbstractIdentifier rightOperand) {
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
@@ -46,18 +44,17 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("MethodCall()");
+        s.print("Selection()");
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // leaf node => nothing to do
+       //TODO
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         leftOperand.prettyPrint(s, prefix,false);
-        methodName.prettyPrint(s, prefix,false);
         rightOperand.prettyPrint(s, prefix,false);
     }
 

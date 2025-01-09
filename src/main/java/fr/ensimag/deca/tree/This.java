@@ -16,14 +16,10 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-public class MethodCall extends AbstractExpr{
-    final private AbstractIdentifier methodName;
-    final private AbstractExpr leftOperand;
-    final private ListExpr rightOperand;
-    public MethodCall(AbstractExpr leftOperand,AbstractIdentifier methodName,ListExpr rightOperand) {
-        this.methodName = methodName;
-        this.leftOperand = leftOperand;
-        this.rightOperand = rightOperand;
+public class This extends AbstractExpr{
+    final private Boolean bool;
+    public This(Boolean bool) {
+        this.bool = bool;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("MethodCall()");
+        s.print("This()");
     }
 
     @Override
@@ -55,10 +51,13 @@ public class MethodCall extends AbstractExpr{
     }
 
     @Override
+    String prettyPrintNode() {
+        return "This (" + bool.toString() + ")";
+    }
+
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        leftOperand.prettyPrint(s, prefix,false);
-        methodName.prettyPrint(s, prefix,false);
-        rightOperand.prettyPrint(s, prefix,false);
+        // leaf node => nothing to do
     }
 
 }

@@ -379,8 +379,7 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
-            ListExpr noArgs = new ListExpr();
-            $tree = new MethodCall($e1.tree,$i.tree,noArgs);
+            $tree = new Selection($e1.tree,$i.tree);
             setLocation($tree,$DOT);
         }
         (o=OPARENT args=list_expr CPARENT {
@@ -403,7 +402,8 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-
+            $tree = new MethodCall(new This(true),$ident.tree,$args.tree);
+            $tree.setLocation($ident.tree.getLocation());
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -478,6 +478,8 @@ literal returns[AbstractExpr tree]
             setLocation($tree,$FALSE);
         }
     | THIS {
+            $tree = new This(false);
+            setLocation($tree,$THIS);
         }
     | NULL {
         }
