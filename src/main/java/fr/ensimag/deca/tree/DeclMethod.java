@@ -50,28 +50,30 @@ public class DeclMethod extends AbstractDeclMethod {
         superClass.setDefinition(superDef);
 
         EnvironmentExp envExpSuper = superDef.getMembers();
-        MethodDefinition superMethodDef = envExpSuper.get(name.getName()).asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation());
+        ExpDefinition superMethodDef = envExpSuper.get(name.getName());
         
         if (superMethodDef != null) {
             name.setDefinition(superMethodDef);
-            if (!sig.equals(superMethodDef.getSignature())) {
+            if (!sig.equals(superMethodDef.asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation()).getSignature())) {
                 throw new ContextualError("Error: redefinition of a method with a different signature", getLocation());
             }
             
             Type superMethodType = superMethodDef.getType();
-            if (superMethodType.subType(methodType)) {
+            if (!methodType.subType(superMethodType)) {
                 throw new ContextualError("Error: redefinition of a method with incompatible type", getLocation());
             }
         }
 
-        return new MethodDefinition(methodType, getLocation(), sig, index);
+        MethodDefinition newMethodDefinition = new MethodDefinition(methodType, getLocation(), sig, index);
+        name.setDefinition(newMethodDefinition);
+
+        return newMethodDefinition;
 
     }
     
     @Override
     public Symbol getName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getName'");
+        return name.getName();
     }
     
     public void codeGenDeclMethod(DecacCompiler compiler) {
