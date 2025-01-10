@@ -1,5 +1,8 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -36,5 +39,40 @@ public class GreaterOrEqual extends AbstractOpIneq {
     protected String getOperatorName() {
         return ">=";
     }
+
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    // on genere le bytecode du left operand et on le push sur le stack
+    getLeftOperand().codeGenByteInst(mv);
+    // on genere le bytecode du right operand et on le push sur le stack
+    getRightOperand().codeGenByteInst(mv);
+
+    
+    Type leftType = getLeftOperand().getType();
+    if (leftType.isInt()) {
+   
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IF_ICMPGE, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IF_ICMPLT, e);
+        }
+    }
+    else if (leftType.isFloat()) {
+
+        mv.visitInsn(Opcodes.FCMPG);
+
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IFGE, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IFLT, e);
+        }
+    }
+    else {
+        throw new UnsupportedOperationException(
+            "GreaterOrEqual codeGenByteBool: unhandled type for '>=' operation"
+        );
+    }
+}
 
 }
