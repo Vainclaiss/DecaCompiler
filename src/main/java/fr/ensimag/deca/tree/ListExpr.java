@@ -39,7 +39,7 @@ public class ListExpr extends TreeList<AbstractExpr> {
             if (i == n) {
                 throw new ContextualError("Error: Too much arguments in method call", getLocation());
             }
-            exp.verifyRValue(compiler, localEnv, currentClass, sig.paramNumber(i));
+            set(i, exp.verifyRValue(compiler, localEnv, currentClass, sig.paramNumber(i)));
             i++;
         }
 

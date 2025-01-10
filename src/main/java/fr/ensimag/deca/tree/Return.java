@@ -29,11 +29,21 @@ public class Return extends AbstractInst{
             throws ContextualError {
 
             if (returnType.isVoid()) {
-                throw new ContextualError("Error: Return Type cannot be void", getLocation());
+                if (currentClass == null) {
+                    throw new ContextualError("Error: Main does not return anything", getLocation());
+                }
+                else {
+                    throw new ContextualError("Error: This method does not return anything", getLocation());
+                }
             }
-            argument.verifyRValue(compiler, localEnv, currentClass, returnType);
+            setArgument(argument.verifyRValue(compiler, localEnv, currentClass, returnType));
         }
 
+    protected void setArgument(AbstractExpr newArgument) {
+        Validate.notNull(newArgument);
+        this.argument = newArgument;
+    }
+    
     public AbstractExpr getArgument() {
         return argument;
     }

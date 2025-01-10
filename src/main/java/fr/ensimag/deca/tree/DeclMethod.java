@@ -1,7 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -13,9 +11,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.Label;
 
 
 
@@ -85,6 +83,7 @@ public class DeclMethod extends AbstractDeclMethod {
         
         Type returnType = type.verifyType(compiler);
         EnvironmentExp envExpParams = params.verifyListDeclParamBody(compiler, envExp);
+        body.verifyMethodBody(compiler, envExpParams, currentClass.getClassDefinition(), returnType);
     }
     
     @Override

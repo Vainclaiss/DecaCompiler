@@ -193,6 +193,7 @@ list_expr returns[ListExpr tree]
         }
     : (e1=expr {
             $tree.add($e1.tree);
+            $tree.setLocation($e1.tree.getLocation());
         }
        (COMMA e2=expr {
             $tree.add($e2.tree);

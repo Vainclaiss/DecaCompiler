@@ -1,0 +1,16 @@
+// Description:
+//    teste un method call avec pas assez d'arguments
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 15 : Error: Illegal RValue type, got boolean, expected float
+
+class A {
+    int m(float a, boolean b) {
+        return 3;
+    }
+}
+
+{
+    A a = new A();
+    int x = a.m(true, false);
+}

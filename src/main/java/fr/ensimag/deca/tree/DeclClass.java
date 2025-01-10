@@ -1,22 +1,20 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.TypeDefinition;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
-import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
-
 import java.io.PrintStream;
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.TypeDefinition;
+import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -146,7 +144,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        name.iter(f);
+        superClass.iter(f);
+        declFields.iter(f);
+        declMethods.iter(f);
     }
 
 }

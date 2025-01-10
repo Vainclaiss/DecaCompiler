@@ -1,8 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.TypeDefinition;
-
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -13,9 +10,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.Label;
 
 public class DeclField extends AbstractDeclField {
     final private Visibility visibility;
@@ -80,6 +77,7 @@ public class DeclField extends AbstractDeclField {
             throws ContextualError {
         
         Type nameType = type.verifyType(compiler);
+        // TODO: void type authorisé ??
         init.verifyInitialization(compiler, nameType, envExp, currentClass.getClassDefinition());
     }
 

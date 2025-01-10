@@ -1,16 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
-import java.io.PrintStream;
-import org.apache.commons.lang.Validate;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -100,7 +102,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
 
         throw new ContextualError(
-                "Error: Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
+                "Error: Illegal RValue type, got " + typeRvalue.toString() + ", expected " + expectedType.toString(),
                 getLocation());
     }
 
