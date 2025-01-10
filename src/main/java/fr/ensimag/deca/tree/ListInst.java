@@ -58,4 +58,9 @@ public class ListInst extends TreeList<AbstractInst> {
             s.println();
         }
     }
+
+    public IfThenElse get(int i) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'get'");
+    }
 }

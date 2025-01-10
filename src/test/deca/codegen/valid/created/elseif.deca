@@ -4,8 +4,8 @@
 //    ok
 
 {
-    if (false) {
-        println("ERRONE");
+    if (true) {
+        println("test");
     }
     else if (false) {
         println("ERRONE");

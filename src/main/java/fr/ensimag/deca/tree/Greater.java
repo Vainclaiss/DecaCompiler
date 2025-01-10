@@ -1,5 +1,8 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -34,5 +37,37 @@ public class Greater extends AbstractOpIneq {
     protected String getOperatorName() {
         return ">";
     }
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    getLeftOperand().codeGenByteInst(mv);
+
+    getRightOperand().codeGenByteInst(mv);
+
+    Type leftType = getLeftOperand().getType();
+
+    if (leftType.isInt()) {
+
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IF_ICMPGT, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IF_ICMPLE, e);
+        }
+    } 
+    else if (leftType.isFloat()) {
+       
+        mv.visitInsn(Opcodes.FCMPG);
+
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IFGT, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IFLE, e);
+        }
+    }
+    else {
+        throw new UnsupportedOperationException("Greater: Unhandled type for comparison.");
+    }
+}
+
 
 }
