@@ -1,8 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -38,10 +40,52 @@ public class LowerOrEqual extends AbstractOpIneq {
     protected String getOperatorName() {
         return "<=";
     }
-
     @Override
     protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
-        //
+       
+        getLeftOperand().codeGenByteInst(mv);
+       
+        getRightOperand().codeGenByteInst(mv);
+    
+        Type leftType = getLeftOperand().getType();
+    
+        if (leftType.isInt()) {
+
+            if (branchIfTrue) {
+              
+                mv.visitJumpInsn(Opcodes.IF_ICMPLE, e);
+            } else {
+
+                mv.visitJumpInsn(Opcodes.IF_ICMPGT, e);
+            }
+        } else if (leftType.isFloat()) {
+
+            mv.visitInsn(Opcodes.FCMPG); 
+    
+            if (branchIfTrue) {
+
+                mv.visitJumpInsn(Opcodes.IFLE, e);
+            } else {
+
+                mv.visitJumpInsn(Opcodes.IFGT, e);
+            }
+        } else {
+
+            throw new UnsupportedOperationException(
+                "LowerOrEqual codeGenByteBool: unhandled type for '<=' operation"
+            );
+        }
     }
 
+    @Override
+    protected int getJumpOpcodeForInt() {
+        return Opcodes.IF_ICMPLE; 
+    }
+
+    @Override
+    protected int getJumpOpcodeForFloat() {
+        return Opcodes.IFLE;     
+    }
+    
 }
+

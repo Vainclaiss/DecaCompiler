@@ -14,6 +14,8 @@ import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -69,11 +71,44 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
         compiler.addInstruction(new CMP(op1, r));
     }
-
-    @Override 
+    @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+        getLeftOperand().codeGenByteInst(mv);
+    
+        getRightOperand().codeGenByteInst(mv);
+    
+        // 3) Create two labels: one for the 'true' branch, one for the end
+        org.objectweb.asm.Label labelTrue = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label labelEnd  = new org.objectweb.asm.Label();
+    
+       
+        if (getLeftOperand().getType().isInt()) {
+            // Example: call an abstract method the child will define
+            mv.visitJumpInsn(getJumpOpcodeForInt(), labelTrue);
+                
+                    } else if (getLeftOperand().getType().isFloat()) {
+                        mv.visitInsn(Opcodes.FCMPG);
+                
+                        mv.visitJumpInsn(getJumpOpcodeForFloat(), labelTrue);
+                
+                    } else {
+                        throw new UnsupportedOperationException(
+                            "AbstractOpCmp: only int or float comparisons are supported."
+                        );
+                    }
+                
+                    mv.visitInsn(Opcodes.ICONST_0);
+                    mv.visitJumpInsn(Opcodes.GOTO, labelEnd);
+                
+                    mv.visitLabel(labelTrue);
+                    mv.visitInsn(Opcodes.ICONST_1);
+                
+                    mv.visitLabel(labelEnd);
+                }
+            
+                protected abstract int getJumpOpcodeForInt();
+                protected abstract int getJumpOpcodeForFloat();
+    
 
     // @Override
     // public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,

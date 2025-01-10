@@ -102,6 +102,15 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
     }
+    @Override
+protected void codeByteExp(MethodVisitor mv) {
+    getLeftOperand().codeByteExp(mv);
+
+    getRightOperand().codeByteExp(mv);
+
+    codeGenByteInst(mv);
+}
+
 
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type t2) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");

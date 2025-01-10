@@ -35,7 +35,6 @@ protected void codeGenByteInst(MethodVisitor mv) {
 }
 
     
-    
 
     @Override
     String getSuffix() {

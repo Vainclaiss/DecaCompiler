@@ -57,7 +57,7 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenByteInst(MethodVisitor mv) {
 
         Type type= getType();
-        getRightOperand().codeGenByteInst(mv);
+        getRightOperand().codeByteExp(mv);
     
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");

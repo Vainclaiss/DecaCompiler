@@ -59,7 +59,7 @@ public class Equals extends AbstractOpExactCmp {
                                                         // on jump au label e
             }
         } 
-        else if (leftType.isFloat()) { // meme chose mais pour float
+        else if (leftType.isFloat()) { // meme chose
 
             mv.visitInsn(Opcodes.FCMPG);
     
@@ -74,5 +74,14 @@ public class Equals extends AbstractOpExactCmp {
         }
     }
     
+    @Override
+    protected int getJumpOpcodeForInt() {
+        return Opcodes.IF_ICMPEQ;
+    }
+
+    @Override
+    protected int getJumpOpcodeForFloat() {
+        return Opcodes.IFEQ;
+    }
 
 }

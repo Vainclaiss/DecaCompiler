@@ -4,8 +4,7 @@
 //    ok
 
 {
-    while(false) {
-        println(1);
-    }
+    while(10>5) {
     println("ok");
+    }
 }

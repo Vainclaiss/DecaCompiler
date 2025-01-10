@@ -1,11 +1,13 @@
 ; start main program
 ; Main program
+	ADDSP #0
 ; Beginning of main instructions:
-while_debut.22:
-	LOAD #1, R1
-	WINT
+while_debut.1:
+	WSTR "ok"
 	WNL
-while_cond.21:
-	BRA while_debut.22
+while_cond.0:
+	LOAD #10, R2
+	CMP #5, R2
+	BGT while_debut.1
 	HALT
 ; end main program

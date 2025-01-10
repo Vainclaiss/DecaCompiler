@@ -144,6 +144,9 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeExp(DecacCompiler compiler, int n) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+    protected void codeByteExp(MethodVisitor mv) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     /**
      * Generate code to print the expression

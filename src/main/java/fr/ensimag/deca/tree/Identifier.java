@@ -206,6 +206,25 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+protected void codeByteExp(MethodVisitor mv) {
+    int localIndex = getVariableDefinition().getLocalIndex();
+
+    Type t = getType();
+
+    if (t.isInt()) {
+        mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+    } else if (t.isFloat()) {
+        mv.visitVarInsn(Opcodes.FLOAD, localIndex);
+    } else {
+ 
+        throw new UnsupportedOperationException(
+            "Identifier: unsupported type for codeGenByteExp: " + t
+        );
+    }
+}
+
+
+    @Override
     protected void codeGenBytePrint(MethodVisitor mv) {
         Type type = getType();
         mv.visitFieldInsn(
@@ -239,6 +258,8 @@ public class Identifier extends AbstractIdentifier {
 
         }
 }
+
+
 
     
 

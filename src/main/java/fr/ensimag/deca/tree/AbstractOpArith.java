@@ -52,7 +52,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
 protected void codeGenBytePrint(MethodVisitor mv) {
    
-    codeGenByteInst(mv);
+    codeByteExp(mv);
 
     mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
 

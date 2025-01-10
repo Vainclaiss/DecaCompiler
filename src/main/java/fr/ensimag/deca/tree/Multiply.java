@@ -25,19 +25,16 @@ public class Multiply extends AbstractOpArith {
 
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-
-        getLeftOperand().codeGenByteInst(mv);
-
-        getRightOperand().codeGenByteInst(mv);
-
-       
-        if (getType().isFloat()) {
-            mv.visitInsn(Opcodes.FMUL); 
-        } else if (getType().isInt()) {
-            mv.visitInsn(Opcodes.IMUL); 
+    protected void codeByteExp(MethodVisitor mv) {
+        getLeftOperand().codeByteExp(mv);
+        getRightOperand().codeByteExp(mv);
+        if (getType().isInt()) {
+            mv.visitInsn(Opcodes.IMUL);
+        } else {
+            mv.visitInsn(Opcodes.FMUL);
         }
     }
+    
 
 
 

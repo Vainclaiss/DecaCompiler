@@ -1,8 +1,9 @@
 package fr.ensimag.deca.tree;
+import fr.ensimag.deca.context.Type;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import fr.ensimag.deca.context.Type;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -68,6 +69,20 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
         throw new UnsupportedOperationException("Greater: Unhandled type for comparison.");
     }
 }
+
+@Override
+protected int getJumpOpcodeForInt() {
+    return Opcodes.IF_ICMPGT;
+}
+
+@Override
+protected int getJumpOpcodeForFloat() {
+    return Opcodes.IFGT;
+}
+
+
+
+
 
 
 }

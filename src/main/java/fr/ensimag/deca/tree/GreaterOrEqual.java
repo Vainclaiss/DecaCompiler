@@ -74,5 +74,15 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
         );
     }
 }
+@Override
+protected int getJumpOpcodeForInt() {
+    return Opcodes.IF_ICMPGE;
+}
+
+@Override
+protected int getJumpOpcodeForFloat() {
+    return Opcodes.IFGE;
+}
+
 
 }

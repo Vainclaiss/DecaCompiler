@@ -61,9 +61,22 @@ public class IntLiteral extends AbstractExpr {
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
     }
+    @Override
+protected void codeGenBytePrint(MethodVisitor mv) {
+    mv.visitLdcInsn(value);
+
+    mv.visitFieldInsn(org.objectweb.asm.Opcodes.GETSTATIC, 
+        "java/lang/System", "out", "Ljava/io/PrintStream;");
+
+    mv.visitInsn(org.objectweb.asm.Opcodes.SWAP);
+
+    mv.visitMethodInsn(org.objectweb.asm.Opcodes.INVOKEVIRTUAL, 
+        "java/io/PrintStream", "println", "(I)V", false);
+}
+
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
+    protected void codeByteExp(MethodVisitor mv) {
  
         mv.visitLdcInsn(value);
     }

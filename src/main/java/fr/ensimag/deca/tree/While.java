@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  *
@@ -83,8 +84,22 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
+        org.objectweb.asm.Label whileDebut = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label whileCond = new org.objectweb.asm.Label();
+    
+        mv.visitLabel(whileDebut);
+    
+       
+        body.codeGenListInstByte(mv);
+    
+        mv.visitLabel(whileCond);
+    
+      
+        condition.codeGenByteInst(mv);
+    
+      
+        mv.visitJumpInsn(Opcodes.IFNE, whileDebut);
     }
+    
 
 }

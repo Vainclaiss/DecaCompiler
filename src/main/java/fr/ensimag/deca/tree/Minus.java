@@ -30,8 +30,8 @@ public class Minus extends AbstractOpArith {
 
          @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeGenByteInst(mv);
-        getRightOperand().codeGenByteInst(mv);
+        getLeftOperand().codeByteExp(mv);
+        getRightOperand().codeByteExp(mv);
 
         if (getType().isInt()) {
 
