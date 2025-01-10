@@ -24,6 +24,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
+        //TODO: à supprimer, instruction illegale
         Label printTrue = new Label("print_true");
         String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();
 

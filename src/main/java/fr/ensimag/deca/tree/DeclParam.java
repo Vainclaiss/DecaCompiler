@@ -9,7 +9,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 
 
@@ -23,6 +25,11 @@ public class DeclParam extends AbstractDeclParam {
     public DeclParam(AbstractIdentifier type,AbstractIdentifier name ) {
         this.name = name;
         this.type = type;
+    }
+
+    @Override
+    protected Symbol getName() {
+        return name.getName();
     }
 
 
@@ -41,6 +48,16 @@ public class DeclParam extends AbstractDeclParam {
         return paramType;
     }
 
+    @Override
+    protected ParamDefinition verifyDeclParamBody(DecacCompiler compiler) throws ContextualError {
+        
+        Type paramType = type.verifyType(compiler);
+        
+        ParamDefinition newParamDef = new ParamDefinition(paramType, getLocation());
+        name.setDefinition(newParamDef);
+
+        return newParamDef;
+    }
 
     @Override
     public void codeGenDeclParam(DecacCompiler compiler) {
@@ -61,4 +78,5 @@ public class DeclParam extends AbstractDeclParam {
     public void decompile(IndentPrintStream s) {
         //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
+
 }

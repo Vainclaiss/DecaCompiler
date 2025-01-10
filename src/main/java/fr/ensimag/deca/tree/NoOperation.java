@@ -20,12 +20,12 @@ public class NoOperation extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        // Rien a verifier ?
+        // nothing to do
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // nothing to do
     }
 
     @Override

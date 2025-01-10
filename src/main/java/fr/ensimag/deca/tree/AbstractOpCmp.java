@@ -50,7 +50,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
-        if ((type1.isInt() && type2.isInt()) || (type1.isFloat() && type2.isFloat()) || (type1.isBoolean() && type2.isBoolean())) {
+        if ((type1.isInt() && type2.isInt()) || (type1.isFloat() && type2.isFloat())) {
             return compiler.environmentType.BOOLEAN;
         }
 

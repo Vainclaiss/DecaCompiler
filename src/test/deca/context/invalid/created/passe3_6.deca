@@ -1,0 +1,15 @@
+// Description:
+//    teste un return du mauvais type
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 9 : Error: Illegal RValue type, got int, expected boolean
+
+class A {
+    boolean m() {
+        return 3;
+    }
+}
+
+{
+
+}

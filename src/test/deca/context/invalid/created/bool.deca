@@ -1,0 +1,10 @@
+// Description:
+//    test comparaison booleens
+// Resultats:
+//    ok
+
+{
+    if ((3 > (6%2)) < true) {
+        println("ok");
+    }
+}

@@ -64,7 +64,6 @@ public class IntLiteral extends AbstractExpr {
     String prettyPrintNode() {
         return "Int (" + getValue() + ")";
     }
-
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(Integer.toString(value));

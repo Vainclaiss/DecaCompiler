@@ -176,13 +176,79 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        if (localEnv.get(name) == null)
-            throw new ContextualError("Error: Identifier " + name.toString() + " must have a definition",
-                    getLocation());
-        setDefinition(localEnv.get(name));
-        setType(getDefinition().getType());
+        return verifyLValue(localEnv);
+    }
 
-        return getDefinition().getType();
+    public Definition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = localEnv.get(name);
+        if (nameDef == null) {
+            throw new ContextualError("Error: Identifier " + name.toString() + " is undefined",
+                    getLocation());
+        }
+
+        return nameDef;
+    }
+
+    /**
+     * Implements non-terminal "lvalue_ident" of [SyntaxeContextuelle] in passe 3
+     * @param localEnv
+     * @return
+     * @throws ContextualError
+     */
+    public Type verifyLValue(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = verifyIdentifier(localEnv);
+
+        if (!(nameDef.isField() || nameDef.isParam() || nameDef.isVar())) {
+            throw new ContextualError("Error: LValue identifer must be a field, parameter or variable", getLocation());
+        }
+
+        setDefinition(nameDef);
+        setType(nameDef.getType());
+
+        return nameDef.getType();
+    }
+
+    /**
+     * Implements non-terminal "field_ident" of [SyntaxeContextuelle] in passe 3
+     * @param localEnv
+     * @return
+     * @throws ContextualError
+     */
+    public FieldDefinition verifyField(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = verifyIdentifier(localEnv);
+
+        if (!nameDef.isField()) {
+            throw new ContextualError("Error: Selection identifer must be a field", getLocation());
+        }
+
+        setDefinition(nameDef);
+        setType(nameDef.getType());
+
+        return getFieldDefinition();
+    }
+
+
+    /**
+     * Implements non-terminal "method_ident" of [SyntaxeContextuelle] in passe 3
+     * @param localEnv
+     * @return
+     * @throws ContextualError
+     */
+    public MethodDefinition verifyMethod(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = verifyIdentifier(localEnv);
+
+        if (!nameDef.isMethod()) {
+            throw new ContextualError("Error: MethodCall identifer must be a method", getLocation());
+        }
+
+        setDefinition(nameDef);
+        setType(nameDef.getType());
+
+        return getMethodDefinition();
     }
 
     /**

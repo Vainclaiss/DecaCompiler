@@ -5,8 +5,12 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 
 
@@ -21,12 +25,6 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
      * Implements non-terminal "list_DeclParam" of [SyntaxeContextuelle] in pass 3
      * 
      * @param compiler     contains "env_types" attribute
-     * @param localEnv     corresponds to "env_exp" attribute
-     * @param currentClass
-     *                     corresponds to "class" attribute (null in the main bloc).
-     * @param returnType
-     *                     corresponds to "return" attribute (void in the main
-     *                     bloc).
      */
     public Signature verifyListDeclParam(DecacCompiler compiler) throws ContextualError {
         Signature sig = new Signature();
@@ -36,6 +34,25 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         }
 
         return sig;
+    }
+
+    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler, EnvironmentExp envExp) throws ContextualError {
+            
+        EnvironmentExp envExpParam = new EnvironmentExp(envExp);
+
+        for (AbstractDeclParam param : getList()) {
+            ParamDefinition newParamDef =  param.verifyDeclParamBody(compiler);
+            Symbol name = param.getName();
+            try {
+                envExpParam.declare(name, newParamDef);
+            }
+            catch (EnvironmentExp.DoubleDefException e) {
+                throw new ContextualError("Error: Multiple declaration of parameter " + name.toString()
+                        + ", first declaration at " + envExpParam.get(name).getLocation(), param.getLocation());
+            }
+        }
+        
+        return envExpParam;
     }
 
     public void codeGenListDeclParam(DecacCompiler compiler) {
@@ -49,4 +66,5 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
             s.println();
         }
     }
+
 }
