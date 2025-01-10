@@ -12,7 +12,7 @@ public class StackOverflowExecError extends ExecError {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof StackOverflowExecError;
+        return o == this;
     }
 
 }
