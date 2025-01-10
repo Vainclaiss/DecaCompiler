@@ -146,7 +146,7 @@
                         <id>default-instrument</id>
                         <goals>
                             <goal>instrument</goal>
-                        </goals>             
+                        </goals>
                     </execution>
                     <execution>
                         <id>default-restore-instrumented-classes</id>

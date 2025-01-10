@@ -87,8 +87,7 @@ MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 FLOAT : (FLOATDEC | FLOATHEX);
 INT : ('0' | NUMPOS DIGIT*);
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
-FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
-INCLUDE : '#include' (' ')* '"' FILENAME '"'{
+INCLUDE : '#include' (' ')* '"' ((LETTER | DIGIT | '.' | '-' | '_')+) '"'{
    doInclude(getText());
    skip();
 };
