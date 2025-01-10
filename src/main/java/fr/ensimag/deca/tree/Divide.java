@@ -1,9 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.DIV;
@@ -41,7 +43,24 @@ public class Divide extends AbstractOpArith {
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenBytecode'");
+      
+
+        getLeftOperand().codeGenByteInst(mv);
+        getRightOperand().codeGenByteInst(mv);
+
+        if (getType().isInt()) {
+
+            mv.visitInsn(Opcodes.IDIV);
+
+        } else if (getType().isFloat()) {
+
+            mv.visitInsn(Opcodes.FDIV);
+            
+        } else {
+            throw new DecacInternalError(
+                "Plus: unsupported type for division " + getType());
+        }
     }
-}
+
+    }
+

@@ -11,6 +11,8 @@ import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -48,9 +50,28 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv) {
-        throw new UnsupportedOperationException("not yet implemented");
+protected void codeGenBytePrint(MethodVisitor mv) {
+   
+    codeGenByteInst(mv);
+
+    mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+
+    mv.visitInsn(Opcodes.SWAP);
+
+    if (getType().isInt()) {
+
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
+
+    } else if (getType().isFloat()) {
+
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(F)V", false);
+    } else {
+
+        throw new IllegalAccessError("Unsupported type for bytecode print: " + getType());
     }
+}
+
+
 
     @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {

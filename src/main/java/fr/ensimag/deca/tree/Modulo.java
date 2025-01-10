@@ -1,11 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -28,9 +30,26 @@ public class Modulo extends AbstractOpArith {
         compiler.addInstruction(new REM(op1, r));
     }
     @Override
-    protected void codeGenByteInst(MethodVisitor methodVisitor){
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenByteInst(MethodVisitor mv){
+        
+        getLeftOperand().codeGenByteInst(mv);
+        getRightOperand().codeGenByteInst(mv);
+
+        if (getType().isInt()) {
+
+            mv.visitInsn(Opcodes.IREM);
+
+        } else if (getType().isFloat()) {
+
+            mv.visitInsn(Opcodes.FREM);
+            
+        } else {
+            throw new DecacInternalError(
+                "Plus: unsupported type formodulo: " + getType());
+        }
     }
+
+    
 
     @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {

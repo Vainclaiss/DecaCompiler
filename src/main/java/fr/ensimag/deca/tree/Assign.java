@@ -59,13 +59,11 @@ public class Assign extends AbstractBinaryExpr {
         Type type= getType();
         getRightOperand().codeGenByteInst(mv);
     
-        // 2) Force cast, if we are certain left operand is always an Identifier
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");
         }
         Identifier leftId = (Identifier) getLeftOperand();
     
-        // 3) Retrieve the variable definition
         VariableDefinition varDef = leftId.getVariableDefinition();
         if (varDef == null) {
             throw new DecacInternalError("Left operand has no variable definition in Assign.");
