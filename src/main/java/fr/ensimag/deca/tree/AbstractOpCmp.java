@@ -77,13 +77,12 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     
         getRightOperand().codeGenByteInst(mv);
     
-        // 3) Create two labels: one for the 'true' branch, one for the end
         org.objectweb.asm.Label labelTrue = new org.objectweb.asm.Label();
         org.objectweb.asm.Label labelEnd  = new org.objectweb.asm.Label();
     
        
         if (getLeftOperand().getType().isInt()) {
-            // Example: call an abstract method the child will define
+            
             mv.visitJumpInsn(getJumpOpcodeForInt(), labelTrue);
                 
                     } else if (getLeftOperand().getType().isFloat()) {

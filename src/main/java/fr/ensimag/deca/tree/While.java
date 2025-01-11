@@ -84,22 +84,20 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        org.objectweb.asm.Label whileDebut = new org.objectweb.asm.Label();
-        org.objectweb.asm.Label whileCond = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label startLabel = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label exitLabel  = new org.objectweb.asm.Label();
     
-        mv.visitLabel(whileDebut);
+        mv.visitLabel(startLabel);
+
+        condition.codeGenByteBool(mv, /*branchIfTrue=*/false, exitLabel);
     
-       
         body.codeGenListInstByte(mv);
     
-        mv.visitLabel(whileCond);
+        mv.visitJumpInsn(Opcodes.GOTO, startLabel);
     
-      
-        condition.codeGenByteInst(mv);
-    
-      
-        mv.visitJumpInsn(Opcodes.IFNE, whileDebut);
+        mv.visitLabel(exitLabel);
     }
+    
     
 
 }
