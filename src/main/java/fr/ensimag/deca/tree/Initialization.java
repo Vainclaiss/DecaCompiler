@@ -74,7 +74,7 @@ public class Initialization extends AbstractInitialization {
     }
     @Override
     protected void codeGenByteInitialization(MethodVisitor mv, int localIndex) {
-        this.expression.codeGenByteInst(mv);
+        this.expression.codeByteExp(mv);
     
         Type exprType = this.expression.getType();
     

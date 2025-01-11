@@ -37,6 +37,7 @@ public class And extends AbstractOpBool {
 
     @Override
     protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+       
         if (branchIfTrue) {
           
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();

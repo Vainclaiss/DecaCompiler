@@ -1,8 +1,11 @@
 package fr.ensimag.deca.tree;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 /**
  *
@@ -25,6 +28,33 @@ public class Or extends AbstractOpBool {
     protected String getOperatorName() {
         return "||";
     }
+
+    @Override
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+        if (branchIfTrue) {
+           
+            org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
+    
+            getLeftOperand().codeGenByteBool(mv, /*branchIfTrue=*/ true, e);
+    
+          
+            getRightOperand().codeGenByteBool(mv, /*branchIfTrue=*/ true, e);
+    
+    
+        } else {
+         
+    
+            org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
+            getLeftOperand().codeGenByteBool(mv, /*branchIfTrue=*/ true, skipRight);
+            
+            getRightOperand().codeGenByteBool(mv, /*branchIfTrue=*/ false, e);
+    
+            mv.visitLabel(skipRight);
+        }
+    }
+    
+    
+
 
 
 }

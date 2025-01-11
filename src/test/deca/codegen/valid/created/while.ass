@@ -5,15 +5,9 @@
 while_debut.1:
 	WSTR "ok"
 	WNL
-<<<<<<< HEAD
 while_cond.0:
 	LOAD #10, R2
 	CMP #5, R2
 	BGT while_debut.1
-=======
-while_cond.21:
-	WSTR "ok"
-	WNL
->>>>>>> feature/SansObjet/A
 	HALT
 ; end main program
