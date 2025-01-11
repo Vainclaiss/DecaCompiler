@@ -55,31 +55,29 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-
-        Type type= getType();
+        // Generate code for the right-hand side (e.g., counter - 1)
         getRightOperand().codeByteExp(mv);
     
+        // Get the variable definition for the left-hand side (e.g., `counter`)
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");
         }
         Identifier leftId = (Identifier) getLeftOperand();
-    
         VariableDefinition varDef = leftId.getVariableDefinition();
-        if (varDef == null) {
-            throw new DecacInternalError("Left operand has no variable definition in Assign.");
-        }
     
-        int localIndex = varDef.getLocalIndex(); 
+        // Store the result in the correct local index
+        int localIndex = varDef.getLocalIndex();
         if (localIndex < 0) {
             throw new DecacInternalError("Variable local index not set before assignment.");
         }
     
-        if(type.isInt()){
-         mv.visitVarInsn(Opcodes.ISTORE, localIndex);
-
-        }
-        if(type.isFloat()){
+        // Use the correct store instruction
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+        } else if (getType().isFloat()) {
             mv.visitVarInsn(Opcodes.FSTORE, localIndex);
+        } else {
+            throw new DecacInternalError("Unsupported type for assignment: " + getType());
         }
     }
     

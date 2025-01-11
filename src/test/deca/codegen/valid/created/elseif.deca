@@ -4,7 +4,7 @@
 //    ok
 
 {
-    if (true) {
+    if (false) {
         println("test");
     }
     else if (false) {

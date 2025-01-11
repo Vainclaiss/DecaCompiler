@@ -44,9 +44,9 @@ public class GreaterOrEqual extends AbstractOpIneq {
     @Override
 protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
     // on genere le bytecode du left operand et on le push sur le stack
-    getLeftOperand().codeGenByteInst(mv);
+    getLeftOperand().codeByteExp(mv);
     // on genere le bytecode du right operand et on le push sur le stack
-    getRightOperand().codeGenByteInst(mv);
+    getRightOperand().codeByteExp(mv);
 
     
     Type leftType = getLeftOperand().getType();

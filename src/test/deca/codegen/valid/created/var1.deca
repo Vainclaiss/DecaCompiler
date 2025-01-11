@@ -6,6 +6,5 @@
 {
     int a = 10;
     int b = a;
-    println(b);
    
 }
