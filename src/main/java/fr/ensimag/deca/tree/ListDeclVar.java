@@ -20,7 +20,9 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (AbstractDeclVar declVar : getList()) {
+            declVar.decompile(s);
+        }
     }
 
     /**
@@ -44,10 +46,13 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     protected void codeGenListDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
         Register baseRegister = (currentClass==null) ? Register.GB : Register.LB;
+        
         int offset = 1;
         for (AbstractDeclVar declVar : getList()) {
             declVar.codeGenDeclVar(compiler, new RegisterOffset(offset++, baseRegister));
         }
+        
+        compiler.getStackOverflowCounter().addVariables(getList().size());
     }
 
     protected void codeGenListDeclVarByte(MethodVisitor mv,DecacCompiler compiler) {

@@ -1,5 +1,11 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.IOError;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * read...() statement.
@@ -13,5 +19,9 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         super();
     }
 
-
+    @Override
+    protected DVal getDVal() {
+        return Register.R1;
+    }
+    
 }

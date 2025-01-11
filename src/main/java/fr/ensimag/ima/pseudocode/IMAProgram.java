@@ -2,7 +2,14 @@ package fr.ensimag.ima.pseudocode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+
+import fr.ensimag.deca.codegen.execerrors.ExecError;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 /**
  * Abstract representation of an IMA program, i.e. set of Lines.

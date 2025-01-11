@@ -1,7 +1,17 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
+
+import fr.ensimag.deca.syntax.DecaLexer;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * Main class for the command-line Deca compiler.
@@ -11,9 +21,8 @@ import org.apache.log4j.Logger;
  */
 public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
-    
+
     public static void main(String[] args) {
-        // example log4j message.
         LOG.info("Decac compiler started");
         boolean error = false;
         final CompilerOptions options = new CompilerOptions();
@@ -26,25 +35,51 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
-        }
-        if (options.getSourceFiles().isEmpty()) {
-            throw new UnsupportedOperationException("decac without argument not yet implemented");
+            options.displayBanner();
+        } else if (options.getSourceFiles().isEmpty()) {
+            options.displayUsage();
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            error = launchParallelCompilation(options);
         } else {
-            for (File source : options.getSourceFiles()) {
-                DecacCompiler compiler = new DecacCompiler(options, source);
-                if (compiler.compile()) {
-                    error = true;
-                }
-            }
+            error = launchNonParallelCompilation(options);
+
         }
         System.exit(error ? 1 : 0);
+    }
+
+    private static boolean launchNonParallelCompilation(CompilerOptions options) {
+        boolean error = false;
+        for (File source : options.getSourceFiles()) {
+            DecacCompiler compiler = new DecacCompiler(options, source);
+            Label.resetSuffixId();
+            error = compiler.compile();
+        }
+        return error;
+    }
+
+    private static boolean launchParallelCompilation(CompilerOptions options) {
+        ExecutorService threadPool = Executors
+                .newFixedThreadPool(java.lang.Runtime.getRuntime().availableProcessors());
+        List<Future<Boolean>> futureList = new ArrayList<>();
+        boolean error = false;
+        for (File source : options.getSourceFiles()) {
+            DecacCompiler compiler = new DecacCompiler(options, source);
+            futureList.add(threadPool.submit(compiler::compile));
+        }
+        for (Future<Boolean> future : futureList) {
+
+            try {
+                if (Boolean.TRUE.equals(future.get())) {
+                    error = true;
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOG.error("Thread interrupted", e);
+            } catch (ExecutionException e) {
+                LOG.error("Error during parallel compilation", e);
+            }
+        }
+        return error;
     }
 }

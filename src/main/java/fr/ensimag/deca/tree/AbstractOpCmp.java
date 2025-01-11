@@ -34,8 +34,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        int indexR = Register.getIndexRegistreLibre();
-        codeExp(compiler, indexR);
+        codeExp(compiler, 2);
 
         Label printTrue = new Label("print_true");
         String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();
@@ -59,9 +58,26 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
-        if ((type1.isInt() || type1.isFloat()) && (type2.isInt() || type2.isFloat())) {
+        if ((type1.isInt() && type2.isInt()) || (type1.isFloat() && type2.isFloat()) || (type1.isBoolean() && type2.isBoolean())) {
             return compiler.environmentType.BOOLEAN;
         }
+
+        if (type1.isInt() && type2.isFloat()) {
+            ConvFloat convLeft = new ConvFloat(getLeftOperand());
+            convLeft.setType(compiler.environmentType.FLOAT);
+            setLeftOperand(convLeft);
+
+            return compiler.environmentType.BOOLEAN;
+        }
+
+        if (type1.isFloat() && type2.isInt()) {
+            ConvFloat convRight = new ConvFloat(getRightOperand());
+            convRight.setType(compiler.environmentType.FLOAT);
+            setRightOperand(convRight);
+
+            return compiler.environmentType.BOOLEAN;
+        }
+
         // A FAIRE: gerer le cas de eq et neq pour les classes cf p76
         throw new ContextualError(
                 "Error: Incompatible types for comparison: " + type1 + " " + getOperatorName() + " " + type2,

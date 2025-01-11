@@ -101,7 +101,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
 
         throw new ContextualError(
-                "Error : Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
+                "Error: Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
                 getLocation());
     }
 
@@ -134,6 +134,14 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected DVal getDVal() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Generate the code for ReadExpr, the result is stored in R1
+     * @param compiler
+     */
+    protected void codeExp(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

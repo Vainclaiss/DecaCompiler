@@ -42,15 +42,9 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // IMA code generation
-        int indexR = Register.getIndexRegistreLibre();
-        Register.setRegistreLibre(indexR, false);
-
-        getRightOperand().codeExp(compiler, indexR);   // Evaluate right -> R(indexR)
-        DAddr leftAddress = (DAddr) getLeftOperand().getDVal(); // LValue => memory
-        compiler.addInstruction(new STORE(Register.getR(indexR), leftAddress));
-
-        Register.setRegistreLibre(indexR, true);
+        getRightOperand().codeExp(compiler, 2);
+        
+        compiler.addInstruction(new STORE(Register.getR(2), (DAddr)getLeftOperand().getDVal()));
     }
 
     @Override

@@ -1,5 +1,19 @@
 package fr.ensimag.deca;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.apache.log4j.Logger;
+
+import fr.ensimag.deca.codegen.TSTOCounter;
+import fr.ensimag.deca.codegen.execerrors.ExecError;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -12,14 +26,12 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.apache.log4j.Logger;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.deca.codegen.execerrors.StackOverflowExecError;
 
 /**
  * Decac compiler instance.
@@ -45,10 +57,24 @@ public class DecacCompiler {
     private static final String nl = System.getProperty("line.separator", "\n");
     int nextLocalIndex = 0;
 
+    private Set<ExecError> execErrors;
+    private TSTOCounter stackOverflowCounter = new TSTOCounter();
+
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.environmentType = new EnvironmentType(this);
+        this.execErrors = new HashSet<ExecError>();
+        this.stackOverflowCounter = new TSTOCounter();
+    }
+
+    public void addExecError(ExecError error) {
+        execErrors.add(error);
+    }
+
+    public TSTOCounter getStackOverflowCounter() {
+        return stackOverflowCounter;
     }
 
     /**
@@ -114,6 +140,26 @@ public class DecacCompiler {
         return program.display();
     }
 
+    /**
+     * Generate the code to handle error in the program
+     * @param error
+     */
+    public void genCodeExecError(ExecError error) {
+        addLabel(error.getLabel());
+        addInstruction(new WSTR(error.getErrorMsg()));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+    }
+
+    /**
+     * Generate the code to handle all the execution errors of the program 
+     */
+    public void genCodeAllExecErrors() {
+        for (ExecError error : execErrors) {
+            genCodeExecError(error);
+        }
+    }
+
     private final CompilerOptions compilerOptions;
     private final File source;
     /**
@@ -123,10 +169,10 @@ public class DecacCompiler {
 
     /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
-    public final EnvironmentType environmentType = new EnvironmentType(this);
+    public final EnvironmentType environmentType;
 
     public Symbol createSymbol(String name) {
-         return symbolTable.create(name);
+        return symbolTable.create(name);
     }
 
     /**
@@ -185,16 +231,29 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+        if (compilerOptions.getStopAfterParse()) {
+            LOG.info("Stopped after parsing");
+            prog.decompile(out);
+            return false;
+        }
+        assert (prog.checkAllLocations());
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        assert (prog.checkAllDecorations());
 
+        if (compilerOptions.getStopAfterVerification()) {
+            LOG.info("Stopped after verification");
+            return false;
+        }
         addComment("start main program");
         
         prog.codeGenProgram(this);
         prog.codeGenByteProgram(this);
         addComment("end main program");
+        program.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel()));      // ordre des 2 instructions inversé à cause de addFirst()
+        program.addFirst(new TSTO(stackOverflowCounter.getMaxTSTO()), stackOverflowCounter.getDetailsMaxTSTO());      // on rajoute le test de stack overflow au debut
+        addExecError(StackOverflowExecError.INSTANCE);
+        genCodeAllExecErrors();     // genere le code de toutes les erreurs d'exécution à la fin du programme
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

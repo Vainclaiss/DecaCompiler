@@ -4,12 +4,14 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.ZeroDivisionError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -28,6 +30,10 @@ public class Modulo extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
         compiler.addInstruction(new REM(op1, r));
+        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+            compiler.addExecError(ZeroDivisionError.INSTANCE);
+            compiler.addInstruction(new BOV(ZeroDivisionError.INSTANCE.getLabel()));
+        }
     }
     @Override
     protected void codeGenByteInst(MethodVisitor mv){

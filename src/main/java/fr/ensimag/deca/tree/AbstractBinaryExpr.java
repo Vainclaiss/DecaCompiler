@@ -72,23 +72,24 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         getLeftOperand().codeExp(compiler, n);
-        Register.setRegistreLibre(n, false);
         DVal dvalExp2 = getRightOperand().getDVal();
 
         if (dvalExp2 == null) {
             if (n == Register.RMAX) {
                 //sauvegarde de op1
                 compiler.addInstruction(new PUSH(Register.getR(n)));
+                compiler.getStackOverflowCounter().addTemporaryOnStack(1);
 
                 // calcul de op2 dans R0
                 getRightOperand().codeExp(compiler, n);
-                Register.setRegistreLibre(n, false);
                 compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
 
                 // restoration de la valeur de op1 dans Rn
                 compiler.addInstruction(new POP(Register.getR(n)));
+                compiler.getStackOverflowCounter().addTemporaryOnStack(-1);
 
                 codeGenInst(compiler, Register.R0, Register.getR(n));
+<<<<<<< HEAD
                 Register.setRegistreLibre(n, true);
             } else {
                 getRightOperand().codeExp(compiler, n + 1);
@@ -98,6 +99,20 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 Register.setRegistreLibre(n + 1, true);
             }
         } else {
+=======
+            }
+            else { 
+                getRightOperand().codeExp(compiler, n+1);
+                
+                codeGenInst(compiler, Register.getR(n+1), Register.getR(n));
+            }
+        }
+        else if (dvalExp2 == Register.R1) {
+            getRightOperand().codeExp(compiler);
+            codeGenInst(compiler, dvalExp2, Register.getR(n));
+        }
+        else {
+>>>>>>> feature/SansObjet/C
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
     }
@@ -129,11 +144,13 @@ protected void codeByteExp(MethodVisitor mv) {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("(");
         getLeftOperand().decompile(s);
-        s.print(" " + getOperatorName() + " ");
+        if (getOperatorName().equals("=")) {
+            s.print(" " + getOperatorName() + " ");
+        } else {
+            s.print(getOperatorName());
+        }
         getRightOperand().decompile(s);
-        s.print(")");
     }
 
     abstract protected String getOperatorName();

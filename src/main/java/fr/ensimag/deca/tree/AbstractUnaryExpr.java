@@ -34,12 +34,10 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         // on charge la valeur de l'expression dans un registre libre
-        int indexR = Register.getIndexRegistreLibre();
-        codeExp(compiler, indexR);
+        codeExp(compiler, 2);
 
         //on la met dans R1 pour l'afficher
-        compiler.addInstruction(new LOAD(Register.getR(indexR), Register.R1));
-        Register.setRegistreLibre(indexR, true);
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
     }
 
     @Override
@@ -71,7 +69,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
   
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(getOperatorName() + operand.decompile());
     }
 
     @Override

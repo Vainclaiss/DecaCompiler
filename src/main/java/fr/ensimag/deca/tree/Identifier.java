@@ -18,6 +18,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
@@ -33,7 +34,7 @@ import org.objectweb.asm.Opcodes;
  * @date 01/01/2025
  */
 public class Identifier extends AbstractIdentifier {
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -54,7 +55,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *                            if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -76,7 +77,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *                            if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -98,7 +99,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -120,7 +121,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -135,13 +136,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
-     * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
+     * Like {@link #getDefinition()}, but works only if the definition is a
+     * ExpDefinition.
      * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -176,7 +178,9 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        if (localEnv.get(name) == null) throw new ContextualError("Error : Identifier " + name.toString() + " must have a definition", getLocation());
+        if (localEnv.get(name) == null)
+            throw new ContextualError("Error: Identifier " + name.toString() + " must have a definition",
+                    getLocation());
         setDefinition(localEnv.get(name));
         setType(getDefinition().getType());
 
@@ -185,6 +189,7 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     * 
      * @param compiler contains "env_types" attribute
      */
     @Override
@@ -275,12 +280,26 @@ protected void codeByteExp(MethodVisitor mv) {
         Type type = getType();
         if (type.isInt()) {
             compiler.addInstruction(new WINT());
-        }
-        else if (type.isFloat()) {
+        } else if (type.isFloat()) {
             compiler.addInstruction(new WFLOAT());
+        } else {
+            throw new UnsupportedOperationException("Print of this type identifier not yet implemented");
+        }
+    }
+
+        /**
+     * Generate code to print the expression
+     *
+     * @param compiler
+     */
+    @Override
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        Type type = getType();
+        if (type.isFloat()) {
+            compiler.addInstruction(new WFLOATX());
         }
         else {
-            throw new UnsupportedOperationException("Print of this type identifier not yet implemented");
+            codeGenPrint(compiler);
         }
     }
     

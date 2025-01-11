@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.objectweb.asm.MethodVisitor;
@@ -40,6 +42,7 @@ public class While extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         Label whileCond = new Label("while_cond");
         whileCond.getAndAddNewSuffixe();
+        compiler.addInstruction(new BRA(whileCond));
 
         Label debut = new Label("while_debut");
         debut.getAndAddNewSuffixe();

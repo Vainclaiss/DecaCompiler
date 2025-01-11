@@ -1,8 +1,0 @@
-; start main program
-; Main program
-	ADDSP #1
-	LOAD #2, R2
-	STORE R2, 1(GB)
-; Beginning of main instructions:
-	HALT
-; end main program
