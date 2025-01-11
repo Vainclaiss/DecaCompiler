@@ -32,9 +32,9 @@ public class Lower extends AbstractOpIneq {
 
     @Override
 protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label target) {
-    getLeftOperand().codeGenByteInst(mv);
+    getLeftOperand().codeByteExp(mv);
 
-    getRightOperand().codeGenByteInst(mv);
+    getRightOperand().codeByteExp(mv);
 
     if (getType().isInt()) {
         if (branchIfTrue) {
@@ -54,13 +54,8 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
 
             mv.visitJumpInsn(Opcodes.IFGE, target);
         }
-
-    } else {
-        
-        throw new UnsupportedOperationException(
-            "Lower: unsupported type for '<': " + getType()
-        );
     }
+
 }
 
 
