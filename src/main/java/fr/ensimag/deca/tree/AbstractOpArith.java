@@ -100,7 +100,7 @@ protected void codeGenBytePrint(MethodVisitor mv) {
         }
 
         throw new ContextualError(
-                "Incompatible types for arithmetic operation: " + type1 + " " + getOperatorName() + " " + type2,
+                "Error: Incompatible types for arithmetic operation: " + type1 + " " + getOperatorName() + " " + type2,
                 getLocation());
     }
 

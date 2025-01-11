@@ -99,7 +99,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
             Initialization init = new Initialization($e.tree);
             setLocation(init, $EQUALS);
 
-            $tree = new DeclVar($t,$i.tree,new Initialization($e.tree));
+            $tree = new DeclVar($t,$i.tree,init);
             $tree.setLocation($t.getLocation());
         }
       )? {
@@ -187,12 +187,13 @@ if_then_else returns[IfThenElse tree]
 
 list_expr returns[ListExpr tree]
 @init   {
+            $tree = new ListExpr();
         }
     : (e1=expr {
-        $tree = new ListExpr();
-        $tree.add($e1.tree);
+            $tree.add($e1.tree);
         }
        (COMMA e2=expr {
+            $tree.add($e2.tree);
         }
        )* )?
     ;

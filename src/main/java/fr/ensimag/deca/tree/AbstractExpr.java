@@ -20,6 +20,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public abstract class AbstractExpr extends AbstractInst {
+    
+
     /**
      * @return true if the expression does not correspond to any concrete token
      *         in the source code (and should be decompiled to the empty string).
@@ -126,7 +128,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         type = verifyExpr(compiler, localEnv, currentClass);
         if (!type.isBoolean()) {
-            throw new ContextualError("Error : Expected expression type is boolean, got " + type.toString(),
+            throw new ContextualError("Error: Expected expression type is boolean, got " + type.toString(),
                     getLocation());
         }
     }
@@ -159,6 +161,14 @@ public abstract class AbstractExpr extends AbstractInst {
 
     protected void codeGenBytePrint(MethodVisitor mv) {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+    /**
+     * Generate code to print the expression in hex if "this" is a float
+     *
+     * @param compiler
+     */
+    protected void codeGenPrintHex(DecacCompiler compiler) {
+        codeGenPrint(compiler);
     }
 
     @Override
@@ -203,3 +213,6 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 }
+
+
+

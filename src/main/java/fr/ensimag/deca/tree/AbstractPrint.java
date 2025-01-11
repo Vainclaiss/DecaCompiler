@@ -45,17 +45,24 @@ public abstract class AbstractPrint extends AbstractInst {
         for (AbstractExpr a : getArguments().getList()) {
             Type returnExprType = a.verifyExpr(compiler, localEnv, currentClass);
             if (!(returnExprType.isInt() || returnExprType.isFloat() || returnExprType.isString())) {
-                // TODO : faire des tests qui levent cette erreur
-                throw new ContextualError("type attendu : int, float ou string", a.getLocation());
+                throw new ContextualError(
+                        "Error: Expected expression type is int, float or string, got " + returnExprType,
+                        a.getLocation());
             }
-
         }
     } // TODO : faire des tests qui levent cette erreur
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+        if (printHex) {
+            for (AbstractExpr a : getArguments().getList()) {
+                a.codeGenPrintHex(compiler);
+            }
+        }
+        else {
+            for (AbstractExpr a : getArguments().getList()) {
+                a.codeGenPrint(compiler);
+            }
         }
     }
     @Override

@@ -1,0 +1,8 @@
+// Description:
+//    test des expressions arithmetiques quand tous les registres sont utilisés 
+// Resultats:
+//    -6
+
+{
+    println(3*-2);
+}

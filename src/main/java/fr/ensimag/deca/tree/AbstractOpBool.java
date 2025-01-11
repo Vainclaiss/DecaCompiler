@@ -71,7 +71,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         }
 
         throw new ContextualError(
-                "Incompatible types for boolean operation: " + type1 + " " + getOperatorName() + " " + type2,
+                "Error: Incompatible types for boolean operation: " + type1 + " " + getOperatorName() + " " + type2,
                 getLocation());
     }
 

@@ -48,7 +48,7 @@ public class DeclVar extends AbstractDeclVar {
 
         Type realType = type.verifyType(compiler);
         if (realType.isVoid())
-            throw new ContextualError("Error: 'void' cannot be used as a type for variable declaration", getLocation());
+            throw new ContextualError("Error: void cannot be used as a type for variable declaration", getLocation());
 
         VariableDefinition varDef = new VariableDefinition(realType, varName.getLocation());
         varName.setDefinition(varDef);
@@ -67,8 +67,6 @@ public class DeclVar extends AbstractDeclVar {
         varName.getVariableDefinition().setOperand(adresse);
         initialization.codeGenInitialization(compiler, adresse);
     }
-
-
 
     @Override
     public void decompile(IndentPrintStream s) {

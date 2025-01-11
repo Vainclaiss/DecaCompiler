@@ -57,7 +57,9 @@ public class Modulo extends AbstractOpArith {
             return type1;
         }
 
-        throw new ContextualError("Incompatible types for arithmetic operation: " + type1 + " " + getOperatorName() + " " + type2, getLocation());
+        throw new ContextualError(
+                "Error: Incompatible types for arithmetic operation: " + type1 + getOperatorName() + type2,
+                getLocation());
     }
 
     @Override
