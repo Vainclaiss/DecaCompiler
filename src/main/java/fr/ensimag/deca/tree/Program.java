@@ -107,8 +107,8 @@ public class Program extends AbstractProgram {
     
             // 5) On retourne du main
             mv.visitInsn(Opcodes.RETURN); // on ajoute le return pour le compter dans le stack en bas
-            mv.visitMaxs(0, 0);
-                    mv.visitEnd();
+            mv.visitMaxs(0, 0); // vu qu'on ne sera pas sûr de la profondeur de la pile on rajoute 0,0
+            mv.visitEnd();
     
             // 6) La classe est finit
             tcv.visitEnd();
