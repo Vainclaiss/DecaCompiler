@@ -459,7 +459,7 @@ literal returns[AbstractExpr tree]
             try {
                 char[] texte = $fd.text.toCharArray();
                 for(int i = 0; i<texte.length;i++){
-                    if(texte[i]!= '0' && texte[i]!= '.' && texte[i]!= '-' && texte[i]!= '+' && texte[i]!= 'f' && texte[i]!= 'F' && texte[i]!= 'e' && texte[i]!= 'E'){
+                    if(texte[i]!= '0' && texte[i]!= '.' && texte[i]!= '-' && texte[i]!= '+' && texte[i]!= 'f' && texte[i]!= 'F' && texte[i]!= 'e' && texte[i]!= 'E' && Float.parseFloat($fd.text) == 0.0){
                         throw new FloatUnderflow(this,$ctx);
                     }
                 }
