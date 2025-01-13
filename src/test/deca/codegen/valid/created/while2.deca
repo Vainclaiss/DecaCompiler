@@ -5,8 +5,9 @@
 
 {
     int counter = 5;
-    while (counter > 0) {
-        counter = counter - 1;
+    int i = 0;
+        while (counter > i) {
+        counter = counter - 1 ;
     }
     println("ok");
 }

@@ -84,10 +84,12 @@ public class FloatLiteral extends AbstractExpr {
 
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
+    protected void codeByteExp(MethodVisitor mv) {
  
         mv.visitLdcInsn(value);
     }
+
+    
 
     @Override
     protected void iterChildren(TreeFunction f) {

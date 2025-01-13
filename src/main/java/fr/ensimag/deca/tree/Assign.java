@@ -49,18 +49,16 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        // Generate code for the right-hand side (e.g., counter - 1)
         getRightOperand().codeByteExp(mv);
     
-        // Get the variable definition for the left-hand side (e.g., `counter`)
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");
         }
         Identifier leftId = (Identifier) getLeftOperand();
         VariableDefinition varDef = leftId.getVariableDefinition();
     
-        // Store the result in the correct local index
         int localIndex = varDef.getLocalIndex();
+        System.out.println(localIndex);
         if (localIndex < 0) {
             throw new DecacInternalError("Variable local index not set before assignment.");
         }
@@ -68,6 +66,7 @@ public class Assign extends AbstractBinaryExpr {
         // Use the correct store instruction
         if (getType().isInt()) {
             mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+            System.out.println("i am int");
         } else if (getType().isFloat()) {
             mv.visitVarInsn(Opcodes.FSTORE, localIndex);
         } else {

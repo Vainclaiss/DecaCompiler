@@ -40,9 +40,9 @@ public class Equals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
-        getLeftOperand().codeGenByteInst(mv);
+        getLeftOperand().codeByteExp(mv);
     
-        getRightOperand().codeGenByteInst(mv);
+        getRightOperand().codeByteExp(mv);
     
         Type leftType = getLeftOperand().getType();
         if (leftType.isInt()) {

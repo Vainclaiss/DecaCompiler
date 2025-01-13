@@ -19,6 +19,7 @@ public class Minus extends AbstractOpArith {
     public Minus(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
+    private int nextLocalIndex = 1;
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
@@ -34,24 +35,53 @@ public class Minus extends AbstractOpArith {
         return "-";
     }
 
-         @Override
+    protected int allocateLocalIndex() {
+        return nextLocalIndex++;
+    }
+
+    /*
+     * 
+     * @Override
     protected void codeGenByteInst(MethodVisitor mv) {
         getLeftOperand().codeByteExp(mv);
+        int leftVarIndex = allocateLocalIndex(); 
+        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex); 
+    
         getRightOperand().codeByteExp(mv);
-
+    
+        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
+    
         if (getType().isInt()) {
-
             mv.visitInsn(Opcodes.ISUB);
-
         } else if (getType().isFloat()) {
-
             mv.visitInsn(Opcodes.FSUB);
-            
         } else {
-            throw new DecacInternalError(
-                "Plus: unsupported type for substraction: " + getType());
+            throw new UnsupportedOperationException(
+                "Subtraction: unsupported type: " + getType()
+            );
         }
     }
+     * 
+     */
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        getLeftOperand().codeByteExp(mv);
+    
+        getRightOperand().codeByteExp(mv);
+    
+    
+        if (getType().isInt()) {
+            mv.visitInsn(Opcodes.ISUB);
+        } else if (getType().isFloat()) {
+            mv.visitInsn(Opcodes.FSUB);
+        } else {
+            throw new UnsupportedOperationException(
+                "Subtraction: unsupported type: " + getType()
+            );
+        }
+    }
+    
+    
 
     
 }

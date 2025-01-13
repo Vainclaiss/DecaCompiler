@@ -43,6 +43,33 @@ public class Divide extends AbstractOpArith {
         return "/";
     }
 
+    /*
+     *  @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        getLeftOperand().codeByteExp(mv);
+        int leftVarIndex = allocateLocalIndex(); 
+        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex);
+    
+        getRightOperand().codeByteExp(mv);
+    
+        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
+    
+        
+        if (getType().isInt()) {
+            mv.visitInsn(Opcodes.IDIV);
+        } else if (getType().isFloat()) {
+
+            mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex);
+            mv.visitInsn(Opcodes.FDIV);
+            System.out.println("Floating-point division performed with intermediate storage.");
+        } else {
+            throw new UnsupportedOperationException(
+                "Division: unsupported type: " + getType()
+            );
+        }
+    }
+     */
+
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
       

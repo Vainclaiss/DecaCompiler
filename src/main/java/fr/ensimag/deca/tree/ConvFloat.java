@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -36,6 +37,14 @@ public class ConvFloat extends AbstractUnaryExpr {
     protected void codeExp(DecacCompiler compiler, int n) {
         getOperand().codeExp(compiler, n);
         compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
+    }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv) {
+        
+        getOperand().codeByteExp(mv);
+      
+        mv.visitInsn(Opcodes.I2F);
     }
 
     @Override

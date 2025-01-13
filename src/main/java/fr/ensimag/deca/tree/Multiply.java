@@ -20,6 +20,8 @@ public class Multiply extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
+    private int nextLocalIndex = 1;
+
     @Override
     protected void codeGenInst(DecacCompiler compiler, DVal op1, GPRegister r) {
         compiler.addInstruction(new MUL(op1, r));
@@ -30,9 +32,36 @@ public class Multiply extends AbstractOpArith {
     }
 
 
-    @Override
-    protected void codeByteExp(MethodVisitor mv) {
+   
+    /*
+     * @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
         getLeftOperand().codeByteExp(mv);
+    
+        int leftVarIndex = allocateLocalIndex();
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex);
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex);
+        } else {
+            throw new UnsupportedOperationException("Unsupported type for multiplication: " + getType());
+        }
+    
+        getRightOperand().codeByteExp(mv);
+    
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
+            mv.visitInsn(Opcodes.IMUL);
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex);
+            mv.visitInsn(Opcodes.FMUL);
+        }
+    }
+     */
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv) {
+        getLeftOperand().codeByteExp(mv);
+        
         getRightOperand().codeByteExp(mv);
         if (getType().isInt()) {
             mv.visitInsn(Opcodes.IMUL);

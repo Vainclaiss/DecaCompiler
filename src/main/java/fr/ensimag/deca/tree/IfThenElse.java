@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.objectweb.asm.MethodVisitor;
@@ -137,7 +138,7 @@ public class IfThenElse extends AbstractInst {
     protected void codeGenByteInst(MethodVisitor mv) {
         org.objectweb.asm.Label elseLabel = new org.objectweb.asm.Label();
         org.objectweb.asm.Label endLabel  = new org.objectweb.asm.Label();
-    
+     
         // Instead of pushing 0/1, we do short-circuit branching:
         condition.codeGenByteBool(mv, /* branchIfTrue = */ false, elseLabel);
     

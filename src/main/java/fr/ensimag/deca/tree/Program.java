@@ -50,6 +50,8 @@ public class Program extends AbstractProgram {
     }
 
     public void codeGenByteProgram(DecacCompiler compiler) {
+
+        
         try (FileOutputStream textFileOut = new FileOutputStream("MainBytecode.txt");
              PrintWriter textPrintWriter = new PrintWriter(textFileOut, true))
         {
@@ -118,7 +120,7 @@ public class Program extends AbstractProgram {
     
             try (FileOutputStream fos = new FileOutputStream("Main.class")) {
                 fos.write(bytecode);
-                LOG.info("Wrote Main.class successfully.");
+                LOG.info("Wrote .class successfully.");
             }
     
            

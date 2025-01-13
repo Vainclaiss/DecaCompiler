@@ -63,6 +63,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected void codeGenByteInst(MethodVisitor mv) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler){
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     @Override
     protected DVal getDVal() {
@@ -89,17 +92,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.getStackOverflowCounter().addTemporaryOnStack(-1);
 
                 codeGenInst(compiler, Register.R0, Register.getR(n));
-<<<<<<< HEAD
-                Register.setRegistreLibre(n, true);
-            } else {
-                getRightOperand().codeExp(compiler, n + 1);
-                Register.setRegistreLibre(n + 1, false);
-
-                codeGenInst(compiler, Register.getR(n + 1), Register.getR(n));
-                Register.setRegistreLibre(n + 1, true);
-            }
-        } else {
-=======
             }
             else { 
                 getRightOperand().codeExp(compiler, n+1);
@@ -112,10 +104,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
         else {
->>>>>>> feature/SansObjet/C
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
     }
+
+
     @Override
 protected void codeByteExp(MethodVisitor mv) {
     getLeftOperand().codeByteExp(mv);

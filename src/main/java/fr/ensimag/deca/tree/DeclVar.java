@@ -87,11 +87,11 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-    private static int nextLocalIndex = 0; // Local to DeclVar
 
 
     protected void codeGenByteDeclVar(MethodVisitor mv, DecacCompiler compiler) {
         int localIndex = compiler.allocateLocalIndex();
+        System.out.println(localIndex);
         varName.getVariableDefinition().setLocalIndex(localIndex);
 
         initialization.codeGenByteInitialization(mv, localIndex);

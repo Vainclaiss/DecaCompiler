@@ -41,6 +41,7 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
     getLeftOperand().codeByteExp(mv);
 
     getRightOperand().codeByteExp(mv);
+    System.out.println("greater");
 
     Type leftType = getLeftOperand().getType();
 

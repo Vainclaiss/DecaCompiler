@@ -90,13 +90,13 @@ public class While extends AbstractInst {
         org.objectweb.asm.Label whileStart = new org.objectweb.asm.Label();
         org.objectweb.asm.Label whileEnd = new org.objectweb.asm.Label();
     
-        mv.visitLabel(whileStart);
+        mv.visitLabel(whileStart); // on visite le start
     
-        condition.codeGenByteBool(mv, false, whileEnd);
+        condition.codeGenByteBool(mv, false, whileEnd); // si la condition est fausse on sort du loop
     
-        body.codeGenListInstByte(mv);
+        body.codeGenListInstByte(mv); // on genere le bytecode pour le contenu du loop
     
-        mv.visitJumpInsn(Opcodes.GOTO, whileStart);
+        mv.visitJumpInsn(Opcodes.GOTO, whileStart); // on va au while start encore
     
         mv.visitLabel(whileEnd);
     }

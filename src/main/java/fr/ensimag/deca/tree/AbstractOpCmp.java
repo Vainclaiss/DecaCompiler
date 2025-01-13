@@ -90,9 +90,10 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
     @Override
     protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeGenByteInst(mv);
+        
+        getLeftOperand().codeByteExp(mv);
     
-        getRightOperand().codeGenByteInst(mv);
+        getRightOperand().codeByteExp(mv);
     
         org.objectweb.asm.Label labelTrue = new org.objectweb.asm.Label();
         org.objectweb.asm.Label labelEnd  = new org.objectweb.asm.Label();

@@ -11,6 +11,8 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import org.objectweb.asm.MethodVisitor;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -157,6 +159,12 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeByteExp(MethodVisitor mv) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+    /* 
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+        */
+
 
     /**
      * Generate code to print the expression
@@ -170,6 +178,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenBytePrint(MethodVisitor mv) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+
     /**
      * Generate code to print the expression in hex if "this" is a float
      *
@@ -177,6 +186,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrintHex(DecacCompiler compiler) {
         codeGenPrint(compiler);
+    }
+
+    protected void codeGenBytePrintHex(MethodVisitor mv){
+        codeGenBytePrint(mv);
     }
 
     @Override
@@ -188,6 +201,11 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenByteInst(MethodVisitor mv) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+/* 
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) 
+    */
+    
 
     /**
      * Code generation for boolean expression

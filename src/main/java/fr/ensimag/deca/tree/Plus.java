@@ -32,6 +32,24 @@ public class Plus extends AbstractOpArith {
         }
     }
 
+    /*
+     * 
+     *
+     *     @Override
+    protected void codeByteExp(MethodVisitor mv) {
+
+        getLeftOperand().codeByteExp(mv);
+    
+        int leftVarIndex = allocateLocalIndex(); // on créer un reservoir pour les valeurs intermediaires
+        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex); // on les store dans le stack
+    
+        getRightOperand().codeByteExp(mv); 
+    
+        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex); // on met la valeur intermediaire dans le stack
+    
+        mv.visitInsn(Opcodes.IADD); // on ajoute les deux
+    }
+     */
      @Override
     protected void codeGenByteInst(MethodVisitor mv) {
         getLeftOperand().codeByteExp(mv);
