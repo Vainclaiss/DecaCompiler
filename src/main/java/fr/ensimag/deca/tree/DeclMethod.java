@@ -1,7 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -13,9 +11,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.Label;
 
 
 
@@ -39,7 +37,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     
     @Override
-    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, int index)
+    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass)
     throws ContextualError {
 
         Type methodType = type.verifyType(compiler);
@@ -53,7 +51,6 @@ public class DeclMethod extends AbstractDeclMethod {
         ExpDefinition superMethodDef = envExpSuper.get(name.getName());
         
         if (superMethodDef != null) {
-            name.setDefinition(superMethodDef);
             if (!sig.equals(superMethodDef.asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation()).getSignature())) {
                 throw new ContextualError("Error: redefinition of a method with a different signature", getLocation());
             }
@@ -64,11 +61,29 @@ public class DeclMethod extends AbstractDeclMethod {
             }
         }
 
+        ClassDefinition currentClassDef = currentClass.getClassDefinition();
+        int index;
+        if (superMethodDef == null) {
+            currentClassDef.incNumberOfMethods();
+            index = currentClassDef.getNumberOfMethods();
+        }
+        else {
+            index = superMethodDef.asMethodDefinition("Error: Cast failed from ExpDefinition to MethodDefinition", getLocation()).getIndex();
+        }
         MethodDefinition newMethodDefinition = new MethodDefinition(methodType, getLocation(), sig, index);
         name.setDefinition(newMethodDefinition);
 
         return newMethodDefinition;
 
+    }
+
+    @Override
+    protected void verifyDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
+            throws ContextualError {
+        
+        Type returnType = type.verifyType(compiler);
+        EnvironmentExp envExpParams = params.verifyListDeclParamBody(compiler, envExp);
+        body.verifyMethodBody(compiler, envExpParams, currentClass.getClassDefinition(), returnType);
     }
     
     @Override

@@ -17,7 +17,9 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 import java.io.PrintStream;
 
 public class This extends AbstractExpr{
+
     final private Boolean bool;
+
     public This(Boolean bool) {
         this.bool = bool;
     }
@@ -26,8 +28,12 @@ public class This extends AbstractExpr{
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-       //TODO je sais pas si faut faire ça ou pas
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (currentClass == null) {
+            throw new ContextualError("Error: Illegal use of this in main block", getLocation());
+        }
+
+        this.setType(currentClass.getType());
+        return currentClass.getType();
     }
 
     @Override

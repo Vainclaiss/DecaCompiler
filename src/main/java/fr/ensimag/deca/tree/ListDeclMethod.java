@@ -13,12 +13,13 @@ import fr.ensimag.ima.pseudocode.Label;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
-    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass) throws ContextualError {
+    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass) 
+                throws ContextualError {
         
         EnvironmentExp envExp = new EnvironmentExp(null);
-        int index = 0;
+
         for (AbstractDeclMethod m : getList()) {
-            MethodDefinition newMethod =  m.verifyDeclMethod(compiler, superClass, index);
+            MethodDefinition newMethod =  m.verifyDeclMethod(compiler, superClass, currentClass);
             Symbol name = m.getName();
 
             try {
@@ -42,4 +43,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    public void verifyListDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass) throws ContextualError {
+        for (AbstractDeclMethod m : getList()) {
+            m.verifyDeclMethodBody(compiler, envExp, currentClass);
+        }
+    }
 }

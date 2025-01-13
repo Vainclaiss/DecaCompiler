@@ -24,6 +24,7 @@ import java.io.PrintStream;
 public class New extends AbstractExpr {
 
     final private AbstractIdentifier name;
+
     public New(AbstractIdentifier name) {
         this.name = name;
     }
@@ -32,8 +33,12 @@ public class New extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-       //TODO je sais pas si faut faire ça ou pas
-        throw new UnsupportedOperationException("Not yet implemented");
+        Type type = name.verifyType(compiler);
+        if (!type.isClass()) {
+            throw new ContextualError("Error: Cannot create an object from a non class type", getLocation());
+        }
+        setType(type);
+        return type;
     }
 
     @Override

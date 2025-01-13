@@ -26,8 +26,24 @@ public class Return extends AbstractInst{
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType)
-            throws ContextualError {}
+            throws ContextualError {
 
+            if (returnType.isVoid()) {
+                if (currentClass == null) {
+                    throw new ContextualError("Error: Main does not return anything", getLocation());
+                }
+                else {
+                    throw new ContextualError("Error: This method does not return anything", getLocation());
+                }
+            }
+            setArgument(argument.verifyRValue(compiler, localEnv, currentClass, returnType));
+        }
+
+    protected void setArgument(AbstractExpr newArgument) {
+        Validate.notNull(newArgument);
+        this.argument = newArgument;
+    }
+    
     public AbstractExpr getArgument() {
         return argument;
     }

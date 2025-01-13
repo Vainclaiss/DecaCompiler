@@ -22,8 +22,11 @@ public abstract class AbstractDeclField extends Tree {
      * @return
      * @throws ContextualError
      */
-    protected abstract FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass, int index)
-        throws ContextualError;
+    protected abstract FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass,
+        AbstractIdentifier currentClass) throws ContextualError;
 
+    protected abstract void verifyDeclFieldBody(DecacCompiler compiler, EnvironmentExp envExp,
+        AbstractIdentifier currentClass) throws ContextualError;
+        
     public abstract Symbol getName();
 }

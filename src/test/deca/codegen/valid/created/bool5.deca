@@ -1,0 +1,10 @@
+// Description:
+//    test un not dans une comparaison
+// Resultats:
+//    ok
+
+{
+    if (!(3 == 4) && true) {
+        println("ok");
+    }
+}

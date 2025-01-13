@@ -1,0 +1,9 @@
+// Description:
+//    teste l'utilisation de this dans le main
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 8 : Error: Illegal use of this in main block
+
+{
+    this.x = 3;
+}

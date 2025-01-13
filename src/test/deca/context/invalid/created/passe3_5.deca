@@ -1,0 +1,15 @@
+// Description:
+//    teste un return dans une methode void
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 9 : Error: Illegal RValue type, got boolean, expected int
+
+class A {
+    void m() {
+        return 3;
+    }
+}
+
+{
+
+}

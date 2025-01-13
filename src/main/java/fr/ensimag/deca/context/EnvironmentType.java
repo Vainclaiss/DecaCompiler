@@ -52,6 +52,7 @@ public class EnvironmentType {
 
         try {
             OBJECT.getDefinition().getMembers().declare(compiler.createSymbol("equals"), equals);
+            OBJECT.getDefinition().incNumberOfMethods();
         } catch (DoubleDefException e) {
             // impossible case
         }
