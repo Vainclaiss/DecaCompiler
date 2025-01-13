@@ -1,5 +1,5 @@
 // Description:
-//    tests de programme incorrect syntaxiquement (valeur trop petite)
+//    tests de programme incorrect syntaxiquement (valeur trop proche de 0)
 //
 // Resultats:
 //    ligne 7 : Erreur, Float Underflow

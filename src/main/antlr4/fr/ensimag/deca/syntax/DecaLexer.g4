@@ -31,7 +31,7 @@ fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN DIGIT+ ('F'
 
 //SKIP
 EOL : ('\n' | '\r' | '\t') {skip();};
-COMMENT : '//' (~('\n'))* { skip(); };
+COMMENT : ('//' (~('\n'))* | '/*'  (STRING_CAR | EOL | '\\"' | '\\\\')* '*/'){ skip(); };
 ESPACE : ' ' {skip();};
 
 
