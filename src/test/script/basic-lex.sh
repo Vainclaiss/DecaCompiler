@@ -36,7 +36,7 @@ check_lex() {
 
 # Valid tests
 make_valid_tests(){
-    find src/test/deca/syntax/lexer/valid -type f -name '*.deca' | while read -r file; do
+    find src/test/deca/syntax/valid/created/lexer -type f -name '*.deca' | while read -r file; do
         check_lex "$file" false
         success "[valid] Test passed for $file"
     done
@@ -44,7 +44,7 @@ make_valid_tests(){
 
 # Invalid tests
 make_invalid_tests() {
-    find src/test/deca/syntax/lexer/invalid -type f -name '*.deca' | while read -r file; do
+    find src/test/deca/syntax/invalid/created/lexer -type f -name '*.deca' | while read -r file; do
         check_lex "$file" true
         success "[invalid] Test passed for $file"
     done
