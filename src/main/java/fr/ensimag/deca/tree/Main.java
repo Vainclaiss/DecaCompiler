@@ -60,7 +60,7 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
+        // TODO: rajouter la table des methodes.
         compiler.addInstruction(new ADDSP(declVariables.size()));
         declVariables.codeGenListDeclVar(compiler, null);
 

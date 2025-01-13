@@ -13,6 +13,12 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -162,7 +168,16 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // on charge la valeur de l'expression dans un registre libre
+        codeExp(compiler, 2);
+
+        // on la met dans R1 pour l'afficher
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else if (getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
     }
 
     /**
@@ -171,7 +186,17 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintHex(DecacCompiler compiler) {
-        codeGenPrint(compiler);
+        if (getType().isFloat()) {
+            // on charge la valeur de l'expression dans un registre libre
+            codeExp(compiler, 2);
+
+            // on la met dans R1 pour l'afficher
+            compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
+            compiler.addInstruction(new WFLOATX());
+        }
+        else {
+            codeGenPrint(compiler);
+        }
     }
 
     @Override

@@ -59,7 +59,7 @@ public class ClassDefinition extends TypeDefinition {
     }
 
     private final EnvironmentExp members;
-    private final ClassDefinition superClass; 
+    private final ClassDefinition superClass;
 
     public EnvironmentExp getMembers() {
         return members;

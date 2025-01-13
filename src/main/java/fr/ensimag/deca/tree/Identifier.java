@@ -277,41 +277,6 @@ public class Identifier extends AbstractIdentifier {
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
     }
-
-    /**
-     * Generate code to print the expression
-     *
-     * @param compiler
-     */
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getDVal(), Register.R1));
-        Type type = getType();
-        if (type.isInt()) {
-            compiler.addInstruction(new WINT());
-        } else if (type.isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        } else {
-            throw new UnsupportedOperationException("Print of this type identifier not yet implemented");
-        }
-    }
-
-        /**
-     * Generate code to print the expression
-     *
-     * @param compiler
-     */
-    @Override
-    protected void codeGenPrintHex(DecacCompiler compiler) {
-        Type type = getType();
-        if (type.isFloat()) {
-            compiler.addInstruction(new WFLOATX());
-        }
-        else {
-            codeGenPrint(compiler);
-        }
-    }
-    
     
     private Definition definition;
 

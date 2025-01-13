@@ -23,25 +23,6 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        //TODO: à supprimer, instruction illegale
-        Label printTrue = new Label("print_true");
-        String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();
-
-        Label finPrint = new Label("fin_print");
-        finPrint.addSuffixe(suffixeIdPrintTrue);
-
-        codeGenBool(compiler, true, printTrue);
-        compiler.addInstruction(new WSTR("false"));
-        compiler.addInstruction(new BRA(finPrint));
-
-        compiler.addLabel(printTrue);
-        compiler.addInstruction(new WSTR("true"));
-
-        compiler.addLabel(finPrint);
-    }
-
-    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         Label e = new Label("binaryBool_eval_true");
         String suffixe = e.getAndAddNewSuffixe();
