@@ -14,5 +14,8 @@
         counter = counter + 1;
         println(counter);
     }
+    while (counter < 1){
+        println("ERRONE");
+    }
     println("ok");
 }

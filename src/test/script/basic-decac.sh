@@ -264,8 +264,8 @@ test_decac_a() {
     # TODO : test on multiple files
     prompt_strong "[decac -a X] [Valid]"
 
-    prompt "- deca -a [0 - 4]"
-    for i in $(seq 0 4); do
+    prompt "- deca -a [Options]"
+    for i in TONEAREST UPWARD DOWNWARD TOWARDZERO; do
         prompt "- deca -a $i"
         decac_moins_r=$(decac -a "$i" ./src/test/deca/codegen/valid/created/var1.deca)
         check_zero_status "$?" "ERREUR: decac -a $i a termine avec un status different de zero."

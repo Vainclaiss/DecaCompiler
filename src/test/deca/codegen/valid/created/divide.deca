@@ -1,0 +1,16 @@
+// Description:
+//    test divide entre 2 float
+// Resultats:
+// 	  2.00000e+00
+//    2.00000e+00
+//    2.00000e+00
+//    2
+
+{
+   float a = 10;
+   float b = 5;
+   println(a / b);
+   println(a / 5);
+   println(10 / b);
+   println(10 / 5);
+}

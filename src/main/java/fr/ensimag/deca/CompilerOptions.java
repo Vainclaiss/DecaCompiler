@@ -31,25 +31,21 @@ public class CompilerOptions {
         return debugValue;
     }
 
-    public boolean getParallel() {
-        return parallel;
+    public boolean getInParallel() {
+        return inParallel;
     }
 
-    public boolean getPrintBanner() {
-        return printBanner;
+    public boolean getDoPrintBanner() {
+        return doPrintBanner;
     }
 
     public boolean getSkipExecErrors() {
         return skipExecErrors;
     }
 
-    public int getArithmeticalPrecision() {
-        return arithmeticalPrecision;
+    public Round getFloatRoundMode() {
+        return floatRoundMode;
     }
-
-    // public static int getNumRegisters() {
-    // return numRegisters;
-    // }
 
     public boolean getStopAfterParse() {
         return stopAfterParse;
@@ -64,11 +60,10 @@ public class CompilerOptions {
     }
 
     private int debugValue = 0;
-    private int arithmeticalPrecision = 2;
-    // private static int numRegisters = 16; // TODO : chiant mais pratique le
-    // static
-    private boolean parallel = false;
-    private boolean printBanner = false;
+
+    private Round floatRoundMode = Round.TONEAREST;
+    private boolean inParallel = false;
+    private boolean doPrintBanner = false;
     private boolean skipExecErrors = false;
     private boolean stopAfterParse = false;
     private boolean stopAfterVerification = false;
@@ -126,8 +121,8 @@ public class CompilerOptions {
             throw new CLIException("Cannot use -b with other arguments");
         }
 
-        parallel = options.contains("-P");
-        printBanner = options.contains("-b");
+        inParallel = options.contains("-P");
+        doPrintBanner = options.contains("-b");
         skipExecErrors = options.contains("-n");
         stopAfterParse = options.contains("-p");
         stopAfterVerification = options.contains("-v");
@@ -153,7 +148,7 @@ public class CompilerOptions {
         try {
             Register.RMAX = Integer.parseInt(args[rArgumentIndex + 1]) - 1;
         } catch (NumberFormatException e) {
-            throw new CLIException("The argument for -r must be an integer");
+            throw new CLIException("The argument for -r must be a valid integer");
         }
 
         if (Register.RMAX < 3 || Register.RMAX > 15) { // RMAX = nbRegisters-1
@@ -164,16 +159,14 @@ public class CompilerOptions {
     private void parseACommand(String[] args) throws CLIException {
         int aArgumentIndex = Arrays.asList(args).indexOf("-a");
         if (args.length - 2 < aArgumentIndex + 1) {
-            throw new CLIException("Cannot use the -a option without specifying the precision");
+            throw new CLIException(
+                    "Cannot use the -a option without specifying the precision (TONEAREST, UPWARD, DOWNWARD or TOWARDZERO)");
         }
         try {
-            arithmeticalPrecision = Integer.parseInt(args[aArgumentIndex + 1]);
-        } catch (NumberFormatException e) {
-            throw new CLIException("The argument for -a must be an integer");
-        }
-
-        if (arithmeticalPrecision < 0) {
-            throw new CLIException("Invalid precision (must be positive)");
+            floatRoundMode = Round.valueOf(args[aArgumentIndex + 1].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new CLIException(
+                    "The argument for -a must be a valid precision (TONEAREST, UPWARD, DOWNWARD or TOWARDZERO)");
         }
     }
 
@@ -218,12 +211,12 @@ public class CompilerOptions {
         System.out.println("       /|     .              '--._   /-.7`._..-;`       ALTIERI         Aubin");
         System.out.println("      ; |       '                |`-'      \\  =|        RABALLAND       Cyprien");
         System.out.println("      |/\\        .   -' /     /  ;         |  =/        ");
-        System.out.println("      (( ;.       ,_  .:|     | /     /\\   | =|          _____ _         __ ");
-        System.out.println("       ) / `\\     | `\"\"`;     / |    | /   / =/         / ____| |       /_ |");
-        System.out.println("         | ::|    |      \\    \\ \\    \\ `--' =/         | |  __| |        | | ");
-        System.out.println("        /  '/\\    /       )    |/     `-...-`          | | |_ | |        | |");
-        System.out.println("       /    | |  `\\    /-'    /;                       | |__| | |_____   | |");
-        System.out.println("       \\  ,,/ |    \\   D    .'  \\                       \\_____|______|   |_|");
+        System.out.println("      (( ;.       ,_  .:|     | /     /\\   | =|         _____ _         __     __");
+        System.out.println("       ) / `\\     | `\"\"`;     / |    | /   / =/        / ____| |       / _ \\  /_ |");
+        System.out.println("         | ::|    |      \\    \\ \\    \\ `--' =/        | |  __| |      | | | |  | | ");
+        System.out.println("        /  '/\\    /       )    |/     `-...-`         | | |_ | |      | | | |  | |");
+        System.out.println("       /    | |  `\\    /-'    /;                      | |__| | |_____ | |_| |  | |");
+        System.out.println("       \\  ,,/ |    \\   D    .'  \\                      \\_____|______|  \\___/   |_|");
         System.out.println("        `\"\"`   \\  nnh  D_.-'L__nnh                    ");
         System.out.println();
         System.out.println("Art by Joan G. Stark");
