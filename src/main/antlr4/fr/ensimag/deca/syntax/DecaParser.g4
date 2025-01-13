@@ -457,11 +457,13 @@ literal returns[AbstractExpr tree]
         }
     | fd=FLOAT {
             try {
-                float temp = Float.parseFloat($fd.text);
-                $tree = new FloatLiteral(temp);
-                if((Double.compare(-0.0f,temp)==0 || Double.compare(+0.0f,temp)==0) && temp != 0.0){
-                    throw new FloatUnderflow(this,$ctx);
+                char[] texte = $fd.text.toCharArray();
+                for(int i = 0; i<texte.length;i++){
+                    if(texte[i]!= '0' && texte[i]!= '.' && texte[i]!= '-' && texte[i]!= '+' && texte[i]!= 'f' && texte[i]!= 'F' && texte[i]!= 'e' && texte[i]!= 'E' && Float.parseFloat($fd.text) == 0.0){
+                        throw new FloatUnderflow(this,$ctx);
+                    }
                 }
+                $tree = new FloatLiteral(Float.parseFloat($fd.text));
                 setLocation($tree,$fd);
             }
             catch(IllegalArgumentException e){

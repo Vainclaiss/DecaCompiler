@@ -31,7 +31,7 @@ fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
 //SKIP
 EOL : ('\n' | '\r' | '\t') {skip();};
-COMMENT : '//' (~('\n'))* { skip(); };
+COMMENT : ('//' (~('\n'))* | '/*'  (STRING_CAR | EOL | '\\"' | '\\\\')* '*/'){ skip(); };
 ESPACE : ' ' {skip();};
 
 
