@@ -27,7 +27,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         }
 
         throw new ContextualError(
-                "Error: Incompatible type for operator '" + getOperatorName() + "' and type " + type + "'",
+                "Error: Incompatible type for operator '" + getOperatorName() + "' and type '" + type + "'",
                 getLocation());
     }
 
