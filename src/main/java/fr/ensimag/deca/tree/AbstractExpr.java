@@ -95,7 +95,7 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
 
         Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
-        
+
         if (typeRvalue.subType(expectedType))
             return this;
 
@@ -135,7 +135,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         type = verifyExpr(compiler, localEnv, currentClass);
         if (!type.isBoolean()) {
-            throw new ContextualError("Error: Expected expression type is boolean, got " + type.toString(),
+            throw new ContextualError("Error: Expected expression type is 'boolean', got '" + type.toString() + "'",
                     getLocation());
         }
     }
@@ -146,6 +146,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Generate the code for ReadExpr, the result is stored in R1
+     * 
      * @param compiler
      */
     protected void codeExp(DecacCompiler compiler) {
@@ -193,8 +194,7 @@ public abstract class AbstractExpr extends AbstractInst {
             // on la met dans R1 pour l'afficher
             compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
             compiler.addInstruction(new WFLOATX());
-        }
-        else {
+        } else {
             codeGenPrint(compiler);
         }
     }

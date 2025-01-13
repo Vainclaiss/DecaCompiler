@@ -28,7 +28,8 @@ public class Not extends AbstractUnaryExpr {
             return type;
         }
 
-        throw new ContextualError("Error: Incompatible type for operator " + getOperatorName() + " and type " + type,
+        throw new ContextualError(
+                "Error: Incompatible type for operator '" + getOperatorName() + "' and type '" + type + "'",
                 getLocation());
     }
 

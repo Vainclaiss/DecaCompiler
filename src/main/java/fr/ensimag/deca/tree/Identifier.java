@@ -183,7 +183,7 @@ public class Identifier extends AbstractIdentifier {
 
         Definition nameDef = localEnv.get(name);
         if (nameDef == null) {
-            throw new ContextualError("Error: Identifier " + name.toString() + " is undefined",
+            throw new ContextualError("Error: Identifier '" + name.toString() + "' is undefined",
                     getLocation());
         }
 
@@ -192,6 +192,7 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Implements non-terminal "lvalue_ident" of [SyntaxeContextuelle] in passe 3
+     * 
      * @param localEnv
      * @return
      * @throws ContextualError
@@ -212,6 +213,7 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Implements non-terminal "field_ident" of [SyntaxeContextuelle] in passe 3
+     * 
      * @param localEnv
      * @return
      * @throws ContextualError
@@ -230,9 +232,9 @@ public class Identifier extends AbstractIdentifier {
         return getFieldDefinition();
     }
 
-
     /**
      * Implements non-terminal "method_ident" of [SyntaxeContextuelle] in passe 3
+     * 
      * @param localEnv
      * @return
      * @throws ContextualError
@@ -260,7 +262,7 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDefName = compiler.environmentType.defOfType(name);
         if (typeDefName == null) {
-            throw new ContextualError("Error: Type " + name.toString() + " is not defined", getLocation());
+            throw new ContextualError("Error: Type '" + name.toString() + "' is not defined", getLocation());
         }
         Type type = typeDefName.getType();
         definition = new TypeDefinition(type, typeDefName.getLocation());
@@ -277,7 +279,7 @@ public class Identifier extends AbstractIdentifier {
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
     }
-    
+
     private Definition definition;
 
     @Override

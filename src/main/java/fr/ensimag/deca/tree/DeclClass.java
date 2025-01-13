@@ -63,8 +63,8 @@ public class DeclClass extends AbstractDeclClass {
         // Multiple declarations of the class
         TypeDefinition previousDef = compiler.environmentType.defOfType(name.getName());
         if (previousDef != null) {
-            throw new ContextualError("Error: Multiple declaration of " + name.getName().toString()
-                    + ", first declaration at " + previousDef.getLocation(), name.getLocation());
+            throw new ContextualError("Error: Multiple declaration of '" + name.getName().toString()
+                    + "' , first declaration at " + previousDef.getLocation(), name.getLocation());
         }
 
         ClassType newType = new ClassType(name.getName(), getLocation(), (ClassDefinition) superDef); // the cast
@@ -104,7 +104,8 @@ public class DeclClass extends AbstractDeclClass {
                 envName.declare(symbol, definition);
             } catch (DoubleDefException e) {
                 // normalement imposible d'en arriver là car exception l
-                throw new ContextualError("Error: A field with the same name is already declared", definition.getLocation());
+                throw new ContextualError("Error: A field with the same name is already declared",
+                        definition.getLocation());
             }
         }
 
@@ -115,8 +116,8 @@ public class DeclClass extends AbstractDeclClass {
             try {
                 envName.declare(symbol, definition);
             } catch (DoubleDefException e) {
-                throw new ContextualError("Error: A field with the same name is already declared at " 
-                                        + envFields.get(symbol).getLocation().toString(), definition.getLocation());
+                throw new ContextualError("Error: A field with the same name is already declared at "
+                        + envFields.get(symbol).getLocation().toString(), definition.getLocation());
             }
         }
     }
@@ -136,10 +137,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        name.prettyPrint(s,prefix,false);
-        superClass.prettyPrint(s,prefix,false);
-        declFields.prettyPrint(s,prefix,false);
-        declMethods.prettyPrint(s,prefix,false);
+        name.prettyPrint(s, prefix, false);
+        superClass.prettyPrint(s, prefix, false);
+        declFields.prettyPrint(s, prefix, false);
+        declMethods.prettyPrint(s, prefix, false);
     }
 
     @Override
