@@ -24,7 +24,7 @@ fragment FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
 fragment DIGITHEX : DIGIT | 'A'..'F' | 'a' .. 'f';
 fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN DIGIT+ ('F' | 'f')?;
-
+fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
 
 // Deca lexer rules.
@@ -87,7 +87,7 @@ MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 FLOAT : (FLOATDEC | FLOATHEX);
 INT : ('0' | NUMPOS DIGIT*);
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
-INCLUDE : '#include' (' ')* '"' ((LETTER | DIGIT | '.' | '-' | '_')+) '"'{
+INCLUDE : '#include' (' ')* '"' FILENAME '"'{
    doInclude(getText());
    skip();
 };

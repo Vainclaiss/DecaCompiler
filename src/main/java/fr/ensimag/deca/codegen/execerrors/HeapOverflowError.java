@@ -9,10 +9,4 @@ public class HeapOverflowError extends ExecError {
     public HeapOverflowError() {
         super(new Label("heap_overflow_error"), "Error: Heap Overflow");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this;
-    }
-    
 }

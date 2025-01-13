@@ -38,7 +38,7 @@ check_compilation() {
 check_result() {
     ass_file="${1%.deca}.ass"
     awk '/\/\/ Resultats:/{flag=1; next} /^$/{flag=0} flag' "$1" | sed 's/^\s*//' | sed 's/\/\///' >"${1%.deca}.expected"
-    ./global/bin/ima "$ass_file" > "${1%.deca}.res"
+    ./global/bin/ima "$ass_file" >"${1%.deca}.res"
 
     if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
         failure "Incorrect result for $1."
@@ -69,8 +69,109 @@ make_invalid_tests() {
         rm -f "${file%.deca}.ass" 2>/dev/null
         rm -f "${file%.deca}.res" 2>/dev/null
         rm -f "${file%.deca}.expected" 2>/dev/null
-        success "[invalid] Test passed for $file"
+        success "[valid] Test passed for $file"
     done
+}
+
+check_valid_interactive_result() {
+    file=$1
+    shift
+    nb_args=$1
+    shift
+    input_args=""
+    outputs=""
+    count=1
+
+    for arg in "$@"; do
+        if [ $count -le "$nb_args" ]; then
+            input_args="${input_args}${input_args:+\\n}$arg"
+        else
+            outputs="$outputs $arg"
+        fi
+        count=$((count + 1))
+    done
+
+    input_args="${input_args}\\n"
+
+    decac "$file"
+    expected_output=$(echo "$outputs" | tr -d ' ')
+    actual_output=$(echo "$input_args" | ima "${file%.deca}.ass" | tr -d ' ')
+
+    if [ "$expected_output" != "$actual_output" ]; then
+        failure "Incorrect interactive result for $file."
+        echo "Expected: $expected_output"
+        echo "Actual: $actual_output"
+        rm -f "${file%.deca}.ass" 2>/dev/null
+        exit 1
+    fi
+    rm -f "${file%.deca}.ass" 2>/dev/null
+    success "[interactive valid] Tests passed for $file"
+}
+
+check_invalid_interactive_result() {
+    file=$1
+    shift
+    nb_args=$1
+    shift
+    input_args=""
+    outputs=""
+    count=1
+
+    for arg in "$@"; do
+        if [ $count -le "$nb_args" ]; then
+            input_args="${input_args}${input_args:+\\n}$arg"
+        else
+            outputs="$outputs $arg"
+        fi
+        count=$((count + 1))
+    done
+
+    input_args="${input_args}\\n"
+
+    decac "$file"
+    expected_output=$(echo "$outputs" | tr -d ' ')
+    actual_output=$(echo "$input_args" | ima "${file%.deca}.ass" | tr -d ' ')
+
+    if [ "$expected_output" = "$actual_output" ]; then
+        failure "Incorrect interactive result for $file."
+        echo "Expected: $expected_output"
+        echo "Actual: $actual_output"
+        rm -f "${file%.deca}.ass" 2>/dev/null
+        exit 1
+    fi
+    rm -f "${file%.deca}.ass" 2>/dev/null
+
+    success "[interactive invalid] Tests passed for $file"
+}
+
+make_invalid_interactive_tests() {
+    i=1
+    while [ $i -le 5 ]; do
+        file="./src/test/deca/codegen/interactive/read${i}.deca"
+        check_compilation "$file" false
+        i=$((i + 1))
+    done
+
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read1.deca 1 2 2
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read2.deca 2 2.0 3.0 5.00000e+00
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read3.deca 1 3.0 3.00000e+00
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read4.deca 2 2.0 3.0 5.00000e+00
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read5.deca 2 2.0 3 5.00000e+00
+}
+
+make_valid_interactive_tests() {
+    i=1
+    while [ $i -le 5 ]; do
+        file="./src/test/deca/codegen/interactive/read${i}.deca"
+        check_compilation "$file" false
+        i=$((i + 1))
+    done
+
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read1.deca 1 2 2.00000e+00
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read2.deca 2 2 3.00000e+00 5.00000e+00
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read3.deca 1 3 3.00000e+00
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read4.deca 2 2 3 5.00000e+00
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read5.deca 2 2 3.00000e+00 5.00000e+00
 }
 
 main() {
@@ -78,6 +179,8 @@ main() {
     setup_path_and_cd
     make_valid_tests
     make_invalid_tests
+    make_valid_interactive_tests
+    make_invalid_interactive_tests
 }
 
 main

@@ -9,10 +9,4 @@ public class IncompatibleCastError extends ExecError {
     public IncompatibleCastError() {
         super(new Label("incompatible_cast_error"), "Error: Incompatible cast");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this;
-    }
-
 }

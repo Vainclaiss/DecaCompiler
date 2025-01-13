@@ -9,10 +9,4 @@ public class OverflowError extends ExecError {
     public OverflowError() {
         super(new Label("overflow_error"), "Error: Overflow during arithmetic operation");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this;
-    }
-
 }

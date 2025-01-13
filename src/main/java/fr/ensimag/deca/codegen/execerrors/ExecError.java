@@ -21,10 +21,4 @@ public abstract class ExecError {
     public String getErrorMsg() {
         return errorMsg;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(label, errorMsg);
-    }
-
 }
