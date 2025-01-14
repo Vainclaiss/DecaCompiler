@@ -1,7 +1,7 @@
 // Description:
 //    test comparaison booleens
 // Resultats:
-//    ok
+//    BooleanComparison.deca:7:20: Error: Incompatible types for comparison: boolean < boolean
 
 {
     if ((3 > (6%2)) < true) {
