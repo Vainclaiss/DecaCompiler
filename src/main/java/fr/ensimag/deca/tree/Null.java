@@ -48,7 +48,7 @@ public class Null extends AbstractExpr{
     }
     @Override
     public void decompile(IndentPrintStream s) {
-        //TODO
+        s.print("null");
     }
 
     @Override

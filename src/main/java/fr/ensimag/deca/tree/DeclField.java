@@ -50,7 +50,7 @@ public class DeclField extends AbstractDeclField {
 
         ClassDefinition superDef = superClass.getClassDefinition();
         // superDef != null et c'est une class d'après la passe 1
-        superClass.setDefinition(superDef);
+        //superClass.setDefinition(superDef);
 
         ExpDefinition envExpSupeDef = superDef.getMembers().get(name.getName());
         if (envExpSupeDef != null && !envExpSupeDef.isField()) {
@@ -91,8 +91,13 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'decompile'");
+        s.print(visibility.toString().toLowerCase());
+        s.print(" ");
+        type.decompile(s);
+        s.print(" ");
+        name.decompile(s); // TODO: J'ai field dans le poly pas name...
+        init.decompile(s);
+        s.print(";");
     }
 
     @Override

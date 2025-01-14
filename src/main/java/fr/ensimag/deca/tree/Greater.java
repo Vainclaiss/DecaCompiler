@@ -5,6 +5,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BGT;
 import fr.ensimag.ima.pseudocode.instructions.BLE;
+import fr.ensimag.ima.pseudocode.instructions.SGT;
 /**
  *
  * @author gl01
@@ -25,6 +26,12 @@ public class Greater extends AbstractOpIneq {
         else {
             compiler.addInstruction(new BLE(e));
         }
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        super.codeExp(compiler, n);
+        compiler.addInstruction(new SGT(Register.getR(n)));
     }
 
     @Override

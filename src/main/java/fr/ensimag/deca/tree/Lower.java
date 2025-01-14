@@ -5,6 +5,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
+import fr.ensimag.ima.pseudocode.instructions.SLT;
 
 /**
  *
@@ -26,6 +27,12 @@ public class Lower extends AbstractOpIneq {
         else {
             compiler.addInstruction(new BGE(e));
         }
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        super.codeExp(compiler, n);
+        compiler.addInstruction(new SLT(Register.getR(n)));
     }
 
     @Override

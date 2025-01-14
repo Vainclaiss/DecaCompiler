@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
@@ -50,6 +51,19 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         // Rien a verifier (règle 3.2)
         for (AbstractDeclClass c : getList()) {
             c.verifyClassBody(compiler);
+        }
+    }
+
+    public void codeGenVtable(DecacCompiler compiler) {
+        ClassDefinition objectDef = compiler.environmentType.OBJECT.getDefinition();
+        objectDef.completeVtable();
+        objectDef.printVtable();
+
+        int offset = 1;
+        offset = objectDef.codeGenVtable(compiler, offset);
+
+        for (AbstractDeclClass c : getList()) {
+            offset = c.codeGenVtable(compiler, offset);
         }
     }
 

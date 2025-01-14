@@ -18,10 +18,10 @@ import java.io.PrintStream;
 
 public class This extends AbstractExpr {
 
-    final private Boolean bool;
+    final private boolean impl;
 
-    public This(Boolean bool) {
-        this.bool = bool;
+    public This(Boolean impl) {
+        this.impl = impl;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class This extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("this");
+        s.print(impl ? "" : "this");
     }
 
     @Override
@@ -58,7 +58,7 @@ public class This extends AbstractExpr {
 
     @Override
     String prettyPrintNode() {
-        return "This (" + bool.toString() + ")";
+        return "This (" + impl + ")";
     }
 
     @Override

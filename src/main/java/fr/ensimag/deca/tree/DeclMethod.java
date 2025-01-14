@@ -15,9 +15,6 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
-
-
-
 public class DeclMethod extends AbstractDeclMethod {
 
     final private AbstractIdentifier type;
@@ -35,26 +32,29 @@ public class DeclMethod extends AbstractDeclMethod {
         this.params = params;
         this.body = body;
     }
-    
+
     @Override
-    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass)
-    throws ContextualError {
+    public MethodDefinition verifyDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass,
+            AbstractIdentifier currentClass)
+            throws ContextualError {
 
         Type methodType = type.verifyType(compiler);
         Signature sig = params.verifyListDeclParam(compiler);
 
-        ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
+        ClassDefinition superDef = superClass.getClassDefinition();
         // superDef != null et c'est une class d'après la passe 1
-        superClass.setDefinition(superDef);
+        //superClass.setDefinition(superDef);
 
         EnvironmentExp envExpSuper = superDef.getMembers();
         ExpDefinition superMethodDef = envExpSuper.get(name.getName());
-        
+
         if (superMethodDef != null) {
-            if (!sig.equals(superMethodDef.asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation()).getSignature())) {
+            if (!sig.equals(superMethodDef
+                    .asMethodDefinition("Error: Cast fail from ExpDefinition to MethodDefinition", getLocation())
+                    .getSignature())) {
                 throw new ContextualError("Error: redefinition of a method with a different signature", getLocation());
             }
-            
+
             Type superMethodType = superMethodDef.getType();
             if (!methodType.subType(superMethodType)) {
                 throw new ContextualError("Error: redefinition of a method with incompatible type", getLocation());
@@ -66,9 +66,10 @@ public class DeclMethod extends AbstractDeclMethod {
         if (superMethodDef == null) {
             currentClassDef.incNumberOfMethods();
             index = currentClassDef.getNumberOfMethods();
-        }
-        else {
-            index = superMethodDef.asMethodDefinition("Error: Cast failed from ExpDefinition to MethodDefinition", getLocation()).getIndex();
+        } else {
+            index = superMethodDef
+                    .asMethodDefinition("Error: Cast failed from ExpDefinition to MethodDefinition", getLocation())
+                    .getIndex();
         }
         MethodDefinition newMethodDefinition = new MethodDefinition(methodType, getLocation(), sig, index);
         name.setDefinition(newMethodDefinition);
@@ -80,33 +81,35 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void verifyDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
             throws ContextualError {
-        
+
         Type returnType = type.verifyType(compiler);
         EnvironmentExp envExpParams = params.verifyListDeclParamBody(compiler, envExp);
         body.verifyMethodBody(compiler, envExpParams, currentClass.getClassDefinition(), returnType);
     }
-    
+
     @Override
     public Symbol getName() {
         return name.getName();
     }
-    
+
     public void codeGenDeclMethod(DecacCompiler compiler) {
         // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'decompile'");
+        s.print(type.decompile() + " " + name.decompile() + "(");
+        s.print(params.decompile());
+        s.print(")");
+        s.println(body.decompile());
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        type.prettyPrint(s,prefix,false);
-        name.prettyPrint(s,prefix,false);
-        params.prettyPrint(s,prefix,false);
-        body.prettyPrint(s,prefix,false);
+        type.prettyPrint(s, prefix, false);
+        name.prettyPrint(s, prefix, false);
+        params.prettyPrint(s, prefix, false);
+        body.prettyPrint(s, prefix, false);
     }
 
     @Override

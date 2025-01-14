@@ -76,7 +76,7 @@ public class DeclParam extends AbstractDeclParam {
         //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
     public void decompile(IndentPrintStream s) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        s.print(type.decompile() + " " + name.decompile());
     }
 
 }

@@ -13,7 +13,7 @@ import org.apache.commons.lang.Validate;
 public abstract class AbstractDeclClass extends Tree {
 
 
-
+    public abstract AbstractIdentifier getNameId();
 
     /**
      * Pass 1 of [SyntaxeContextuelle]. Verify that the class declaration is OK
@@ -36,4 +36,11 @@ public abstract class AbstractDeclClass extends Tree {
     protected abstract void verifyClassBody(DecacCompiler compiler)
             throws ContextualError;
 
+    /**
+     * Generate code for the vtable
+     * @param compiler
+     * @param offset
+     * @return
+     */
+    protected abstract int codeGenVtable(DecacCompiler compiler, int offset);
 }

@@ -70,11 +70,17 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     public void decompile(IndentPrintStream s) {
         if (arguments.getList().isEmpty()) {
-            s.print("print" + getSuffix() + (getPrintHex() ? "x" : "") + "();");
+            s.print("print" + getSuffix() + (printHex ? "x" : "") + "();");
+            return;
+        }
+        if (arguments.getList().size() == 1) {
+            s.print("print" + getSuffix() + (printHex ? "x" : "") + "(");
+            arguments.getList().get(0).decompile(s);
+            s.print(");");
             return;
         }
         for (AbstractExpr a : arguments.getList()) {
-            s.print("print" + getSuffix() + (getPrintHex() ? "x" : "") + "(");
+            s.print("print" + getSuffix() + (printHex ? "x" : "") + "(");
             a.decompile(s);
             if (arguments.getList().indexOf(a) != arguments.getList().size() - 1) {
                 s.println(");");

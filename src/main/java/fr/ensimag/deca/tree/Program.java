@@ -1,12 +1,21 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
+import java.util.Map;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.TypeDefinition;
+import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 
 /**
  * Deca complete program (class definition plus main block)
@@ -49,7 +58,10 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
+        // TODO: compléter ce squelette très rudimentaire de code
+
+        classes.codeGenVtable(compiler);
+        
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());

@@ -5,6 +5,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
+import fr.ensimag.ima.pseudocode.instructions.SGE;
 
 /**
  * Operator "x >= y"
@@ -27,6 +28,12 @@ public class GreaterOrEqual extends AbstractOpIneq {
         else {
             compiler.addInstruction(new BLT(e));
         }
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        super.codeExp(compiler, n);
+        compiler.addInstruction(new SGE(Register.getR(n)));
     }
 
     @Override

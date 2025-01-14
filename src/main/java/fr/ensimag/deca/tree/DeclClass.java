@@ -41,9 +41,18 @@ public class DeclClass extends AbstractDeclClass {
         this.declMethods = declMethods;
     }
 
+    public AbstractIdentifier getNameId() {
+        return name;
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.println("class " + name.decompile() + " extends " + superClass.decompile() + " {");
+        s.indent();
+        declFields.decompile(s);
+        declMethods.decompile(s);
+        s.unindent();
+        s.println("}");
 
     }
 
@@ -67,10 +76,10 @@ public class DeclClass extends AbstractDeclClass {
                     + "' , first declaration at " + previousDef.getLocation(), name.getLocation());
         }
 
-        ClassType newType = new ClassType(name.getName(), getLocation(), (ClassDefinition) superDef); // the cast
-                                                                                                      // succeed because
-                                                                                                      // of the
-                                                                                                      // precedent check
+        ClassType newType = new ClassType(name.getName(), getLocation(), superClass.getClassDefinition());  // the cast
+                                                                                                            // succeed because
+                                                                                                            // of the
+                                                                                                            // precedent check
         ClassDefinition newDef = newType.getDefinition();
         name.setDefinition(newDef);
 
@@ -88,12 +97,12 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("Error: Super definitions missmatch", getLocation());
         }
 
-        EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
-        EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass, name);
-
         ClassDefinition nameDef = name.getClassDefinition();
         nameDef.setNumberOfFields(superDef.getNumberOfFields());
         nameDef.setNumberOfMethods(superDef.getNumberOfMethods());
+        
+        EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
+        EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass, name);
 
         EnvironmentExp envName = nameDef.getMembers();
 
@@ -133,6 +142,14 @@ public class DeclClass extends AbstractDeclClass {
         // Passe 3
         declFields.verifyListDeclFieldBody(compiler, envExp, name);
         declMethods.verifyListDeclMethodBody(compiler, envExp, name);
+    }
+
+    @Override
+    protected int codeGenVtable(DecacCompiler compiler, int offset) {
+        ClassDefinition nameDef = name.getClassDefinition();
+        nameDef.completeVtable();
+        nameDef.printVtable();
+        return nameDef.codeGenVtable(compiler, offset);
     }
 
     @Override
