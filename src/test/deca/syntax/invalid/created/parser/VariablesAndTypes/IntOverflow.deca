@@ -1,0 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (valeur trop grande)
+//
+// Resultats:
+//    IntOverflow.deca:7:12: Error: Integer Overflow
+{
+    int a = 4294967296; //2^32
+}

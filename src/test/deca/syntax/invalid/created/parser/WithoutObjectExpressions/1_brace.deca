@@ -1,0 +1,6 @@
+// Description:
+//    tests de programme incorrect syntaxiquement
+//
+// Resultats:
+//  1_brace.deca:6:1: missing '}' at '<EOF>'
+{

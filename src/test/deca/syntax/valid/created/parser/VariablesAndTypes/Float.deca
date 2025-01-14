@@ -1,3 +1,7 @@
+// Description:
+//  Crée des floats
+// Resultats:
+//  Affiche b et c;
 {
     float a = 0.66;
     float b = 1.5e4f;

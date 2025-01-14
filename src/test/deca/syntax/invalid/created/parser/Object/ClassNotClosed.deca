@@ -1,0 +1,5 @@
+// Description:
+//  Classe non refermée.
+// Resultats:
+//  ClassNotClosed.deca:5:11: missing '}' at '<EOF>'
+class open{

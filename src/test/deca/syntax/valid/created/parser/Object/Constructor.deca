@@ -1,3 +1,7 @@
+// Description:
+//  Crée une classe avec constructeur et des méthodes associées et les appellent dans le main.
+// Resultats:
+//  Instancie 4 entiers
 class Construc extends Smth{
     int a;
     int b;
@@ -23,5 +27,5 @@ class Construc extends Smth{
     int var2 = 6;
     Construc test = new Construc ();
     int var3 = test.add();
-    int val4 = test.val4();
+    int var4 = test.val4();
 }
