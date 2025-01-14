@@ -22,9 +22,8 @@ check_context() {
     fi
 }
 
-
 make_valid_tests() {
-    for file in src/test/deca/context/valid/*/*.deca; do
+    find src/test/deca/context/valid -type f -name '*.deca' | while read -r file; do
         check_context "$file" false
         success "[valid] Test passed for $file"
     done
@@ -32,7 +31,7 @@ make_valid_tests() {
 
 make_invalid_tests() {
     # TODOOOOO: Verify thrown Error /!\
-    for file in src/test/deca/context/invalid/*/*.deca; do
+    find src/test/deca/context/invalid -type f -name '*.deca' | while read -r file; do
         check_context "$file" true
         success "[invalid] Test passed for $file"
     done
