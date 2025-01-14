@@ -1,0 +1,12 @@
+// Description:
+//  Test les expressions arithmetiques
+{
+    int a = 1;
+    int b = 2;
+    int c = a + b;
+    int d = a - b;
+    int e = -a;
+    int f = a * b;
+    int g = a/b;
+    int h = a%b;
+}

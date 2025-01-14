@@ -1,0 +1,29 @@
+// Description:
+//  Crée une classe avec constructeur qui extend une autre classe et des méthodes associées et les appellent dans le main.
+class Construc extends Smth{
+    int a;
+    int b;
+    void Construc(){
+        this.a = 10;
+        this.b = 11;
+    }
+    int add(){
+        return this.a + this.b;
+    }
+    void jenefaisrien(){
+    }
+
+    int val4(){
+        int val = add();
+        jenefaisrien();
+        return 4;
+    }
+}
+
+{
+    int var1 = 9;
+    int var2 = 6;
+    Construc test = new Construc ();
+    int var3 = test.add();
+    int var4 = test.val4();
+}

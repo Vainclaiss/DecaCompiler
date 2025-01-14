@@ -1,0 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (valeur trop grande)
+//
+// Resultats:
+//    FloatOverflow.deca:7:14: Error: Float Overflow
+{
+    float a = 1.4E41;
+}

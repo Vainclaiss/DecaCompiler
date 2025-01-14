@@ -33,14 +33,14 @@ check_synt() {
 }
 
 make_valid_tests() {
-    find src/test/deca/syntax/parser/valid -type f -name '*.deca' | while read -r file; do
+    find src/test/deca/syntax/valid/created/parser/ -type f -name '*.deca' | while read -r file; do
         check_synt "$file" false
         success "[valid] Test passed for $file"
     done
 }
 
 make_invalid_tests() {
-    find src/test/deca/syntax/parser/invalid -type f -name '*.deca' | while read -r file; do
+    find src/test/deca/syntax/invalid/created/parser -type f -name '*.deca' | while read -r file; do
         check_synt "$file" true
         success "[invalid] Test passed for $file"
     done

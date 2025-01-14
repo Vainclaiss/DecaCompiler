@@ -1,0 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (mauvaise LValue)
+//
+// Resultats:
+//    InvalidLValue.deca:7:4: left-hand side of assignment is not an lvalue
+{
+    3  = 4;
+}
