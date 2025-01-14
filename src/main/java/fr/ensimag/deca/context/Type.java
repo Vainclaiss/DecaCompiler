@@ -83,8 +83,6 @@ public abstract class Type {
     }
 
     public boolean subType(Type otherType) {
-        System.out.println("osudfoqsduf");
-        System.exit(3);
         if (this.isNull() || this.sameType(otherType)) {
             return true;
         }
