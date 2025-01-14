@@ -50,7 +50,7 @@ public class EnvironmentType {
         // creation of the equals method
         Signature equalsSignature = new Signature();
         equalsSignature.add(OBJECT);
-        MethodDefinition equals = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
+        MethodDefinition equals = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 1);
 
         try {
             OBJECT.getDefinition().getMembers().declare(compiler.createSymbol("equals"), equals);

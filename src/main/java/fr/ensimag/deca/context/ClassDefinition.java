@@ -1,9 +1,22 @@
 package fr.ensimag.deca.context;
 
+import java.rmi.registry.Registry;
+import java.util.Map;
+
 import org.apache.commons.lang.Validate;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
  * Definition of a class.
@@ -59,12 +72,84 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
+    public void setOperand(DAddr operand) {
+        this.operand = operand;
+    }
+
+    public DAddr getOperand() {
+        return operand;
+    }
+
+    private DAddr operand;
+
     private final EnvironmentExp members;
     private final ClassDefinition superClass;
     private Label[] vTable;
 
-    public void setVtable(Label[] vTable) {
-        this.vTable = vTable;
+    /**
+     * 
+     * @return a copie of vTable or null if vTable is null
+     */
+    public Label[] getVtable() {
+        return vTable == null ? null : vTable.clone();
+    }
+
+    public void printVtable() {
+        System.out.println("vtable of " + getType().toString());
+        for (int index = 1; index <= numberOfMethods; index++) {
+            System.out.println("Index: " + index + ", methodLabel: " + vTable[index-1].toString());
+        }
+    }
+
+    public void completeVtable() {
+        this.vTable = new Label[numberOfMethods];
+
+        if (superClass != null) {
+            superClass.completeVtable();
+            Label[] superVtable = superClass.getVtable();
+            for (int i = 0; i < superClass.getNumberOfMethods(); i++) {
+                this.vTable[i] = superVtable[i];
+            }
+        }
+        for (Map.Entry<Symbol, ExpDefinition> methodEntry : members.getCurrEnv().entrySet()) {
+            Symbol methodSymbol = methodEntry.getKey();
+            ExpDefinition expDef = methodEntry.getValue();
+            if (expDef.isMethod()) {
+                MethodDefinition methodDef = (MethodDefinition) expDef;   // the cast succeed because of the check
+
+                Label methodLabel = new Label("code." + getType().getName().toString() + "." + methodSymbol.toString());
+
+                methodDef.setLabel(methodLabel);
+                this.vTable[methodDef.getIndex()-1] = methodLabel;
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param compiler
+     * @param offset
+     * @return
+     */
+    public int codeGenVtable(DecacCompiler compiler, int offset) {
+
+        compiler.addComment("Code de la table des méthodes de " + getType().getName().toString());
+        if (superClass != null) {
+            compiler.addInstruction(new LEA(superClass.getOperand(), Register.R0));
+        }
+        else {
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        }
+
+        setOperand(new RegisterOffset(offset++, Register.GB));
+        compiler.addInstruction(new STORE(Register.R0, operand));
+
+        for (Label label : vTable) {
+            compiler.addInstruction(new LOAD(new LabelOperand(label), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(offset++, Register.GB)));
+        }
+
+        return offset;
     }
 
     public EnvironmentExp getMembers() {
