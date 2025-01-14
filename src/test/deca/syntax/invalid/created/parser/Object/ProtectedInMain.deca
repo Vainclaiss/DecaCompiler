@@ -1,0 +1,8 @@
+// Description:
+//  Test protected dans un main
+// Resultats:
+//  ProtectedInMain.deca:6:4: mismatched input 'protected' expecting {'}', '(', ';', '-', '!', 'print', 'printx', 'println', 'printlnx', 'while', 'return', 'if', 'readInt', 'readFloat', 'new', 'true', 'false', 'this', 'null', STRING, FLOAT, INT, IDENT}
+
+{
+    protected int a;
+}
