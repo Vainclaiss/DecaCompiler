@@ -5,6 +5,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.SNE;
 
 /**
  *
@@ -28,6 +29,11 @@ public class NotEquals extends AbstractOpExactCmp {
         }
     }
 
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        super.codeExp(compiler, n);
+        compiler.addInstruction(new SNE(Register.getR(n)));
+    }
 
     @Override
     protected String getOperatorName() {
