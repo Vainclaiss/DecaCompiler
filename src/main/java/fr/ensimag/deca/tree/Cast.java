@@ -17,10 +17,11 @@ import fr.ensimag.ima.pseudocode.Register;
 
 import java.io.PrintStream;
 
-public class Cast extends AbstractExpr{
+public class Cast extends AbstractExpr {
 
     final private AbstractIdentifier type;
     final private AbstractExpr expr;
+
     public Cast(AbstractIdentifier type, AbstractExpr expr) {
         this.type = type;
         this.expr = expr;
@@ -30,33 +31,33 @@ public class Cast extends AbstractExpr{
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        //TODO
+        // TODO
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        //TODO
+        // TODO
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        //TODO
+        // TODO
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        //TODO
+        s.print("(" + type.getName() + ") (" + expr.decompile() + ")");
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        //TODO
+        // TODO
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        type.prettyPrint(s, prefix,false);
-        expr.prettyPrint(s,prefix,false);
+        type.prettyPrint(s, prefix, false);
+        expr.prettyPrint(s, prefix, false);
     }
 }

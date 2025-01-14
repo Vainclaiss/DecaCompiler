@@ -9,30 +9,23 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
-
-
-
 public class MethodBody extends AbstractMethodBody {
 
     final ListDeclVar variables;
-    final ListInst body;
-    public MethodBody(ListDeclVar ldv, ListInst li ) {
-        this.variables = ldv;
-        this.body = li;
-    }
+    final ListInst insts;
 
-   public void decompileMethodBody(IndentPrintStream s) {
-        decompile(s);
+    public MethodBody(ListDeclVar ldv, ListInst li) {
+        this.variables = ldv;
+        this.insts = li;
     }
 
     @Override
     public void verifyMethodBody(DecacCompiler compiler, EnvironmentExp envExpParams,
-                ClassDefinition currentClass, Type returnType) throws ContextualError {
+            ClassDefinition currentClass, Type returnType) throws ContextualError {
 
         variables.verifyListDeclVariable(compiler, envExpParams, currentClass);
-        body.verifyListInst(compiler, envExpParams, currentClass, returnType);
+        insts.verifyListInst(compiler, envExpParams, currentClass, returnType);
     }
-
 
     @Override
     public void codeGenMethodBody(DecacCompiler compiler) {
@@ -42,16 +35,23 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        variables.prettyPrint(s,prefix,true);
-        body.prettyPrint(s,prefix,false);
+        variables.prettyPrint(s, prefix, true);
+        insts.prettyPrint(s, prefix, false);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
     }
+
     public void decompile(IndentPrintStream s) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        s.println("{");
+        s.indent();
+        s.indent(); // TODO: trouver un autre moyen j'aime pas le double indent
+        variables.decompile(s);
+        insts.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
 }
