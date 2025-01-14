@@ -4,7 +4,8 @@
 //    ok
 
 {
-    if (!(3 == 4) && true) {
+    boolean a = true;
+    if (!(3 == 4) && true && a) {
         println("ok");
     }
 }
