@@ -26,6 +26,7 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.SETROUND_DOWNWARD;
@@ -62,6 +63,7 @@ public class DecacCompiler {
 
     private Set<ExecError> execErrors;
     private TSTOCounter stackOverflowCounter = new TSTOCounter();
+    private int GBoffset;
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
@@ -70,7 +72,17 @@ public class DecacCompiler {
         this.environmentType = new EnvironmentType(this);
         this.execErrors = new HashSet<ExecError>();
         this.stackOverflowCounter = new TSTOCounter();
+        this.GBoffset = 1;
     }
+
+    public int incrGBOffset() {
+        return GBoffset++;
+    }
+
+    public int getGBOffset() {
+        return GBoffset;
+    }
+
 
     public void addExecError(ExecError error) {
         execErrors.add(error);
@@ -265,6 +277,7 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+        program.addFirst(new ADDSP(GBoffset));
         program.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à
                                                                                // cause de addFirst()
         program.addFirst(new TSTO(stackOverflowCounter.getMaxTSTO()), stackOverflowCounter.getDetailsMaxTSTO()); // on

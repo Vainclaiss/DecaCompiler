@@ -140,11 +140,11 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected int codeGenVtable(DecacCompiler compiler, int offset) {
+    protected void codeGenVtable(DecacCompiler compiler) {
         ClassDefinition nameDef = name.getClassDefinition();
         nameDef.completeVtable();
         nameDef.printVtable();
-        return nameDef.codeGenVtable(compiler, offset);
+        nameDef.codeGenVtable(compiler);
     }
 
     @Override

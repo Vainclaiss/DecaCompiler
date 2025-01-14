@@ -39,8 +39,7 @@ public abstract class AbstractDeclClass extends Tree {
     /**
      * Generate code for the vtable
      * @param compiler
-     * @param offset
      * @return
      */
-    protected abstract int codeGenVtable(DecacCompiler compiler, int offset);
+    protected abstract void codeGenVtable(DecacCompiler compiler);
 }

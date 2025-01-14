@@ -61,7 +61,6 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // TODO: rajouter la table des methodes.
-        compiler.addInstruction(new ADDSP(declVariables.size()));
         declVariables.codeGenListDeclVar(compiler, null);
 
         compiler.addComment("Beginning of main instructions:");

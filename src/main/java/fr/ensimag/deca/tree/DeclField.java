@@ -60,15 +60,10 @@ public class DeclField extends AbstractDeclField {
         }
 
         ClassDefinition currentClassDef = currentClass.getClassDefinition();
-        int index;
-        if (envExpSupeDef == null) {
-            currentClassDef.incNumberOfFields();
-            index = currentClassDef.getNumberOfFields();
-        } else {
-            index = envExpSupeDef
-                    .asFieldDefinition("Error: Cast failed from ExpDefinition to FieldDefinition", getLocation())
-                    .getIndex();
-        }
+
+        // on conserve les fields des classes super
+        currentClassDef.incNumberOfFields();
+        int index = currentClassDef.getNumberOfFields();
 
         FieldDefinition newFieldDefinition = new FieldDefinition(nameType, getLocation(), visibility, superDef, index);
         name.setDefinition(newFieldDefinition);
