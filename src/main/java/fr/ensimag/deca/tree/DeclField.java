@@ -91,8 +91,13 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'decompile'");
+        s.print(visibility.toString().toLowerCase());
+        s.print(" ");
+        type.decompile(s);
+        s.print(" ");
+        name.decompile(s); // TODO: J'ai field dans le poly pas name...
+        init.decompile(s);
+        s.print(";");
     }
 
     @Override
