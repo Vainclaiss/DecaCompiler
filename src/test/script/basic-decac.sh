@@ -118,7 +118,7 @@ check_decompilation_idempotence() {
 
 test_decac_p() {
     prompt_strong "[decac -p]"
-    for file in ./src/test/deca/codegen/valid/created/*.deca; do
+    find src/test/deca/codegen/valid/created -type f -name '*.deca' | while read -r file; do
         prompt "- decac -p $file"
         decac_moins_p=$(decac -p "$file")
         check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
