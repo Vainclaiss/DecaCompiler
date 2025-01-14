@@ -1,0 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (valeur trop proche de 0)
+//
+// Resultats:
+//    ligne 7 : Erreur, Float Underflow
+{
+    float a = 0.4E-45;
+}

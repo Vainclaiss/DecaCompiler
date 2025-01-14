@@ -34,13 +34,13 @@ public class DecacMain {
             options.displayUsage();
             System.exit(1);
         }
-        if (options.getPrintBanner()) {
+        if (options.getDoPrintBanner()) {
             options.displayBanner();
             System.exit(0);
         } else if (options.getSourceFiles().isEmpty()) {
             options.displayUsage();
         }
-        if (options.getParallel()) {
+        if (options.getInParallel()) {
             error = launchParallelCompilation(options);
         } else {
             error = launchNonParallelCompilation(options);

@@ -13,24 +13,24 @@ import fr.ensimag.ima.pseudocode.Label;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
-    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass) 
-                throws ContextualError {
-        
+    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass,
+            AbstractIdentifier currentClass)
+            throws ContextualError {
+
         EnvironmentExp envExp = new EnvironmentExp(null);
 
         for (AbstractDeclMethod m : getList()) {
-            MethodDefinition newMethod =  m.verifyDeclMethod(compiler, superClass, currentClass);
+            MethodDefinition newMethod = m.verifyDeclMethod(compiler, superClass, currentClass);
             Symbol name = m.getName();
 
             try {
                 envExp.declare(name, newMethod);
-            }
-            catch (EnvironmentExp.DoubleDefException e) {
-                throw new ContextualError("Error: Multiple declaration of " + name.toString()
-                        + ", first declaration at " + envExp.get(name).getLocation(), m.getLocation());
+            } catch (EnvironmentExp.DoubleDefException e) {
+                throw new ContextualError("Error: Multiple declaration of '" + name.toString()
+                        + "' , first declaration at " + envExp.get(name).getLocation(), m.getLocation());
             }
         }
-        
+
         return envExp;
     }
 
@@ -43,7 +43,8 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void verifyListDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass) throws ContextualError {
+    public void verifyListDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
+            throws ContextualError {
         for (AbstractDeclMethod m : getList()) {
             m.verifyDeclMethodBody(compiler, envExp, currentClass);
         }

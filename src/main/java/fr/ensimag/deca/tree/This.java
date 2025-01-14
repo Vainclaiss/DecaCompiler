@@ -16,7 +16,7 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-public class This extends AbstractExpr{
+public class This extends AbstractExpr {
 
     final private Boolean bool;
 
@@ -29,7 +29,7 @@ public class This extends AbstractExpr{
             ClassDefinition currentClass) throws ContextualError {
 
         if (currentClass == null) {
-            throw new ContextualError("Error: Illegal use of this in main block", getLocation());
+            throw new ContextualError("Error: Illegal use of 'this' in main block", getLocation());
         }
 
         this.setType(currentClass.getType());
@@ -38,12 +38,12 @@ public class This extends AbstractExpr{
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        //TODO je sais pas si faut faire ça ou pas
+        // TODO je sais pas si faut faire ça ou pas
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        //TODO je sais pas si faut faire ça ou pas
+        // TODO je sais pas si faut faire ça ou pas
     }
 
     @Override

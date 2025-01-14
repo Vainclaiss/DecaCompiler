@@ -28,6 +28,10 @@ import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.SETROUND_DOWNWARD;
+import fr.ensimag.ima.pseudocode.instructions.SETROUND_TONEAREST;
+import fr.ensimag.ima.pseudocode.instructions.SETROUND_TOWARDZERO;
+import fr.ensimag.ima.pseudocode.instructions.SETROUND_UPWARD;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -141,6 +145,7 @@ public class DecacCompiler {
 
     /**
      * Generate the code to handle error in the program
+     * 
      * @param error
      */
     public void genCodeExecError(ExecError error) {
@@ -151,7 +156,7 @@ public class DecacCompiler {
     }
 
     /**
-     * Generate the code to handle all the execution errors of the program 
+     * Generate the code to handle all the execution errors of the program
      */
     public void genCodeAllExecErrors() {
         for (ExecError error : execErrors) {
@@ -244,13 +249,35 @@ public class DecacCompiler {
             LOG.info("Stopped after verification");
             return false;
         }
+        switch (compilerOptions.getFloatRoundMode()) {
+            case UPWARD:
+                program.addInstruction(new SETROUND_UPWARD());
+                break;
+            case DOWNWARD:
+                program.addInstruction(new SETROUND_DOWNWARD());
+                break;
+            case TOWARDZERO:
+                program.addInstruction(new SETROUND_TOWARDZERO());
+                break;
+            default:
+                break;
+        }
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
-        program.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel()));      // ordre des 2 instructions inversé à cause de addFirst()
-        program.addFirst(new TSTO(stackOverflowCounter.getMaxTSTO()), stackOverflowCounter.getDetailsMaxTSTO());      // on rajoute le test de stack overflow au debut
+        program.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à
+                                                                               // cause de addFirst()
+        program.addFirst(new TSTO(stackOverflowCounter.getMaxTSTO()), stackOverflowCounter.getDetailsMaxTSTO()); // on
+                                                                                                                 // rajoute
+                                                                                                                 // le
+                                                                                                                 // test
+                                                                                                                 // de
+                                                                                                                 // stack
+                                                                                                                 // overflow
+                                                                                                                 // au
+                                                                                                                 // debut
         addExecError(StackOverflowExecError.INSTANCE);
-        genCodeAllExecErrors();     // genere le code de toutes les erreurs d'exécution à la fin du programme
+        genCodeAllExecErrors(); // genere le code de toutes les erreurs d'exécution à la fin du programme
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

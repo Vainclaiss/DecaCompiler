@@ -24,6 +24,4 @@ class Construc extends Smth{
     Construc test = new Construc ();
     int var3 = test.add();
     int val4 = test.val4();
-
-
 }

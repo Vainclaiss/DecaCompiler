@@ -9,10 +9,4 @@ public class MissingReturnError extends ExecError {
     public MissingReturnError() {
         super(new Label("missing_return_error"), "Error: return instruction missing");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this;
-    }
-
 }

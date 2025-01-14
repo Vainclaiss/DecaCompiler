@@ -20,7 +20,8 @@ public class DeclField extends AbstractDeclField {
     final private AbstractIdentifier name;
     final private AbstractInitialization init;
 
-    public DeclField(Visibility visibility, AbstractIdentifier type, AbstractIdentifier name, AbstractInitialization init) {
+    public DeclField(Visibility visibility, AbstractIdentifier type, AbstractIdentifier name,
+            AbstractInitialization init) {
         Validate.notNull(visibility);
         Validate.notNull(type);
         Validate.notNull(name);
@@ -37,13 +38,14 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    protected FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass, AbstractIdentifier currentClass)
+    protected FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass,
+            AbstractIdentifier currentClass)
             throws ContextualError {
-                
+
         Type nameType = type.verifyType(compiler);
-        
+
         if (nameType.isVoid()) {
-            throw new ContextualError("Error: void cannot be used as a type for field declaration ", getLocation());
+            throw new ContextualError("Error: 'void' cannot be used as a type for field declaration ", getLocation());
         }
 
         ClassDefinition superDef = superClass.getClassDefinition();
@@ -52,7 +54,9 @@ public class DeclField extends AbstractDeclField {
 
         ExpDefinition envExpSupeDef = superDef.getMembers().get(name.getName());
         if (envExpSupeDef != null && !envExpSupeDef.isField()) {
-            throw new ContextualError("Error: This name is already used for a non field objet at " + envExpSupeDef.getLocation(), getLocation());
+            throw new ContextualError(
+                    "Error: This name is already used for a non field objet at " + envExpSupeDef.getLocation(),
+                    getLocation());
         }
 
         ClassDefinition currentClassDef = currentClass.getClassDefinition();
@@ -60,9 +64,10 @@ public class DeclField extends AbstractDeclField {
         if (envExpSupeDef == null) {
             currentClassDef.incNumberOfFields();
             index = currentClassDef.getNumberOfFields();
-        }
-        else {
-            index = envExpSupeDef.asFieldDefinition("Error: Cast failed from ExpDefinition to FieldDefinition", getLocation()).getIndex();
+        } else {
+            index = envExpSupeDef
+                    .asFieldDefinition("Error: Cast failed from ExpDefinition to FieldDefinition", getLocation())
+                    .getIndex();
         }
 
         FieldDefinition newFieldDefinition = new FieldDefinition(nameType, getLocation(), visibility, superDef, index);
@@ -71,16 +76,14 @@ public class DeclField extends AbstractDeclField {
         return newFieldDefinition;
     }
 
-
     @Override
     protected void verifyDeclFieldBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
             throws ContextualError {
-        
+
         Type nameType = type.verifyType(compiler);
         // TODO: void type authorisé ??
         init.verifyInitialization(compiler, nameType, envExp, currentClass.getClassDefinition());
     }
-
 
     protected void codeGenDeclField(DecacCompiler compiler) {
         // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
@@ -93,13 +96,15 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    protected String prettyPrintNode(){return "DeclField (" + visibility +")";}
+    protected String prettyPrintNode() {
+        return "DeclField (" + visibility + ")";
+    }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        type.prettyPrint(s,prefix,false);
-        name.prettyPrint(s,prefix,false);
-        init.prettyPrint(s,prefix,false);
+        type.prettyPrint(s, prefix, false);
+        name.prettyPrint(s, prefix, false);
+        init.prettyPrint(s, prefix, false);
     }
 
     @Override

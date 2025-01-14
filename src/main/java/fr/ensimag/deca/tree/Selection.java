@@ -18,7 +18,7 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 
-public class Selection extends AbstractLValue{
+public class Selection extends AbstractLValue {
 
     final private AbstractExpr leftOperand;
     final private AbstractIdentifier rightOperand;
@@ -37,15 +37,19 @@ public class Selection extends AbstractLValue{
             throw new ContextualError("Error: Left operand of a selection must be a class", getLocation());
         }
 
-        ClassDefinition class2 = classType.asClassType("Error: Cast failed from Type to ClassType", getLocation()).getDefinition();
+        ClassDefinition class2 = classType.asClassType("Error: Cast failed from Type to ClassType", getLocation())
+                .getDefinition();
         EnvironmentExp envExp2 = class2.getMembers();
         FieldDefinition fieldDef = rightOperand.verifyField(envExp2);
         ClassDefinition classField = fieldDef.getContainingClass();
 
-        if ((fieldDef.getVisibility() == Visibility.PROTECTED) && 
-            !(class2.getType().isSubClassOf(currentClass.getType()) && currentClass.getType().isSubClassOf(classField.getType()))) {
-            
-            throw new ContextualError("Error: Unauthorized access to the protected field " + rightOperand.getName().toString(), getLocation());
+        if ((fieldDef.getVisibility() == Visibility.PROTECTED) &&
+                !(class2.getType().isSubClassOf(currentClass.getType())
+                        && currentClass.getType().isSubClassOf(classField.getType()))) {
+
+            throw new ContextualError(
+                    "Error: Unauthorized access to the protected field '" + rightOperand.getName().toString() + "'",
+                    getLocation());
         }
 
         setType(fieldDef.getType());
@@ -54,12 +58,12 @@ public class Selection extends AbstractLValue{
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        //TODO je sais pas si faut faire ça ou pas
+        // TODO je sais pas si faut faire ça ou pas
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        //TODO je sais pas si faut faire ça ou pas
+        // TODO je sais pas si faut faire ça ou pas
     }
 
     @Override
@@ -69,13 +73,13 @@ public class Selection extends AbstractLValue{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-       //TODO
+        // TODO
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        leftOperand.prettyPrint(s, prefix,false);
-        rightOperand.prettyPrint(s, prefix,false);
+        leftOperand.prettyPrint(s, prefix, false);
+        rightOperand.prettyPrint(s, prefix, false);
     }
 
 }

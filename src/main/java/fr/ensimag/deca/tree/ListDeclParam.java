@@ -13,7 +13,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 
-
 /**
  * 
  * @author gl01
@@ -24,7 +23,7 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
     /**
      * Implements non-terminal "list_DeclParam" of [SyntaxeContextuelle] in pass 3
      * 
-     * @param compiler     contains "env_types" attribute
+     * @param compiler contains "env_types" attribute
      */
     public Signature verifyListDeclParam(DecacCompiler compiler) throws ContextualError {
         Signature sig = new Signature();
@@ -36,27 +35,27 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         return sig;
     }
 
-    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler, EnvironmentExp envExp) throws ContextualError {
-            
+    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler, EnvironmentExp envExp)
+            throws ContextualError {
+
         EnvironmentExp envExpParam = new EnvironmentExp(envExp);
 
         for (AbstractDeclParam param : getList()) {
-            ParamDefinition newParamDef =  param.verifyDeclParamBody(compiler);
+            ParamDefinition newParamDef = param.verifyDeclParamBody(compiler);
             Symbol name = param.getName();
             try {
                 envExpParam.declare(name, newParamDef);
-            }
-            catch (EnvironmentExp.DoubleDefException e) {
-                throw new ContextualError("Error: Multiple declaration of parameter " + name.toString()
-                        + ", first declaration at " + envExpParam.get(name).getLocation(), param.getLocation());
+            } catch (EnvironmentExp.DoubleDefException e) {
+                throw new ContextualError("Error: Multiple declaration of parameter '" + name.toString()
+                        + "' , first declaration at " + envExpParam.get(name).getLocation(), param.getLocation());
             }
         }
-        
+
         return envExpParam;
     }
 
     public void codeGenListDeclParam(DecacCompiler compiler) {
-        //TODO
+        // TODO
     }
 
     @Override

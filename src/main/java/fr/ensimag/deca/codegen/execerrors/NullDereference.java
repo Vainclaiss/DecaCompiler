@@ -9,10 +9,4 @@ public class NullDereference extends ExecError {
     public NullDereference() {
         super(new Label("null_dereference_error"), "Error: Null dereference");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this;
-    }
-
 }
