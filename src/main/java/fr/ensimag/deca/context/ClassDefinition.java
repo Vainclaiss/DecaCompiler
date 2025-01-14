@@ -1,8 +1,9 @@
 package fr.ensimag.deca.context;
 
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.Label;
-import org.apache.commons.lang.Validate;
 
 /**
  * Definition of a class.
@@ -60,6 +61,7 @@ public class ClassDefinition extends TypeDefinition {
 
     private final EnvironmentExp members;
     private final ClassDefinition superClass;
+    private Label[] vTable;
 
     public EnvironmentExp getMembers() {
         return members;

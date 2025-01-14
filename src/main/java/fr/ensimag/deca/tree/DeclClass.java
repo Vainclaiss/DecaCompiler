@@ -67,10 +67,10 @@ public class DeclClass extends AbstractDeclClass {
                     + ", first declaration at " + previousDef.getLocation(), name.getLocation());
         }
 
-        ClassType newType = new ClassType(name.getName(), getLocation(), (ClassDefinition) superDef); // the cast
-                                                                                                      // succeed because
-                                                                                                      // of the
-                                                                                                      // precedent check
+        ClassType newType = new ClassType(name.getName(), getLocation(), superClass.getClassDefinition());  // the cast
+                                                                                                            // succeed because
+                                                                                                            // of the
+                                                                                                            // precedent check
         ClassDefinition newDef = newType.getDefinition();
         name.setDefinition(newDef);
 
