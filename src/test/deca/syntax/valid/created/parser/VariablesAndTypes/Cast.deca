@@ -1,7 +1,5 @@
 // Description:
 //  Cast d'un float en int.
-// Resultats:
-// b est un int.
 {
     int b = (int) (1.0);
 }

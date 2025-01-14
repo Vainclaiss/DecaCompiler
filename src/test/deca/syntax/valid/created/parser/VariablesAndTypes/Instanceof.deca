@@ -1,0 +1,10 @@
+// Description:
+//  Test l'instanceof
+{
+    if(1 instanceof int){
+        return "ok";
+    }
+    else{
+        return "error";
+    }
+}

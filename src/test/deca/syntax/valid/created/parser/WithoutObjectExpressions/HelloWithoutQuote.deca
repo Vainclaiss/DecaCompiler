@@ -1,7 +1,5 @@
 // Description:
 //  Affichage d'un identifier Hello.
-// Resultats:
-//  C'est syntaxiquement correct.
 {
     println(Hello);
 }

@@ -1,7 +1,5 @@
 // Description:
 //  Println d'une somme d'entier
-// Resultats:
-//  Affiche 2 sur la sortie standard.
 {
     println(1+1);
 }

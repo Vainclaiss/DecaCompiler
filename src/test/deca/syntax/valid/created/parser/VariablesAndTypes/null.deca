@@ -1,3 +1,5 @@
+// Description:
+//  Teste l'instanciation à null
 {
     int a = null;
     float b = null;

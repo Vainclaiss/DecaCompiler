@@ -1,0 +1,8 @@
+// Description:
+//  While dans un main
+{
+    int a = 0;
+    while(true){
+        a = a + 1;
+    }
+}

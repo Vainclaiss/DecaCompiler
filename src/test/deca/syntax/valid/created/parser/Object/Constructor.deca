@@ -1,7 +1,5 @@
 // Description:
-//  Crée une classe avec constructeur et des méthodes associées et les appellent dans le main.
-// Resultats:
-//  Instancie 4 entiers
+//  Crée une classe avec constructeur qui extend une autre classe et des méthodes associées et les appellent dans le main.
 class Construc extends Smth{
     int a;
     int b;
