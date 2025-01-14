@@ -32,49 +32,36 @@ public class NotEquals extends AbstractOpExactCmp {
         }
     }
 
-    
-  @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeGenByteInst(mv);
 
-        getRightOperand().codeGenByteInst(mv);
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    getLeftOperand().codeByteExp(mv);
+    getRightOperand().codeByteExp(mv);
 
-        if (getType().isInt() || getType().isBoolean()) {
-          
-            org.objectweb.asm.Label labelTrue = new org.objectweb.asm.Label();
-            org.objectweb.asm.Label labelEnd = new org.objectweb.asm.Label();
-
-            mv.visitJumpInsn(Opcodes.IF_ICMPNE, labelTrue);
-
-            mv.visitInsn(Opcodes.ICONST_0);
-
-            mv.visitJumpInsn(Opcodes.GOTO, labelEnd);
-
-            mv.visitLabel(labelTrue);
-            mv.visitInsn(Opcodes.ICONST_1);
-
-            mv.visitLabel(labelEnd);
-
-        } else if (getType().isFloat()) {
-
-            org.objectweb.asm.Label labelTrue = new org.objectweb.asm.Label();
-            org.objectweb.asm.Label labelEnd = new org.objectweb.asm.Label();
+    if (getType().isInt() || getType().isBoolean()) {
+        if (branchIfTrue) {
             
-            mv.visitInsn(Opcodes.FCMPG);          
-            mv.visitJumpInsn(Opcodes.IFNE, labelTrue); 
-
-            mv.visitInsn(Opcodes.ICONST_0);
-            mv.visitJumpInsn(Opcodes.GOTO, labelEnd);
-
-            mv.visitLabel(labelTrue);
-            mv.visitInsn(Opcodes.ICONST_1);
-
-            mv.visitLabel(labelEnd);
-
+            mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
         } else {
-            throw new DecacInternalError("NotEquals: Unsupported type for '!=' operator: " + getType());
+
+            mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
         }
+    } else if (getType().isFloat()) {
+        mv.visitInsn(Opcodes.FCMPG); 
+
+        if (branchIfTrue) {
+            
+            mv.visitJumpInsn(Opcodes.IFNE, e);
+        } else {
+           
+            mv.visitJumpInsn(Opcodes.IFEQ, e);
+        }
+    } else {
+        throw new DecacInternalError("NotEquals: Unsupported type for '!=' operator: " + getType());
     }
+}
+
+
 
     @Override
     protected String getOperatorName() {

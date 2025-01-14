@@ -35,19 +35,19 @@ public class Or extends AbstractOpBool {
            
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
     
-            getLeftOperand().codeGenByteBool(mv, /*branchIfTrue=*/ true, e);
+            getLeftOperand().codeGenByteBool(mv, true, e);
     
           
-            getRightOperand().codeGenByteBool(mv, /*branchIfTrue=*/ true, e);
+            getRightOperand().codeGenByteBool(mv, true, e);
     
     
         } else {
          
     
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
-            getLeftOperand().codeGenByteBool(mv, /*branchIfTrue=*/ true, skipRight);
+            getLeftOperand().codeGenByteBool(mv,  true, skipRight);
             
-            getRightOperand().codeGenByteBool(mv, /*branchIfTrue=*/ false, e);
+            getRightOperand().codeGenByteBool(mv,  false, e);
     
             mv.visitLabel(skipRight);
         }
