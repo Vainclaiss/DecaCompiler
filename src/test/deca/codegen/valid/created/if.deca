@@ -1,11 +1,12 @@
 // Description:
-//    test des expressions IfThenElse sans else
+//    test des expressions IfThenElse sans else (+ NoOperation)
 // Resultats:
 //    ok
 //    ok
 
 {
     if (true) {
+        ;
         println("ok");
     }
     println("ok");
