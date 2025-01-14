@@ -45,6 +45,7 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        // TODO : gerer les selections et le cas de this
         getRightOperand().codeExp(compiler, 3);
         
         compiler.addInstruction(new STORE(Register.getR(3), (DAddr)getLeftOperand().getDVal()));
