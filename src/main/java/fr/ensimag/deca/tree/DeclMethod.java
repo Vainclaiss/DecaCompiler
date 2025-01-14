@@ -43,9 +43,9 @@ public class DeclMethod extends AbstractDeclMethod {
         Type methodType = type.verifyType(compiler);
         Signature sig = params.verifyListDeclParam(compiler);
 
-        ClassDefinition superDef = (ClassDefinition) compiler.environmentType.defOfType(superClass.getName());
+        ClassDefinition superDef = superClass.getClassDefinition();
         // superDef != null et c'est une class d'après la passe 1
-        superClass.setDefinition(superDef);
+        //superClass.setDefinition(superDef);
 
         EnvironmentExp envExpSuper = superDef.getMembers();
         ExpDefinition superMethodDef = envExpSuper.get(name.getName());

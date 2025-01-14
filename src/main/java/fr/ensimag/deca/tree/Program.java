@@ -60,30 +60,7 @@ public class Program extends AbstractProgram {
     public void codeGenProgram(DecacCompiler compiler) {
         // TODO: compléter ce squelette très rudimentaire de code
 
-        // création of the vTable
-        for (Map.Entry<Symbol, TypeDefinition> classEntry : compiler.environmentType.getEnvTypes().entrySet()) {
-            Symbol classSymbol = classEntry.getKey();
-            TypeDefinition typeDef = classEntry.getValue();
-            if (typeDef.isClass()) {
-                ClassDefinition classDef = (ClassDefinition) typeDef; // cast succeed because of the check
-                Label[] vtable = new Label[classDef.getNumberOfMethods()];
-
-                for (Map.Entry<Symbol, ExpDefinition> methodEntry : classDef.getMembers().getCurrEnv().entrySet()) {
-                    Symbol methodSymbol = methodEntry.getKey();
-                    ExpDefinition expDef = methodEntry.getValue();
-                    if (expDef.isMethod()) {
-                        MethodDefinition methodDef = (MethodDefinition) expDef;   // the cast succeed because of the check
-
-                        Label methodLabel = new Label("code." + classSymbol.toString() + "." + methodSymbol.toString());
-
-                        methodDef.setLabel(methodLabel);
-                        vtable[methodDef.getIndex()] = methodLabel;
-                    }
-                }
-
-                classDef.setVtable(vtable);
-            }
-        }
+        classes.codeGenVtable(compiler);
         
         compiler.addComment("Main program");
         main.codeGenMain(compiler);

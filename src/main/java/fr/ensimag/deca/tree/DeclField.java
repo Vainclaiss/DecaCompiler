@@ -50,7 +50,7 @@ public class DeclField extends AbstractDeclField {
 
         ClassDefinition superDef = superClass.getClassDefinition();
         // superDef != null et c'est une class d'après la passe 1
-        superClass.setDefinition(superDef);
+        //superClass.setDefinition(superDef);
 
         ExpDefinition envExpSupeDef = superDef.getMembers().get(name.getName());
         if (envExpSupeDef != null && !envExpSupeDef.isField()) {
