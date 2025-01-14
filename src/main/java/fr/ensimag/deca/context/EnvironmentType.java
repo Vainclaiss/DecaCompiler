@@ -1,10 +1,10 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
 
@@ -50,6 +50,10 @@ public class EnvironmentType {
         equalsSignature.add(OBJECT);
         MethodDefinition equals = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
 
+        Symbol nullSymb = compiler.createSymbol("null");
+        NULL = new NullType(nullSymb);
+        envTypes.put(nullSymb, new TypeDefinition(NULL, Location.BUILTIN));
+
         try {
             OBJECT.getDefinition().getMembers().declare(compiler.createSymbol("equals"), equals);
             OBJECT.getDefinition().incNumberOfMethods();
@@ -75,5 +79,6 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public final NullType NULL;
     public final ClassType OBJECT;
 }
