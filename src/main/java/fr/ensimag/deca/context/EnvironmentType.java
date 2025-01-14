@@ -52,7 +52,7 @@ public class EnvironmentType {
 
         Symbol nullSymb = compiler.createSymbol("null");
         NULL = new NullType(nullSymb);
-        envTypes.put(nullSymb, new TypeDefinition(NULL, Location.BUILTIN));
+        // not added to envTypes, it's impossible to declare a variable of type null.
 
         try {
             OBJECT.getDefinition().getMembers().declare(compiler.createSymbol("equals"), equals);
