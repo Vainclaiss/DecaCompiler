@@ -1,5 +1,6 @@
 package fr.ensimag.deca.context;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,8 +50,11 @@ public class EnvironmentExp {
         return res;
     }
 
+    /**
+     * @return the envTypes Map, read-only.
+     */
     public Map<Symbol, ExpDefinition> getCurrEnv() {
-        return currentEnvironment;
+        return Collections.unmodifiableMap(currentEnvironment);
     }
 
     /**

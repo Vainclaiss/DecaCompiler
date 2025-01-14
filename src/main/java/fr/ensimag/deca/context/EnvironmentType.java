@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -50,10 +52,6 @@ public class EnvironmentType {
         equalsSignature.add(OBJECT);
         MethodDefinition equals = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
 
-        Symbol nullSymb = compiler.createSymbol("null");
-        NULL = new NullType(nullSymb);
-        // not added to envTypes, it's impossible to declare a variable of type null.
-
         try {
             OBJECT.getDefinition().getMembers().declare(compiler.createSymbol("equals"), equals);
             OBJECT.getDefinition().incNumberOfMethods();
@@ -62,9 +60,20 @@ public class EnvironmentType {
         }
         envTypes.put(objectSymb, OBJECT.getDefinition());
 
+        Symbol nullSymb = compiler.createSymbol("null");
+        NULL = new NullType(nullSymb);
+        // not added to envTypes, it's impossible to declare a variable of type null.
+
     }
 
     private final Map<Symbol, TypeDefinition> envTypes;
+
+    /**
+     * @return the envTypes Map, read-only.
+     */
+    public Map<Symbol, TypeDefinition> getEnvTypes() {
+        return Collections.unmodifiableMap(envTypes);
+    }
 
     public TypeDefinition defOfType(Symbol s) {
         return envTypes.get(s);

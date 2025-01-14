@@ -63,6 +63,10 @@ public class ClassDefinition extends TypeDefinition {
     private final ClassDefinition superClass;
     private Label[] vTable;
 
+    public void setVtable(Label[] vTable) {
+        this.vTable = vTable;
+    }
+
     public EnvironmentExp getMembers() {
         return members;
     }
