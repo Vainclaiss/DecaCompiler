@@ -1,5 +1,5 @@
 // Description:
-//    teste un method call avec pas assez d'arguments
+//    teste l'appel d'une méthode avec un mauvais type en argument
 // Resultats:
 //    Erreur contextuelle
 //    Ligne 15 : Error: Illegal RValue type, got boolean, expected float

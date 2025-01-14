@@ -2,7 +2,7 @@
 //    teste un return dans une methode void
 // Resultats:
 //    Erreur contextuelle
-//    Ligne 9 : Error: Illegal RValue type, got boolean, expected int
+//    Ligne 9 : IllegalRValue.deca:9:8: Error: This method does not return anything
 
 class A {
     void m() {

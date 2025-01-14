@@ -2,7 +2,7 @@
 //    teste un method call avec trop d'arguments
 // Resultats:
 //    Erreur contextuelle
-//    Ligne 15 : Error: Too much arguments in method call
+//    Ligne 15 : Error: Too many arguments in method call
 
 class A {
     int m(float a, boolean b) {
