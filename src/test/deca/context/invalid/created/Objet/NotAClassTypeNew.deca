@@ -1,0 +1,8 @@
+// Description:
+//  New int qui n'est pas un class type
+// Resultats:
+// NotAClassTypeNew.deca:7:12: Error: Cannot create an object from a non class type
+
+{
+    int a = new int();
+}

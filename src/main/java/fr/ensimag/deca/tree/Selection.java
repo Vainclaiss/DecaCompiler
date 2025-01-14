@@ -68,7 +68,7 @@ public class Selection extends AbstractLValue {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("Selection()");
+        throw  new UnsupportedOperationException("not implemented");
     }
 
     @Override

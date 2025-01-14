@@ -1,0 +1,19 @@
+// Description:
+//  Test l'accès à un protected là où on ne peut pas.
+// Resultats:
+//  UnauthorizedAccess.deca:17:20: Error: Unauthorized access to the protected field 'a'
+
+class A {
+    protected int a;
+}
+class B extends A{
+    int getA(){
+        return a;
+    }
+}
+class C{
+    void m(){
+        B newB = new B();
+        int c = newB.a;
+    }
+}
