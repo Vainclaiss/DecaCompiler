@@ -17,6 +17,8 @@ import fr.ensimag.ima.pseudocode.Register;
 
 import java.io.PrintStream;
 
+import fr.ensimag.deca.context.NullType;
+
 public class Null extends AbstractExpr{
 
     public Null() {
@@ -26,8 +28,8 @@ public class Null extends AbstractExpr{
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        //TODO
-        throw new UnsupportedOperationException("not yet implemented");
+        setType(compiler.environmentType.NULL);
+        return compiler.environmentType.NULL;
     }
 
     @Override

@@ -49,7 +49,7 @@ check_result() {
 
 # Valid tests
 make_valid_tests() {
-    for file in ./src/test/deca/codegen/valid/created/*.deca; do
+    find ./src/test/deca/codegen/valid/created -type f -name '*.deca' | while read -r file; do
         check_gencode_file_format "$file"
         check_compilation "$file" true
         check_result "$file" true
@@ -62,7 +62,7 @@ make_valid_tests() {
 
 # Invalid tests
 make_invalid_tests() {
-    for file in ./src/test/deca/codegen/invalid/created/*.deca; do
+    find ./src/test/deca/codegen/invalid/created -type f -name '*.deca' | while read -r file; do
         check_gencode_file_format "$file"
         check_compilation "$file" false
         check_result "$file" false
