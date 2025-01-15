@@ -51,21 +51,33 @@ public class Plus extends AbstractOpArith {
     }
 
 */
-    @Override
+@Override
 protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
-    // Generate bytecode for the left operand
+    
     getLeftOperand().codeByteExp(mv, compiler);
-    int leftVarIndex = compiler.allocateLocalIndex(); // Allocate an index
-    mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex); // Store the left operand
+    int leftVarIndex = compiler.allocateLocalIndex(); 
+    
+    if (getType().isInt()) {
+        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex); 
+    } else if (getType().isFloat()) {
+        mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex); 
+    } else {
+        throw new UnsupportedOperationException("Unsupported type for bytecode generation: " + getType());
+    }
 
-    // Generate bytecode for the right operand
+   
     getRightOperand().codeByteExp(mv, compiler);
 
-    // Load the left operand from the index and perform addition
-    mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
-    mv.visitInsn(Opcodes.IADD); // Perform addition
+    if (getType().isInt()) {
+        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex); 
+        mv.visitInsn(Opcodes.IADD); 
+    } else if (getType().isFloat()) {
+        mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex); 
+        mv.visitInsn(Opcodes.FADD); 
+    } else {
+        throw new UnsupportedOperationException("Unsupported type for bytecode generation: " + getType());
+    }
 }
-
 
 
     @Override

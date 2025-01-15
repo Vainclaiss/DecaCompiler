@@ -31,44 +31,34 @@ public class Multiply extends AbstractOpArith {
         }
     }
 
-
-   
-    /*
-     * @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeByteExp(mv);
-    
-        int leftVarIndex = allocateLocalIndex();
-        if (getType().isInt()) {
-            mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex);
-        } else if (getType().isFloat()) {
-            mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex);
-        } else {
-            throw new UnsupportedOperationException("Unsupported type for multiplication: " + getType());
-        }
-    
-        getRightOperand().codeByteExp(mv);
-    
-        if (getType().isInt()) {
-            mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
-            mv.visitInsn(Opcodes.IMUL);
-        } else if (getType().isFloat()) {
-            mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex);
-            mv.visitInsn(Opcodes.FMUL);
-        }
-    }
-     */
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-        getLeftOperand().codeByteExp(mv,compiler);
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
         
-        getRightOperand().codeByteExp(mv,compiler);
+        getLeftOperand().codeByteExp(mv, compiler);
+        int leftVarIndex = compiler.allocateLocalIndex(); 
+        
         if (getType().isInt()) {
-            mv.visitInsn(Opcodes.IMUL);
+            mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex); 
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex); 
         } else {
-            mv.visitInsn(Opcodes.FMUL);
+            throw new UnsupportedOperationException("Unsupported type for bytecode generation: " + getType());
+        }
+    
+       
+        getRightOperand().codeByteExp(mv, compiler);
+    
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex); 
+            mv.visitInsn(Opcodes.IMUL); 
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex); 
+            mv.visitInsn(Opcodes.FMUL); 
+        } else {
+            throw new UnsupportedOperationException("Unsupported type for bytecode generation: " + getType());
         }
     }
+
     
 
 
