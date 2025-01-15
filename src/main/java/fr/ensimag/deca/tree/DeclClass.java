@@ -15,6 +15,11 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -145,11 +150,23 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected int codeGenVtable(DecacCompiler compiler, int offset) {
+    protected void codeGenVtable(DecacCompiler compiler) {
         ClassDefinition nameDef = name.getClassDefinition();
         nameDef.completeVtable();
         nameDef.printVtable();
-        return nameDef.codeGenVtable(compiler, offset);
+        nameDef.codeGenVtable(compiler);
+    }
+
+    @Override
+    protected void codeGenClass(DecacCompiler compiler) {
+        compiler.addComment("Initialisation des champs de " + name.getName().toString());
+        compiler.addLabel(new Label("init." + name.getClassDefinition().getType().toString()));
+        declFields.codeGenFieldsInit(compiler);
+        if ((superClass.getClassDefinition() != null) && !superClass.getClassDefinition().equals(compiler.environmentType.OBJECT.getDefinition())) {
+            compiler.addInstruction(new PUSH(Register.R1));
+            compiler.addInstruction(new BSR(new Label("init." + superClass.getClassDefinition().getType().toString())));
+            compiler.addInstruction(new SUBSP(1));
+        }
     }
 
     @Override

@@ -267,12 +267,18 @@ public class Identifier extends AbstractIdentifier {
         Type type = typeDefName.getType();
         definition = new TypeDefinition(type, typeDefName.getLocation());
 
+        setType(type);
         return type;
     }
 
     @Override
     protected DVal getDVal() {
         return getVariableDefinition().getOperand();
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler) {
+        // nothing to do, used for Assign codeGenInst
     }
 
     @Override

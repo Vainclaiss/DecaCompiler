@@ -29,4 +29,7 @@ public abstract class AbstractInitialization extends Tree {
 
     protected abstract void codeGenInitialization(DecacCompiler compiler, DAddr adresse);
 
+    public boolean isNoInitialization() {
+        return false;
+    }
 }

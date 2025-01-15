@@ -45,9 +45,9 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInitialization(DecacCompiler compiler, DAddr adresse) {
-        expression.codeExp(compiler, 2);
+        expression.codeExp(compiler, 3);
 
-        compiler.addInstruction(new STORE(Register.getR(2), adresse));
+        compiler.addInstruction(new STORE(Register.getR(3), adresse));
     }
 
     @Override

@@ -43,8 +43,10 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         }
     }
 
-    public void codeGenListDeclField(DecacCompiler compiler, ClassDefinition currentClass) {
-        // TODO
+    public void codeGenFieldsInit(DecacCompiler compiler) {
+        for (AbstractDeclField f : getList()) {
+            f.codeGenFieldInit(compiler);
+        }
     }
 
     @Override

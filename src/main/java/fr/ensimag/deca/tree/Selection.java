@@ -2,15 +2,21 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.HeapOverflowError;
 import fr.ensimag.deca.codegen.execerrors.IOError;
+import fr.ensimag.deca.codegen.execerrors.NullDereference;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
@@ -26,6 +32,11 @@ public class Selection extends AbstractLValue {
     public Selection(AbstractExpr leftOperand, AbstractIdentifier rightOperand) {
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
+    }
+
+    @Override
+    public DVal getDVal() {
+        return new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(2));
     }
 
     @Override
@@ -58,12 +69,21 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        // TODO je sais pas si faut faire ça ou pas
+
+        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(2)));
+
+        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+            compiler.addExecError(NullDereference.INSTANCE);
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(2)));
+            compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
+        }
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO je sais pas si faut faire ça ou pas
+        // TODO: gerer le cas de this
+        codeExp(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(2)), Register.getR(n)));
     }
 
     @Override

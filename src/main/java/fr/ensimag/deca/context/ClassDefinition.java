@@ -131,7 +131,7 @@ public class ClassDefinition extends TypeDefinition {
      * @param offset
      * @return
      */
-    public int codeGenVtable(DecacCompiler compiler, int offset) {
+    public void codeGenVtable(DecacCompiler compiler) {
 
         compiler.addComment("Code de la table des méthodes de " + getType().getName().toString());
         if (superClass != null) {
@@ -141,15 +141,13 @@ public class ClassDefinition extends TypeDefinition {
             compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         }
 
-        setOperand(new RegisterOffset(offset++, Register.GB));
+        setOperand(new RegisterOffset(compiler.incrGBOffset(), Register.GB));
         compiler.addInstruction(new STORE(Register.R0, operand));
 
         for (Label label : vTable) {
             compiler.addInstruction(new LOAD(new LabelOperand(label), Register.R0));
-            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(offset++, Register.GB)));
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(compiler.incrGBOffset(), Register.GB)));
         }
-
-        return offset;
     }
 
     public EnvironmentExp getMembers() {

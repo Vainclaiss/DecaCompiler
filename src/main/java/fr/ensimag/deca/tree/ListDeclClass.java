@@ -59,11 +59,16 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         objectDef.completeVtable();
         objectDef.printVtable();
 
-        int offset = 1;
-        offset = objectDef.codeGenVtable(compiler, offset);
+        objectDef.codeGenVtable(compiler);
 
         for (AbstractDeclClass c : getList()) {
-            offset = c.codeGenVtable(compiler, offset);
+            c.codeGenVtable(compiler);
+        }
+    }
+
+    public void codeGenClass(DecacCompiler compiler) {
+        for (AbstractDeclClass c : getList()) {
+            c.codeGenClass(compiler);
         }
     }
 
