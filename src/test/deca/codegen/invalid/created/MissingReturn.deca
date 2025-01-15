@@ -1,0 +1,13 @@
+// Description:
+//  Methode int sans return
+// Resultats:
+//
+
+//class A{
+//    int a(){
+//    }
+//}
+//{
+//    A newA = new A();
+//    newA.a();
+//}

@@ -1,0 +1,14 @@
+// Description:
+//  Test de l'operateur <= sur un cas où l'on ne branche pas
+// Resultats:
+//  ok
+
+{
+    int a = 4;
+    if (a <= 3) {
+        print("ERRONE");
+    }
+    else {
+        print("ok");
+    }
+}

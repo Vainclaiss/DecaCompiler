@@ -1,6 +1,0 @@
-class test{
-    void genAsm() asm("ADD R1 R2
-                       ADD #1 R2\\nADD R2 R2");
-}
-{
-}

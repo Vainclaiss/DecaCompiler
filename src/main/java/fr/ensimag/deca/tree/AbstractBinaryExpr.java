@@ -4,7 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ContextualError;
- import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -68,34 +68,31 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected void codeExp(DecacCompiler compiler, int n) {
         getLeftOperand().codeExp(compiler, n);
         DVal dvalExp2 = getRightOperand().getDVal();
-        
+
         if (dvalExp2 == null) {
             if (n == Register.RMAX) {
-                //sauvegarde de op1
+                // sauvegarde de op1
                 compiler.addInstruction(new PUSH(Register.getR(n)));
                 compiler.getStackOverflowCounter().addTemporaryOnStack(1);
 
-                //calcul de op2 dans R0
+                // calcul de op2 dans R0
                 getRightOperand().codeExp(compiler, n);
                 compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
 
-                //restoration de la valeur de op1 dans Rn
+                // restoration de la valeur de op1 dans Rn
                 compiler.addInstruction(new POP(Register.getR(n)));
                 compiler.getStackOverflowCounter().addTemporaryOnStack(-1);
 
                 codeGenInst(compiler, Register.R0, Register.getR(n));
+            } else {
+                getRightOperand().codeExp(compiler, n + 1);
+
+                codeGenInst(compiler, Register.getR(n + 1), Register.getR(n));
             }
-            else { 
-                getRightOperand().codeExp(compiler, n+1);
-                
-                codeGenInst(compiler, Register.getR(n+1), Register.getR(n));
-            }
-        }
-        else if (dvalExp2 == Register.R1) {
+        } else if (dvalExp2 == Register.R1) {
             getRightOperand().codeExp(compiler);
             codeGenInst(compiler, dvalExp2, Register.getR(n));
-        }
-        else {
+        } else {
             codeGenInst(compiler, dvalExp2, Register.getR(n));
         }
     }
@@ -107,7 +104,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+
         Type type1 = leftOperand.verifyExpr(compiler, localEnv, currentClass);
         Type type2 = rightOperand.verifyExpr(compiler, localEnv, currentClass);
 
@@ -116,9 +113,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return resType;
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
+        s.print("(");
         getLeftOperand().decompile(s);
         if (getOperatorName().equals("=")) {
             s.print(" " + getOperatorName() + " ");
@@ -126,10 +123,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             s.print(getOperatorName());
         }
         getRightOperand().decompile(s);
+        s.print(")");
     }
 
     abstract protected String getOperatorName();
-
 
     @Override
     protected void iterChildren(TreeFunction f) {

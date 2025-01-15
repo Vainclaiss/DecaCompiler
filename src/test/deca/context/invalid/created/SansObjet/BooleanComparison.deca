@@ -1,0 +1,10 @@
+// Description:
+//    test comparaison booleens
+// Resultats:
+//    BooleanComparison.deca:7:20: Error: Incompatible types for comparison: boolean < boolean
+
+{
+    if ((3 > (6%2)) < true) {
+        println("ok");
+    }
+}

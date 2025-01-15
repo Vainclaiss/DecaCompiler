@@ -24,7 +24,9 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     public AbstractExpr getOperand() {
         return operand;
     }
+
     private AbstractExpr operand;
+
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
         this.operand = operand;
@@ -37,11 +39,11 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+
         Type type1 = operand.verifyExpr(compiler, localEnv, currentClass);
         Type type = getTypeUnaryOp(compiler, type1);
         setType(type);
-        
+
         return type;
     }
 
@@ -51,10 +53,12 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     }
 
     protected abstract String getOperatorName();
-  
+
     @Override
     public void decompile(IndentPrintStream s) {
+        s.print("(");
         s.print(getOperatorName() + operand.decompile());
+        s.print(")");
     }
 
     @Override

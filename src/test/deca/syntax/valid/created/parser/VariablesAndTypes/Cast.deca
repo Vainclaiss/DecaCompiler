@@ -1,0 +1,5 @@
+// Description:
+//  Cast d'un float en int.
+{
+    int b = (int) (1.0);
+}

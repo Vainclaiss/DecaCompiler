@@ -29,7 +29,7 @@ import java.beans.MethodDescriptor;
 import java.io.PrintStream;
 import java.util.List;
 
-public class MethodCall extends AbstractExpr{
+public class MethodCall extends AbstractExpr {
 
     final private AbstractExpr leftOperand;
     final private AbstractIdentifier methodName;
@@ -50,7 +50,8 @@ public class MethodCall extends AbstractExpr{
             throw new ContextualError("Error: Left operand of a selection must be a class", getLocation());
         }
 
-        ClassDefinition class2 = classType.asClassType("Error: Cast failed from Type to ClassType", getLocation()).getDefinition();
+        ClassDefinition class2 = classType.asClassType("Error: Cast failed from Type to ClassType", getLocation())
+                .getDefinition();
         EnvironmentExp envExp2 = class2.getMembers();
         MethodDefinition methodDef = methodName.verifyMethod(envExp2);
 
@@ -111,9 +112,9 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        leftOperand.prettyPrint(s, prefix,false);
-        methodName.prettyPrint(s, prefix,false);
-        rightOperand.prettyPrint(s, prefix,false);
+        leftOperand.prettyPrint(s, prefix, false);
+        methodName.prettyPrint(s, prefix, false);
+        rightOperand.prettyPrint(s, prefix, false);
     }
 
 }

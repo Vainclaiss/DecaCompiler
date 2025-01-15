@@ -1,6 +1,0 @@
-{
-    int a;
-    int b = 10;
-    float c = 0.6;
-    a = b;
-}

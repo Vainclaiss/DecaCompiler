@@ -1,0 +1,9 @@
+// Description:
+//  Declaration d'une même méthode plusieurs fois
+// Resultats:
+// MultipleDeclMethod.deca:8:4: Error: Multiple declaration of 'm' , first declaration at [7, 4]
+
+class A{
+    void m(){}
+    void m(){}
+}

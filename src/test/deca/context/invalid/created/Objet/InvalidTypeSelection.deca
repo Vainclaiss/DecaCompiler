@@ -1,0 +1,13 @@
+// Description:
+//  Selection de l'attribut a avec c qui n'est pas une classe
+// Resultats:
+//  InvalidTypeSelection.deca:11:9: Error: Left operand of a selection must be a class
+
+class A{
+    int a;
+    int b;
+    int m(){
+        int c;
+        c.a;
+    }
+}

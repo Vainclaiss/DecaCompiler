@@ -1,0 +1,8 @@
+// Description:
+// Modulo avec un booleen
+// Resultats:
+// InvalidModulo.deca:7:14: Error: Incompatible types for arithmetic operation: int % boolean
+
+{
+    int a = 5 % true;
+}

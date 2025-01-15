@@ -1,0 +1,5 @@
+// Description:
+//  Teste protected
+class visibility{
+    protected int a;
+}

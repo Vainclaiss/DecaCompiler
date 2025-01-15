@@ -1,0 +1,25 @@
+// Description:
+//  Test de la Selection
+// Resultats:
+//  2
+
+class A{
+    int a = 2;
+}
+
+class B extends A{
+    int getA(){
+        return a;
+    }
+}
+
+class C{
+    void m(){
+        B newB = new B();
+        print(newB.a);
+    }
+}
+{
+    C newC = new C();
+    newC.m();
+}

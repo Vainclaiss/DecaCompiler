@@ -1,0 +1,12 @@
+// Description:
+//  Test la syntaxe des inégalités
+{
+    int a = 1;
+    int b = 2;
+    if(1<=2){}
+    else if(1<2){}
+    else if(2 > 1){}
+    else if(2 >= 1){}
+    else if (2 != 1){}
+    else {}
+}

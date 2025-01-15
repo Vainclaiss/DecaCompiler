@@ -61,7 +61,7 @@ public class Return extends AbstractInst{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.println("return " + argument.decompile() + ";");
+        s.println(getOperatorName() + " " + argument.decompile() + ";");
     }
 
     @Override

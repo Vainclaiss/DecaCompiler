@@ -116,18 +116,56 @@ check_decompilation_idempotence() {
     fi
 }
 
+check_decompilation_idempotence_interactive() {
+    prompt_check "- decac -p [idempotence interactive]"
+    file=$1
+    shift
+    nb_args=$1
+    shift
+    input_args=""
+    outputs=""
+    count=1
+
+    for arg in "$@"; do
+        if [ $count -le "$nb_args" ]; then
+            input_args="${input_args}${input_args:+\\n}$arg"
+        else
+            outputs="$outputs $arg"
+        fi
+        count=$((count + 1))
+    done
+
+    input_args="${input_args}\\n"
+
+    decac -p "$file" 1>"${file%.deca}_p2.deca"
+    decac -p "${file%.deca}_p2.deca" 1>"${file%.deca}_p3.deca"
+    if ! diff "${file%.deca}_p2.deca" "${file%.deca}_p3.deca"; then
+        failure "$3"
+        exit 1
+    fi
+    success "[interactive valid] Tests passed for $file"
+}
+
 test_decac_p() {
     prompt_strong "[decac -p]"
-    for file in ./src/test/deca/codegen/valid/created/*.deca; do
-        prompt "- decac -p $file"
-        decac_moins_p=$(decac -p "$file")
-        check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
-        check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
-        check_no_error "$decac_moins_p" "ERREUR: decac -p a produit une erreur pour le fichier $file."
-        check_decompilation_idempotence "$decac_moins_p" "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
-        rm -f "${file%.deca}_p2.deca" "${file%.deca}_p3.deca"
-        
-    done
+    run_decac_p_tests() {
+        find "$1" -type f -name '*.deca' | while read -r file; do
+            prompt "- decac -p $file"
+            decac_moins_p=$(decac -p "$file")
+            check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
+            check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
+            check_no_error "$decac_moins_p" "ERREUR: decac -p a produit une erreur pour le fichier $file."
+            check_decompilation_idempotence "$decac_moins_p" "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
+            rm -f "${file%.deca}_p2.deca" "${file%.deca}_p3.deca"
+        done
+    }
+
+    # Valid tests
+    run_decac_p_tests "src/test/deca/codegen/valid/created"
+
+    # Interactive tests
+    run_decac_p_tests "src/test/deca/codegen/interactive"
+
     success "SUCCESS: test_decac_p"
 }
 

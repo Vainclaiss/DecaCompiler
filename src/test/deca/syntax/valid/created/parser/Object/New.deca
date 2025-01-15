@@ -1,0 +1,8 @@
+// Description:
+//  Teste new
+class test{
+
+}
+{
+    test a = new test();
+}

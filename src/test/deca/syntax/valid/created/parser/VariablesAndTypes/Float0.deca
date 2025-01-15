@@ -1,0 +1,7 @@
+// Description:
+//  Crée des floats à 0.0 pour voir si Underflow se déclenche.
+{
+    float a = 0.0;
+    float b = 0.0f;
+    float c = 0.0e-0;
+}
