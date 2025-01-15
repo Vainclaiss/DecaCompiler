@@ -22,7 +22,7 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     @Override
-    public void codeGenMethodBody(DecacCompiler compiler) {
+    public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition curretClass) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenMethodBody'");
     }

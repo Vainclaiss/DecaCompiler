@@ -28,9 +28,9 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    public void codeGenMethodBody(DecacCompiler compiler) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenMethodBody'");
+    public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass) {
+        variables.codeGenListDeclVar(compiler, currentClass);
+        insts.codeGenListInst(compiler);
     }
 
     @Override

@@ -167,6 +167,8 @@ public class DeclClass extends AbstractDeclClass {
             compiler.addInstruction(new BSR(new Label("init." + superClass.getClassDefinition().getType().toString())));
             compiler.addInstruction(new SUBSP(1));
         }
+
+        declMethods.codeGenDeclMethods(compiler, name.getClassDefinition());
     }
 
     @Override

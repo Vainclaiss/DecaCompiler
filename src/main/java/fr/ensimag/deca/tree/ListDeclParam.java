@@ -12,6 +12,8 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 /**
  * 
@@ -42,7 +44,7 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
 
         for (AbstractDeclParam param : getList()) {
             ParamDefinition newParamDef = param.verifyDeclParamBody(compiler);
-            Symbol name = param.getName();
+            Symbol name = param.getName().getName();
             try {
                 envExpParam.declare(name, newParamDef);
             } catch (EnvironmentExp.DoubleDefException e) {
@@ -54,8 +56,11 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         return envExpParam;
     }
 
-    public void codeGenListDeclParam(DecacCompiler compiler) {
-        // TODO
+    public void codeGenListDeclParams(DecacCompiler compiler) {
+        int offset = -3;
+        for (AbstractDeclParam param : getList()) {
+            param.getName().getExpDefinition().setOperand(new RegisterOffset(offset--, Register.LB));
+        }
     }
 
     @Override

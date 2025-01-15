@@ -88,12 +88,16 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    public Symbol getName() {
-        return name.getName();
+    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
+        compiler.addComment("Code de la methode " + name.getName().toString() + " dans la classe " + currentClass.getType().toString());
+        compiler.addLabel(name.getMethodDefinition().getLabel());
+        params.codeGenListDeclParams(compiler);
+        body.codeGenMethodBody(compiler, currentClass);
     }
 
-    public void codeGenDeclMethod(DecacCompiler compiler) {
-        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+    @Override
+    public AbstractIdentifier getName() {
+        return name;
     }
 
     @Override
