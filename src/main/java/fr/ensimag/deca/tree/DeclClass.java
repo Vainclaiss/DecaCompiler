@@ -153,7 +153,6 @@ public class DeclClass extends AbstractDeclClass {
     protected void codeGenVtable(DecacCompiler compiler) {
         ClassDefinition nameDef = name.getClassDefinition();
         nameDef.completeVtable();
-        nameDef.printVtable();
         nameDef.codeGenVtable(compiler);
     }
 
