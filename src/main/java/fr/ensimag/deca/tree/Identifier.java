@@ -276,6 +276,11 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    protected void codeExp(DecacCompiler compiler) {
+        // nothing to do, used for Assign codeGenInst
+    }
+
+    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
     }

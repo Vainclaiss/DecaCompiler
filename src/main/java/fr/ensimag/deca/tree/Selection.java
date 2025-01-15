@@ -35,6 +35,11 @@ public class Selection extends AbstractLValue {
     }
 
     @Override
+    public DVal getDVal() {
+        return new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(2));
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
@@ -64,20 +69,20 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        // TODO je sais pas si faut faire ça ou pas
+
+        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(2)));
+
+        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+            compiler.addExecError(NullDereference.INSTANCE);
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(2)));
+            compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
+        }
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         // TODO: gerer le cas de this
-        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(n)));
-
-        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
-            compiler.addExecError(NullDereference.INSTANCE);
-            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(n)));
-            compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
-        }
-
+        codeExp(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(n)), Register.getR(n)));
     }
 
