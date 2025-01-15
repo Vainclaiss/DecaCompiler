@@ -278,7 +278,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected DVal getDVal() {
-        return getVariableDefinition().getOperand();
+        return getExpDefinition().getOperand();
     }
 
     @Override

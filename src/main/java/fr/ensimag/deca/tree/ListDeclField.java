@@ -13,6 +13,7 @@ import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 public class ListDeclField extends TreeList<AbstractDeclField> {
 
@@ -47,6 +48,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         for (AbstractDeclField f : getList()) {
             f.codeGenFieldInit(compiler);
         }
+        compiler.addInstruction(new RTS());
     }
 
     @Override
