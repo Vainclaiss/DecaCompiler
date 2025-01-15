@@ -15,7 +15,13 @@ import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.HALT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.SEQ;
 
 /**
  * Deca complete program (class definition plus main block)
@@ -67,6 +73,15 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+
+        // code de la methode equals de Object
+        compiler.addComment("Code de la methode equals dans la classe Object");
+        compiler.addLabel(compiler.environmentType.OBJECT.getDefinition().getVtable()[0]);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+        compiler.addInstruction(new LOAD(new RegisterOffset(-3, Register.LB), Register.R1));
+        compiler.addInstruction(new CMP(Register.R0, Register.R1));
+        compiler.addInstruction(new SEQ(Register.R0));
+        compiler.addInstruction(new RTS());
 
         // generation des init et methodes des classes
         classes.codeGenClass(compiler);

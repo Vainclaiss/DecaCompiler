@@ -28,8 +28,8 @@ public class DeclParam extends AbstractDeclParam {
     }
 
     @Override
-    protected Symbol getName() {
-        return name.getName();
+    protected AbstractIdentifier getName() {
+        return name;
     }
 
 
