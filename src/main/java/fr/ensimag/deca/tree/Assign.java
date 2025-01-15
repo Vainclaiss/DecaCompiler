@@ -48,8 +48,8 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-        getRightOperand().codeByteExp(mv);
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
+        getRightOperand().codeByteExp(mv,compiler);
     
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");

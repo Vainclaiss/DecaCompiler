@@ -41,7 +41,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv){
+    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler){
         throw new UnsupportedOperationException("not yet implemented");
     }
 

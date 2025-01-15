@@ -36,21 +36,21 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
        
         if (branchIfTrue) {
           
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
     
-            getLeftOperand().codeGenByteBool(mv, false, skipRight);
+            getLeftOperand().codeGenByteBool(mv, false, skipRight,compiler);
     
-            getRightOperand().codeGenByteBool(mv, true, e);
+            getRightOperand().codeGenByteBool(mv, true, e,compiler);
     
             mv.visitLabel(skipRight);
         } else {
 
-            getLeftOperand().codeGenByteBool(mv, false, e);
-            getRightOperand().codeGenByteBool(mv, false, e);
+            getLeftOperand().codeGenByteBool(mv, false, e,compiler);
+            getRightOperand().codeGenByteBool(mv, false, e,compiler);
         }
     }
 

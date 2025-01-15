@@ -28,9 +28,9 @@ public class Println extends AbstractPrint {
     }
 
     @Override
-protected void codeGenByteInst(MethodVisitor mv) {
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
 
-    super.codeGenByteInst(mv);
+    super.codeGenByteInst(mv,compiler);
 
 }
 

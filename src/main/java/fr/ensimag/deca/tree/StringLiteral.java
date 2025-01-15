@@ -85,7 +85,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv) {
+    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
         mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
         
         mv.visitLdcInsn(value);

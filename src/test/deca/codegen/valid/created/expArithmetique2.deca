@@ -8,7 +8,5 @@
 
 {
     println(2 + 3 * 4); // Affiche 14
-    println((2 + 3) * 4); // Affiche 20
-    println(10 / 2); // Affiche 5
-    println(10 % 3); // Affiche 1
+
 }

@@ -57,7 +57,7 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     @Override
-    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex) {
+    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex,DecacCompiler compiler) {
         // nothing to do
     }
 

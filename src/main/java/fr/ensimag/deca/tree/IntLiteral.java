@@ -62,7 +62,7 @@ public class IntLiteral extends AbstractExpr {
         compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
     }
     @Override
-protected void codeGenBytePrint(MethodVisitor mv) {
+protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
     mv.visitLdcInsn(value);
 
     mv.visitFieldInsn(org.objectweb.asm.Opcodes.GETSTATIC, 
@@ -76,7 +76,7 @@ protected void codeGenBytePrint(MethodVisitor mv) {
 
 
     @Override
-    protected void codeByteExp(MethodVisitor mv) {
+    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
  
         mv.visitLdcInsn(value);
     }

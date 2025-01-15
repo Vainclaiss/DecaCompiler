@@ -30,24 +30,24 @@ public class Or extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
         if (branchIfTrue) {
            
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
     
-            getLeftOperand().codeGenByteBool(mv, true, e);
+            getLeftOperand().codeGenByteBool(mv, true, e,compiler);
     
           
-            getRightOperand().codeGenByteBool(mv, true, e);
+            getRightOperand().codeGenByteBool(mv, true, e,compiler);
     
     
         } else {
          
     
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();
-            getLeftOperand().codeGenByteBool(mv,  true, skipRight);
+            getLeftOperand().codeGenByteBool(mv,  true, skipRight,compiler);
             
-            getRightOperand().codeGenByteBool(mv,  false, e);
+            getRightOperand().codeGenByteBool(mv,  false, e,compiler);
     
             mv.visitLabel(skipRight);
         }

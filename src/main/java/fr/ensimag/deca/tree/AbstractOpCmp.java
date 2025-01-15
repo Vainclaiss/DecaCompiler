@@ -52,7 +52,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv){
+    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler){
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -89,11 +89,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         compiler.addInstruction(new CMP(op1, r));
     }
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
         
-        getLeftOperand().codeByteExp(mv);
+        getLeftOperand().codeByteExp(mv,compiler);
     
-        getRightOperand().codeByteExp(mv);
+        getRightOperand().codeByteExp(mv,compiler);
     
         org.objectweb.asm.Label labelTrue = new org.objectweb.asm.Label();
         org.objectweb.asm.Label labelEnd  = new org.objectweb.asm.Label();

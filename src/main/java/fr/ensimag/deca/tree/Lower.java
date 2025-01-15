@@ -31,10 +31,10 @@ public class Lower extends AbstractOpIneq {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label target) {
-    getLeftOperand().codeByteExp(mv);
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label target,DecacCompiler compiler) {
+    getLeftOperand().codeByteExp(mv,compiler);
 
-    getRightOperand().codeByteExp(mv);
+    getRightOperand().codeByteExp(mv,compiler);
 
     if (getType().isInt()) {
         if (branchIfTrue) {

@@ -84,7 +84,7 @@ public class FloatLiteral extends AbstractExpr {
 
 
     @Override
-    protected void codeByteExp(MethodVisitor mv) {
+    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
  
         mv.visitLdcInsn(value);
     }

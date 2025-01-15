@@ -156,14 +156,12 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeExp(DecacCompiler compiler, int n) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    protected void codeByteExp(MethodVisitor mv) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    /* 
+
+    
     protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-        */
+        
 
 
     /**
@@ -175,7 +173,8 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    protected void codeGenBytePrint(MethodVisitor mv) {
+ 
+    protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -188,8 +187,8 @@ public abstract class AbstractExpr extends AbstractInst {
         codeGenPrint(compiler);
     }
 
-    protected void codeGenBytePrintHex(MethodVisitor mv){
-        codeGenBytePrint(mv);
+    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler){
+        codeGenBytePrint(mv,compiler);
     }
 
     @Override
@@ -198,7 +197,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 /* 
@@ -218,7 +217,7 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

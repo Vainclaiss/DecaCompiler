@@ -44,7 +44,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
       @Override
-    protected void codeGenBytePrint(MethodVisitor mv){
+    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler){
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -67,12 +67,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv) {
+protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
     org.objectweb.asm.Label evalTrue = new org.objectweb.asm.Label();
     org.objectweb.asm.Label endLabel = new org.objectweb.asm.Label();
 
     
-    codeGenByteBool(mv, /* branchIfTrue */ true, evalTrue);
+    codeGenByteBool(mv, /* branchIfTrue */ true, evalTrue,compiler);
 
     mv.visitInsn(Opcodes.ICONST_0);
     mv.visitJumpInsn(Opcodes.GOTO, endLabel);

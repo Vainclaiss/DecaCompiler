@@ -64,10 +64,10 @@ public class Minus extends AbstractOpArith {
      * 
      */
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeByteExp(mv);
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
+        getLeftOperand().codeByteExp(mv,compiler);
     
-        getRightOperand().codeByteExp(mv);
+        getRightOperand().codeByteExp(mv,compiler);
     
     
         if (getType().isInt()) {

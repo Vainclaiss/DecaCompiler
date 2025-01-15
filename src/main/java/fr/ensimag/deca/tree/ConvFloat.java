@@ -40,9 +40,9 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeByteExp(MethodVisitor mv) {
+    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
         
-        getOperand().codeByteExp(mv);
+        getOperand().codeByteExp(mv,compiler);
       
         mv.visitInsn(Opcodes.I2F);
     }

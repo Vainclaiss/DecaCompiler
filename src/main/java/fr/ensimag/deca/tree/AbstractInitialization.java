@@ -34,6 +34,6 @@ public abstract class AbstractInitialization extends Tree {
 
     protected abstract void codeGenInitialization(DecacCompiler compiler, DAddr adresse);
 
-    protected abstract void codeGenByteInitialization(MethodVisitor mv, int localIndex);
+    protected abstract void codeGenByteInitialization(MethodVisitor mv, int localIndex,DecacCompiler compiler);
 
 }

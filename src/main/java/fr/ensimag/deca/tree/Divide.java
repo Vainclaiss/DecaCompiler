@@ -71,11 +71,11 @@ public class Divide extends AbstractOpArith {
      */
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
       
 
-        getLeftOperand().codeByteExp(mv);
-        getRightOperand().codeByteExp(mv);
+        getLeftOperand().codeByteExp(mv,compiler);
+        getRightOperand().codeByteExp(mv,compiler);
 
         if (getType().isInt()) {
 

@@ -34,9 +34,9 @@ public class NotEquals extends AbstractOpExactCmp {
 
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
-    getLeftOperand().codeByteExp(mv);
-    getRightOperand().codeByteExp(mv);
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    getLeftOperand().codeByteExp(mv,compiler);
+    getRightOperand().codeByteExp(mv,compiler);
 
     if (getType().isInt() || getType().isBoolean()) {
         if (branchIfTrue) {

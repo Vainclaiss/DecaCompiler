@@ -94,7 +94,7 @@ public class DeclVar extends AbstractDeclVar {
         System.out.println(localIndex);
         varName.getVariableDefinition().setLocalIndex(localIndex);
 
-        initialization.codeGenByteInitialization(mv, localIndex);
+        initialization.codeGenByteInitialization(mv, localIndex,compiler);
     }
     
 

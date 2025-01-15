@@ -37,11 +37,10 @@ public class Greater extends AbstractOpIneq {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
-    getLeftOperand().codeByteExp(mv);
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    getLeftOperand().codeByteExp(mv,compiler);
 
-    getRightOperand().codeByteExp(mv);
-    System.out.println("greater");
+    getRightOperand().codeByteExp(mv,compiler);
 
     Type leftType = getLeftOperand().getType();
 

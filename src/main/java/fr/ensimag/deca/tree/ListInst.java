@@ -45,9 +45,9 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    public void codeGenListInstByte(MethodVisitor mv) {
+    public void codeGenListInstByte(MethodVisitor mv,DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
-            i.codeGenByteInst(mv); 
+            i.codeGenByteInst(mv,compiler); 
         }
     }
 

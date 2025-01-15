@@ -108,7 +108,7 @@ public class Main extends AbstractMain {
     protected void codeGenByteMain(MethodVisitor mv,DecacCompiler compiler) {
         declVariables.codeGenListDeclVarByte(mv, compiler); // On genere le bytecode pour les variables
         
-            insts.codeGenListInstByte(mv); // On genere le bytecode pour toute les instructions
+            insts.codeGenListInstByte(mv,compiler); // On genere le bytecode pour toute les instructions
             System.out.println("Bytecode generation for main method completed.");
         
     }

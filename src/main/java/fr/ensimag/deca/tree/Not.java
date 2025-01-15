@@ -59,12 +59,12 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv) {
+protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
 
     org.objectweb.asm.Label operandTrue = new org.objectweb.asm.Label();
     org.objectweb.asm.Label endLabel    = new org.objectweb.asm.Label();
 
-    getOperand().codeGenByteBool(mv, true, operandTrue);
+    getOperand().codeGenByteBool(mv, true, operandTrue,compiler);
 
     mv.visitInsn(Opcodes.ICONST_1);
 
@@ -78,9 +78,9 @@ protected void codeByteExp(MethodVisitor mv) {
 
 
 @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
    
-    getOperand().codeGenByteBool(mv, !branchIfTrue, e);
+    getOperand().codeGenByteBool(mv, !branchIfTrue, e,compiler);
 }
 
 

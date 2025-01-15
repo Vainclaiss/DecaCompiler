@@ -215,7 +215,7 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv) {
+protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
     
     int localIndex = getVariableDefinition().getLocalIndex();
 
@@ -235,7 +235,7 @@ protected void codeByteExp(MethodVisitor mv) {
 
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv) {
+    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
         Type type = getType();
         mv.visitFieldInsn(
             Opcodes.GETSTATIC,
@@ -309,7 +309,7 @@ protected void codeByteExp(MethodVisitor mv) {
     }
 
     @Override
-    protected void codeGenBytePrintHex(MethodVisitor mv) {
+    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) {
         Type type= getType();
         
         if(type.isFloat()){

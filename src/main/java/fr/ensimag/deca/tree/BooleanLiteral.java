@@ -90,7 +90,7 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv) {
+    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
         mv.visitFieldInsn(
             org.objectweb.asm.Opcodes.GETSTATIC,
             "java/lang/System",
@@ -110,7 +110,7 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compilr) {
     if ((value && branchIfTrue) || (!value && !branchIfTrue)) {
         mv.visitJumpInsn(Opcodes.GOTO, e);
     }

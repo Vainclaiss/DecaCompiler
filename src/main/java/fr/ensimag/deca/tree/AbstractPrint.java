@@ -64,13 +64,17 @@ public abstract class AbstractPrint extends AbstractInst {
             }
         }
     }
-    @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-    for (AbstractExpr arg : getArguments().getList()) {
 
-        arg.codeGenBytePrint(mv); // chaque argument appel codegenbytecode
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+        for (AbstractExpr arg : getArguments().getList()) {
+            arg.codeGenBytePrint(mv, compiler);  // two-arg version
+        }
     }
-}
+    
+
+
+
 
 
     private boolean getPrintHex() {

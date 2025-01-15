@@ -38,11 +38,11 @@ public class LowerOrEqual extends AbstractOpIneq {
         return "<=";
     }
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
        
-        getLeftOperand().codeGenByteInst(mv);
+        //getLeftOperand().codeGenByteInst(mv,compiler);
        
-        getRightOperand().codeGenByteInst(mv);
+       // getRightOperand().codeGenByteInst(mv,compiler);
     
         Type leftType = getLeftOperand().getType();
     
