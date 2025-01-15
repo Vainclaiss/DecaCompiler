@@ -19,6 +19,6 @@ public abstract class AbstractDeclParam extends Tree{
 
     protected abstract ParamDefinition verifyDeclParamBody(DecacCompiler compiler) throws ContextualError;
 
-    protected abstract Symbol getName();
+    protected abstract AbstractIdentifier getName();
 
 }

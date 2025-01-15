@@ -139,6 +139,7 @@
                     <excludes>
                         <exclude>fr/ensimag/deca/tools/DecacInternalError.class</exclude>
                         <exclude>fr/ensimag/deca/ima/pseudocode/IMAInternalError.class</exclude>
+                        <exclude>fr/ensimag/deca/ima/**</exclude>
                     </excludes>
                 </configuration>                               
                 <executions>

@@ -10,9 +10,10 @@ class A {
     protected int variable = 3;
     void f(int a, int b) {
         println(a);
-        println(b);
+        printlnx(b);
         println(this.variable);
         //println((float) (a)); Ajouter le 1.0 une fois le cast implemente
+        println(a instanceof b);
     }
 }
 

@@ -21,7 +21,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
         for (AbstractDeclMethod m : getList()) {
             MethodDefinition newMethod = m.verifyDeclMethod(compiler, superClass, currentClass);
-            Symbol name = m.getName();
+            Symbol name = m.getName().getName();
 
             try {
                 envExp.declare(name, newMethod);
@@ -49,6 +49,12 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             throws ContextualError {
         for (AbstractDeclMethod m : getList()) {
             m.verifyDeclMethodBody(compiler, envExp, currentClass);
+        }
+    }
+
+    public void codeGenDeclMethods(DecacCompiler compiler, ClassDefinition currentClass) {
+        for (AbstractDeclMethod m : getList()) {
+            m.codeGenDeclMethod(compiler, currentClass);
         }
     }
 }
