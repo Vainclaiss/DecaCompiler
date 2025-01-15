@@ -60,11 +60,16 @@ public class Program extends AbstractProgram {
     public void codeGenProgram(DecacCompiler compiler) {
         // TODO: compléter ce squelette très rudimentaire de code
 
+        // generation de la table des methodes
         classes.codeGenVtable(compiler);
         
+        // generation du programme principal
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+
+        // generation des init et methodes des classes
+        classes.codeGenClass(compiler);
     }
 
     @Override

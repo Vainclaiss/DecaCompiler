@@ -83,7 +83,7 @@ public class Selection extends AbstractLValue {
     protected void codeExp(DecacCompiler compiler, int n) {
         // TODO: gerer le cas de this
         codeExp(compiler);
-        compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(n)), Register.getR(n)));
+        compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(2)), Register.getR(n)));
     }
 
     @Override

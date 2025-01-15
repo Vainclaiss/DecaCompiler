@@ -267,6 +267,7 @@ public class Identifier extends AbstractIdentifier {
         Type type = typeDefName.getType();
         definition = new TypeDefinition(type, typeDefName.getLocation());
 
+        setType(type);
         return type;
     }
 

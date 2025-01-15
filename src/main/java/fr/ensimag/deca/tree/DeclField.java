@@ -13,6 +13,18 @@ import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 
 public class DeclField extends AbstractDeclField {
     final private Visibility visibility;
@@ -65,7 +77,7 @@ public class DeclField extends AbstractDeclField {
         currentClassDef.incNumberOfFields();
         int index = currentClassDef.getNumberOfFields();
 
-        FieldDefinition newFieldDefinition = new FieldDefinition(nameType, getLocation(), visibility, superDef, index);
+        FieldDefinition newFieldDefinition = new FieldDefinition(nameType, getLocation(), visibility, currentClassDef, index);
         name.setDefinition(newFieldDefinition);
 
         return newFieldDefinition;
@@ -76,12 +88,30 @@ public class DeclField extends AbstractDeclField {
             throws ContextualError {
 
         Type nameType = type.verifyType(compiler);
-        // TODO: void type authorisé ??
         init.verifyInitialization(compiler, nameType, envExp, currentClass.getClassDefinition());
     }
 
-    protected void codeGenDeclField(DecacCompiler compiler) {
-        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+    @Override
+    protected void codeGenFieldInit(DecacCompiler compiler) {
+        // TODO : ajouter la sauvegarde de registres + TSTO
+        Type trueType = type.getType();
+        if (init.isNoInitialization()) {
+            if (trueType.isClass()) {
+                compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            }
+            else if (trueType.isInt() || trueType.isBoolean()) {
+                compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R0));
+            }
+            else if (trueType.isFloat()) {
+                compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R0));
+            }
+
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(name.getFieldDefinition().getIndex(), Register.R1)));
+        }
+        // TODO : ajouter le cas avec initialization
+
+        compiler.addInstruction(new RTS());
     }
 
     @Override

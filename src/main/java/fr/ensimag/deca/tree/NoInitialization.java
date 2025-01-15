@@ -54,4 +54,9 @@ public class NoInitialization extends AbstractInitialization {
         // leaf node => nothing to do
     }
 
+    @Override
+    public boolean isNoInitialization() {
+        return true;
+    }
+
 }

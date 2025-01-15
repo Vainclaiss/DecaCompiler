@@ -42,4 +42,10 @@ public abstract class AbstractDeclClass extends Tree {
      * @return
      */
     protected abstract void codeGenVtable(DecacCompiler compiler);
+
+    /**
+     * Generate the code of fields init and methods
+     * @param compiler
+     */
+    protected abstract void codeGenClass(DecacCompiler compiler);
 }
