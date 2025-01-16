@@ -1,12 +1,12 @@
 // Description:
 //    Test de l'assignation suivie de la comparaison dans des variables et dans les if directement
 // Resultats:
-//    ok
-//    10
-//    ok
-//    5
-//    ok
-//    20
+//  ok
+//  10
+//  ok
+//  5
+//  ok
+//  10
 
 {
     // Test 1
