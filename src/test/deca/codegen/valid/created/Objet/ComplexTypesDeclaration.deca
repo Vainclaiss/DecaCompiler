@@ -1,0 +1,21 @@
+// Description:
+//  Test de la chaîne de références
+// Resultats:
+//  ok
+
+class A {
+    A a;
+    A getA() {
+        return a;
+    }
+}
+
+{
+    A a = new A();
+    a.a = new A();
+    if(a.getA() != null){
+        println("ok");  // Attendu : true, test de la chaîne de références.
+    } else {
+        println("ERRONE");
+    }
+}

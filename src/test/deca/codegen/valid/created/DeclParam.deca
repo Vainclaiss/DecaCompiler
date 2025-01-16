@@ -13,7 +13,11 @@ class A {
         printlnx(b);
         println(this.variable);
         //println((float) (a)); Ajouter le 1.0 une fois le cast implemente
-        println(a instanceof b);
+        if(a instanceof b){
+            println("ok");
+        } else {
+            println("ERRONE");
+        }
     }
 }
 

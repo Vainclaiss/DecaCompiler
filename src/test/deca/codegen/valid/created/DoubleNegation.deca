@@ -1,0 +1,14 @@
+// Description:
+//    Test de la double négation
+// Resultats:
+//    ok
+
+{
+    boolean flag = !!true;
+    boolean result = !!flag;
+    if(!!result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

@@ -1,0 +1,19 @@
+// Description:
+//    Test de la référence null
+// Resultats:
+//    ok
+
+class A {
+    int m() {
+        return 42;
+    }
+}
+
+{
+    A a = null;
+    if (a != null) {
+      println(a.m()); // Ne devrait pas être exécuté, car `a` est null.
+    } else {
+      println("ok"); // null reference ici
+    }
+}

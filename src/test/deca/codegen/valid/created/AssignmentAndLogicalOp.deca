@@ -1,0 +1,22 @@
+// Description:
+//    Test de l'assignation avant l'évaluation de l'opérateur logique `&&`
+// Resultats:
+//    ok
+
+{
+    boolean a = false;
+    boolean b = true;
+    boolean c = (a = true) && b; // true && true = true
+
+    if(a){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if(c){
+        println("ERRONE");
+    } else {
+        println("ok");
+    }
+}

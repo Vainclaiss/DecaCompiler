@@ -1,0 +1,24 @@
+// Description:
+//    Test de la création d'un objet et de son retour dans une méthode
+// Resultats:
+//    7
+
+class A {
+    int x;
+    void A(int x) {
+        this.x = x;
+    }
+}
+
+class B {
+    A createA(int x) {
+        return new A();
+    }
+}
+
+{
+    B b = new B();
+    A a = b.createA();
+    a.A(7);
+    println(a.x);
+}

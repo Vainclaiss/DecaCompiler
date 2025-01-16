@@ -1,0 +1,50 @@
+// Description:
+//    Test de l'assignation suivie de la comparaison dans des variables et dans les if directement
+// Resultats:
+//    ok
+//    10
+//    ok
+//    5
+//    ok
+//    20
+
+{
+    // Test 1
+    int x = 5;
+    int y = 10;
+    boolean result = (x = 10) > y; // Assignation suivie de comparaison
+    if (!result){
+        if (!((x = 10) > y)){
+            println("ok");
+        } else {
+            println("ERRONE");
+        }
+    } else {
+        println("ERRONE");
+    }
+    println(x);
+
+    result = (x = 5) < y; // Assignation suivie de comparaison
+    if (result){
+        if ((x = 5) < y){
+            println("ok");
+        } else {
+            println("ERRONE");
+        }
+    } else {
+        println("ERRONE");
+    }
+    println(x);
+
+    result = (x = 10) == y; // Assignation suivie de comparaison
+    if (result){
+        if ((x = 10) == y){
+            println("ok");
+        } else {
+            println("ERRONE");
+        }
+    } else {
+        println("ERRONE");
+    }
+    println(x);
+}

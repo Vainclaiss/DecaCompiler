@@ -1,0 +1,22 @@
+// Description:
+//    Test de this dans le constructeur.
+// Resultats:
+//    6
+
+class A {
+    int x;
+
+    void A(int x) {
+        this.initialize(x);
+    }
+  
+    void initialize(int x) {
+        this.x = x + 1;
+    }
+}
+
+{
+    A a = new A();
+    a.A(5);
+    println(a.x);
+}
