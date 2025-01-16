@@ -16,6 +16,7 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 public class DeclMethod extends AbstractDeclMethod {
@@ -99,8 +100,14 @@ public class DeclMethod extends AbstractDeclMethod {
         String labelSuffixe = currentClass.getType().toString() + "." + name.getName();
         Label finLabel = new Label("fin." + labelSuffixe);
         body.codeGenMethodBody(compiler, currentClass, finLabel);
+
+        if (type.getType().isVoid()) {
+            compiler.addInstruction(new BRA(finLabel));
+        }
+        
         compiler.genCodeExecError(new MissingReturnError(labelSuffixe));
         compiler.addLabel(finLabel);
+
         // TODO: rajouter restauration des registres
         compiler.addInstruction(new RTS());
     }
