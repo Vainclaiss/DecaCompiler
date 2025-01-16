@@ -1,5 +1,7 @@
 // Description:
-// 
+// Test de la création d'une longue chaîne de négations.
+// Resultats:
+// ok
 
 {
     boolean a = true;

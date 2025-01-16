@@ -2,6 +2,7 @@
 //    Instanciation d'un type Object
 // Resultats:
 //    ok
+
 {
     Object objet = new Object();
     println("ok");
