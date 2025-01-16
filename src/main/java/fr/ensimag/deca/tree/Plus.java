@@ -31,51 +31,29 @@ public class Plus extends AbstractOpArith {
             compiler.addInstruction(new BOV(OverflowError.INSTANCE.getLabel()));
         }
     }
-    /* 
 
-    protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeByteExp(mv);
-    
-        getRightOperand().codeByteExp(mv);
-    
-    
-        if (getType().isInt()) {
-            mv.visitInsn(Opcodes.IADD);
-        } else if (getType().isFloat()) {
-            mv.visitInsn(Opcodes.FADD);
-        } else {
-            throw new UnsupportedOperationException(
-                "Subtraction: unsupported type: " + getType()
-            );
-        }
-    }
-
-*/
 @Override
 protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
-    
     getLeftOperand().codeByteExp(mv, compiler);
-    int leftVarIndex = compiler.allocateLocalIndex(); 
-    
+    int leftVarIndex = compiler.allocateLocalIndex();
+
     if (getType().isInt()) {
-        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex); 
+        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex);
     } else if (getType().isFloat()) {
-        mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex); 
+        mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex);
     } else {
-        throw new UnsupportedOperationException("Unsupported type for bytecode generation: " + getType());
+        throw new UnsupportedOperationException("Unsupported type: " + getType());
     }
 
-   
+    
     getRightOperand().codeByteExp(mv, compiler);
 
     if (getType().isInt()) {
-        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex); 
-        mv.visitInsn(Opcodes.IADD); 
-    } else if (getType().isFloat()) {
-        mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex); 
-        mv.visitInsn(Opcodes.FADD); 
+        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
+        mv.visitInsn(Opcodes.IADD);
     } else {
-        throw new UnsupportedOperationException("Unsupported type for bytecode generation: " + getType());
+        mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex);
+        mv.visitInsn(Opcodes.FADD);
     }
 }
 

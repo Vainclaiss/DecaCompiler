@@ -64,22 +64,28 @@ public class Minus extends AbstractOpArith {
      * 
      */
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-        getLeftOperand().codeByteExp(mv,compiler);
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+
+        getRightOperand().codeByteExp(mv, compiler);
+        int rightVarIndex = compiler.allocateLocalIndex();
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ISTORE, rightVarIndex);
+        } else {
+            mv.visitVarInsn(Opcodes.FSTORE, rightVarIndex);
+        }
     
-        getRightOperand().codeByteExp(mv,compiler);
-    
+        getLeftOperand().codeByteExp(mv, compiler);
     
         if (getType().isInt()) {
-            mv.visitInsn(Opcodes.ISUB);
-        } else if (getType().isFloat()) {
-            mv.visitInsn(Opcodes.FSUB);
+            mv.visitVarInsn(Opcodes.ILOAD, rightVarIndex);
+            mv.visitInsn(Opcodes.ISUB); 
         } else {
-            throw new UnsupportedOperationException(
-                "Subtraction: unsupported type: " + getType()
-            );
+            mv.visitVarInsn(Opcodes.FLOAD, rightVarIndex);
+            mv.visitInsn(Opcodes.FSUB); 
         }
     }
+    
+
     
     
 

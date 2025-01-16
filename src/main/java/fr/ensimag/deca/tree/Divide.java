@@ -43,53 +43,44 @@ public class Divide extends AbstractOpArith {
         return "/";
     }
 
-    /*
-     *  @Override
-    protected void codeGenByteInst(MethodVisitor mv) {
-        getLeftOperand().codeByteExp(mv);
-        int leftVarIndex = allocateLocalIndex(); 
-        mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex);
-    
-        getRightOperand().codeByteExp(mv);
-    
-        mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
-    
-        
-        if (getType().isInt()) {
-            mv.visitInsn(Opcodes.IDIV);
-        } else if (getType().isFloat()) {
-
-            mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex);
-            mv.visitInsn(Opcodes.FDIV);
-            System.out.println("Floating-point division performed with intermediate storage.");
-        } else {
-            throw new UnsupportedOperationException(
-                "Division: unsupported type: " + getType()
-            );
-        }
-    }
-     */
+   
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-      
-
-        getLeftOperand().codeByteExp(mv,compiler);
-        getRightOperand().codeByteExp(mv,compiler);
-
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+        
+        getRightOperand().codeByteExp(mv, compiler);
+        int rightVarIndex = compiler.allocateLocalIndex();
         if (getType().isInt()) {
-
-            mv.visitInsn(Opcodes.IDIV);
-
+            mv.visitVarInsn(Opcodes.ISTORE, rightVarIndex);
         } else if (getType().isFloat()) {
-
-            mv.visitInsn(Opcodes.FDIV);
-            
+            mv.visitVarInsn(Opcodes.FSTORE, rightVarIndex);
         } else {
-            throw new DecacInternalError(
-                "Plus: unsupported type for division " + getType());
+            throw new UnsupportedOperationException("Unsupported type: " + getType());
+        }
+    
+        getLeftOperand().codeByteExp(mv, compiler);
+        int leftVarIndex = compiler.allocateLocalIndex();
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ISTORE, leftVarIndex);
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FSTORE, leftVarIndex);
+        } else {
+            throw new UnsupportedOperationException("Unsupported type: " + getType());
+        }
+    
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, leftVarIndex);
+            mv.visitVarInsn(Opcodes.ILOAD, rightVarIndex);
+            mv.visitInsn(Opcodes.IDIV);
+        } else {
+            mv.visitVarInsn(Opcodes.FLOAD, leftVarIndex);
+            mv.visitVarInsn(Opcodes.FLOAD, rightVarIndex);
+            mv.visitInsn(Opcodes.FDIV);
         }
     }
+    
+     
+
 
     }
 

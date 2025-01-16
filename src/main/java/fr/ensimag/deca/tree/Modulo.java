@@ -35,26 +35,35 @@ public class Modulo extends AbstractOpArith {
             compiler.addInstruction(new BOV(ZeroDivisionError.INSTANCE.getLabel()));
         }
     }
+
+    
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler){
-        
-        getLeftOperand().codeByteExp(mv,compiler);
-        getRightOperand().codeByteExp(mv,compiler);
-
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+        // Evaluate and store the right operand
+        getRightOperand().codeByteExp(mv, compiler);
+        int rightVarIndex = compiler.allocateLocalIndex();
         if (getType().isInt()) {
-
-            mv.visitInsn(Opcodes.IREM);
-
+            mv.visitVarInsn(Opcodes.ISTORE, rightVarIndex);
         } else if (getType().isFloat()) {
-
-            mv.visitInsn(Opcodes.FREM);
-            
+            mv.visitVarInsn(Opcodes.FSTORE, rightVarIndex);
         } else {
-            throw new DecacInternalError(
-                "Plus: unsupported type formodulo: " + getType());
+            throw new UnsupportedOperationException("Unsupported type: " + getType());
+        }
+    
+        // Evaluate the left operand (leaves it on the stack)
+        getLeftOperand().codeByteExp(mv, compiler);
+    
+        // Load the right operand and perform modulo operation
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, rightVarIndex);
+            mv.visitInsn(Opcodes.IREM);
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, rightVarIndex);
+            mv.visitInsn(Opcodes.FREM);
+        } else {
+            throw new UnsupportedOperationException("Unsupported type: " + getType());
         }
     }
-
     
 
     @Override
