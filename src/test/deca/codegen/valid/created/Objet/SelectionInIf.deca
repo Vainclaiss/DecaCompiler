@@ -1,0 +1,16 @@
+// Description:
+//  Division par une Selection nulle
+// Resultats:
+//  ok
+
+class A{
+    boolean m(){
+        return true;
+    }
+}
+{
+    A newA = new A();
+    if(newA.m()){
+        println("ok");
+    }
+}
