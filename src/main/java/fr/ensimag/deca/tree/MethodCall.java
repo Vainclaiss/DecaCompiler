@@ -93,6 +93,11 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        codeExp(compiler);
+    }
+
+    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         codeExp(compiler);
         compiler.addInstruction(new LOAD(Register.R0, Register.getR(n)));
