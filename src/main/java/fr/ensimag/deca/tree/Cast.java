@@ -31,18 +31,19 @@ public class Cast extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        // TODO
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        // TODO
+        throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO
+        throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     @Override
@@ -52,7 +53,7 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

@@ -55,7 +55,7 @@ public class New extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        //TODO je sais pas si faut faire ça ou pas
+        throw new UnsupportedOperationException("This method is not implemented yet");
     }
 
     @Override

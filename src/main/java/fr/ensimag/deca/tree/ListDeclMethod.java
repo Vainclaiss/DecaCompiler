@@ -35,7 +35,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     }
 
     public void codeGenListDeclMethod(DecacCompiler compiler, AbstractIdentifier superCLass) {
-        // TODO
+        throw new UnsupportedOperationException("Method not implemented yet");
     }
 
     @Override

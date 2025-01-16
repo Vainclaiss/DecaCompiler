@@ -73,7 +73,7 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        //TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        throw new UnsupportedOperationException("Unimplemented method 'iterChildren'");
     }
     public void decompile(IndentPrintStream s) {
         s.print(type.decompile() + " " + name.decompile());

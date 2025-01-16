@@ -34,12 +34,12 @@ public class Null extends AbstractExpr{
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        //TODO
+        throw new UnsupportedOperationException("Not yet implemented.");
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        //TODO
+        throw new UnsupportedOperationException("Not yet implemented.");
     }
 
     @Override
