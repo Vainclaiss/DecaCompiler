@@ -315,7 +315,6 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
 
-        
         addExecError(StackOverflowExecError.INSTANCE);
         genCodeAllExecErrors(); // genere le code de toutes les erreurs d'exécution à la fin du programme
         LOG.debug("Generated assembly code:" + nl + program.display());
