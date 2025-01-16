@@ -116,7 +116,6 @@ check_decompilation_idempotence() {
     fi
 }
 
-
 check_decompilation_idempotence_interactive() {
     prompt_check "- decac -p [idempotence interactive]"
     file=$1
@@ -345,15 +344,15 @@ test_decac_a() {
 main() {
     setup_path_and_cd
     test_uncompatible_options
-    # test_decac_b
+    test_decac_b
     test_decac_p
-    # test_decac_v
-    # test_decac_n
-    # test_decac_r
-    # test_decac_d
-    # test_decac_P
-    # test_decac_w
-    # test_decac_a
+    test_decac_v
+    test_decac_n
+    test_decac_r
+    test_decac_d
+    test_decac_P
+    test_decac_w
+    test_decac_a
 }
 
 main

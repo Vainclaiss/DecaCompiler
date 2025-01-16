@@ -15,7 +15,12 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
@@ -273,7 +278,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected DVal getDVal() {
-        return getVariableDefinition().getOperand();
+        return getExpDefinition().getOperand();
     }
 
     @Override
@@ -287,6 +292,19 @@ public class Identifier extends AbstractIdentifier {
     }
 
     private Definition definition;
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
+        // TODO : gerer le cas des selection, method call etc
+        compiler.addInstruction(new LOAD(getDVal(), Register.R0));
+        compiler.addInstruction(new CMP(1, Register.R0));
+        if (branchIfTrue) {
+            compiler.addInstruction(new BEQ(e));
+        }
+        else {
+            compiler.addInstruction(new BNE(e));
+        }
+    }
 
     @Override
     protected void iterChildren(TreeFunction f) {

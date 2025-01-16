@@ -109,9 +109,11 @@ public class DeclField extends AbstractDeclField {
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
             compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(name.getFieldDefinition().getIndex(), Register.R1)));
         }
-        // TODO : ajouter le cas avec initialization
-
-        compiler.addInstruction(new RTS());
+        else {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+            init.codeGenInitialization(compiler, new RegisterOffset(name.getFieldDefinition().getIndex(), Register.R1));
+        }
+        // TODO : ajouter le cas avec initialization -> done maybe
     }
 
     @Override

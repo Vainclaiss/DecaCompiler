@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.InlinePortion;
 
 public class MethodAsmBody extends AbstractMethodBody {
     final StringLiteral code;
@@ -23,8 +24,7 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition curretClass) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenMethodBody'");
+        compiler.add(new InlinePortion(code.getValue()));
     }
 
     @Override

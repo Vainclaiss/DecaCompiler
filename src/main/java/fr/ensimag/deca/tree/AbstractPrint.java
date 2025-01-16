@@ -82,7 +82,7 @@ public abstract class AbstractPrint extends AbstractInst {
         for (AbstractExpr a : arguments.getList()) {
             s.print("print" + getSuffix() + (printHex ? "x" : "") + "(");
             a.decompile(s);
-            if (arguments.getList().indexOf(a) != arguments.getList().size() - 1) {
+            if (a != arguments.getList().get(arguments.getList().size() - 1)) {
                 s.println(");");
             } else {
                 s.print(");");

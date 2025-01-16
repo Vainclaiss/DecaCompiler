@@ -3,20 +3,32 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.IOError;
+import fr.ensimag.deca.codegen.execerrors.NullDereference;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.SUB;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 
 import java.beans.MethodDescriptor;
 import java.io.PrintStream;
+import java.util.List;
 
 public class MethodCall extends AbstractExpr {
 
@@ -52,12 +64,36 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        // TODO je sais pas si faut faire ça ou pas
+        // TODO : gerer le cas de this
+        compiler.addComment("Empilement des arguments");
+        compiler.addInstruction(new ADDSP(rightOperand.size()+1));
+        compiler.addInstruction(new LOAD(((AbstractIdentifier)leftOperand).getVariableDefinition().getOperand(), Register.getR(2))); // en particulier ici
+        compiler.addInstruction(new STORE(Register.getR(2), new RegisterOffset(0, Register.SP)));
+
+        List<AbstractExpr> params = rightOperand.getList();
+        for (int i = params.size(); i > 0; i--) {
+            params.get(i-1).codeExp(compiler, 2); // TODO : checker le numero de registre
+            compiler.addInstruction(new STORE(Register.getR(2), new RegisterOffset(-i, Register.SP)));
+        }
+
+        compiler.addComment("Appel de la methode");
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.getR(2)));
+        
+        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+            compiler.addExecError(NullDereference.INSTANCE);
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(2)));
+            compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
+        }
+
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.getR(2)), Register.getR(2)));
+        compiler.addInstruction(new BSR(new RegisterOffset(methodName.getMethodDefinition().getIndex(), Register.getR(2))));
+        compiler.addInstruction(new SUBSP(rightOperand.size()+1));
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO je sais pas si faut faire ça ou pas
+        codeExp(compiler);
+        compiler.addInstruction(new LOAD(Register.R0, Register.getR(n)));
     }
 
     @Override
