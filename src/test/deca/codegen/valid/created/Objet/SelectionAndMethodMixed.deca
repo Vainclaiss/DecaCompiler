@@ -1,0 +1,29 @@
+// Description:
+//  Test de la Selection suivi d'une méthode dans un assignement en bool
+// Resultats:
+//  ok
+
+class A{
+    int m(){
+        return 1;
+    }
+}
+
+class B{
+    A objetA;
+    void B(A objetA){
+        objetA = objetA;
+    }
+}
+
+{
+    A newA = new A();
+    B newB = new B();
+    int b;
+    int c;
+    newB.B(newA);
+    b = newB.objetA.m();
+    if((c = newB.objetA.m() +1) == 2){
+        println("ok");
+    }
+}

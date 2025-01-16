@@ -1,0 +1,18 @@
+// Description:
+//  Appel classique de méthode dont une void sans return
+// Resultats:
+//  1
+
+class A{
+    void jefaisrien(){
+    }
+    int jefais(){
+        jefaisrien();
+        return 1;
+    }
+}
+{
+    A newA = new A();
+    int a = newA.jefais();
+    println(a);
+}

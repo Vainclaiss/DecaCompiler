@@ -1,0 +1,15 @@
+// Description:
+//    Assigne null à une classe
+// Resultats:
+//    Null Deferenced
+
+class A{
+    int a;
+}
+
+{
+    A newA = new A();
+    newA = null;
+    newA.a = 4;
+    println("ok");
+}

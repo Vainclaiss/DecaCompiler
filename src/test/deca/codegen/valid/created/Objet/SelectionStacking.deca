@@ -1,0 +1,26 @@
+// Description:
+//    test l'empilement de selection
+// Resultats:
+//    1
+
+class A{
+    int valA;
+    void A(int valA){
+        this.valA = valA;
+    }
+}
+
+class B{
+    A objetA;
+    void B(A objetA){
+        this.objetA = objetA;
+    }
+}
+
+{
+    A newA = new A();
+    B newB = new B();
+    newA.A();
+    newB.B(newA);
+    println(newB.objetA.valA);
+}
