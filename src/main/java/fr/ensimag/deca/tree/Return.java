@@ -53,6 +53,7 @@ public class Return extends AbstractInst{
         return argument;
     }
 
+    @Override
     protected void codeGenInst(DecacCompiler compiler, Label finLabel) {
         getArgument().codeExp(compiler, 3);
         compiler.addInstruction(new LOAD(Register.getR(3), Register.R0));

@@ -96,9 +96,10 @@ public class DeclMethod extends AbstractDeclMethod {
         // TODO : rajouter TSTO + sauvegarde des registres
         compiler.addLabel(name.getMethodDefinition().getLabel());
         params.codeGenListDeclParams(compiler);
-        Label finLabel = new Label("fin." + currentClass.getType().toString() + name.getName());
+        String labelSuffixe = currentClass.getType().toString() + "." + name.getName();
+        Label finLabel = new Label("fin." + labelSuffixe);
         body.codeGenMethodBody(compiler, currentClass, finLabel);
-        compiler.addExecError(new MissingReturnError());
+        compiler.genCodeExecError(new MissingReturnError(labelSuffixe));
         compiler.addLabel(finLabel);
         // TODO: rajouter restauration des registres
         compiler.addInstruction(new RTS());
