@@ -11,11 +11,13 @@ public class TestMainArgs {
 
     @Test
     public void testgetDeclVar() {
-        assertTrue(main.getDeclVariables() instanceof ListDeclVar);
+        ListDeclVar ldv = main.getDeclVariables();
+        assertTrue(ldv instanceof ListDeclVar);
     }
 
     @Test
     public void testgetInst() {
-        assertTrue(main.getInsts() instanceof ListInst);
+        ListInst li = main.getInsts();
+        assertTrue(li instanceof ListInst);
     }
 }
