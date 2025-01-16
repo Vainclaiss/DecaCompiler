@@ -10,6 +10,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 
@@ -52,11 +53,10 @@ public class Return extends AbstractInst{
         return argument;
     }
 
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, Label finLabel) {
         getArgument().codeExp(compiler, 3);
         compiler.addInstruction(new LOAD(Register.getR(3), Register.R0));
-        compiler.addInstruction(new RTS());
+        compiler.addInstruction(new BRA(finLabel));
     }
 
     @Override
@@ -72,6 +72,12 @@ public class Return extends AbstractInst{
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         argument.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenInst'");
     }
 
 }

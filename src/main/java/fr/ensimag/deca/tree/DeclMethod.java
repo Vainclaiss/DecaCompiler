@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.MissingReturnError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -14,6 +15,8 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 public class DeclMethod extends AbstractDeclMethod {
 
@@ -90,9 +93,15 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
         compiler.addComment("Code de la methode " + name.getName().toString() + " dans la classe " + currentClass.getType().toString());
+        // TODO : rajouter TSTO + sauvegarde des registres
         compiler.addLabel(name.getMethodDefinition().getLabel());
         params.codeGenListDeclParams(compiler);
-        body.codeGenMethodBody(compiler, currentClass);
+        Label finLabel = new Label("fin." + currentClass.getType().toString() + name.getName());
+        body.codeGenMethodBody(compiler, currentClass, finLabel);
+        compiler.addExecError(new MissingReturnError());
+        compiler.addLabel(finLabel);
+        // TODO: rajouter restauration des registres
+        compiler.addInstruction(new RTS());
     }
 
     @Override
