@@ -1,0 +1,19 @@
+// Description:
+//    Test de l'assignation en cascade
+// Resultats:
+//    ok
+//    10
+//    10
+
+{
+    int a = 0;
+    int b = 0;
+    boolean result = (a = b = 10) == 10; // Assignation en cascade avant comparaison
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+    println(a);      // Attendu : 10
+    println(b);      // Attendu : 10
+}

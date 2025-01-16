@@ -1,0 +1,15 @@
+// Description:
+// 
+
+{
+    boolean a = true;
+    boolean b = false;
+    boolean c = true;
+    boolean result = !!!!a && !!b || !!!!c && !(a && !b || c && !a);
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+}

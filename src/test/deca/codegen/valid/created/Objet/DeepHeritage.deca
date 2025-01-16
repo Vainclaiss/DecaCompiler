@@ -1,0 +1,31 @@
+// Description:
+// Heritage profond
+// Resultats:
+// 3
+
+class A {
+  int m() {
+    return 1;
+    }
+}
+
+class B extends A {
+  int m() {
+    return 2;
+  }
+}
+
+class C extends B {
+  int m() {
+    return 3;
+  }
+}
+
+class D extends C {
+  // on redéfinit pas m
+}
+
+{
+  D d = new D();
+  println(d.m());
+}

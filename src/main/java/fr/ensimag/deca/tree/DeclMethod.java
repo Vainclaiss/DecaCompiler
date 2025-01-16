@@ -167,7 +167,10 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        type.iter(f);
+        name.iter(f);
+        params.iter(f);
+        body.iter(f);
     }
 
 }

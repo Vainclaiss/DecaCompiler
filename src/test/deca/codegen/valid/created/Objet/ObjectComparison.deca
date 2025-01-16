@@ -1,0 +1,40 @@
+// Description:
+//    Test de la comparaison d'objets avec Cast
+// Resultats:
+//    ok
+//    ok
+
+class A {
+    int x;
+    void A(int x) {
+        this.x = x;
+    }
+
+    boolean equals(Object other) {
+        return this.x == ((A)(other)).x;
+    }
+}
+
+{
+    A a1 = new A();
+    A a2 = new A();
+    A a3 = new A();
+    
+    a1.A(5);
+    a2.A(5);
+    a3.A(10);
+
+    if(a1.equals(a2)){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (!a1.equals(a3)){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+
+}

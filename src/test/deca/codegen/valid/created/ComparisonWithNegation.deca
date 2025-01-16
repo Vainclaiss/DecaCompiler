@@ -1,0 +1,15 @@
+// Description:
+//    Test d'une comparaison avec une négation
+// Resultats:
+//    ok
+
+{
+    int x = 5;
+    int y = 5;
+    boolean result = !(x != y); // Négation d'une comparaison
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

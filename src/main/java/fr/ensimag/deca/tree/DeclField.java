@@ -141,7 +141,9 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        type.iter(f);
+        name.iter(f);
+        init.iter(f);
     }
 
 }

@@ -1,11 +1,11 @@
 // Description:
-//    test un not dans une comparaison
+//    test un not boolean identifier et different dans une comparaison
 // Resultats:
 //    ok
 
 {
-    //boolean a = true;
-    if (!(3 == 4) && true){// && a) {
+    boolean a = true;
+    if (!(3 == 4) && true && !(1 != 1) &&(1 != 2) && a && 1 <= 2) {
         println("ok");
     }
 }

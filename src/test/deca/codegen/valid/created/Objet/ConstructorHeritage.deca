@@ -1,0 +1,25 @@
+// Description:
+//  Test de l'appel de méthode dans le constructeur d'une classe héritée
+// Resultats:
+//  10
+
+class A {
+    int x = 5;
+    void A() {
+        println(m());
+    }
+    int m() {
+        return x;
+    }
+}
+
+class B extends A {
+    int x = 10;
+    int m() {
+        return x;
+    }
+}
+
+{
+    B b = new B(); // Attendu : 10, car le constructeur de `A` appelle `m` de `B` à cause de la liaison dynamique.
+}

@@ -1,0 +1,34 @@
+// Description:
+//    Test de l'assignation avant l'évaluation de l'opérateur logique `&&`
+// Resultats:
+//  ok
+//  ok
+
+{
+    boolean a = false;
+    boolean b = true;
+    boolean c = (a = true) && b; // true && true = true
+    int e = 7;
+    int d = 3;
+    boolean result = ((e + d) > (e - d) && (e * d) < (e / d)) || (e % d) == (d % e);
+
+    if(a){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if(c){
+        println("ERRONE");
+    } else {
+        println("ok");
+    }
+
+    
+    if(result){
+        println("ERRONE");
+    } else {
+        println("ok");
+    }
+
+}

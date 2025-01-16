@@ -571,11 +571,14 @@ list_decl_field[Visibility v, AbstractIdentifier t,ListDeclField declFields]
 
 decl_field[Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
     : i=ident {
-        $tree = new DeclField($v,$t,$i.tree,new NoInitialization());
+        NoInitialization noInit = new NoInitialization();
+        $tree = new DeclField($v,$t,$i.tree,noInit);
         $tree.setLocation($t.getLocation());
         }
       (EQUALS e=expr {
-            $tree = new DeclField($v,$t,$i.tree,new Initialization($e.tree));
+            Initialization init = new Initialization($e.tree);
+            $tree = new DeclField($v,$t,$i.tree,init);
+            init.setLocation($e.tree.getLocation());
             $tree.setLocation($t.getLocation());
         }
       )? {
@@ -588,12 +591,15 @@ decl_method returns[AbstractDeclMethod tree]
 }
     : type ident OPARENT params=list_params[declParams] CPARENT (block {
             MethodBody mBody = new MethodBody($block.decls,$block.insts);
+            setLocation(mBody,$OPARENT);
             $tree = new DeclMethod($type.tree,$ident.tree,declParams,mBody);
             $tree.setLocation($type.tree.getLocation());
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             StringLiteral string = new StringLiteral($code.text.substring(1,$code.text.length()-1).replace("\\\\","\\").replace("\\\"","\""));
             MethodAsmBody aBody = new MethodAsmBody(string);
+            string.setLocation($code.location);
+            setLocation(aBody,$OPARENT);
             $tree = new DeclMethod($type.tree,$ident.tree,declParams,aBody);
             $tree.setLocation($code.location);
         }

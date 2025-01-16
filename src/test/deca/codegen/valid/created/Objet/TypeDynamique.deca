@@ -1,0 +1,21 @@
+// Description:
+// Déclaration avec type dynamique
+// Resultats:
+// 2
+
+class A {
+    int m() {
+        return 1;
+    }
+}
+
+class B extends A {
+    int m() {
+        return 2;
+    }
+}
+
+{
+  A a = new B(); // Objet de type `B` référencé par une variable de type `A`
+  println(a.m());
+}

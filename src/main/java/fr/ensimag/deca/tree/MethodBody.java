@@ -42,7 +42,8 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        variables.iter(f);
+        insts.iter(f);
     }
 
     public void decompile(IndentPrintStream s) {

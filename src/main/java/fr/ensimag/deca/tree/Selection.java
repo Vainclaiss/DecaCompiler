@@ -93,7 +93,8 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
+        leftOperand.iter(f);
+        rightOperand.iter(f);
     }
 
     @Override

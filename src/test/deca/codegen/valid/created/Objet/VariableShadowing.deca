@@ -1,0 +1,27 @@
+// Description:
+//  Test du variable shadowing avec cast et Heritage
+// Resultats:
+//  20
+//  20
+
+
+class A {
+    int x = 10;
+    int getX() {
+        return x;
+    }
+}
+
+class B extends A {
+    int x = 20;
+    int getX() {
+        return x;
+    }
+}
+
+{
+    B b = new B();
+
+    println(b.getX());
+    println( ((A) (b)).getX());
+}

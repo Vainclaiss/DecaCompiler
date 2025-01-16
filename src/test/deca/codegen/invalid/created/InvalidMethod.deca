@@ -1,0 +1,21 @@
+// Description:
+//  Appel de méthode invalide
+// Resultats:
+//  InvalidMethod.deca:20:17: Error: Identifier 'p' is undefined
+
+class A{
+    int m(){
+        return 1;
+    }
+}
+
+class B{
+    int p(){
+        return 2;
+    }
+}
+
+{
+    A newA = new A();
+    println(newA.p()); // p n'existe pas dans la classe A
+}

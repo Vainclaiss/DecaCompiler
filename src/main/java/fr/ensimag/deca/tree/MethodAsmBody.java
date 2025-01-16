@@ -36,7 +36,7 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO C'est moi qui ai ecrit la signature donc à modifier maybe
+        code.iter(f);
     }
 
     public void decompile(IndentPrintStream s) {

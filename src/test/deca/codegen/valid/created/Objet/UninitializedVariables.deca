@@ -1,0 +1,18 @@
+// Description:
+//    Test d'une variable non initialisée
+// Resultats:
+//    ?
+
+class A {
+    int x; // pas initialisé
+
+    int getX() {
+        return x;
+    } 
+}
+
+
+{
+    A a = new A();
+    println(a.getX());
+}

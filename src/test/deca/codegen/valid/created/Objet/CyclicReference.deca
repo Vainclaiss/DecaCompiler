@@ -1,0 +1,22 @@
+// Description:
+// Références croisées
+// Resultats:
+// ok
+// ok
+
+class A {
+    A other;
+}
+
+{
+  A a1 = new A();
+  A a2 = new A();
+  a1.other = a2;
+  a2.other = a1;
+  if (a1.other == a2){
+    println("ok");// Attendu : true, vérification des références croisées
+  }
+  if (a2.other == a1){
+    println("ok"); // Attendu : true, vérification réciproque
+  }
+}
