@@ -598,6 +598,7 @@ decl_method returns[AbstractDeclMethod tree]
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             StringLiteral string = new StringLiteral($code.text.substring(1,$code.text.length()-1).replace("\\\\","\\").replace("\\\"","\""));
             MethodAsmBody aBody = new MethodAsmBody(string);
+            string.setLocation($code.location);
             setLocation(aBody,$OPARENT);
             $tree = new DeclMethod($type.tree,$ident.tree,declParams,aBody);
             $tree.setLocation($code.location);
