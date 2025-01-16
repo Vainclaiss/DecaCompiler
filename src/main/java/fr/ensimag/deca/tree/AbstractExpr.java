@@ -170,10 +170,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         // on charge la valeur de l'expression dans un registre libre
-        codeExp(compiler, 3);
+        codeExp(compiler, 2);
 
         // on la met dans R1 pour l'afficher
-        compiler.addInstruction(new LOAD(Register.getR(compiler,3), Register.R1));
+        compiler.addInstruction(new LOAD(Register.getR(compiler,2), Register.R1));
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
@@ -189,10 +189,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenPrintHex(DecacCompiler compiler) {
         if (getType().isFloat()) {
             // on charge la valeur de l'expression dans un registre libre
-            codeExp(compiler, 3);
+            codeExp(compiler, 2);
 
             // on la met dans R1 pour l'afficher
-            compiler.addInstruction(new LOAD(Register.getR(compiler,3), Register.R1));
+            compiler.addInstruction(new LOAD(Register.getR(compiler,2), Register.R1));
             compiler.addInstruction(new WFLOATX());
         } else {
             codeGenPrint(compiler);

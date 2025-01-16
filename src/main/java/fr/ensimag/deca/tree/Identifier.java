@@ -283,6 +283,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
+        codeExp(compiler, 0);
         // nothing to do, used for Assign codeGenInst
     }
 

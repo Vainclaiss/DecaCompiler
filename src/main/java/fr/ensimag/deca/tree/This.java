@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
@@ -19,9 +20,11 @@ import java.io.PrintStream;
 public class This extends AbstractExpr {
 
     final private boolean impl;
+    final private DVal dVal;
 
     public This(Boolean impl) {
         this.impl = impl;
+        this.dVal = new RegisterOffset(-2, Register.LB);
     }
 
     @Override
@@ -35,15 +38,20 @@ public class This extends AbstractExpr {
         this.setType(currentClass.getType());
         return currentClass.getType();
     }
+        
+    @Override
+    public DVal getDVal() {
+        return dVal;
+    }
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("This method is not implemented yet");
+        codeExp(compiler,0);
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        throw new UnsupportedOperationException("This method is not implemented yet");
+        compiler.addInstruction(new LOAD(dVal, Register.getR(compiler,n)));
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Selection extends AbstractLValue {
 
     @Override
     public DVal getDVal() {
-        return new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(2));
+        return new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.R0);
     }
 
     @Override
@@ -70,11 +70,11 @@ public class Selection extends AbstractLValue {
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
-        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler,2)));
+        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler,0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
             compiler.addExecError(NullDereference.INSTANCE);
-            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler,2)));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler,0)));
             compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
         }
     }
@@ -83,7 +83,7 @@ public class Selection extends AbstractLValue {
     protected void codeExp(DecacCompiler compiler, int n) {
         // TODO: gerer le cas de this
         codeExp(compiler);
-        compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler,2)), Register.getR(compiler,n)));
+        compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler,0)), Register.getR(compiler,n)));
     }
 
     @Override
