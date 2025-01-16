@@ -14,15 +14,12 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 
-
-
-
 public class DeclParam extends AbstractDeclParam {
 
     final AbstractIdentifier type;
     final AbstractIdentifier name;
 
-    public DeclParam(AbstractIdentifier type,AbstractIdentifier name ) {
+    public DeclParam(AbstractIdentifier type, AbstractIdentifier name) {
         this.name = name;
         this.type = type;
     }
@@ -31,7 +28,6 @@ public class DeclParam extends AbstractDeclParam {
     protected AbstractIdentifier getName() {
         return name;
     }
-
 
     public void decompileDeclParam(IndentPrintStream s) {
         decompile(s);
@@ -50,9 +46,9 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected ParamDefinition verifyDeclParamBody(DecacCompiler compiler) throws ContextualError {
-        
+
         Type paramType = type.verifyType(compiler);
-        
+
         ParamDefinition newParamDef = new ParamDefinition(paramType, getLocation());
         name.setDefinition(newParamDef);
 
@@ -67,14 +63,16 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        type.prettyPrint(s,prefix,true);
-        name.prettyPrint(s,prefix,false);
+        type.prettyPrint(s, prefix, true);
+        name.prettyPrint(s, prefix, false);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Unimplemented method 'iterChildren'");
+        type.iter(f);
+        name.iter(f);
     }
+
     public void decompile(IndentPrintStream s) {
         s.print(type.decompile() + " " + name.decompile());
     }

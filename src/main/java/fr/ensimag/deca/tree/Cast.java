@@ -53,7 +53,8 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("not yet implemented");
+        type.iter(f);
+        expr.iter(f);
     }
 
     @Override

@@ -42,7 +42,8 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        variables.iter(f);
+        insts.iter(f);
     }
 
     public void decompile(IndentPrintStream s) {

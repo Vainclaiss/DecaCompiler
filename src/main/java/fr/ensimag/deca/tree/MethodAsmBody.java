@@ -35,7 +35,7 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        code.iter(f);
     }
 
     public void decompile(IndentPrintStream s) {
