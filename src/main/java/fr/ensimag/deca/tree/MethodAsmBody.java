@@ -20,7 +20,8 @@ public class MethodAsmBody extends AbstractMethodBody {
     @Override
     public void verifyMethodBody(DecacCompiler compiler, EnvironmentExp envExpParams,
             ClassDefinition currentClass, Type returnType) throws ContextualError {
-        // nothing to do
+                
+        code.setType(compiler.environmentType.STRING);
     }
 
     @Override

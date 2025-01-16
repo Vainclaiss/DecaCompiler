@@ -56,7 +56,7 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
+        compiler.addInstruction(new LOAD(dVal, Register.getR(compiler,n)));
     }
     
     @Override

@@ -50,7 +50,7 @@ public class Assign extends AbstractBinaryExpr {
         getLeftOperand().codeExp(compiler);
         getRightOperand().codeExp(compiler, 3);
         
-        compiler.addInstruction(new STORE(Register.getR(3), (DAddr)getLeftOperand().getDVal()));
+        compiler.addInstruction(new STORE(Register.getR(compiler,3), (DAddr)getLeftOperand().getDVal()));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Assign extends AbstractBinaryExpr {
         getLeftOperand().codeExp(compiler);
         getRightOperand().codeExp(compiler, n);
         
-        compiler.addInstruction(new STORE(Register.getR(n), (DAddr)getLeftOperand().getDVal()));
+        compiler.addInstruction(new STORE(Register.getR(compiler,n), (DAddr)getLeftOperand().getDVal()));
     }
 
     @Override

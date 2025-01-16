@@ -7,6 +7,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.StackOverflowExecError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.ExpDefinition;
@@ -17,11 +18,14 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.HALT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.SEQ;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
 /**
  * Deca complete program (class definition plus main block)
@@ -68,11 +72,17 @@ public class Program extends AbstractProgram {
 
         // generation de la table des methodes
         classes.codeGenVtable(compiler);
+        compiler.getStackOverflowCounter().addVariables(1); // 
         
         // generation du programme principal
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        compiler.addComment("end main program");
+
+        compiler.addFirst(new ADDSP(compiler.getGBOffset()));
+        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à cause de addFirst()
+        compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()), compiler.getStackOverflowCounter().getDetailsMaxTSTO());
 
         // code de la methode equals de Object
         compiler.addComment("Code de la methode equals dans la classe Object");

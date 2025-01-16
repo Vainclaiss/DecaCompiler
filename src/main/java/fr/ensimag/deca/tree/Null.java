@@ -13,6 +13,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
 
 import java.io.PrintStream;
@@ -22,7 +23,10 @@ import fr.ensimag.deca.context.NullType;
 public class Null extends AbstractExpr{
 
     public Null() {
+        this.dVal = new NullOperand();
     }
+
+    private DVal dVal;
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -38,8 +42,13 @@ public class Null extends AbstractExpr{
     }
 
     @Override
+    protected DVal getDVal() {
+        return dVal;
+    }
+
+    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        //TODO
+        compiler.addInstruction(new LOAD(getDVal() , Register.getR(compiler,n)));
     }
 
     @Override

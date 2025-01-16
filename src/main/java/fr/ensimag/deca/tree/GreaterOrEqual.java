@@ -33,7 +33,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         super.codeExp(compiler, n);
-        compiler.addInstruction(new SGE(Register.getR(n)));
+        compiler.addInstruction(new SGE(Register.getR(compiler,n)));
     }
 
     @Override

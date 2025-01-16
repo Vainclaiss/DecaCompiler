@@ -288,7 +288,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
+        compiler.addInstruction(new LOAD(getDVal(), Register.getR(compiler,n)));
     }
 
     private Definition definition;

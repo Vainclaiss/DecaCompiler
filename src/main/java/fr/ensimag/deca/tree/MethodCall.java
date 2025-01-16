@@ -69,26 +69,27 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new ADDSP(rightOperand.size()+1));
         // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
         leftOperand.codeExp(compiler, 3);
-        //compiler.addInstruction(new LOAD(leftOperand.getExpDefinition().getOperand(), Register.getR(2))); // en particulier ici
-        compiler.addInstruction(new STORE(Register.getR(3), new RegisterOffset(0, Register.SP)));
+        //compiler.addInstruction(new LOAD(leftOperand.getExpDefinition().getOperand(), Register.getR(compiler,2))); // en particulier ici
+        compiler.addInstruction(new STORE(Register.getR(compiler,3), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
+        compiler.getStackOverflowCounter().addParamsOnStack(params.size());
         for (int i = params.size(); i > 0; i--) {
-            params.get(i-1).codeExp(compiler, 2); // TODO : checker le numero de registre
-            compiler.addInstruction(new STORE(Register.getR(2), new RegisterOffset(-i, Register.SP)));
+            params.get(i-1).codeExp(compiler, 3); // TODO : checker le numero de registre
+            compiler.addInstruction(new STORE(Register.getR(compiler,3), new RegisterOffset(-i, Register.SP)));
         }
 
         compiler.addComment("Appel de la methode");
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.getR(2)));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.getR(compiler,2)));
         
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
             compiler.addExecError(NullDereference.INSTANCE);
-            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(2)));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler,2)));
             compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
         }
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.getR(2)), Register.getR(2)));
-        compiler.addInstruction(new BSR(new RegisterOffset(methodName.getMethodDefinition().getIndex(), Register.getR(2))));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.getR(compiler,2)), Register.getR(compiler,2)));
+        compiler.addInstruction(new BSR(new RegisterOffset(methodName.getMethodDefinition().getIndex(), Register.getR(compiler,2))));
         compiler.addInstruction(new SUBSP(rightOperand.size()+1));
     }
 
@@ -100,7 +101,7 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         codeExp(compiler);
-        compiler.addInstruction(new LOAD(Register.R0, Register.getR(n)));
+        compiler.addInstruction(new LOAD(Register.R0, Register.getR(compiler,n)));
     }
 
     @Override

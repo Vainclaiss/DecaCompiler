@@ -27,13 +27,13 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         // si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0
         // dans Rn
         codeGenBool(compiler, true, e);
-        compiler.addInstruction(new LOAD(0, Register.getR(n)));
+        compiler.addInstruction(new LOAD(0, Register.getR(compiler,n)));
         Label skipEvalTrue = new Label("skip_eval_true");
         skipEvalTrue.addSuffixe(suffixe);
         compiler.addInstruction(new BRA(skipEvalTrue));
 
         compiler.addLabel(e);
-        compiler.addInstruction(new LOAD(1, Register.getR(n)));
+        compiler.addInstruction(new LOAD(1, Register.getR(compiler,n)));
         compiler.addLabel(skipEvalTrue);
     }
 

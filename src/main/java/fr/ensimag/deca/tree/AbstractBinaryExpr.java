@@ -72,28 +72,28 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         if (dvalExp2 == null) {
             if (n == Register.RMAX) {
                 // sauvegarde de op1
-                compiler.addInstruction(new PUSH(Register.getR(n)));
+                compiler.addInstruction(new PUSH(Register.getR(compiler,n)));
                 compiler.getStackOverflowCounter().addTemporaryOnStack(1);
 
                 // calcul de op2 dans R0
                 getRightOperand().codeExp(compiler, n);
-                compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+                compiler.addInstruction(new LOAD(Register.getR(compiler,n), Register.R0));
 
                 // restoration de la valeur de op1 dans Rn
-                compiler.addInstruction(new POP(Register.getR(n)));
+                compiler.addInstruction(new POP(Register.getR(compiler,n)));
                 compiler.getStackOverflowCounter().addTemporaryOnStack(-1);
 
-                codeGenInst(compiler, Register.R0, Register.getR(n));
+                codeGenInst(compiler, Register.R0, Register.getR(compiler,n));
             } else {
                 getRightOperand().codeExp(compiler, n + 1);
 
-                codeGenInst(compiler, Register.getR(n + 1), Register.getR(n));
+                codeGenInst(compiler, Register.getR(compiler,n + 1), Register.getR(compiler,n));
             }
         } else if (dvalExp2 == Register.R1) {
             getRightOperand().codeExp(compiler);
-            codeGenInst(compiler, dvalExp2, Register.getR(n));
+            codeGenInst(compiler, dvalExp2, Register.getR(compiler,n));
         } else {
-            codeGenInst(compiler, dvalExp2, Register.getR(n));
+            codeGenInst(compiler, dvalExp2, Register.getR(compiler,n));
         }
     }
 

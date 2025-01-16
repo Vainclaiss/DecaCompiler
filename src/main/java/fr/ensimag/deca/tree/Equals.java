@@ -32,7 +32,7 @@ public class Equals extends AbstractOpExactCmp {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         super.codeExp(compiler, n);
-        compiler.addInstruction(new SEQ(Register.getR(n)));
+        compiler.addInstruction(new SEQ(Register.getR(compiler,n)));
     }
 
     @Override

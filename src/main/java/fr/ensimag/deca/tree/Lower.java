@@ -32,7 +32,7 @@ public class Lower extends AbstractOpIneq {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         super.codeExp(compiler, n);
-        compiler.addInstruction(new SLT(Register.getR(n)));
+        compiler.addInstruction(new SLT(Register.getR(compiler,n)));
     }
 
     @Override

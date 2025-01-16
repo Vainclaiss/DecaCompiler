@@ -173,7 +173,7 @@ public abstract class AbstractExpr extends AbstractInst {
         codeExp(compiler, 3);
 
         // on la met dans R1 pour l'afficher
-        compiler.addInstruction(new LOAD(Register.getR(3), Register.R1));
+        compiler.addInstruction(new LOAD(Register.getR(compiler,3), Register.R1));
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
@@ -192,7 +192,7 @@ public abstract class AbstractExpr extends AbstractInst {
             codeExp(compiler, 3);
 
             // on la met dans R1 pour l'afficher
-            compiler.addInstruction(new LOAD(Register.getR(3), Register.R1));
+            compiler.addInstruction(new LOAD(Register.getR(compiler,3), Register.R1));
             compiler.addInstruction(new WFLOATX());
         } else {
             codeGenPrint(compiler);

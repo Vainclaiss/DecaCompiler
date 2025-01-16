@@ -31,7 +31,7 @@ public class Greater extends AbstractOpIneq {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         super.codeExp(compiler, n);
-        compiler.addInstruction(new SGT(Register.getR(n)));
+        compiler.addInstruction(new SGT(Register.getR(compiler,n)));
     }
 
     @Override

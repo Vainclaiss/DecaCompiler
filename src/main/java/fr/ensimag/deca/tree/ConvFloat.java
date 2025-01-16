@@ -32,7 +32,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     protected void codeExp(DecacCompiler compiler,int n) {
         getOperand().codeExp(compiler, n);
-        compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
+        compiler.addInstruction(new FLOAT(Register.getR(compiler,n), Register.getR(compiler,n)));
     }
 
     @Override

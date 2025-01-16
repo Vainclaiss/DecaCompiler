@@ -32,7 +32,7 @@ public class NotEquals extends AbstractOpExactCmp {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         super.codeExp(compiler, n);
-        compiler.addInstruction(new SNE(Register.getR(n)));
+        compiler.addInstruction(new SNE(Register.getR(compiler,n)));
     }
 
     @Override

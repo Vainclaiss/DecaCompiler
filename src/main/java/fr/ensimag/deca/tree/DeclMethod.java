@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.TSTOCounter;
 import fr.ensimag.deca.codegen.execerrors.MissingReturnError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -15,9 +16,16 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.IMAInternalError;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Line;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
 public class DeclMethod extends AbstractDeclMethod {
 
@@ -93,9 +101,14 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
+
         compiler.addComment("Code de la methode " + name.getName().toString() + " dans la classe " + currentClass.getType().toString());
-        // TODO : rajouter TSTO + sauvegarde des registres
+        
         compiler.addLabel(name.getMethodDefinition().getLabel());
+        IMAProgram mainProgram = compiler.getProgram();
+        compiler.setProgram(new IMAProgram());
+        compiler.resetTSTO();
+        
         params.codeGenListDeclParams(compiler);
         String labelSuffixe = currentClass.getType().toString() + "." + name.getName();
         Label finLabel = new Label("fin." + labelSuffixe);
@@ -104,12 +117,28 @@ public class DeclMethod extends AbstractDeclMethod {
         if (type.getType().isVoid()) {
             compiler.addInstruction(new BRA(finLabel));
         }
-        
+
         compiler.genCodeExecError(new MissingReturnError(labelSuffixe));
         compiler.addLabel(finLabel);
 
-        // TODO: rajouter restauration des registres
+        TSTOCounter stackOverflowCounter = compiler.getStackOverflowCounter();
+        int maxSavedRegisters = stackOverflowCounter.getMaxRegisterUsed();
+        stackOverflowCounter.addSavedRegisters(maxSavedRegisters-1);
+
+        compiler.addFirst(new Line("method body"));
+        compiler.add(new Line("restauration des registres"));
+        for (int i = maxSavedRegisters; i >=2 ; i--) {
+            compiler.addFirst(new PUSH(Register.getR(compiler,i)));
+            compiler.addInstruction(new POP(Register.getR(compiler,i)));
+        }
+
+        compiler.addFirst(new Line("sauvegarde des registres"));
+        compiler.addFirst(new TSTO(stackOverflowCounter.getMaxTSTO()), stackOverflowCounter.getDetailsMaxTSTO());
+
         compiler.addInstruction(new RTS());
+
+        mainProgram.append(compiler.getProgram());
+        compiler.setProgram(mainProgram);
     }
 
     @Override

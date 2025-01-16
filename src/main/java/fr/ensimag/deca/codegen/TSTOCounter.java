@@ -4,7 +4,6 @@ public class TSTOCounter {
     private int temporaryOnStack;
     private int paramsOnStack;
     private int variables;
-    private int savedRegisters;
 
     private int maxTSTO;
     private int maxTemporaryOnStack;
@@ -12,17 +11,25 @@ public class TSTOCounter {
     private int maxVariables;
     private int maxSavedRegisters;
 
+    private int maxRegisterUsed;
+
     public TSTOCounter() {
         this.temporaryOnStack = 0;
         this.paramsOnStack = 0;
         this.variables = 0;
-        this.savedRegisters = 0;
         
         this.maxTSTO = 0;
         this.maxTemporaryOnStack = 0;
         this.maxParamsOnStack = 0;
         this.maxVariables = 0;
-        this.maxSavedRegisters = 0;
+
+        this.maxRegisterUsed = 0;
+    }
+
+    public void refreshMaxRegister(int i) {
+        if (i > maxRegisterUsed) {
+            maxRegisterUsed = i;
+        }
     }
 
     public void addParamsOnStack(int i) {
@@ -41,12 +48,12 @@ public class TSTOCounter {
     }
 
     public void addSavedRegisters(int i) {
-        savedRegisters += i;
+        maxSavedRegisters += i;
         updateMaxTSTO();
     }
 
     private int sumTSTO() {
-        return temporaryOnStack + paramsOnStack + variables + savedRegisters;
+        return temporaryOnStack + paramsOnStack + variables + maxSavedRegisters;
     }
 
     private void updateMaxTSTO() {
@@ -56,12 +63,15 @@ public class TSTOCounter {
             maxTemporaryOnStack = temporaryOnStack;
             maxParamsOnStack = paramsOnStack;
             maxVariables = variables;
-            maxSavedRegisters = savedRegisters;
         }
     }
 
     public int getMaxTSTO() {
         return maxTSTO;
+    }
+
+    public int getMaxRegisterUsed() {
+        return maxRegisterUsed;
     }
 
     public String getDetailsMaxTSTO() {

@@ -31,7 +31,7 @@ public class LowerOrEqual extends AbstractOpIneq {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         super.codeExp(compiler, n);
-        compiler.addInstruction(new SLE(Register.getR(n)));
+        compiler.addInstruction(new SLE(Register.getR(compiler,n)));
     }
 
     @Override

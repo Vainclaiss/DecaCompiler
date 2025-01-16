@@ -148,6 +148,7 @@ public class ClassDefinition extends TypeDefinition {
             compiler.addInstruction(new LOAD(new LabelOperand(label), Register.R0));
             compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(compiler.incrGBOffset(), Register.GB)));
         }
+        compiler.getStackOverflowCounter().addVariables(numberOfMethods+1);
     }
 
     public EnvironmentExp getMembers() {
