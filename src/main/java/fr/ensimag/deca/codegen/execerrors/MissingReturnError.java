@@ -4,9 +4,7 @@ import fr.ensimag.ima.pseudocode.Label;
 
 public class MissingReturnError extends ExecError {
     
-    public static final MissingReturnError INSTANCE = new MissingReturnError();
-
-    public MissingReturnError() {
-        super(new Label("missing_return_error"), "Error: return instruction missing");
+    public MissingReturnError(String methodName) {
+        super(new Label("missing_return_error_" + methodName), "Error: return instruction missing in " + methodName);
     }
 }

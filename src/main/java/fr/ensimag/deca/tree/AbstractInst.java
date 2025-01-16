@@ -38,6 +38,15 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
 
+    /**
+     * Generate assembly code for the instruction.
+     * 
+     * @param compiler
+     */
+    protected void codeGenInst(DecacCompiler compiler, Label Label) {
+        codeGenInst(compiler);
+    }
+
     public boolean isIfThenElse() {
         return false;
     }

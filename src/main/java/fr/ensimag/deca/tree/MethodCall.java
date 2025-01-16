@@ -67,8 +67,10 @@ public class MethodCall extends AbstractExpr {
         // TODO : gerer le cas de this
         compiler.addComment("Empilement des arguments");
         compiler.addInstruction(new ADDSP(rightOperand.size()+1));
-        compiler.addInstruction(new LOAD(((AbstractIdentifier)leftOperand).getVariableDefinition().getOperand(), Register.getR(2))); // en particulier ici
-        compiler.addInstruction(new STORE(Register.getR(2), new RegisterOffset(0, Register.SP)));
+        // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
+        leftOperand.codeExp(compiler, 3);
+        //compiler.addInstruction(new LOAD(leftOperand.getExpDefinition().getOperand(), Register.getR(2))); // en particulier ici
+        compiler.addInstruction(new STORE(Register.getR(3), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         for (int i = params.size(); i > 0; i--) {
