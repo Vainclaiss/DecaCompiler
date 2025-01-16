@@ -1,0 +1,16 @@
+// Description:
+//    Test de comparaisons enchainées
+// Resultats:
+//    ok
+
+{
+    int x = 2;
+    int y = 3;
+    int z = 4;
+    boolean result = (x = 5) < (y = 6) && (z = 7) > (y - x) && (x + y + z) == 18;
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

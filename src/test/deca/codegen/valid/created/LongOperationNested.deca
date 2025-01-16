@@ -1,0 +1,13 @@
+// Description:
+//  Long calcul imbriqué
+// Resultats:
+//  -2
+
+{
+    int a = 1;
+    int b = 2;
+    int c = 3;
+    int d = 4;
+    int result = ((((a + b) * (c - d)) / (b * c)) + ((a - b) * (c + d))) - ((a + d) * (b - c));
+    println(result); // Attendu : -17
+}

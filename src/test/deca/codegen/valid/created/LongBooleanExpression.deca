@@ -1,0 +1,22 @@
+// Description:
+//  Test d'une longue expression booléenne
+// Resultats:
+//  ok
+//  ok
+
+{
+    boolean result = (true && false || true && (false || true) && (true || false) && !(false && true) || (true && !false));
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    result = (!true && (false || true) && !false) || (true && (!false || true) && (false && !true || true));
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+}

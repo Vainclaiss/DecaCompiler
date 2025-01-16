@@ -23,5 +23,5 @@ class B extends A {
     B b = new B();
 
     println(b.getX());
-    println(( (A) b).getX());
+    println( ((A) (b)).getX());
 }

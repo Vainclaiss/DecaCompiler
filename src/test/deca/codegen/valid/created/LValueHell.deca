@@ -1,0 +1,14 @@
+
+
+class A {
+    int x = 1;
+    A m(){
+        return new A();
+    }
+}
+
+{
+    A newA = new A();
+    println(newA.m().m().m().m().m().m().m().m().m().m().m().m().m().m().x);
+}
+
