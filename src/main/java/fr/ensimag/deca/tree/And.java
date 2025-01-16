@@ -18,6 +18,7 @@ public class And extends AbstractOpBool {
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         if (branchIfTrue) {
             Label eFin = new Label(e.toString() + "_fin");
+            eFin.getAndAddNewSuffixe();
             getLeftOperand().codeGenBool(compiler, false, eFin);
             getRightOperand().codeGenBool(compiler, true, e);
             compiler.addLabel(eFin);
