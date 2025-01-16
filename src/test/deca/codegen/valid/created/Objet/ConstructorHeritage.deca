@@ -9,17 +9,18 @@ class A {
         println(m());
     }
     int m() {
-        return x;
+        return this.x;
     }
 }
 
 class B extends A {
     int x = 10;
     int m() {
-        return x;
+        return this.x;
     }
 }
 
 {
     B b = new B(); // Attendu : 10, car le constructeur de `A` appelle `m` de `B` à cause de la liaison dynamique.
+    b.A();
 }
