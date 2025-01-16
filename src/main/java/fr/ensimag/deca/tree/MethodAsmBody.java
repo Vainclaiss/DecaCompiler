@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.Label;
 
 public class MethodAsmBody extends AbstractMethodBody {
     final StringLiteral code;
@@ -23,7 +24,7 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     @Override
-    public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition curretClass) {
+    public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition curretClass, Label fiLabel) {
         compiler.add(new InlinePortion(code.getValue()));
     }
 

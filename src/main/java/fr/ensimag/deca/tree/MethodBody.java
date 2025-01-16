@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.MissingReturnError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -28,9 +29,9 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass) {
+    public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass, Label finLabel) {
         variables.codeGenListDeclVar(compiler, currentClass);
-        insts.codeGenListInst(compiler);
+        insts.codeGenListInst(compiler, finLabel);
     }
 
     @Override
