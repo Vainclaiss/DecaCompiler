@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -31,33 +32,39 @@ public class Lower extends AbstractOpIneq {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label target,DecacCompiler compiler) {
-    getLeftOperand().codeByteExp(mv,compiler);
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, 
+                                   org.objectweb.asm.Label target, 
+                                   DecacCompiler compiler) {
 
-    getRightOperand().codeByteExp(mv,compiler);
+        getLeftOperand().codeByteExp(mv, compiler);
+    
+        getRightOperand().codeByteExp(mv, compiler);
+    
+        Type leftType = getLeftOperand().getType();
 
-    if (getType().isInt()) {
-        if (branchIfTrue) {
-            mv.visitJumpInsn(Opcodes.IF_ICMPLT, target);
-        } else {
-            mv.visitJumpInsn(Opcodes.IF_ICMPGE, target);
+        if (leftType.isInt()) {
+            if (branchIfTrue) {
+                mv.visitJumpInsn(Opcodes.IF_ICMPLT, target);  
+            } else {
+                mv.visitJumpInsn(Opcodes.IF_ICMPGE, target); 
+            }
         }
 
-    } else if (getType().isFloat()) {
-
-        mv.visitInsn(Opcodes.FCMPG); 
-
-        if (branchIfTrue) {
-            mv.visitJumpInsn(Opcodes.IFLT, target);
-
-        } else {
-
-            mv.visitJumpInsn(Opcodes.IFGE, target);
+        else if (leftType.isFloat()) {
+         
+            mv.visitInsn(Opcodes.FCMPL);  
+            if (branchIfTrue) {
+                mv.visitJumpInsn(Opcodes.IFLT, target);
+            } else {
+                mv.visitJumpInsn(Opcodes.IFGE, target);
+            }
+        } 
+        else {
+            throw new UnsupportedOperationException("Lower: unsupported operand types for '<'");
         }
     }
-
-}
-
+    
+    
 
     @Override
     protected String getOperatorName() {

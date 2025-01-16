@@ -38,41 +38,35 @@ public class LowerOrEqual extends AbstractOpIneq {
         return "<=";
     }
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
-       
-        //getLeftOperand().codeGenByteInst(mv,compiler);
-       
-       // getRightOperand().codeGenByteInst(mv,compiler);
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) {
+        getLeftOperand().codeByteExp(mv, compiler);
+    
+        getRightOperand().codeByteExp(mv, compiler);
     
         Type leftType = getLeftOperand().getType();
     
         if (leftType.isInt()) {
-
+            
             if (branchIfTrue) {
-              
                 mv.visitJumpInsn(Opcodes.IF_ICMPLE, e);
             } else {
-
                 mv.visitJumpInsn(Opcodes.IF_ICMPGT, e);
             }
         } else if (leftType.isFloat()) {
-
+           
             mv.visitInsn(Opcodes.FCMPG); 
-    
             if (branchIfTrue) {
-
                 mv.visitJumpInsn(Opcodes.IFLE, e);
             } else {
-
                 mv.visitJumpInsn(Opcodes.IFGT, e);
             }
         } else {
-
             throw new UnsupportedOperationException(
-                "LowerOrEqual codeGenByteBool: unhandled type for '<=' operation"
+                    "LowerOrEqual codeGenByteBool: unhandled type for '<=' operation"
             );
         }
     }
+    
 
     @Override
     protected int getJumpOpcodeForInt() {

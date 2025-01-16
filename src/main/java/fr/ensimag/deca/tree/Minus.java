@@ -75,6 +75,8 @@ public class Minus extends AbstractOpArith {
         }
     
         getLeftOperand().codeByteExp(mv, compiler);
+
+        
     
         if (getType().isInt()) {
             mv.visitVarInsn(Opcodes.ILOAD, rightVarIndex);
