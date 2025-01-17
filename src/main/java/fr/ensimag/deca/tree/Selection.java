@@ -54,8 +54,8 @@ public class Selection extends AbstractLValue {
         FieldDefinition fieldDef = rightOperand.verifyField(envExp2);
         ClassDefinition classField = fieldDef.getContainingClass();
 
-        if ((fieldDef.getVisibility() == Visibility.PROTECTED) &&
-                !(class2.getType().isSubClassOf(currentClass.getType())
+        if ((fieldDef.getVisibility() == Visibility.PROTECTED) && ( currentClass == null ||
+                !(class2.getType().isSubClassOf(currentClass.getType()))
                         && currentClass.getType().isSubClassOf(classField.getType()))) {
 
             throw new ContextualError(
