@@ -31,8 +31,6 @@ public class Cast extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        // Code écrit par Guillaume le 17 janvier a 02:18 soyez indulgent si ça plante
-        // ici merci la team
         Type type1 = type.verifyType(compiler);
         Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
 
@@ -50,7 +48,10 @@ public class Cast extends AbstractExpr {
                         getLocation());
             }
         }
-
+        System.out.println(type.decompile());
+        // new (new A()).m())
+        // (new A()).m(new B)
+        setType(type1);
         return type1;
     }
 

@@ -47,21 +47,25 @@ public class MethodCall extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+                LOG.debug("Verifying left operand expression");
+                Type classType = leftOperand.verifyExpr(compiler, localEnv, currentClass);
+                if (!classType.isClass()) {
+                    LOG.error("Left operand of a selection is not a class");
+                    throw new ContextualError("Error: Left operand of a selection must be a class", getLocation());
+                }
+                
+                LOG.debug("Verifying class type");
+                ClassDefinition class2 = classType.asClassType("Error: Cast failed from Type to ClassType", getLocation())
+                    .getDefinition();
+                EnvironmentExp envExp2 = class2.getMembers();
+                MethodDefinition methodDef = methodName.verifyMethod(envExp2);
+                
+                LOG.debug("Verifying method arguments");
+                rightOperand.verifyRValueStar(compiler, localEnv, currentClass, methodDef.getSignature());
 
-        Type classType = leftOperand.verifyExpr(compiler, localEnv, currentClass);
-        if (!classType.isClass()) {
-            throw new ContextualError("Error: Left operand of a selection must be a class", getLocation());
-        }
-
-        ClassDefinition class2 = classType.asClassType("Error: Cast failed from Type to ClassType", getLocation())
-                .getDefinition();
-        EnvironmentExp envExp2 = class2.getMembers();
-        MethodDefinition methodDef = methodName.verifyMethod(envExp2);
-
-        rightOperand.verifyRValueStar(compiler, localEnv, currentClass, methodDef.getSignature());
-
-        setType(methodDef.getType());
-        return methodDef.getType();
+                LOG.debug("Setting return type of the method");
+                setType(methodDef.getType());
+                return methodDef.getType();
     }
 
     @Override

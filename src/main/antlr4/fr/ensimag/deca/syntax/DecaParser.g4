@@ -190,6 +190,7 @@ if_then_else returns[IfThenElse tree]
 list_expr returns[ListExpr tree]
 @init   {
             $tree = new ListExpr();
+            $tree.setLocation(tokenLocation($ctx.start));
         }
     : (e1=expr {
             $tree.add($e1.tree);
