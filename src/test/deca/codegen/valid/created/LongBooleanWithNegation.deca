@@ -1,7 +1,7 @@
 // Description:
-//    Test d'une longue expression booléenne avec négation
+// Test de la création d'une longue chaîne de négations.
 // Resultats:
-//    ok
+// ok
 
 {
     boolean a = true;

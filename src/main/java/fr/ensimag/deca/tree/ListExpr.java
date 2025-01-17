@@ -3,6 +3,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.Type;
 
 import java.time.format.SignStyle;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -33,19 +36,22 @@ public class ListExpr extends TreeList<AbstractExpr> {
     public void verifyRValueStar(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Signature sig) throws ContextualError {
 
+        LOG.debug("verify ListExpr: start");
         int n = sig.size();
         int i = 0;
+
+        if (getList().size() > n) {
+            throw new ContextualError("Error: Too many arguments in method call", getLocation());
+        } else if (getList().size() < n) {
+            throw new ContextualError("Error: Too few arguments in method call", getLocation());
+        }
+
         for (AbstractExpr exp : getList()) {
-            if (i == n) {
-                throw new ContextualError("Error: Too many arguments in method call", getLocation());
-            }
+            LOG.debug("Verifying argument " + i + " of type " + sig.paramNumber(i));
             set(i, exp.verifyRValue(compiler, localEnv, currentClass, sig.paramNumber(i)));
             i++;
         }
-
-        if (i < n) {
-            throw new ContextualError("Error: Too few arguments in method call", getLocation());
-        }
+        LOG.debug("verify ListExpr: end");
     }
 
     @Override

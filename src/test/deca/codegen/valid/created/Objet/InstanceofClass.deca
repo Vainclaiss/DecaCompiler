@@ -1,0 +1,15 @@
+// Description:
+//  Teste le Instanceof avec une classe
+// Resultats:
+//  ok
+
+class A{
+
+}
+
+{
+    A newA = new A();
+    if(newA instanceof A){
+        println("ok");
+    }
+}

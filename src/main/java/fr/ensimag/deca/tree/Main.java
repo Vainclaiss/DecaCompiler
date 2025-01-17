@@ -48,9 +48,14 @@ public class Main extends AbstractMain {
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
         VoidType voidType = new VoidType(voidSymb);
-        
+
+        LOG.debug("Verifying list of declared variables");
         declVariables.verifyListDeclVariable(compiler, mainEnv, null);
+        LOG.debug("List of declared variables verified");
+
+        LOG.debug("Verifying list of instructions");
         insts.verifyListInst(compiler, mainEnv, null, voidType);
+        LOG.debug("List of instructions verified");
 
         LOG.debug("verify Main: end");
     }

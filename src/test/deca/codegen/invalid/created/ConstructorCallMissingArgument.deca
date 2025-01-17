@@ -1,0 +1,17 @@
+// Description:
+//  Constructor appelé sans arguments
+// Resultats:
+//
+
+class A{
+    int valA;
+    void A(int valA){
+        this.valA = valA;
+    }
+}
+
+{
+    A newA = new A();
+    newA.A();
+    println(newA.valA);
+}

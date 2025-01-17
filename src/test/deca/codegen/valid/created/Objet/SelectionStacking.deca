@@ -20,7 +20,7 @@ class B{
 {
     A newA = new A();
     B newB = new B();
-    newA.A();
+    newA.A(1);
     newB.B(newA);
     println(newB.objetA.valA);
 }

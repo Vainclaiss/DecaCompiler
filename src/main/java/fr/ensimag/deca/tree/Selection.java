@@ -43,6 +43,7 @@ public class Selection extends AbstractLValue {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
+        LOG.debug("verify Selection: start");
         Type classType = leftOperand.verifyExpr(compiler, localEnv, currentClass);
         if (!classType.isClass()) {
             throw new ContextualError("Error: Left operand of a selection must be a class", getLocation());
@@ -63,18 +64,20 @@ public class Selection extends AbstractLValue {
         }
 
         setType(fieldDef.getType());
+
+        LOG.debug("verify Selection: end");
         return fieldDef.getType();
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
-        leftOperand.codeExp(compiler,0);
-        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler,0)));
+        leftOperand.codeExp(compiler, 0);
+        compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler, 0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
             compiler.addExecError(NullDereference.INSTANCE);
-            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler,0)));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler, 0)));
             compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
         }
     }
@@ -83,7 +86,9 @@ public class Selection extends AbstractLValue {
     protected void codeExp(DecacCompiler compiler, int n) {
         // TODO: gerer le cas de this
         codeExp(compiler);
-        compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler,0)), Register.getR(compiler,n)));
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, 0)),
+                        Register.getR(compiler, n)));
     }
 
     @Override

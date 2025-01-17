@@ -31,7 +31,28 @@ public class Cast extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        throw new UnsupportedOperationException("not yet implemented");
+        Type type1 = type.verifyType(compiler);
+        Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
+
+        if (type1.isVoid()) {
+            throw new ContextualError("Error: Cannot cast void", getLocation());
+        }
+
+        try {
+            type.verifyRValue(compiler, localEnv, currentClass, type2);
+        } catch (ContextualError typeErr) {
+            try {
+                expr.verifyRValue(compiler, localEnv, currentClass, type1);
+            } catch (ContextualError typeErr2) {
+                throw new ContextualError("Error: Cannot cast " + type2.getName() + " to " + type1.getName(),
+                        getLocation());
+            }
+        }
+        System.out.println(type.decompile());
+        // new (new A()).m())
+        // (new A()).m(new B)
+        setType(type1);
+        return type1;
     }
 
     @Override

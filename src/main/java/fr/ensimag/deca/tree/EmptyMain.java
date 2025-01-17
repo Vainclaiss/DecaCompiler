@@ -29,7 +29,7 @@ public class EmptyMain extends AbstractMain {
     protected void checkLocation() {
         // nothing
     }
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         // no main program => nothing

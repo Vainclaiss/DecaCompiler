@@ -1,0 +1,18 @@
+// Description:
+// New recursif dans une classe
+// Resultats:
+// ok
+
+class A{
+    A A(A objetA){
+        return objetA;
+    }
+    void m(){
+        println("ok");
+    }
+}
+
+{
+    A newA = new A();
+    newA.A((new A()).A(new A())).m();
+}
