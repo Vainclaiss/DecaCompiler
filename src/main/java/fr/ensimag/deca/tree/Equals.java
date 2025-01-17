@@ -38,6 +38,7 @@ public class Equals extends AbstractOpExactCmp {
         super.codeExp(compiler, n);
         compiler.addInstruction(new SEQ(Register.getR(compiler,n)));
     }
+   
 
     @Override
     protected String getOperatorName() {
@@ -45,37 +46,40 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
-        getLeftOperand().codeByteExp(mv,compiler);
-    
-        getRightOperand().codeByteExp(mv,compiler);
-    
-        Type leftType = getLeftOperand().getType();
-        if (leftType.isInt()) {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) {
+    getLeftOperand().codeByteExp(mv, compiler);
 
-            if (branchIfTrue) {
-                mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);  // IF_ICMPEQ pour voir s'ils sont égaux qui est le cas
-                                                        // puis on jump au label e
-                                                       
-            } else {
-                mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);// IF_ICMPNE pour voir qu'ils ne sont pas equals qui est le cas
-                                                        // on jump au label e
-            }
-        } 
-        else if (leftType.isFloat()) { // meme chose
+    getRightOperand().codeByteExp(mv, compiler);
 
-            mv.visitInsn(Opcodes.FCMPG);
-    
-            if (branchIfTrue) {
-                mv.visitJumpInsn(Opcodes.IFEQ, e);
-            } else {
-                mv.visitJumpInsn(Opcodes.IFNE, e);
-            }
+    Type leftType = getLeftOperand().getType();
+    if (leftType.isInt()) {
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
         }
-        else {
-            throw new UnsupportedOperationException("Equals codeGenByteBool: unhandled type for '==' operation");
+    } 
+    else if (leftType.isFloat()) {
+        mv.visitInsn(Opcodes.FCMPG);
+
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IFEQ, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IFNE, e);
         }
     }
+    else if (leftType.isBoolean()) {
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
+        }
+    } 
+    else {
+        throw new UnsupportedOperationException("Equals codeGenByteBool: unhandled type for '==' operation");
+    }
+}
+
     
     @Override
     protected int getJumpOpcodeForInt() {

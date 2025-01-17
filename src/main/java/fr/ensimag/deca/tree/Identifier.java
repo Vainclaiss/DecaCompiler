@@ -309,13 +309,17 @@ protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
         mv.visitVarInsn(Opcodes.ILOAD, localIndex);
     } else if (t.isFloat()) {
         mv.visitVarInsn(Opcodes.FLOAD, localIndex);
-    } else {
- 
+    } else if (t.isBoolean()){
+        mv.visitVarInsn(Opcodes.ILOAD,localIndex);
+    }
+    else{
         throw new UnsupportedOperationException(
             "Identifier: unsupported type for codeGenByteExp: " + t
         );
+
     }
 }
+
 
 
     @Override
@@ -443,6 +447,19 @@ protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
             compiler.addInstruction(new BNE(e));
         }
     }
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue,
+                               org.objectweb.asm.Label e, DecacCompiler compiler) {
+    codeByteExp(mv, compiler);
+
+    if (branchIfTrue) {
+        mv.visitJumpInsn(Opcodes.IFNE, e);
+    } else {
+        mv.visitJumpInsn(Opcodes.IFEQ, e);
+    }
+}
+
 
     @Override
     protected void iterChildren(TreeFunction f) {

@@ -39,10 +39,11 @@ public class Assign extends AbstractBinaryExpr {
         return (AbstractLValue) super.getLeftOperand();
     }
 
-        // TODO: pour les classes : lvalue verif
-        @Override
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
+    
+        // TODO: pour les classes : lvalue verif
         Type type1 = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, type1));
         setType(type1);
@@ -69,11 +70,48 @@ public class Assign extends AbstractBinaryExpr {
         
         compiler.addInstruction(new STORE(Register.getR(compiler,n), (DAddr)getLeftOperand().getDVal()));
     }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        getRightOperand().codeByteExp(mv, compiler); 
+    
+        mv.visitInsn(Opcodes.DUP); 
+    
+        if (!(getLeftOperand() instanceof Identifier)) {
+            throw new DecacInternalError("Assign: left operand is not an Identifier.");
+        }
+    
+        Identifier leftId = (Identifier) getLeftOperand();
+        VariableDefinition varDef = leftId.getVariableDefinition();
+        int localIndex = varDef.getLocalIndex();
+    
+        if (localIndex < 0) {
+            throw new DecacInternalError("Variable local index not set before assignment.");
+        }
+    
+        if (getType().isInt()) {
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+        } else if (getType().isFloat()) {
+            mv.visitVarInsn(Opcodes.FSTORE, localIndex); 
+        }else if (getType().isBoolean()){
+            mv.visitVarInsn(Opcodes.ISTORE,localIndex);
+        } else {
+            throw new DecacInternalError("Unsupported type for assignment: " + getType());
+        }
+    
+        
+    }
+    
     
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         codeGenInst(compiler);
         getLeftOperand().codeGenBool(compiler, branchIfTrue, e);
+    }
+    @Override
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+        codeGenByteInst(mv, compiler);
+        getLeftOperand().codeGenByteBool(mv,branchIfTrue,e,compiler);
     }
 
     @Override
@@ -87,17 +125,18 @@ public class Assign extends AbstractBinaryExpr {
         VariableDefinition varDef = leftId.getVariableDefinition();
     
         int localIndex = varDef.getLocalIndex();
-        System.out.println(localIndex);
+
         if (localIndex < 0) {
             throw new DecacInternalError("Variable local index not set before assignment.");
         }
     
-        // Use the correct store instruction
         if (getType().isInt()) {
             mv.visitVarInsn(Opcodes.ISTORE, localIndex);
-            System.out.println("i am int");
         } else if (getType().isFloat()) {
             mv.visitVarInsn(Opcodes.FSTORE, localIndex);
+        } else if (getType().isBoolean()){
+            mv.visitVarInsn(Opcodes.ISTORE,localIndex);
+        
         } else {
             throw new DecacInternalError("Unsupported type for assignment: " + getType());
         }

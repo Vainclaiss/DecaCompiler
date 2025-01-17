@@ -14,9 +14,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.CheckClassAdapter;
 import org.objectweb.asm.util.TraceClassVisitor;
 
 
@@ -151,12 +153,13 @@ public class Program extends AbstractProgram {
     
             
             byte[] bytecode = cw.toByteArray();
+            CheckClassAdapter.verify(new ClassReader(bytecode), false, new PrintWriter(System.out));
+
     
             try (FileOutputStream fos = new FileOutputStream("Main.class")) {
                 fos.write(bytecode);
                 LOG.info("Wrote .class successfully.");
             }
-    
            
             try (PrintWriter rawByteWriter = new PrintWriter("MainRawBytes.txt")) {
                 for (byte b : bytecode) {

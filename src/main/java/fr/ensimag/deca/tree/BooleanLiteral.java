@@ -58,6 +58,12 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
+    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
+ 
+        mv.visitLdcInsn(value);
+    }
+
+    @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         if ((value && branchIfTrue) || (!value && !branchIfTrue)) {
             compiler.addInstruction(new BRA(e));
