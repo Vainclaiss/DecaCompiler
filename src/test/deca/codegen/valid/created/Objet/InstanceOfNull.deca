@@ -17,12 +17,12 @@ class B extends A{
     B newB = null;
 
     if (newB instanceof B){
-        println("ERRONE");
-    } else {
         println("ok");
+    } else {
+        println("ERRONE");
     }
 
-    if (newB instanceof A){
+    if (!(newB instanceof A)){
         println("ERRONE");
     } else {
         println("ok");

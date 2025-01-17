@@ -34,6 +34,10 @@ public class Selection extends AbstractLValue {
         this.rightOperand = rightOperand;
     }
 
+    boolean isSelection() {
+        return true;
+    }
+
     @Override
     public DVal getDVal() {
         return new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.R0);
@@ -72,7 +76,10 @@ public class Selection extends AbstractLValue {
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
-        leftOperand.codeExp(compiler, 0); // peut faire 2 fois la meme inst -> pas grave
+        if (!(leftOperand.isSelection())) {
+            leftOperand.codeExp(compiler, 0); // peut faire 2 fois la meme inst -> pas grave
+        }
+
         compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler, 0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
