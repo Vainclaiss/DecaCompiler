@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -39,7 +41,7 @@ public class Cast extends AbstractExpr {
         }
 
         try {
-            type.verifyRValue(compiler, localEnv, currentClass, type2);
+            expr.verifyRValue(compiler, localEnv, currentClass, type2);
         } catch (ContextualError typeErr) {
             try {
                 expr.verifyRValue(compiler, localEnv, currentClass, type1);
@@ -48,23 +50,21 @@ public class Cast extends AbstractExpr {
                         getLocation());
             }
         }
-        System.out.println(type.decompile());
-        // new (new A()).m())
-        // (new A()).m(new B)
+        
+        expr.setType(type1);
         setType(type1);
         return type1;
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-
-    }
-
-    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        throw new UnsupportedOperationException("not yet implemented");
-
+        expr.codeExp(compiler, n);
+        if (type.getType().isInt()) {
+            compiler.addInstruction(new INT(Register.getR(n), Register.getR(n)));
+        }
+        else if (type.getType().isFloat()) {
+            compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
+        }
     }
 
     @Override
