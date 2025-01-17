@@ -59,6 +59,11 @@ public class New extends AbstractExpr {
     }
 
     @Override
+    public DVal getDVal() {
+        return Register.R0;
+    }
+
+    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
 
         ClassDefinition nameDef = name.getClassDefinition();

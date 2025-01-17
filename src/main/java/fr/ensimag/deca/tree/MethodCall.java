@@ -71,10 +71,11 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         // TODO : gerer le cas de this
-        compiler.addComment("Empilement des arguments");
+        String methodeLabel = methodName.getMethodDefinition().getLabel().toString().replace("code.", "");
+        compiler.addComment("Empilement des arguments de " + methodeLabel);
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
         // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
-        leftOperand.codeExp(compiler); // method call, new, selection, variables in R0
+        leftOperand.codeExp(compiler, 0); // method call, new, selection, variables in R0
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
@@ -84,7 +85,7 @@ public class MethodCall extends AbstractExpr {
             compiler.addInstruction(new STORE(Register.getR(compiler, n), new RegisterOffset(-i, Register.SP)));
         }
 
-        compiler.addComment("Appel de la methode");
+        compiler.addComment("Appel de la methode " + methodeLabel);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R0));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {

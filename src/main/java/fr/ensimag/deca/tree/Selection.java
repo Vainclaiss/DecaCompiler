@@ -56,8 +56,8 @@ public class Selection extends AbstractLValue {
         ClassDefinition classField = fieldDef.getContainingClass();
 
         // Règle 3.66
-        if ((fieldDef.getVisibility() == Visibility.PROTECTED) &&
-                !(class2.getType().isSubClassOf(currentClass.getType())
+        if ((fieldDef.getVisibility() == Visibility.PROTECTED) && (currentClass == null ||
+                !(class2.getType().isSubClassOf(currentClass.getType()))
                         && currentClass.getType().isSubClassOf(classField.getType()))) {
 
             throw new ContextualError(
@@ -74,6 +74,7 @@ public class Selection extends AbstractLValue {
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
+        leftOperand.codeExp(compiler, 0);
         compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler, 0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
