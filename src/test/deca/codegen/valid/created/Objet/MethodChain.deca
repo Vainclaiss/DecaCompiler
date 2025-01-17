@@ -1,7 +1,7 @@
 // Description:
 //  Test de la chaine de méthodes
 // Resultats:
-//  37
+//  36
 
 class A {
     int x = 0;

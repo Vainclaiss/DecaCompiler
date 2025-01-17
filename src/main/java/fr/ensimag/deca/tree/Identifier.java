@@ -284,7 +284,9 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        codeExp(compiler, 0);
+        if (getDefinition().isField()) {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+        }
         // nothing to do, used for Assign codeGenInst
     }
 
