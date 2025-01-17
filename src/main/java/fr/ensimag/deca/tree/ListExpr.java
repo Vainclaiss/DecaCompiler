@@ -36,7 +36,7 @@ public class ListExpr extends TreeList<AbstractExpr> {
     public void verifyRValueStar(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Signature sig) throws ContextualError {
 
-        Logger.getLogger(ListExpr.class).debug("verify ListExpr: start");
+        LOG.debug("verify ListExpr: start");
         int n = sig.size();
         int i = 0;
 
@@ -47,12 +47,11 @@ public class ListExpr extends TreeList<AbstractExpr> {
         }
 
         for (AbstractExpr exp : getList()) {
-            Logger.getLogger(ListExpr.class)
-                    .debug("Verifying argument " + i + " of type " + sig.paramNumber(i));
+            LOG.debug("Verifying argument " + i + " of type " + sig.paramNumber(i));
             set(i, exp.verifyRValue(compiler, localEnv, currentClass, sig.paramNumber(i)));
             i++;
         }
-        Logger.getLogger(ListExpr.class).debug("verify ListExpr: end");
+        LOG.debug("verify ListExpr: end");
     }
 
     @Override
