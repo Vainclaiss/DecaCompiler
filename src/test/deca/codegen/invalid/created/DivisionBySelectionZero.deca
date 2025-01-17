@@ -1,7 +1,7 @@
 // Description:
 //  Division par une Selection nulle
 // Resultats:
-//
+//  Error: Overflow during arithmetic operation
 
 class A{
     float a;

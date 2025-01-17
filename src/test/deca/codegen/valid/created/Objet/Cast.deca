@@ -1,3 +1,8 @@
+// Description:
+// Test divers et variés de cast
+// Resultats:
+// 1.00000e+00
+
 {
     int a = 1;
     int b = 2;

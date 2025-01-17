@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -57,14 +58,14 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-
+        expr.setType(getType());
+        expr.codeGenPrint(compiler);
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
+        // ptdr c dur
         throw new UnsupportedOperationException("not yet implemented");
-
     }
 
     @Override

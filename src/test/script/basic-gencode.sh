@@ -86,7 +86,7 @@ check_valid_interactive_result() {
         if [ $count -le "$nb_args" ]; then
             input_args="${input_args}${input_args:+\\n}$arg"
         else
-            outputs="$outputs $arg"
+            outputs="${outputs}${outputs:+\\n}$arg"
         fi
         count=$((count + 1))
     done
@@ -157,11 +157,12 @@ make_invalid_interactive_tests() {
     check_invalid_interactive_result ./src/test/deca/codegen/interactive/read3.deca 1 3.0 3.00000e+00
     check_invalid_interactive_result ./src/test/deca/codegen/interactive/read4.deca 2 2.0 3.0 5.00000e+00
     check_invalid_interactive_result ./src/test/deca/codegen/interactive/read5.deca 2 2.0 3 5.00000e+00
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read6.deca 2 2 3.00000e+00 2 3
 }
 
 make_valid_interactive_tests() {
     i=1
-    while [ $i -le 5 ]; do
+    while [ $i -le 6 ]; do
         file="./src/test/deca/codegen/interactive/read${i}.deca"
         check_compilation "$file" false
         i=$((i + 1))
@@ -172,15 +173,16 @@ make_valid_interactive_tests() {
     check_valid_interactive_result ./src/test/deca/codegen/interactive/read3.deca 1 3 3.00000e+00
     check_valid_interactive_result ./src/test/deca/codegen/interactive/read4.deca 2 2 3 5.00000e+00
     check_valid_interactive_result ./src/test/deca/codegen/interactive/read5.deca 2 2 3.00000e+00 5.00000e+00
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read6.deca 2 2 3.00000e+00 2 3.00000e+00
 }
 
 main() {
     prompt_strong "Running basic-gencode tests..."
     setup_path_and_cd
     make_valid_tests
-    # make_invalid_tests
-    # make_valid_interactive_tests
-    # make_invalid_interactive_tests
+    make_invalid_tests
+    make_valid_interactive_tests
+    make_invalid_interactive_tests
 }
 
 main
