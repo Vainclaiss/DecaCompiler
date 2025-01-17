@@ -1,9 +1,14 @@
 // Description:
-//    Instanciation d'un type Object
+//    Instanciation d'un type Object et test de equals
 // Resultats:
 //    ok
 
 {
     Object objet = new Object();
-    println("ok");
+    if (objet.equals(objet)) {
+        println("ok");
+    }
+    else {
+        println("ERRONE");
+    }
 }

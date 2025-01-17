@@ -192,7 +192,7 @@ public class DeclClass extends AbstractDeclClass {
 
         TSTOCounter stackOverflowCounter = compiler.getStackOverflowCounter();
         int maxSavedRegisters = stackOverflowCounter.getMaxRegisterUsed();
-        stackOverflowCounter.addSavedRegisters(maxSavedRegisters - 1);
+        stackOverflowCounter.addSavedRegisters((maxSavedRegisters == 0) ? 0 : maxSavedRegisters-1);
 
         compiler.addFirst(new Line("fields initialization"));
         compiler.add(new Line("restauration des registres"));

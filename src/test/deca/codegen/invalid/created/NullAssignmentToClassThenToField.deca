@@ -1,7 +1,7 @@
 // Description:
 //    Assigne null à une classe
 // Resultats:
-//    Null Deferenced
+//    Error: Null dereference
 
 class A{
     int a;

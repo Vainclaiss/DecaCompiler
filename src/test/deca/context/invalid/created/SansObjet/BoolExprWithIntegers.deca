@@ -1,7 +1,8 @@
 // Description:
 //  Test d'expressions booleennes avec des entiers
 // Resultats:
-// ok
+//    Erreur contextuelle
+//    Ligne 8 : Error: Illegal RValue type, got null, expected boolean
 
 {
     boolean x = null;

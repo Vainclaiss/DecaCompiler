@@ -83,7 +83,7 @@ public abstract class Type {
     }
 
     public boolean subType(Type otherType) {
-        if (this.isNull() || this.sameType(otherType)) {
+        if ((this.isNull() && otherType.isClass()) || this.sameType(otherType)) {
             return true;
         }
 
