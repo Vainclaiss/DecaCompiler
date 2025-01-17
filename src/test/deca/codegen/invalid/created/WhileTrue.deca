@@ -1,8 +1,0 @@
-// Description:
-// while true
-// Resultats:
-//
-
-{
-    println(-2147483648);
-}
