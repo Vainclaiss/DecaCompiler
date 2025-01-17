@@ -94,6 +94,10 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new RTS());
 
         // generation des init et methodes des classes
+        compiler.addComment("Initialisation de Object");
+        compiler.addLabel(new Label("init.Object"));
+        compiler.addInstruction(new RTS());
+        
         classes.codeGenClass(compiler);
     }
 
