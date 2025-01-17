@@ -9,14 +9,14 @@ class A {
         println(m());
     }
     int m() {
-        return this.x;
+        return x;
     }
 }
 
 class B extends A {
     int x = 10;
     int m() {
-        return this.x;
+        return x;
     }
 }
 

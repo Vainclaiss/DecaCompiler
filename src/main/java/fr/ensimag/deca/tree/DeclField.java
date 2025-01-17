@@ -114,6 +114,8 @@ public class DeclField extends AbstractDeclField {
             init.codeGenInitialization(compiler, new RegisterOffset(name.getFieldDefinition().getIndex(), Register.R1));
         }
         // TODO : ajouter le cas avec initialization -> done maybe
+        FieldDefinition fieldDef = name.getFieldDefinition();
+        fieldDef.setOperand(new RegisterOffset(fieldDef.getIndex(), Register.R0));
     }
 
     @Override
