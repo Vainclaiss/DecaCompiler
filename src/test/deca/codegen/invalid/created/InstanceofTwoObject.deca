@@ -1,7 +1,7 @@
 // Description:
 //  Teste le Instanceof avec deux objets
 // Resultats:
-//  ok
+//  InstanceofTwoObject.deca:13:23: Error: Type 'newNewA' is not defined
 
 class A{
 
