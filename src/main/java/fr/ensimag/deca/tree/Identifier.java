@@ -293,7 +293,7 @@ public class Identifier extends AbstractIdentifier {
         if (getDefinition().isField()) {
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
         }
-        compiler.addInstruction(new LOAD(getDVal(), Register.getR(compiler,n)));
+        compiler.addInstruction(new LOAD(getDVal(), Register.getR(compiler, n)));
     }
 
     private Definition definition;
@@ -305,8 +305,7 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new CMP(1, Register.R0));
         if (branchIfTrue) {
             compiler.addInstruction(new BEQ(e));
-        }
-        else {
+        } else {
             compiler.addInstruction(new BNE(e));
         }
     }

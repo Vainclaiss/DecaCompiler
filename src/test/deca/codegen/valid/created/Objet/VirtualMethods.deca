@@ -22,5 +22,6 @@ class B extends A {
 
 {
     B b = new B();
+    b.A();
     println(b.x);
 }

@@ -72,8 +72,8 @@ public class Program extends AbstractProgram {
 
         // generation de la table des methodes
         classes.codeGenVtable(compiler);
-        compiler.getStackOverflowCounter().addVariables(1); // 
-        
+        compiler.getStackOverflowCounter().addVariables(1); //
+
         // generation du programme principal
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
@@ -81,8 +81,10 @@ public class Program extends AbstractProgram {
         compiler.addComment("end main program");
 
         compiler.addFirst(new ADDSP(compiler.getGBOffset()));
-        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à cause de addFirst()
-        compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()), compiler.getStackOverflowCounter().getDetailsMaxTSTO());
+        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à
+                                                                                // cause de addFirst()
+        compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()),
+                compiler.getStackOverflowCounter().getDetailsMaxTSTO());
 
         // code de la methode equals de Object
         compiler.addComment("Code de la methode equals dans la classe Object");

@@ -1,7 +1,7 @@
 // Description:
 //    Test d'une variable non initialisée
 // Resultats:
-//    ?
+//    0
 
 class A {
     int x; // pas initialisé

@@ -90,10 +90,12 @@ public class DeclClass extends AbstractDeclClass {
                     + "' , first declaration at " + previousDef.getLocation(), name.getLocation());
         }
 
-        ClassType newType = new ClassType(name.getName(), getLocation(), superClass.getClassDefinition());  // the cast
-                                                                                                            // succeed because
-                                                                                                            // of the
-                                                                                                            // precedent check
+        ClassType newType = new ClassType(name.getName(), getLocation(), superClass.getClassDefinition()); // the cast
+                                                                                                           // succeed
+                                                                                                           // because
+                                                                                                           // of the
+                                                                                                           // precedent
+                                                                                                           // check
         ClassDefinition newDef = newType.getDefinition();
         name.setDefinition(newDef);
 
@@ -114,7 +116,7 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition nameDef = name.getClassDefinition();
         nameDef.setNumberOfFields(superDef.getNumberOfFields());
         nameDef.setNumberOfMethods(superDef.getNumberOfMethods());
-        
+
         EnvironmentExp envFields = declFields.verifyListDeclField(compiler, superClass, name);
         EnvironmentExp envMethods = declMethods.verifyListDeclMethod(compiler, superClass, name);
 
@@ -176,7 +178,8 @@ public class DeclClass extends AbstractDeclClass {
         tempProgram.addComment("Initialisation des champs de " + name.getName().toString());
         tempProgram.addLabel(new Label("init." + name.getClassDefinition().getType().toString()));
 
-        if ((superClass.getClassDefinition() != null) && !superClass.getClassDefinition().equals(compiler.environmentType.OBJECT.getDefinition())) {
+        if ((superClass.getClassDefinition() != null)
+                && !superClass.getClassDefinition().equals(compiler.environmentType.OBJECT.getDefinition())) {
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
             compiler.addInstruction(new PUSH(Register.R1));
             compiler.getStackOverflowCounter().addParamsOnStack(1);
@@ -189,19 +192,21 @@ public class DeclClass extends AbstractDeclClass {
 
         TSTOCounter stackOverflowCounter = compiler.getStackOverflowCounter();
         int maxSavedRegisters = stackOverflowCounter.getMaxRegisterUsed();
-        stackOverflowCounter.addSavedRegisters(maxSavedRegisters-1);
+        stackOverflowCounter.addSavedRegisters(maxSavedRegisters - 1);
 
         compiler.addFirst(new Line("fields initialization"));
         compiler.add(new Line("restauration des registres"));
-        for (int i = maxSavedRegisters; i >=2 ; i--) {
-            compiler.addFirst(new PUSH(Register.getR(compiler,i)));
-            compiler.addInstruction(new POP(Register.getR(compiler,i)));
+        for (int i = maxSavedRegisters; i >= 2; i--) {
+            compiler.addFirst(new PUSH(Register.getR(compiler, i)));
+            compiler.addInstruction(new POP(Register.getR(compiler, i)));
         }
 
         compiler.addFirst(new Line("sauvegarde des registres"));
-        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à cause de addFirst()
-        compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()), compiler.getStackOverflowCounter().getDetailsMaxTSTO());
-        
+        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à
+                                                                                // cause de addFirst()
+        compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()),
+                compiler.getStackOverflowCounter().getDetailsMaxTSTO());
+
         tempProgram.append(compiler.getProgram());
         mainProgram.append(tempProgram);
         compiler.setProgram(mainProgram);
