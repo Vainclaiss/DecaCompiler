@@ -1,0 +1,18 @@
+// Description:
+//  Operation Arithmetique avec une selection null
+// Resultats:
+//  SelectionArithmeticNull.deca:9:17: Error: Illegal RValue type, got null, expected int
+
+class A{
+    int a;
+    void A(){
+        this.a = null;
+    }
+}
+
+{
+    A newA = new A();
+    int b;
+    newA.A();
+    b = newA.a + 1;
+}
