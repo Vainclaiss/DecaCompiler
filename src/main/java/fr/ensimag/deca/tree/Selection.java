@@ -55,8 +55,7 @@ public class Selection extends AbstractLValue {
         ClassDefinition classField = fieldDef.getContainingClass();
 
         if ((fieldDef.getVisibility() == Visibility.PROTECTED) && ( currentClass == null ||
-                !(class2.getType().isSubClassOf(currentClass.getType()))
-                        && currentClass.getType().isSubClassOf(classField.getType()))) {
+                (!(class2.getType().isSubClassOf(currentClass.getType()) && currentClass.getType().isSubClassOf(classField.getType()))))) {
 
             throw new ContextualError(
                     "Error: Unauthorized access to the protected field '" + rightOperand.getName().toString() + "'",

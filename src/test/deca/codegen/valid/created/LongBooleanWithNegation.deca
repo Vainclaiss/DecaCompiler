@@ -1,5 +1,7 @@
 // Description:
-// 
+//    Test d'une longue expression booléenne avec négation
+// Resultats:
+//    ok
 
 {
     boolean a = true;
