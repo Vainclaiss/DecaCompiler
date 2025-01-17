@@ -1,0 +1,56 @@
+// Description:
+// Test de l'instanceof sur plusieurs types
+// Resultats:
+//  ok
+//  ok
+//  ok
+//  ok
+//  ok
+
+
+
+class A {}
+class B extends A {}
+class F extends A {}
+
+{
+    F newF = new F();
+    B newB = new B();
+
+    boolean result1 = newF instanceof F; // true
+    boolean result2 = newF instanceof B; // False
+    boolean result3 = newB instanceof F; // false
+    boolean result4 = newF instanceof A; // true
+    boolean result5 = newB instanceof A; // true
+
+    if (result1) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (!result2) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (!result3) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (result4) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (result5) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }   
+
+}

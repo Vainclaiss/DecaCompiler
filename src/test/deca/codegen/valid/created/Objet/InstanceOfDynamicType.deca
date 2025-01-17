@@ -1,0 +1,56 @@
+// Description:
+//  Teste le Instanceof avec une classe (types dynamiques)
+// Resultats:
+//  ok
+//  ok
+
+class A {
+
+}
+class B extends A {
+
+}
+
+{
+    A a = new B(); // Type dynamique
+    boolean result1 = a instanceof B; // true
+    if (result1) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (a instanceof B) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+
+    boolean result2 = ((B) a) instanceof B; // true (cast valide)
+    if (result2) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (((B) a) instanceof B) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+
+    boolean result3 = ((B) a) instanceof A; // true (cast valide)
+    if (result3) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (((B) a) instanceof A) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}
