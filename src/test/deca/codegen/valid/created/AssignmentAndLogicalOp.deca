@@ -3,6 +3,7 @@
 // Resultats:
 //  ok
 //  ok
+//  ok
 
 {
     boolean a = false;
@@ -19,9 +20,9 @@
     }
 
     if(c){
-        println("ERRONE");
-    } else {
         println("ok");
+    } else {
+        println("ERRONE");
     }
 
     

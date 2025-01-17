@@ -1,10 +1,10 @@
 // Description:
 //    Test d'une variable non initialisée
 // Resultats:
-//    ?
+//    0
 
 class A {
-    int x; // pas initialisé
+    int x; // pas initialisé, donc 0 par défaut
 
     int getX() {
         return x;
