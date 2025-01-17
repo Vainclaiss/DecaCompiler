@@ -119,6 +119,7 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         codeExp(compiler, 2);
+        // TODO : peut etre metre R2 au lieu de R0 pour plus de securité
         compiler.addInstruction(new CMP(1, Register.R0));
         if (branchIfTrue) {
             compiler.addInstruction(new BEQ(e));

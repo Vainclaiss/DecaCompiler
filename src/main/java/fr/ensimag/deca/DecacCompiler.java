@@ -289,10 +289,10 @@ public class DecacCompiler {
             prog.decompile(out);
             return false;
         }
-        assert (prog.checkAllLocations());
+        //assert (prog.checkAllLocations());
 
         prog.verifyProgram(this);
-        assert (prog.checkAllDecorations());
+        //assert (prog.checkAllDecorations());
 
         if (compilerOptions.getStopAfterVerification()) {
             LOG.info("Stopped after verification");

@@ -80,6 +80,7 @@ public class ClassDefinition extends TypeDefinition {
         return operand;
     }
 
+    // adresse de la classe i.e adresse du début de la vtable pour cette classe
     private DAddr operand;
 
     private final EnvironmentExp members;
