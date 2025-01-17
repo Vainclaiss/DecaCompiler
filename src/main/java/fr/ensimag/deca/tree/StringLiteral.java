@@ -48,16 +48,6 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
-    protected DVal getDVal() {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
-    protected void codeExp(DecacCompiler compiler, int n) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
     public void decompile(IndentPrintStream s) {
         s.print("\"" + getValue() + "\"");
     }
