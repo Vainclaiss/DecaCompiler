@@ -52,14 +52,8 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(value, Register.R1));
-        compiler.addInstruction(new WINT());
-    }
-
-    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        compiler.addInstruction(new LOAD(dVal, Register.getR(n)));
+        compiler.addInstruction(new LOAD(dVal, Register.getR(compiler,n)));
     }
     @Override
 protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
@@ -88,7 +82,6 @@ protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
     String prettyPrintNode() {
         return "Int (" + getValue() + ")";
     }
-
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(Integer.toString(value));

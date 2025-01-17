@@ -53,28 +53,26 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
-        // Vous avez le droit de changer le profil fourni pour ces méthodes
-        // (mais ce n'est à priori pas nécessaire).
 
-        // Pas nécéssaire pour HelloWorld, mais pour plus tard : 2 autres argument avec
-        // Environnements
-        // this.getDeclVariables().verifyListDeclVariable(compiler, ..., ...)
-
-        // On est dans le main bloc donc null, a changer dans le cas général
+        // On est dans le main bloc donc null
         EnvironmentExp mainEnv = new EnvironmentExp(null);
         Symbol voidSymb = compiler.createSymbol("void");
         VoidType voidType = new VoidType(voidSymb);
+
+        LOG.debug("Verifying list of declared variables");
         declVariables.verifyListDeclVariable(compiler, mainEnv, null);
+        LOG.debug("List of declared variables verified");
+
+        LOG.debug("Verifying list of instructions");
         insts.verifyListInst(compiler, mainEnv, null, voidType);
+        LOG.debug("List of instructions verified");
 
         LOG.debug("verify Main: end");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
-        compiler.addInstruction(new ADDSP(declVariables.size()));
+        // TODO: rajouter la table des methodes.
         declVariables.codeGenListDeclVar(compiler, null);
 
         compiler.addComment("Beginning of main instructions:");

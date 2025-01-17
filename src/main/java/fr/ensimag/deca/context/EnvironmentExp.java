@@ -1,10 +1,11 @@
 package fr.ensimag.deca.context;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * Dictionary associating identifier's ExpDefinition to their names.
@@ -25,9 +26,6 @@ import fr.ensimag.deca.tree.Location;
  * @date 01/01/2025
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
 
     EnvironmentExp parentEnvironment;
     private final Map<Symbol, ExpDefinition> currentEnvironment;
@@ -51,6 +49,13 @@ public class EnvironmentExp {
             return parentEnvironment.get(key);
         }
         return res;
+    }
+
+    /**
+     * @return the envTypes Map, read-only.
+     */
+    public Map<Symbol, ExpDefinition> getCurrEnv() {
+        return Collections.unmodifiableMap(currentEnvironment);
     }
 
     /**

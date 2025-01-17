@@ -1,0 +1,22 @@
+// Description:
+//    teste si 2 classes differentes peuvent bien avoir des methodes avec des noms identiques
+// Resultats:
+//    ok
+
+class A {
+    int x;
+    int y() {
+        return 0;
+    }
+}
+
+class B {
+    int x;
+    int y() {
+        return 1;
+    }
+}
+
+{
+    println("ok");
+}

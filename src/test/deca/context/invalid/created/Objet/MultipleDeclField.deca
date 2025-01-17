@@ -1,0 +1,9 @@
+// Description:
+//  Declaration du même field plusieurs fois
+// Resultats:
+// MultipleDeclField.deca:8:4: Error: Multiple declaration of field 'a' , first declaration at [7, 4]
+
+class A{
+    int a;
+    int a;
+}

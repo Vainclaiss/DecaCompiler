@@ -36,4 +36,7 @@ public abstract class AbstractInitialization extends Tree {
 
     protected abstract void codeGenByteInitialization(MethodVisitor mv, int localIndex,DecacCompiler compiler);
 
+    public boolean isNoInitialization() {
+        return false;
+    }
 }

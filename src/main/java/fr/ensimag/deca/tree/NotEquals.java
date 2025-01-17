@@ -9,6 +9,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.SNE;
 
 /**
  *
@@ -32,6 +33,11 @@ public class NotEquals extends AbstractOpExactCmp {
         }
     }
 
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        super.codeExp(compiler, n);
+        compiler.addInstruction(new SNE(Register.getR(compiler,n)));
+    }
 
     @Override
 protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {

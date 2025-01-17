@@ -1,0 +1,21 @@
+// Description:
+//    test sur les while (less)
+// Resultats:
+//    1
+//    2
+//    3
+//    4
+//    5
+//    ok
+
+{
+    int counter = 0;
+    while (counter < 5) {
+        counter = counter + 1;
+        println(counter);
+    }
+    while (counter < 1){
+        println("ERRONE");
+    }
+    println("ok");
+}

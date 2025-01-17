@@ -1,0 +1,15 @@
+// Description:
+//    teste asm
+// Resultats:
+//
+
+class A{
+    void genAsm() asm("ADD R1, R2
+                       ADD #1, R2
+                       ADD R2, R2");
+
+}
+{
+    A newA = new A();
+    newA.genAsm();
+}

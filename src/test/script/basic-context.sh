@@ -5,25 +5,43 @@
 
 # Test minimaliste de la vérification contextuelle.
 # Le principe et les limitations sont les mêmes que pour basic-synt.sh
-cd "$(dirname "$0")"/../../.. || exit 1
+. "$(dirname "$0")/utils.sh"
 
-PATH=./src/test/script/launchers:"$PATH"
+check_context() {
+    if [ "$2" = true ]; then
+        if ! test_context "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"; then
+            failure "Succes inattendu de test_synt sur $1."
+            exit 1
+        fi
 
-if test_context src/test/deca/context/invalid/provided/affect-incompatible.deca 2>&1 | \
-    grep -q -e 'affect-incompatible.deca:15:'
-then
-    echo "Echec attendu pour test_context"
-else
-    echo "Succes inattendu de test_context"
-    exit 1
-fi
+    else
+        if test_context "$1" 2>&1 | grep -q -e ':[0-9][0-9]*:'; then
+            failure "Echec inattendu pour $1"
+            exit 1
+        fi
+    fi
+}
 
-if test_context src/test/deca/context/valid/provided/hello-world.deca 2>&1 | \
-    grep -q -e 'hello-world.deca:[0-9]'
-then
-    echo "Echec inattendu pour test_context"
-    exit 1
-else
-    echo "Succes attendu de test_context"
-fi
+make_valid_tests() {
+    find src/test/deca/context/valid -type f -name '*.deca' | while read -r file; do
+        check_context "$file" false
+        success "[valid] Test passed for $file"
+    done
+}
 
+make_invalid_tests() {
+    # TODOOOOO: Verify thrown Error /!\
+    find src/test/deca/context/invalid -type f -name '*.deca' | while read -r file; do
+        check_context "$file" true
+        success "[invalid] Test passed for $file"
+    done
+}
+
+main() {
+    prompt_strong "Running basic-context tests..."
+    setup_path_and_cd
+    make_valid_tests
+    make_invalid_tests
+}
+
+main

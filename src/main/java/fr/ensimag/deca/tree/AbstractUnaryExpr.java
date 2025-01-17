@@ -25,20 +25,14 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     public AbstractExpr getOperand() {
         return operand;
     }
+
     private AbstractExpr operand;
+
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
         this.operand = operand;
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        // on charge la valeur de l'expression dans un registre libre
-        codeExp(compiler, 2);
-
-        //on la met dans R1 pour l'afficher
-        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
-    }
 
     @Override
     protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler){
@@ -52,11 +46,11 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+
         Type type1 = operand.verifyExpr(compiler, localEnv, currentClass);
         Type type = getTypeUnaryOp(compiler, type1);
         setType(type);
-        
+
         return type;
     }
 
@@ -66,10 +60,12 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     }
 
     protected abstract String getOperatorName();
-  
+
     @Override
     public void decompile(IndentPrintStream s) {
+        s.print("(");
         s.print(getOperatorName() + operand.decompile());
+        s.print(")");
     }
 
     @Override

@@ -1,0 +1,10 @@
+// Description:
+//    teste la declaration d'une variable avec le meme nom qu'un type existant
+// Resultats:
+//    3
+
+{
+    int int;
+    int = 3;
+    print(int);
+}

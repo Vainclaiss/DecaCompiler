@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.OverflowError;
 import fr.ensimag.deca.codegen.execerrors.ZeroDivisionError;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -29,6 +30,10 @@ public class Divide extends AbstractOpArith {
         Type t2 = getRightOperand().getType();
         if (t1.isFloat() && t2.isFloat()) {
             compiler.addInstruction(new DIV(op1, r));
+            if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+                compiler.addExecError(OverflowError.INSTANCE);
+                compiler.addInstruction(new BOV(OverflowError.INSTANCE.getLabel()));
+            }
         } else if (t1.isInt() && t2.isInt()) {
             compiler.addInstruction(new QUO(op1, r));
             if (!compiler.getCompilerOptions().getSkipExecErrors()) {

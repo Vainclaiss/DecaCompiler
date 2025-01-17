@@ -8,10 +8,9 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BGT;
 import fr.ensimag.ima.pseudocode.instructions.BLE;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.SLE;
 
 /**
  *
@@ -31,6 +30,12 @@ public class LowerOrEqual extends AbstractOpIneq {
         } else {
             compiler.addInstruction(new BGT(e));
         }
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        super.codeExp(compiler, n);
+        compiler.addInstruction(new SLE(Register.getR(compiler,n)));
     }
 
     @Override

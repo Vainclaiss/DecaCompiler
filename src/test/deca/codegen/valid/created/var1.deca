@@ -1,7 +1,7 @@
-// Description
+// Description:
 //    test les manipulations de variables
 // Resultats:
-//    13.2
+//    1.32000e+01
 
 {
     int a = 10;

@@ -1,0 +1,7 @@
+// Description:
+//  Print un backslash seul.
+// Resultats:
+//  BackslashPrint.deca:6:12: token recognition error at: '"\");\n}'
+{
+    println("\");
+}

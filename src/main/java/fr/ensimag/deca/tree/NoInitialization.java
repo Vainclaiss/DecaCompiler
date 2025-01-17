@@ -60,5 +60,9 @@ public class NoInitialization extends AbstractInitialization {
     protected void codeGenByteInitialization(MethodVisitor mv, int localIndex,DecacCompiler compiler) {
         // nothing to do
     }
+    
+    public boolean isNoInitialization() {
+        return true;
+    }
 
 }

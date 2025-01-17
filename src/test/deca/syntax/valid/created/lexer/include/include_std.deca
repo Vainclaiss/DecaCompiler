@@ -1,0 +1,8 @@
+// Description:
+//    test de #include valid
+//
+// Resultats:
+//    RAS
+
+
+#include "Math.decah"

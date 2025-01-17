@@ -9,10 +9,4 @@ public class StackOverflowExecError extends ExecError {
     public StackOverflowExecError() {
         super(new Label("stack_overflow_error"), "Error: Stack Overflow");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof StackOverflowExecError;
-    }
-
 }

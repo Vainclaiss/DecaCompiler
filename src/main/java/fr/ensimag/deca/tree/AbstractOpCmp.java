@@ -33,32 +33,8 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        codeExp(compiler, 2);
-
-        Label printTrue = new Label("print_true");
-        String suffixeIdPrintTrue = printTrue.getAndAddNewSuffixe();
-        Label finPrint = new Label("fin_print");
-        finPrint.addSuffixe(suffixeIdPrintTrue);
-
-        codeGenBool(compiler, true, printTrue);
-        compiler.addInstruction(new WSTR("false"));
-        compiler.addInstruction(new BRA(finPrint));
-
-        compiler.addLabel(printTrue);
-        compiler.addInstruction(new WSTR("true"));
-
-        compiler.addLabel(finPrint);
-    }
-
-    @Override
-    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler){
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
     protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type type2) throws ContextualError {
-        if ((type1.isInt() && type2.isInt()) || (type1.isFloat() && type2.isFloat()) || (type1.isBoolean() && type2.isBoolean())) {
+        if ((type1.isInt() && type2.isInt()) || (type1.isFloat() && type2.isFloat())) {
             return compiler.environmentType.BOOLEAN;
         }
 

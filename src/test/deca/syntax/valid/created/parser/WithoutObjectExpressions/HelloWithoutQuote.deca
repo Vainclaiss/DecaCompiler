@@ -1,0 +1,5 @@
+// Description:
+//  Affichage d'un identifier Hello.
+{
+    println(Hello);
+}

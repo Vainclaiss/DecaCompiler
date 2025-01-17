@@ -41,7 +41,7 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         codeExp(compiler);
-        compiler.addInstruction(new LOAD(Register.R1, Register.getR(n)));
+        compiler.addInstruction(new LOAD(Register.R1, Register.getR(compiler,n)));
     }
 
 

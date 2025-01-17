@@ -9,9 +9,4 @@ public class IOError extends ExecError {
     private IOError() {
         super(new Label("io_error"), "Error: Input/Output error");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this;
-    }
 }

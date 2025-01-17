@@ -1,0 +1,18 @@
+// Description:
+//  Operation Arithmetique avec une selection null
+// Resultats:
+//
+
+class A{
+    int a;
+    void A(){
+        this.a = null;
+    }
+}
+
+{
+    A newA = new A();
+    int b;
+    newA.A();
+    b = newA.a + 1;
+}

@@ -1,0 +1,10 @@
+// Description:
+//    tests de programme lexicalement correct.
+//    wrong #include
+//
+// Resultats:
+//    include1.deca:10:0: token recognition error at: '#p'
+
+
+#include "print_1.decah"
+#include "print_2.decah"

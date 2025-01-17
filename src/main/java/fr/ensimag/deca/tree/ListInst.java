@@ -3,11 +3,13 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.Type;
 
 import org.objectweb.asm.MethodVisitor;
+import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
@@ -32,9 +34,8 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        // Rien a vérifier
-
         for (AbstractInst i : getList()) {
+            Logger.getLogger(Main.class).debug("Verify inst " + i.getClass().getName());
             i.verifyInst(compiler, localEnv, currentClass, returnType);
         }
     }
@@ -48,6 +49,12 @@ public class ListInst extends TreeList<AbstractInst> {
     public void codeGenListInstByte(MethodVisitor mv,DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
             i.codeGenByteInst(mv,compiler); 
+
+        }
+    }
+    public void codeGenListInst(DecacCompiler compiler, Label finLabel) {
+        for (AbstractInst i : getList()) {
+            i.codeGenInst(compiler, finLabel);
         }
     }
 

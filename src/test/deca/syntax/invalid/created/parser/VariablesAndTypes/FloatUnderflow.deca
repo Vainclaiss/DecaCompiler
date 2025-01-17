@@ -1,0 +1,8 @@
+// Description:
+//    tests de programme incorrect syntaxiquement (valeur trop proche de 0)
+//
+// Resultats:
+//    FloatUnderflow.deca:7:14: Error: Float UnderFlow
+{
+    float a = 0.4E-45;
+}

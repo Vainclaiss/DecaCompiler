@@ -1,10 +1,14 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -14,6 +18,12 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -90,10 +100,12 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
-        // A FAIRE: rajouter les classes
+
         Type typeRvalue = verifyExpr(compiler, localEnv, currentClass);
-        if (expectedType.sameType(typeRvalue))
+
+        if (typeRvalue.subType(expectedType))
             return this;
+
         if (expectedType.isFloat() && typeRvalue.isInt()) {
             ConvFloat conv = new ConvFloat(this);
             // l'expression this a déja été vérifié précédemment pas besoin de le refaire
@@ -103,7 +115,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
 
         throw new ContextualError(
-                "Error: Illegal assignment beetween " + expectedType.toString() + " and " + typeRvalue.toString(),
+                "Error: Illegal RValue type, got " + typeRvalue.toString() + ", expected " + expectedType.toString(),
                 getLocation());
     }
 
@@ -130,7 +142,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         type = verifyExpr(compiler, localEnv, currentClass);
         if (!type.isBoolean()) {
-            throw new ContextualError("Error: Expected expression type is boolean, got " + type.toString(),
+            throw new ContextualError("Error: Expected expression type is 'boolean', got '" + type.toString() + "'",
                     getLocation());
         }
     }
@@ -141,6 +153,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Generate the code for ReadExpr, the result is stored in R1
+     * 
      * @param compiler
      */
     protected void codeExp(DecacCompiler compiler) {
@@ -170,7 +183,16 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // on charge la valeur de l'expression dans un registre libre
+        codeExp(compiler, 2);
+
+        // on la met dans R1 pour l'afficher
+        compiler.addInstruction(new LOAD(Register.getR(compiler,2), Register.R1));
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else if (getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
     }
 
  
@@ -184,7 +206,16 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintHex(DecacCompiler compiler) {
-        codeGenPrint(compiler);
+        if (getType().isFloat()) {
+            // on charge la valeur de l'expression dans un registre libre
+            codeExp(compiler, 2);
+
+            // on la met dans R1 pour l'afficher
+            compiler.addInstruction(new LOAD(Register.getR(compiler,2), Register.R1));
+            compiler.addInstruction(new WFLOATX());
+        } else {
+            codeGenPrint(compiler);
+        }
     }
 
     protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler){

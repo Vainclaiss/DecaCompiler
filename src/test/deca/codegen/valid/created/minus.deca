@@ -1,0 +1,10 @@
+// Description:
+//    teste minus avec un BOV OverFlow
+// Resultats:
+//  2.00000e+00
+
+{
+    float a = 3.5;
+    float b = 1.5;
+    println(a - b);
+}

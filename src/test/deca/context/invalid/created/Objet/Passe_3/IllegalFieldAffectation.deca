@@ -1,0 +1,16 @@
+// Description:
+//    teste l'affectation d'un type illegal à un field
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 9 : Error: à compléter
+
+class A {
+    boolean a = true;
+    boolean m() {
+        a = 4 * 3.3;
+    }
+}
+
+{
+
+}

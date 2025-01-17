@@ -1,0 +1,11 @@
+// Resultats:
+//    not.deca:3:8: Error: Incompatible type for operator '!' and type 'int'
+
+
+{
+    int a = 3;
+    if (!a){
+        print("ERRONE");
+    }
+    print("ok");
+}

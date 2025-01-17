@@ -1,0 +1,21 @@
+// Description:
+//    teste la redefinition de methode avec une signature differente
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 14 : Error: redefinition of a method with a different signature
+
+class C {
+    int getx(int a, boolean b) {
+
+    }
+}
+
+class D extends C {
+    int getx(float a, int b) {
+
+    }
+}
+
+{
+
+}

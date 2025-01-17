@@ -1,0 +1,12 @@
+//
+//
+//
+//
+class A{
+
+}
+
+{
+    A newA = new A();
+    newA.m();
+}

@@ -1,0 +1,572 @@
+Ceci est la liste des équipes du projet GL 2025.
+
+La première colonne donne le groupe (1 groupe = 5 ou 6 équipes), et
+permet d'avoir son emploi du temps dans ADE. La seconde est le numéro
+d'équipe (1 équipe = 5 étudiants).
+
+
+     | 17   | altieria | ALTIERI Aubin
+
+     | 17   | charmate | CHARLES--MENNIER Mateo
+
+     | 17   | raballac | RABALLAND Cyprien
+
+     | 17   | roboamg  | ROBOAM Guillaume
+
+     | 17   | talbie   | TALBI El Mehdi
+
+     | 26   | eladnank | EL ADNANI Khadija
+
+     | 26   | elidrime | EL IDRISSI EL FATMI MEHDI Mehdi
+
+     | 26   | elkouriy | EL KOURI Yassine
+
+     | 26   | elkhounb | EL-KHOUNDAFI Badr
+
+     | 26   | jenninea | JENNINE Alaa
+
+     | 27   | chabanoa | CHABANOL Ambroise
+
+     | 27   | girarben | GIRARD Benoît
+
+     | 27   | grondina | GRONDIN Alexandre
+
+     | 27   | rossillm | ROSSILLOL--LARUELLE Matteo
+
+     | 27   | zougarir | ZOUGARI Rania
+
+     | 35   | akilm    | AKIL Mourtaza
+
+     | 35   | dakep    | DAKE Komla Patrice
+
+     | 35   | desbiols | DESBIOLLES Sylvain
+
+     | 35   | djaralla | DJARALLAH Achraf
+
+     | 35   | fongangm | FONGANG KENGNE Manuela
+
+     | 35   | gionol   | GIONO Liam-Angelo
+
+     | 39   | guillinl | GUILLIN Loïs
+
+     | 39   | moatet   | MOATÉ Thomas
+
+     | 39   | moutteal | MOUTTE Alexandre
+
+     | 39   | ngutruon | NGUYEN Truong Giang
+
+     | 39   | paquetr  | PAQUET Romain
+
+     | 54   | hurstelm | HURSTEL Mathis
+
+     | 54   | sulletb  | SULLET Benjamin
+
+     | 54   | traorefv | TRAORÉ Fiè Victor
+
+     | 54   | zivkovil | ZIVKOVIC Lucas
+
+     | 54   | zouggars | ZOUGGARI Samy
+
+     | 16   | ardisson | ARDISSON Noemie
+
+     | 16   | barraude | BARRAUD Elouan
+
+     | 16   | bearde   | BÉARD Elie
+
+     | 16   | poignarg | POIGNART Garance
+
+     | 16   | vignerin | VIGNERIE Nathan
+
+     | 25   | ahdidouw | AHDIDOU Wiam
+
+     | 25   | boukiliy | BOUKILI Yassir
+
+     | 25   | elqaouaa | EL QAOUAQ Adam
+
+     | 25   | errabieo | ER-RABIE Oussama
+
+     | 25   | moustacs | MOUSTACH Safae
+
+     | 34   | belharik | BELHARIR Khalil
+
+     | 34   | georgeel | GEORGE Eline
+
+     | 34   | lemeura  | LE MEUR Alexis
+
+     | 34   | mougangp | MOUGANG TCHAMINI Megane
+
+     | 34   | vidont   | VIDON Thomas
+
+     | 42   | adebayon | ADEBAYO Nelson
+
+     | 42   | adjogouv | ADJOGOUA Valery
+
+     | 42   | bossec   | BOSSE Christian
+
+     | 42   | humblota | HUMBLOT Arthur
+
+     | 42   | tondendj | TONDE NDEBIA Junior Gael
+
+     | 48   | kalcson  | KALCSO Nicolas
+
+     | 48   | kerkoffj | KERKOFF LADEIRA Julia
+
+     | 48   | leterrit | LETERRIER Théo
+
+     | 48   | louzary  | LOUZAR Youssef
+
+     | 48   | porchery | PORCHER Ysaline
+
+     | 8    | dupiatm  | DUPIAT Matheo
+
+     | 8    | elaroudr | EL AROUD Ryan
+
+     | 8    | giovinat | GIOVINAZZI Théo
+
+     | 8    | leducb   | LE DUC Baptiste
+
+     | 8    | nicolmal | NICOLAS-COQUERON Malo
+
+     | 13   | benjelot | BENJELLOUN Otman
+
+     | 13   | bireet   | BIREE Thomas
+
+     | 13   | boulouza | BOULOUZ Amine
+
+     | 13   | elgoumir | EL GOUMIRI Rida
+
+     | 13   | loginova | LOGINOVA Aleksandra
+
+     | 29   | adnetw   | ADNET Willem
+
+     | 29   | algan    | ALGA Nour Elimane
+
+     | 29   | dacruzed | DA CRUZ Edouard
+
+     | 29   | stablor  | STABLO Romain
+
+     | 29   | zabiegoh | ZABIÉGO Hugo
+
+     | 47   | bazouans | BAZOUANE Sara
+
+     | 47   | bunchm   | BUNCH Matthew
+
+     | 47   | deledicf | DELEDICQ Florent
+
+     | 47   | errabhii | ER-RABHI Imane
+
+     | 47   | humblotp | HUMBLOT Pierre
+
+     | 58   | duhamele | DUHAMEL Elie
+
+     | 58   | lallemth | LALLEMANT Thibaud
+
+     | 58   | lavialla | LAVIALLE-DUFOULEUR Artus
+
+     | 58   | lavoinet | LAVOINE Etienne
+
+     | 58   | renoufj  | RENOUF Julian
+
+     | 58   | villainy | VILLAIN Yoël
+
+     | 6    | capiomot | CAPIOMONT Theo
+
+     | 6    | ederys   | EDERY Sacha
+
+     | 6    | gaujalf  | GAUJAL Florent
+
+     | 6    | mignont  | MIGNON Tristan
+
+     | 6    | zimmermh | ZIMMERMANN Helain
+
+     | 10   | azeaus   | AZEAU Sibylle
+
+     | 10   | houless  | HOULÈS Sacha
+
+     | 10   | loverav  | LOVERA Victor
+
+     | 10   | runquisf | RUNQUIST Félix
+
+     | 10   | viellarj | VIELLARD Jade
+
+     | 12   | granierb | GRANIER Berenger
+
+     | 12   | khauv    | KHAU Valérie
+
+     | 12   | pascali  | PASCAL Isak
+
+     | 12   | ravinetc | RAVINET Cléante
+
+     | 12   | simonbr  | SIMON Briac
+
+     | 28   | allawm   | ALLAW Mahdi
+
+     | 28   | bailliee | BAILLIET Eugène
+
+     | 28   | barbmath | BARBIER Mathieu
+
+     | 28   | marcotts | MARCOTTE Sixtine
+
+     | 28   | pya      | PY Antonin
+
+     | 45   | lecontev | LECONTE Victor
+
+     | 45   | legramat | LEGRAND Mathieu
+
+     | 45   | monteila | MONTEIL Alexandre
+
+     | 45   | petersci | PETERSCHMITT Ivan
+
+     | 45   | saragoum | SARAGOUSSI Mathilde
+
+     | 55   | addadiy  | ADDADI Youness
+
+     | 55   | ajibt    | AJIB Taha 
+
+     | 55   | aubineal | AUBINEAU Ludovic
+
+     | 55   | diopf    | DIOP Fatoumata
+
+     | 55   | poirierg | POIRIER Gabriel
+
+     | 1    | bomom    | BOMO Maxence
+
+     | 1    | demarett | DÉMARET Thomas
+
+     | 1    | fontboet | FONTBONNE Étienne
+
+     | 1    | marjulia | MARTINEAU Julian
+
+     | 1    | villeprj | VILLEPREUX Jeremie
+
+     | 14   | barkatow | BARKATOU Walid
+
+     | 14   | belallas | BELALLAM Saad
+
+     | 14   | belqasmb | BELQASMI Bachir
+
+     | 14   | ouaggasy | OUAGGASS Yassine
+
+     | 14   | santourh | SANTOURA Hamza
+
+     | 19   | laksirm  | LAKSIR Meryem
+
+     | 19   | oughellf | OUGHELLA Fatima Zahra
+
+     | 19   | sbaih    | SBAI Hasnae
+
+     | 19   | soufiany | SOUFIANI Youssef
+
+     | 19   | zaaboulw | ZAABOUL Wissal
+
+     | 40   | ahmadsaa | AHMAD SAIBUDIN Ahmad Asyraf
+
+     | 40   | boony    | BOON Yi Jun
+
+     | 40   | madakc   | MADAK Chaima
+
+     | 40   | margam   | MARGA Mohamed Amine
+
+     | 40   | nairs    | NAIR Sritesh
+
+     | 43   | lopezle  | LOPEZ Léna
+
+     | 43   | machadop | MACHADO ALMEIDA Pedro Henrique
+
+     | 43   | meryle   | MERY Leonie
+
+     | 43   | meunieoc | MEUNIER MERLIOZ Oceane
+
+     | 43   | petrid   | PETRI David
+
+     | 53   | aftisst  | AFTISS Taha
+
+     | 53   | brabantv | BRABANT Victor
+
+     | 53   | heckelj  | HECKEL Joseph
+
+     | 53   | maftaha  | MAFTAH Abdessamad
+
+     | 53   | preveln  | PREVEL Noé
+
+     | 15   | banghalq | BANGHALA Quentin
+
+     | 15   | drillonc | DRILLON Célestine
+
+     | 15   | fauvelm  | FAUVEL Madlen
+
+     | 15   | goulartg | GOULART MÜLLER Gabriel
+
+     | 15   | lemanerc | LE MANER Corentin
+
+     | 30   | clavelfe | CLAVEL Félix
+
+     | 30   | doninibg | DONINI BÜRKLE Giulia
+
+     | 30   | ferveurl | FERVEUR Léo
+
+     | 30   | renoue   | RENOU Eloïs
+
+     | 30   | thirionl | THIRION Lucas
+
+     | 31   | bedelma  | BÉDEL Matéo
+
+     | 31   | clerce   | CLERC Eliot
+
+     | 31   | cornuli  | CORNU Lisa
+
+     | 31   | galzif   | GALZI Fabien
+
+     | 31   | mrada    | MRAD Abdelmlek
+
+     | 46   | audigiem | AUDIGIER Matteo
+
+     | 46   | coatelal | COATELAN Louis
+
+     | 46   | gherissa | GHERISSI Abderrahmane
+
+     | 46   | marestj  | MAREST Jayson
+
+     | 46   | mattara  | MATTAR Antonio
+
+     | 50   | champiop | CHAMPION Pierre
+
+     | 50   | chehabm  | CHEHAB Marwa
+
+     | 50   | guyb     | GUY Benjamin
+
+     | 50   | hautott  | HAUTOT Titouan
+
+     | 50   | lavallno | LAVALLÉE Noé
+
+     | 51   | bornardm | BORNARD Mael
+
+     | 51   | fokoudjm | FOKOU DJONTU Manuella
+
+     | 51   | gautmatt | GAUTIER Mattéo
+
+     | 51   | jeulinma | JEULIN Matteo
+
+     | 51   | mellota  | MELLOT Arthur
+
+     | 2    | idbraymo | IDBRAYME Omar
+
+     | 2    | moussaoh | MOUSSAOUI Houssam
+
+     | 2    | oukhtito | OUKHTITE Omar
+
+     | 2    | sabrit   | SABRI Taha
+
+     | 2    | zineo    | ZINE Ouadii
+
+     | 7    | belbourl | BELBOURI Lina
+
+     | 7    | elhamidn | EL HAMIDI Nour
+
+     | 7    | guiardmn | GUIARD-MARIGNY Nathan
+
+     | 7    | raynaual | RAYNAUD Alexandre
+
+     | 7    | sivalins | SIVALINGAN Sarangan
+
+     | 21   | bagneaua | BAGNEAUX Arthur
+
+     | 21   | bedotbal | BEDOT--BALLAZ Léonore
+
+     | 21   | bodinju  | BODIN Jules
+
+     | 21   | boissetv | BOISSET Valentin
+
+     | 21   | dialloh  | DIALLO Hamidou
+
+     | 24   | azizih   | AZIZI Hadil
+
+     | 24   | bretonpa | BRETON Paul
+
+     | 24   | diops    | DIOP Saliou
+
+     | 24   | keidannl | KEIDANN RODRIGUES DA SILVA Laura
+
+     | 24   | mbarkio  | M'BARKI Omar
+
+     | 37   | anajjara | ANAJJAR Abdeljalil
+
+     | 37   | elhmaids | EL HMAIDI Saad
+
+     | 37   | elkaroui | EL-KAROUMI Imane
+
+     | 37   | hallaly  | HALLAL Younes
+
+     | 37   | jararir  | JARARI Reda
+
+     | 52   | coustonl | COUSTON Lou
+
+     | 52   | duclossj | DUCLOSSON Juliette
+
+     | 52   | francden | FRANCOIS Denis
+
+     | 52   | sabrin   | SABRI Nouhaila
+
+     | 52   | stoupyg  | STOUPY Grégoire
+
+     | 9    | conchone | CONCHON--KERJAN Etienne
+
+     | 9    | fastierj | FASTIER Justin
+
+     | 9    | loridoa  | LORIDO Alice
+
+     | 9    | montelr  | MONTEL Romain
+
+     | 9    | petitpau | PETIT Paul
+
+     | 4    | amelotn  | AMELOT Nathan
+
+     | 4    | dubaja   | DUBAJ Arthur
+
+     | 4    | genouda  | GENOUD Abel
+
+     | 4    | maabouty | MAABOUT Yasmine
+
+     | 4    | richaadr | RICHARD Adrien
+
+     | 38   | beint    | BEIN Tristan
+
+     | 38   | blocht   | BLOCH Théo
+
+     | 38   | bonal    | BON Alexis
+
+     | 38   | poidevip | POIDEVIN Pierre
+
+     | 38   | yahiaamc | YAHIA-AMAR Clément
+
+     | 44   | badianes | BADIANE Seydina
+
+     | 44   | belmadan | BELMADANI Nahel
+
+     | 44   | descosm  | DESCOS Maxime
+
+     | 44   | riolsh   | RIOLS Hadrien
+
+     | 44   | zerouale | ZEROUAL Leïla
+
+     | 57   | dydar    | DYDA Raphaël
+
+     | 57   | fere     | FER Emilia
+
+     | 57   | henrygud | HENRY-GUEDON Dylan
+
+     | 57   | penhelea | PENHÉLEUX Armand
+
+     | 57   | viougeaa | VIOUGEAS Axel
+
+     | 18   | bourmdaa | BOURMDANE Abdelkarim
+
+     | 18   | dlimim   | DLIMI Mohammed Yaslam
+
+     | 18   | elhaouaa | EL-HAOUA Achraf
+
+     | 18   | hannounm | HANNOUN Mohamed Amine
+
+     | 18   | yaichm   | YAICH Mohamed
+
+     | 20   | dimassme | DIMASSI Mehdi
+
+     | 20   | jaafourm | JAAFOURA Mouez
+
+     | 20   | kacimis  | KACIMI Salim
+
+     | 20   | kazdaghm | KAZDAGHLI Meriem
+
+     | 20   | midoui   | MIDOU Ilyas
+
+     | 23   | berradah | BERRADA Hakim
+
+     | 23   | guetarny | GUETARNI Younes
+
+     | 23   | kassaoua | KASSAOUI Adil
+
+     | 23   | laouaniz | LAOUANI Zakaria
+
+     | 23   | saissim  | SAISSI Mohammed Hamza
+
+     | 36   | didelote | DIDELOT Erwan
+
+     | 36   | dunandc  | DUNAND Colin
+
+     | 36   | mulderj  | MULDER Julia
+
+     | 36   | prudhoab | PRUD'HOMME LACROIX Abel
+
+     | 36   | vandebap | VAN DER STRACTEN Baptiste
+
+     | 56   | belfaidm | BELFAIDA Mohammed-Reda
+
+     | 56   | benarous | BENAROUS Sami
+
+     | 56   | heutchoj | HEUTCHOU KOLOGNE Junior
+
+     | 56   | solanocs | SOLANO CELIS Samuel David
+
+     | 56   | stelterc | STELTER FENZKE Caio
+
+     | 56   | zaroualh | ZAROUAL Hamza
+
+     | 3    | aboun    | ABOU Nathan
+
+     | 3    | camlanet | CAMLANE Thibault
+
+     | 3    | diaconeo | DIACONESCU Octavian-Dragos
+
+     | 3    | guerinat | GUERIN Nathan
+
+     | 3    | salamec  | SALAMÉ Cassandre
+
+     | 5    | arocke   | AROCK Elodie
+
+     | 5    | euzebyr  | EUZÈBY Raphaël
+
+     | 5    | havetl   | HAVET Léonard
+
+     | 5    | legrandh | LEGRAND Hugo
+
+     | 5    | sedkaoum | SEDKAOUI Mathis
+
+     | 11   | aadroujm | AADROUJ Mohamed Amine
+
+     | 11   | bakkay   | BAKKA Youssef
+
+     | 11   | elouadio | EL OUADIFI Othmane
+
+     | 11   | hadinem  | HADINE Marouane
+
+     | 11   | morchidy | MORCHID Youssef
+
+     | 22   | barkaf   | BARKA Firas
+
+     | 22   | chaabenm | CHAABENE Mariem
+
+     | 22   | elatiay  | EL ATIA Youssef
+
+     | 22   | trikima  | TRIKI Mariem
+
+     | 22   | zaghdouf | ZAGHDOUDI Firas
+
+     | 33   | aboutnih | ABOUTNI Hamza
+
+     | 33   | benrahmm | BENRAHMOUNE Mohammed Amine
+
+     | 33   | bounourf | BOUNOUR Fatima Zohra
+
+     | 33   | lahloue  | LAHLOU El Mehdi
+
+     | 33   | oudghirm | OUDGHIRI Mehdi
+
+     | 49   | chalmarg | CHALLÉAT Margaux
+
+     | 49   | ferresam | FERREIRA Samuel
+
+     | 49   | krampm   | KRAMP Maud
+
+     | 49   | kumarb   | KUMAR Bhaskar
+
+     | 49   | lebrayj  | LE BRAY Joachim

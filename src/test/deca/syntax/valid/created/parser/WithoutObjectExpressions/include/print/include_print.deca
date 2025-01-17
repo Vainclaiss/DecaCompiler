@@ -1,0 +1,10 @@
+// Description:
+//    tests de programme syntaxiquement correct.
+//    wrong #include
+//
+// Resultats:
+//    ok
+
+
+#include "print_1.decah"
+#include "print_2.decah"

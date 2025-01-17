@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentType;
 
 /**
  * Entry point for contextual verifications and code generation from outside the
@@ -14,6 +15,7 @@ import fr.ensimag.deca.context.ContextualError;
  *
  */
 public abstract class AbstractProgram extends Tree {
+
     public abstract void verifyProgram(DecacCompiler compiler) throws ContextualError;
 
     public abstract void codeGenProgram(DecacCompiler compiler);

@@ -1,0 +1,11 @@
+// Description:
+//    tests de programme syntaxiquement correct.
+//    wrong #include
+//
+// Resultats:
+//    3
+
+{
+#include "var_def.decah"
+println(var);
+}

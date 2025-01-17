@@ -1,0 +1,7 @@
+// Description:
+//    test include avec inclusion circulaire
+//
+// Resultats:
+//    circular_2.decah:1:27: Circular include for file circular_1.decah
+
+#include "circular_1.decah"

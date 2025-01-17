@@ -3,7 +3,6 @@ package fr.ensimag.deca.tree;
 import org.objectweb.asm.MethodVisitor;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 
 /**
@@ -21,6 +20,7 @@ public class And extends AbstractOpBool {
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         if (branchIfTrue) {
             Label eFin = new Label(e.toString() + "_fin");
+            eFin.getAndAddNewSuffixe();
             getLeftOperand().codeGenBool(compiler, false, eFin);
             getRightOperand().codeGenBool(compiler, true, e);
             compiler.addLabel(eFin);

@@ -27,12 +27,30 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeExp(DecacCompiler compiler, int n) {
+        Label e = new Label("not_eval_true");
+        String suffixe = e.getAndAddNewSuffixe();
+        // si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0
+        // dans Rn
+        codeGenBool(compiler, true, e);
+        compiler.addInstruction(new LOAD(0, Register.getR(compiler,n)));
+        Label skipEvalTrue = new Label("skip_eval_true");
+        skipEvalTrue.addSuffixe(suffixe);
+        compiler.addInstruction(new BRA(skipEvalTrue));
+
+        compiler.addLabel(e);
+        compiler.addInstruction(new LOAD(1, Register.getR(compiler,n)));
+        compiler.addLabel(skipEvalTrue);
+    }
+
+    @Override
     protected Type getTypeUnaryOp(DecacCompiler compiler, Type type) throws ContextualError {
         if (type.isBoolean()) {
             return type;
         }
 
-        throw new ContextualError("Error: Incompatible type for operator " + getOperatorName() + " and type " + type,
+        throw new ContextualError(
+                "Error: Incompatible type for operator '" + getOperatorName() + "' and type '" + type + "'",
                 getLocation());
     }
 
@@ -41,22 +59,7 @@ public class Not extends AbstractUnaryExpr {
         getOperand().codeGenBool(compiler, !branchIfTrue, e);
     }
 
-    @Override
-    protected void codeExp(DecacCompiler compiler, int n) {
-        Label e = new Label("not_eval_true");
-        String suffixe = e.getAndAddNewSuffixe();
-        // si l'expression est évaluée à vrai on jump a not_eval_true sinon on load 0
-        // dans Rn
-        codeGenBool(compiler, true, e);
-        compiler.addInstruction(new LOAD(0, Register.getR(n)));
-        Label skipEvalTrue = new Label("skip_eval_true");
-        skipEvalTrue.addSuffixe(suffixe);
-        compiler.addInstruction(new BRA(skipEvalTrue));
-
-        compiler.addLabel(e);
-        compiler.addInstruction(new LOAD(1, Register.getR(n)));
-        compiler.addLabel(skipEvalTrue);
-    }
+ 
 
     @Override
 protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {

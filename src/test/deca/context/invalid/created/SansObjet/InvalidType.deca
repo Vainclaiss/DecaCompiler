@@ -1,0 +1,7 @@
+// Resultats :
+//    Erreur contextuelle
+//    Ligne 6: Error: Invalid type for variable declaration
+
+{
+    sfgs a;
+}

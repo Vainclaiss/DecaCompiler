@@ -1,0 +1,18 @@
+// Description:
+//    Test de la boucle while
+// Resultats:
+//    80
+
+{
+    int sum = 0;
+    int i = 0;
+    while ((i = i + 1) < 10){
+        if (i % 2 == 0){
+            sum = sum + i * 2;
+        }
+        else{
+            sum = sum + i + 3;
+        }
+    }
+    println(sum);
+}

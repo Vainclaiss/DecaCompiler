@@ -30,14 +30,15 @@ public class UnaryMinus extends AbstractUnaryExpr {
             return type;
         }
 
-        throw new ContextualError("Error: Incompatible type for operator " + getOperatorName() + " and type " + type,
+        throw new ContextualError(
+                "Error: Incompatible type for operator '" + getOperatorName() + "' and type '" + type + "'",
                 getLocation());
     }
-    
+
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
         getOperand().codeExp(compiler, n);
-        compiler.addInstruction(new OPP(Register.getR(n), Register.getR(n)));
+        compiler.addInstruction(new OPP(Register.getR(compiler,n), Register.getR(compiler,n)));
     }
     @Override
 protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {

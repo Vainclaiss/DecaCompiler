@@ -1,0 +1,18 @@
+// Description:
+//    test des expressions IfThenElse avec des notEquals
+// Resultats:
+//    ok
+//    ok
+
+{
+    if (3 != 4) {
+        println("ok");
+    }
+    if (3 == 4) {
+        println("ERRONE");
+    }
+    if (4 != 4) {
+        println("ERRONE");
+    }
+    println("ok");
+}

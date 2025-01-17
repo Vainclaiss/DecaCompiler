@@ -1,0 +1,10 @@
+// Description:
+//    teste un appel a println avec une variable
+// Resultats:
+//    0x0p+0
+
+{
+    int a = 1;
+    float b = 1;
+    printlnx(a - b);
+}

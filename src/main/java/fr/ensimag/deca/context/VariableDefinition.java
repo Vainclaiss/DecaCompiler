@@ -33,4 +33,9 @@ public class VariableDefinition extends ExpDefinition {
     public int getLocalIndex() {
         return this.localIndex;
     }
+    @Override
+
+    public boolean isVar() {
+        return true;
+    }
 }

@@ -1,7 +1,7 @@
 // Description:
-//    test des expressions arithmetiques pour les Overflow
+//    test d'addition d'un entier et d'un flottant
 // Resultats:
-//    5.0
+//    5.00000e+00
 
 {
     println(2+3.0);

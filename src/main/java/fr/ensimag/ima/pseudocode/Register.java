@@ -3,6 +3,7 @@ package fr.ensimag.ima.pseudocode;
 import static org.mockito.ArgumentMatchers.intThat;
 
 import fr.ensimag.deca.CompilerOptions;
+import fr.ensimag.deca.DecacCompiler;
 
 /**
  * Register operand (including special registers like SP).
@@ -50,6 +51,14 @@ public class Register extends DVal {
      * General Purpose Registers
      */
     public static GPRegister getR(int i) {
+        return R[i];
+    }
+
+    /**
+     * General Purpose Registers
+     */
+    public static GPRegister getR(DecacCompiler compiler, int i) {
+        compiler.getStackOverflowCounter().refreshMaxRegister(i);
         return R[i];
     }
 

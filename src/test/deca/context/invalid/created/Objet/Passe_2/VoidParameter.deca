@@ -1,0 +1,15 @@
+// Description:
+//    teste la definition de methode avec un void dans la signature
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 14 : Error: Method parameters cannot have a void type
+
+class C {
+    int getx(void a, boolean b) {
+
+    }
+}
+
+{
+
+}

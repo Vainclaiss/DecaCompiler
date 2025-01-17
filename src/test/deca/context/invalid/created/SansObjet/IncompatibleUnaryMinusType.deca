@@ -1,0 +1,8 @@
+// Description:
+//  Test d'un unary minus sur un booleen
+// Resultats:
+//  IncompatibleUnaryMinusType.deca:7:16: Error: Incompatible type for operator '-' and type 'boolean'
+
+{
+    boolean a = -true;
+}

@@ -15,7 +15,13 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
@@ -178,13 +184,81 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        if (localEnv.get(name) == null)
-            throw new ContextualError("Error: Identifier " + name.toString() + " must have a definition",
-                    getLocation());
-        setDefinition(localEnv.get(name));
-        setType(getDefinition().getType());
+        return verifyLValue(localEnv);
+    }
 
-        return getDefinition().getType();
+    public Definition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = localEnv.get(name);
+        if (nameDef == null) {
+            throw new ContextualError("Error: Identifier '" + name.toString() + "' is undefined",
+                    getLocation());
+        }
+
+        return nameDef;
+    }
+
+    /**
+     * Implements non-terminal "lvalue_ident" of [SyntaxeContextuelle] in passe 3
+     * 
+     * @param localEnv
+     * @return
+     * @throws ContextualError
+     */
+    public Type verifyLValue(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = verifyIdentifier(localEnv);
+
+        if (!(nameDef.isField() || nameDef.isParam() || nameDef.isVar())) {
+            throw new ContextualError("Error: LValue identifer must be a field, parameter or variable", getLocation());
+        }
+
+        setDefinition(nameDef);
+        setType(nameDef.getType());
+
+        return nameDef.getType();
+    }
+
+    /**
+     * Implements non-terminal "field_ident" of [SyntaxeContextuelle] in passe 3
+     * 
+     * @param localEnv
+     * @return
+     * @throws ContextualError
+     */
+    public FieldDefinition verifyField(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = verifyIdentifier(localEnv);
+
+        if (!nameDef.isField()) {
+            throw new ContextualError("Error: Selection identifer must be a field", getLocation());
+        }
+
+        setDefinition(nameDef);
+        setType(nameDef.getType());
+
+        return getFieldDefinition();
+    }
+
+    /**
+     * Implements non-terminal "method_ident" of [SyntaxeContextuelle] in passe 3
+     * 
+     * @param localEnv
+     * @return
+     * @throws ContextualError
+     */
+    public MethodDefinition verifyMethod(EnvironmentExp localEnv) throws ContextualError {
+
+        Definition nameDef = verifyIdentifier(localEnv);
+
+        if (!nameDef.isMethod()) {
+            throw new ContextualError("Error: MethodCall identifer must be a method", getLocation());
+        }
+
+        setDefinition(nameDef);
+        setType(nameDef.getType());
+
+        return getMethodDefinition();
     }
 
     /**
@@ -196,22 +270,32 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDefName = compiler.environmentType.defOfType(name);
         if (typeDefName == null) {
-            throw new ContextualError("Error: Type " + name.toString() + " is not defined", getLocation());
+            throw new ContextualError("Error: Type '" + name.toString() + "' is not defined", getLocation());
         }
         Type type = typeDefName.getType();
         definition = new TypeDefinition(type, typeDefName.getLocation());
 
+        setType(type);
         return type;
     }
 
     @Override
     protected DVal getDVal() {
-        return getVariableDefinition().getOperand();
+        return getExpDefinition().getOperand();
+    }
+
+    @Override
+    protected void codeExp(DecacCompiler compiler) {
+        codeExp(compiler, 0);
+        // nothing to do, used for Assign codeGenInst
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        compiler.addInstruction(new LOAD(getDVal(), Register.getR(n)));
+        if (getDefinition().isField()) {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+        }
+        compiler.addInstruction(new LOAD(getDVal(), Register.getR(compiler, n)));
     }
 
     @Override
@@ -347,6 +431,18 @@ protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
     
     
     private Definition definition;
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
+        // TODO : gerer le cas des selection, method call etc
+        compiler.addInstruction(new LOAD(getDVal(), Register.R0));
+        compiler.addInstruction(new CMP(1, Register.R0));
+        if (branchIfTrue) {
+            compiler.addInstruction(new BEQ(e));
+        } else {
+            compiler.addInstruction(new BNE(e));
+        }
+    }
 
     @Override
     protected void iterChildren(TreeFunction f) {

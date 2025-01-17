@@ -22,6 +22,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclVar declVar : getList()) {
             declVar.decompile(s);
+            s.println();
         }
     }
 
@@ -47,9 +48,10 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     protected void codeGenListDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
         Register baseRegister = (currentClass==null) ? Register.GB : Register.LB;
         
+        // TODO: à simplifier pour LB
         int offset = 1;
         for (AbstractDeclVar declVar : getList()) {
-            declVar.codeGenDeclVar(compiler, new RegisterOffset(offset++, baseRegister));
+            declVar.codeGenDeclVar(compiler, new RegisterOffset((currentClass == null) ? compiler.incrGBOffset() : offset++, baseRegister));
         }
         
         compiler.getStackOverflowCounter().addVariables(getList().size());

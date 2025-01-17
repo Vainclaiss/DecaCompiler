@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -16,6 +19,8 @@ import org.objectweb.asm.MethodVisitor;
  * @date 01/01/2025
  */
 public abstract class AbstractInst extends Tree {
+
+    protected final Logger LOG = Logger.getLogger(AbstractInst.class);
 
     /**
      * Implements non-terminal "inst" of [SyntaxeContextuelle] in pass 3
@@ -42,6 +47,14 @@ public abstract class AbstractInst extends Tree {
     protected abstract void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler);
 
     
+    /**
+     * Generate assembly code for the instruction.
+     * 
+     * @param compiler
+     */
+    protected void codeGenInst(DecacCompiler compiler, Label Label) {
+        codeGenInst(compiler);
+    }
 
     public boolean isIfThenElse() {
         return false;

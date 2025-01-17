@@ -1,0 +1,18 @@
+// Description:
+// Heritage de variables
+// Resultats:
+// 2
+
+
+class A {
+  protected int x = 1;
+}
+
+class B extends A {
+  int y = x + 1;
+}
+
+{
+  B b = new B();
+  println(b.y);
+}
