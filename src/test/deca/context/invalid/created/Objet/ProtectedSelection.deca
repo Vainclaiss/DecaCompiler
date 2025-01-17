@@ -13,3 +13,8 @@ class X {
         println(a.x) ; // Erreur contextuelle : x est protege
     }
 }
+
+{
+    X x = new X();
+    x.m();
+}

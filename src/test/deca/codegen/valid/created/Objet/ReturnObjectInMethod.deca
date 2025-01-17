@@ -11,7 +11,7 @@ class A {
 }
 
 class B {
-    A createA(int x) {
+    A createA() {
         return new A();
     }
 }

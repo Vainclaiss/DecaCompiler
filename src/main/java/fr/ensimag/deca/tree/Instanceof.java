@@ -98,8 +98,8 @@ public class Instanceof extends AbstractExpr{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'iterChildren'");
+        expr.iter(f);
+        compType.iter(f);
     }
 
 }
