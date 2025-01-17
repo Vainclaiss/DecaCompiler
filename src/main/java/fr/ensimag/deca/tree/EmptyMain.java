@@ -49,8 +49,8 @@ public class EmptyMain extends AbstractMain {
 
     @Override
     protected void codeGenByteMain(MethodVisitor mv, DecacCompiler compiler) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenMainBytecode'");
+        // Tnothing to do
+       
     }
 
 }

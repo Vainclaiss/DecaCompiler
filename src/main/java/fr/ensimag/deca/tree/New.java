@@ -26,6 +26,9 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 /**
  *
  * @author gl01
@@ -80,6 +83,39 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new BSR(new Label("init." + nameDef.getType().toString())));
         compiler.addInstruction(new POP(Register.getR(compiler,n)));
     }
+
+    @Override
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+    // 1) Retrieve the internal name for the class.
+    //    For instance, if the class is "mypackage.MyClass",
+    //    we want "mypackage/MyClass" for ASM.
+    ClassDefinition classDef = name.getClassDefinition();
+    // You might store or compute the internal name somewhere:
+    // e.g. classDef.getInternalName() or do a string transform:
+    String internalName = classDef.getInternalName(); 
+    // or:
+    // String internalName = name.getName().toString().replace('.', '/');
+
+    // 2) Emit a NEW instruction to create an uninitialized object.
+    mv.visitTypeInsn(Opcodes.NEW, internalName);
+
+    // 3) DUP so that we have both a reference for the constructor call
+    //    *and* a copy remains on the stack as the expression result.
+    mv.visitInsn(Opcodes.DUP);
+
+    // 4) Invoke the class's default constructor <init>(). 
+    //    If your language supports user-defined constructors, you'd adapt the signature.
+    mv.visitMethodInsn(
+        Opcodes.INVOKESPECIAL, 
+        internalName, 
+        "<init>",
+        "()V",  // no-arg constructor
+        false
+    );
+
+    // The newly constructed object is now on top of the stack as the expression result.
+}
+
 
     @Override
     public void decompile(IndentPrintStream s) {

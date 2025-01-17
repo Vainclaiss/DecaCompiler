@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -62,6 +64,46 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
             param.getName().getExpDefinition().setOperand(new RegisterOffset(offset--, Register.LB));
         }
     }
+    public void codeGenByteParamsInit(MethodVisitor mv, DecacCompiler compiler) {
+        // Index 0 is 'this' for instance methods
+        int paramIndex = 1;
+    
+        for (AbstractDeclParam param : getList()) {
+            // We'll call verifyDeclParam again if you haven't stored the type
+            // This only works if calling it again won't break or re-check incorrectly
+            Type paramType;
+            try {
+                paramType = param.verifyDeclParam(compiler);
+            } catch (ContextualError e) {
+                // If verification fails, handle or throw a runtime exception
+                throw new RuntimeException(e);
+            }
+    
+            // A debug name for the local variable
+            String paramName = param.getName().getName().toString();
+            // Convert it to JVM descriptor
+            String paramDescriptor = paramType.toJVMDescriptor();
+    
+            // Optionally define debug info for local variable
+            mv.visitLocalVariable(
+                paramName,
+                paramDescriptor,
+                null,
+                null,
+                null,
+                paramIndex
+            );
+    
+            // Move to the next local index
+            // If you do not handle 64-bit types, just do paramIndex++
+            paramIndex++;
+    
+            // If you actually need to handle double/long, do something like:
+            // paramIndex += paramType.isDoubleOrLong() ? 2 : 1;
+        }
+    }
+    
+    
 
     @Override
     public void decompile(IndentPrintStream s) {

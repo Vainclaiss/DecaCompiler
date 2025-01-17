@@ -3,6 +3,10 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -118,6 +122,79 @@ public class DeclField extends AbstractDeclField {
         fieldDef.setOperand(new RegisterOffset(fieldDef.getIndex(), Register.R0));
     }
 
+    public void codeGenByteField(ClassWriter cw, DecacCompiler compiler, String classInternalName) {
+        String fieldName = name.getName().toString(); 
+        String fieldDesc = typeToJVMDescriptor(type.getType()); 
+    
+        int accessFlags = visibilityToAccessFlags(visibility);
+        FieldVisitor fv = cw.visitField(accessFlags, fieldName, fieldDesc, null, null);
+        fv.visitEnd();
+    }
+    @Override
+    public void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName) {
+        // 1. Load 'this' onto the stack
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
+    
+        // 2. Initialize the field with a default value or explicit initialization
+        Type trueType = type.getType();
+        if (init.isNoInitialization()) {
+            if (trueType.isClass()) {
+                // Push 'null' for class fields
+                mv.visitInsn(Opcodes.ACONST_NULL);
+            } else if (trueType.isInt() || trueType.isBoolean()) {
+                // Push 0 for int/boolean fields
+                mv.visitInsn(Opcodes.ICONST_0);
+            } else if (trueType.isFloat()) {
+                // Push 0.0f for float fields
+                mv.visitInsn(Opcodes.FCONST_0);
+            } else {
+                throw new UnsupportedOperationException("Unsupported field type for initialization: " + trueType);
+            }
+        } else {
+            int localIndex= compiler.allocateLocalIndex();
+            init.codeGenByteInitialization(mv, localIndex, compiler);
+        }
+    
+        // 3. Store the value into the field
+        String fieldName = name.getName().toString();
+        String fieldDesc = trueType.toJVMDescriptor();
+        mv.visitFieldInsn(Opcodes.PUTFIELD, classInternalName, fieldName, fieldDesc);
+    }
+    
+    
+
+    public static String typeToJVMDescriptor(Type t) {
+        if (t.isInt()) {
+            return "I";      // int
+        } else if (t.isFloat()) {
+            return "F";      // float
+        } else if (t.isBoolean()) {
+            return "Z";      // boolean
+        } else if (t.isClass()) {
+            // If it's a user-defined class named "mypackage.MyClass"
+            // we map that to "Lmypackage/MyClass;" in JVM descriptor form
+            String internalName = t.getName().toString().replace('.', '/');
+            return "L" + internalName + ";";
+        } else if (t.isVoid()) {
+            return "V";      // void
+        }
+        // TODO: handle arrays or other types if needed
+        throw new UnsupportedOperationException("Unsupported Deca Type for JVM descriptor: " + t);
+    }
+
+    public static int visibilityToAccessFlags(Visibility visibility) {
+        switch (visibility) {
+            case PUBLIC:
+                return Opcodes.ACC_PUBLIC;
+            case PROTECTED:
+                return Opcodes.ACC_PROTECTED;
+            default:
+                // Fall back to public if nothing else?
+                return Opcodes.ACC_PUBLIC;
+        }
+    }
+    
+    
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(visibility.toString().toLowerCase());

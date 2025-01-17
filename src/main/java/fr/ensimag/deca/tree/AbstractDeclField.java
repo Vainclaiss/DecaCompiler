@@ -11,6 +11,8 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+
 public abstract class AbstractDeclField extends Tree {
 
 
@@ -31,4 +33,6 @@ public abstract class AbstractDeclField extends Tree {
     public abstract Symbol getName();
 
     protected abstract void codeGenFieldInit(DecacCompiler compiler);
+    protected abstract void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName);
+
 }

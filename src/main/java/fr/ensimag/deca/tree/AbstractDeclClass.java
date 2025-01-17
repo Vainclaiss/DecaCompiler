@@ -48,4 +48,8 @@ public abstract class AbstractDeclClass extends Tree {
      * @param compiler
      */
     protected abstract void codeGenClass(DecacCompiler compiler);
+
+    protected abstract void codeGenByteClass(DecacCompiler compiler);
+
+
 }

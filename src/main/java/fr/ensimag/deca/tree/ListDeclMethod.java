@@ -1,20 +1,28 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+import org.apache.commons.lang.Validate;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.Label;
 
+/**
+ * List of method declarations: DeclMethod.
+ */
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
-    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, AbstractIdentifier superClass,
-            AbstractIdentifier currentClass)
+    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler,
+            AbstractIdentifier superClass, AbstractIdentifier currentClass)
             throws ContextualError {
 
         EnvironmentExp envExp = new EnvironmentExp(null);
@@ -22,39 +30,57 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         for (AbstractDeclMethod m : getList()) {
             MethodDefinition newMethod = m.verifyDeclMethod(compiler, superClass, currentClass);
             Symbol name = m.getName().getName();
-
             try {
                 envExp.declare(name, newMethod);
             } catch (EnvironmentExp.DoubleDefException e) {
-                throw new ContextualError("Error: Multiple declaration of '" + name.toString()
-                        + "' , first declaration at " + envExp.get(name).getLocation(), m.getLocation());
+                throw new ContextualError(
+                    "Error: Multiple declaration of '" + name + 
+                    "' , first declaration at " +
+                    envExp.get(name).getLocation(), 
+                    m.getLocation()
+                );
             }
         }
 
         return envExp;
     }
 
-    public void codeGenListDeclMethod(DecacCompiler compiler, AbstractIdentifier superCLass) {
-        throw new UnsupportedOperationException("Method not implemented yet");
-    }
-
-    @Override
-    public void decompile(IndentPrintStream s) {
-        for (AbstractDeclMethod m : getList()) {
-            m.decompile(s);
-        }
-    }
-
-    public void verifyListDeclMethodBody(DecacCompiler compiler, EnvironmentExp envExp, AbstractIdentifier currentClass)
+    public void verifyListDeclMethodBody(DecacCompiler compiler,
+                                         EnvironmentExp envExp,
+                                         AbstractIdentifier currentClass)
             throws ContextualError {
         for (AbstractDeclMethod m : getList()) {
             m.verifyDeclMethodBody(compiler, envExp, currentClass);
         }
     }
 
+    // ------------------ IMA Code Generation ------------------ //
+
     public void codeGenDeclMethods(DecacCompiler compiler, ClassDefinition currentClass) {
         for (AbstractDeclMethod m : getList()) {
             m.codeGenDeclMethod(compiler, currentClass);
+        }
+    }
+
+    // ------------------ ASM Bytecode Generation ------------------ //
+
+    /**
+     * Generate all method declarations in bytecode for this list of methods.
+     * 
+     * @param compiler The current Decac compiler
+     * @param currentClass The class definition these methods belong to
+     */
+    public void codeGenByteDeclMethods(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) {
+     
+        for (AbstractDeclMethod m : getList()) {
+            m.codeGenByteDeclMethod(cw, compiler, currentClass);
+        }
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        for (AbstractDeclMethod m : getList()) {
+            m.decompile(s);
         }
     }
 }

@@ -67,24 +67,28 @@ public class Initialization extends AbstractInitialization {
         expression.prettyPrint(s, prefix, true);
     }
     @Override
-    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex, DecacCompiler compiler) {
-        
-        expression.codeByteExp(mv,compiler);
-    
-        Type exprType = expression.getType();
-    
-        if (exprType.isInt()) {
-            mv.visitVarInsn(Opcodes.ISTORE, localIndex);  
-        } else if (exprType.isFloat()) {
-            mv.visitVarInsn(Opcodes.FSTORE, localIndex);  
-        } else if (exprType.isBoolean()) {
-            mv.visitVarInsn(Opcodes.ISTORE, localIndex);  
-        } else if (exprType.isString()) {
-            mv.visitVarInsn(Opcodes.ASTORE, localIndex);  
-        } else {
-            throw new UnsupportedOperationException("Unsupported type for initialization: " + exprType);
-        }
+protected void codeGenByteInitialization(MethodVisitor mv, int localIndex, DecacCompiler compiler) {
+    expression.codeByteExp(mv, compiler);
+
+    Type exprType = expression.getType();
+
+    if (exprType.isInt()) {
+        mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+    } else if (exprType.isFloat()) {
+        mv.visitVarInsn(Opcodes.FSTORE, localIndex);
+    } else if (exprType.isBoolean()) {
+        mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+    } else if (exprType.isString()) {
+        mv.visitVarInsn(Opcodes.ASTORE, localIndex);
+    } else if (exprType.isClass()) {
+        // Fix: user-defined classes are stored as object references
+        mv.visitVarInsn(Opcodes.ASTORE, localIndex);
+    } else {
+        throw new UnsupportedOperationException("Unsupported type for initialization: " + exprType);
+    }
+}
+
     }
     
     
-}
+

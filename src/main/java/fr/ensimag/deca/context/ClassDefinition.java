@@ -124,6 +124,10 @@ public class ClassDefinition extends TypeDefinition {
             }
         }
     }
+    public String getInternalName() {
+        return getType().getName().toString().replace('.', '/');
+    }
+    
 
     /**
      * 

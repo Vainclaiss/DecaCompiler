@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.IOError;
 import fr.ensimag.deca.codegen.execerrors.NullDereference;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
@@ -31,6 +32,9 @@ import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import java.beans.MethodDescriptor;
 import java.io.PrintStream;
 import java.util.List;
+
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class MethodCall extends AbstractExpr {
 
@@ -100,6 +104,82 @@ public class MethodCall extends AbstractExpr {
         compiler.addComment("fin appel de methode");
         compiler.addInstruction(new LOAD(Register.R0, Register.getR(compiler, n)));
     }
+
+    @Override
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+    // 1) Evaluate the left operand (object), pushing it on the stack.
+    leftOperand.codeByteExp(mv, compiler);
+
+    // 2) Optional Null Check:
+    //    If you want to replicate your custom null dereference error,
+    //    you can do something like:
+    org.objectweb.asm.Label notNullLabel = new org.objectweb.asm.Label();
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
+    // If null => throw a NullPointerException, or jump to some error handler
+    mv.visitTypeInsn(Opcodes.NEW, "java/lang/NullPointerException");
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(
+        Opcodes.INVOKESPECIAL,
+        "java/lang/NullPointerException",
+        "<init>",
+        "()V",
+        false
+    );
+    mv.visitInsn(Opcodes.ATHROW);
+    mv.visitLabel(notNullLabel);
+
+    // 3) Evaluate each argument and push it on the stack in order.
+    //    The JVM calls expect arguments in left-to-right order.
+    for (AbstractExpr arg : rightOperand.getList()) {
+        arg.codeByteExp(mv, compiler);
+        // If your method expects int => push int. 
+        // If float => you push float. 
+        // etc., the codeByteExp must handle that.
+    }
+
+    // 4) INVOKEVIRTUAL 
+    //    Build the internal name for the owner class, method name, and descriptor 
+    //    from the method definition (type, signature).
+    MethodDefinition methodDef = methodName.getMethodDefinition();
+    // Suppose we have the internal name of the class from the left operand's type
+Type leftType = leftOperand.getType();
+
+// 1) Check for class type
+if (!leftType.isClass()) {
+    // If you want to “skip the error,” 
+    // do whatever fallback or log you want here:
+    // e.g. just return or handle gracefully
+    return;
+}
+
+// 2) Cast to ClassType
+ClassType ctype = (ClassType) leftType;
+ClassDefinition classDef = ctype.getDefinition();
+
+// Now do whatever you need with classDef...
+    String ownerInternalName = classDef.getInternalName(); 
+    // or something like: classDef.getType().getName().toString().replace('.', '/');
+
+    // For the method name:
+    String jvmMethodName = methodName.getName().toString(); // e.g. "foo"
+
+    // For the descriptor, build from methodDef.getSignature() 
+    // e.g. (IF)V if method takes (int, float) and returns void
+    String descriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
+
+    // Finally, call it
+    mv.visitMethodInsn(
+        Opcodes.INVOKEVIRTUAL, 
+        ownerInternalName, 
+        jvmMethodName, 
+        descriptor, 
+        false
+    );
+
+    // Now if the method returns something non-void, that result is on the stack.
+    // If it's void, the top of the stack is empty for the method result.
+}
 
     @Override
     public DVal getDVal() {

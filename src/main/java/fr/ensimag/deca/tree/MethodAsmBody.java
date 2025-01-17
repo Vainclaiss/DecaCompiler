@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
+
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -41,5 +44,11 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     public void decompile(IndentPrintStream s) {
         s.print("asm(" + code.decompile() + ");");
+    }
+
+    @Override
+    public void codeGenByteMethodBody(MethodVisitor mv, DecacCompiler compiler, Type returnType) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteMethodBody'");
     }
 }

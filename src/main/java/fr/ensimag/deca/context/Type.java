@@ -70,6 +70,24 @@ public abstract class Type {
     }
 
 
+        public String toJVMDescriptor() {
+            if (this.isInt()) {
+                return "I";
+            } else if (this.isFloat()) {
+                return "F";
+            } else if (this.isBoolean()) {
+                return "Z";
+            } else if (this.isClass()) {
+                String internalName = this.getName().toString().replace('.', '/');
+                return "L" + internalName + ";";
+            } else if (this.isVoid()) {
+                return "V";
+            }
+            throw new UnsupportedOperationException("Unsupported Deca Type for JVM descriptor: " + this);
+        }
+    
+    
+
     /**
      * Returns the same object, as type ClassType, if possible. Throws
      * ContextualError(errorMessage, l) otherwise.

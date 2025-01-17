@@ -20,6 +20,11 @@ public class Signature {
         return args.get(n);
     }
     
+    public List<Type> getParameters() {
+        return args;
+    }
+    
+    
     public int size() {
         return args.size();
     }

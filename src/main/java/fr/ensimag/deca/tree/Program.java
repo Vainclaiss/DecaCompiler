@@ -142,6 +142,7 @@ public class Program extends AbstractProgram {
             // on entre dans la main method
 
             this.getMain().codeGenByteMain(mv,compiler); // on appelle cette fct pour generer le bytecode suivant l'arbre
+            this.getClasses().codeGenByteClass(compiler);
     
             // 5) On retourne du main
             mv.visitInsn(Opcodes.RETURN); // on ajoute le return pour le compter dans le stack en bas
@@ -153,7 +154,6 @@ public class Program extends AbstractProgram {
     
             
             byte[] bytecode = cw.toByteArray();
-            CheckClassAdapter.verify(new ClassReader(bytecode), false, new PrintWriter(System.out));
 
     
             try (FileOutputStream fos = new FileOutputStream("Main.class")) {

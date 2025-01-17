@@ -3,6 +3,9 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.TSTOCounter;
@@ -145,7 +148,64 @@ public class DeclMethod extends AbstractDeclMethod {
         mainProgram.append(compiler.getProgram());
         compiler.setProgram(mainProgram);
     }
+    
+    @Override
+    protected void codeGenByteDeclMethod(
+        ClassWriter cw,
+        DecacCompiler compiler,
+        ClassDefinition currentClass
+    ) {
+        String methodName = name.getName().toString();
+        String desc = buildMethodDescriptor(this.params, this.type.getType());
+        int access = Opcodes.ACC_PUBLIC;
 
+        MethodVisitor mv = cw.visitMethod(
+            access,
+            methodName,
+            desc,
+            null, // signature if generic
+            null  // exceptions
+        );
+        mv.visitCode();
+
+        // Setup parameters in bytecode
+        params.codeGenByteParamsInit(mv, compiler);
+
+        // Generate method body
+        body.codeGenByteMethodBody(mv, compiler, type.getType());
+
+        // TODO: Possibly we want IRETURN, FRETURN, or RETURN, etc. if we know method is non-void
+        // For now, rely on body to produce the correct RETURN
+
+        mv.visitMaxs(0, 0); // or rely on COMPUTE_FRAMES
+        mv.visitEnd();
+    }
+    
+    public static String buildMethodDescriptor(ListDeclParam params, Type returnType) {
+        StringBuilder sb = new StringBuilder("(");
+        for (AbstractDeclParam param : params.getList()) {
+            sb.append(param.getType().toJVMDescriptor());
+        }
+        sb.append(")");
+        sb.append(returnType.toJVMDescriptor());
+        return sb.toString();
+    }
+
+    public static String buildMethodDescriptor(Signature signature, Type returnType) {
+        StringBuilder sb = new StringBuilder("(");
+    
+        // Use the getter to access parameter types
+        for (Type paramType : signature.getParameters()) {
+            sb.append(paramType.toJVMDescriptor());
+        }
+    
+        sb.append(")");
+        sb.append(returnType.toJVMDescriptor());
+        return sb.toString();
+    }
+    
+    
+    
     @Override
     public AbstractIdentifier getName() {
         return name;
@@ -174,5 +234,7 @@ public class DeclMethod extends AbstractDeclMethod {
         params.iter(f);
         body.iter(f);
     }
+
+
 
 }

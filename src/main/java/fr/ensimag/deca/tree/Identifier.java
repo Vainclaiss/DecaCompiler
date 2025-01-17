@@ -299,27 +299,25 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        int localIndex = getVariableDefinition().getLocalIndex(); // Local variable slot index
+        Type t = getType(); // Get the type of the identifier
     
-    int localIndex = getVariableDefinition().getLocalIndex();
-
-    Type t = getType();
-
-    if (t.isInt()) {
-        mv.visitVarInsn(Opcodes.ILOAD, localIndex);
-    } else if (t.isFloat()) {
-        mv.visitVarInsn(Opcodes.FLOAD, localIndex);
-    } else if (t.isBoolean()){
-        mv.visitVarInsn(Opcodes.ILOAD,localIndex);
+        if (t.isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex); // Load integer
+        } else if (t.isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, localIndex); // Load float
+        } else if (t.isBoolean()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex); // Load boolean (as int)
+        } else if (t.isClass()) {
+            mv.visitVarInsn(Opcodes.ALOAD, localIndex); // Load object reference
+        } else {
+            throw new UnsupportedOperationException(
+                "Identifier: unsupported type for codeGenByteExp: " + t
+            );
+        }
     }
-    else{
-        throw new UnsupportedOperationException(
-            "Identifier: unsupported type for codeGenByteExp: " + t
-        );
-
-    }
-}
-
+    
 
 
     @Override

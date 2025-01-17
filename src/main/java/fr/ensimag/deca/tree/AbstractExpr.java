@@ -171,7 +171,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
         throw new UnsupportedOperationException("not yet implemented");
     }
         
@@ -228,7 +228,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler){
         throw new UnsupportedOperationException("not yet implemented");
     }
 /* 

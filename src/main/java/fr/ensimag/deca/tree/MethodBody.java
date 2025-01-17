@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
+
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.MissingReturnError;
@@ -55,5 +59,23 @@ public class MethodBody extends AbstractMethodBody {
         s.unindent();
         s.println("}");
     }
+
+    @Override
+    public void codeGenByteMethodBody(MethodVisitor mv, DecacCompiler compiler, Type returnType) {
+
+        variables.codeGenListDeclVarByte(mv, compiler);
+    
+       
+        insts.codeGenListInstByte(mv, compiler);
+    
+    
+        if (returnType.isVoid()) {
+     
+            mv.visitInsn(Opcodes.RETURN);
+        }
+        
+     
+    }
+    
 
 }

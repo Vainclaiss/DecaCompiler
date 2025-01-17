@@ -1,23 +1,20 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-
-import java.io.PrintStream;
-import java.lang.reflect.Method;
-
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.Label;
+
+import java.io.PrintStream;
 
 public class DeclParam extends AbstractDeclParam {
 
-    final AbstractIdentifier type;
-    final AbstractIdentifier name;
+    private final AbstractIdentifier type;
+    private final AbstractIdentifier name;
+
+    // Add a field to store the resolved type after verification
+    private Type resolvedType;
 
     public DeclParam(AbstractIdentifier type, AbstractIdentifier name) {
         this.name = name;
@@ -29,35 +26,50 @@ public class DeclParam extends AbstractDeclParam {
         return name;
     }
 
-    public void decompileDeclParam(IndentPrintStream s) {
-        decompile(s);
-    }
-
     @Override
     public Type verifyDeclParam(DecacCompiler compiler) throws ContextualError {
-
+        // This is called in pass 2 to check the param type
         Type paramType = type.verifyType(compiler);
         if (paramType.isVoid()) {
-            throw new ContextualError("Error: Method parameters cannot have a void type", getLocation());
+            throw new ContextualError(
+                "Method parameters cannot have a void type",
+                getLocation()
+            );
         }
 
+        // Store the resolved type
+        this.resolvedType = paramType;
         return paramType;
     }
 
     @Override
     protected ParamDefinition verifyDeclParamBody(DecacCompiler compiler) throws ContextualError {
+        // Typically done in pass 3. The type should already be known.
+        if (resolvedType == null) {
+            // fallback if not set or if your compiler calls this first
+            resolvedType = type.verifyType(compiler);
+        }
 
-        Type paramType = type.verifyType(compiler);
-
-        ParamDefinition newParamDef = new ParamDefinition(paramType, getLocation());
+        ParamDefinition newParamDef = new ParamDefinition(resolvedType, getLocation());
         name.setDefinition(newParamDef);
 
         return newParamDef;
     }
 
+    /**
+     * Return the type resolved during semantic checks.
+     */
+    public Type getResolvedType() {
+        if (resolvedType == null) {
+            throw new IllegalStateException(
+                "Param type is not resolved yet. Make sure verifyDeclParam is called first."
+            );
+        }
+        return resolvedType;
+    }
+
     @Override
     public void codeGenDeclParam(DecacCompiler compiler) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'codeGenDeclParam'");
     }
 
@@ -77,4 +89,14 @@ public class DeclParam extends AbstractDeclParam {
         s.print(type.decompile() + " " + name.decompile());
     }
 
+    @Override
+    protected Type getType() {
+        if (resolvedType == null) {
+            throw new IllegalStateException(
+                "Parameter type not resolved. Make sure verifyDeclParam was called."
+            );
+        }
+        return resolvedType;
+    }
+    
 }

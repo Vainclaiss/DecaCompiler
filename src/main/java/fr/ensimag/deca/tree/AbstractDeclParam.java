@@ -21,4 +21,6 @@ public abstract class AbstractDeclParam extends Tree{
 
     protected abstract AbstractIdentifier getName();
 
+    protected abstract Type getType();
+
 }
