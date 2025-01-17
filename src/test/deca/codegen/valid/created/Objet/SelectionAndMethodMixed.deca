@@ -12,7 +12,7 @@ class A{
 class B{
     A objetA;
     void B(A objetA){
-        objetA = objetA;
+        this.objetA = objetA;
     }
 }
 

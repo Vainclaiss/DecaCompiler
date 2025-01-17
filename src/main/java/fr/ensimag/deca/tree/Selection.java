@@ -70,6 +70,7 @@ public class Selection extends AbstractLValue {
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
+        leftOperand.codeExp(compiler,0);
         compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler,0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
