@@ -4,9 +4,5 @@
 //
 
 {
-    int a = 2;
-    while(true){
-        a = a+a;
-        println(a);
-    }
+    println(-2147483648);
 }

@@ -13,6 +13,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Operand;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
@@ -93,7 +94,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             // case Read
             getRightOperand().codeExp(compiler);
             codeGenInst(compiler, dvalExp2, Register.getR(compiler,n));
-        } else if (dvalExp2 == Register.R0) {
+        } else if (dvalExp2 == Register.R0 || dvalExp2 instanceof RegisterOffset) {
             // case method call
             getRightOperand().codeExp(compiler, n+1);
             codeGenInst(compiler, Register.getR(compiler, n+1), Register.getR(compiler,n));

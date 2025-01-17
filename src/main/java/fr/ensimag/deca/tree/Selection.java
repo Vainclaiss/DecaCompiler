@@ -72,7 +72,7 @@ public class Selection extends AbstractLValue {
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
-        leftOperand.codeExp(compiler, 0);
+        leftOperand.codeExp(compiler, 0); // peut faire 2 fois la meme inst -> pas grave
         compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler, 0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {

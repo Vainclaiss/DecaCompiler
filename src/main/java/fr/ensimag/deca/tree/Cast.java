@@ -31,6 +31,11 @@ public class Cast extends AbstractExpr {
     }
 
     @Override
+    protected DVal getDVal() {
+        return expr.getDVal();
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
