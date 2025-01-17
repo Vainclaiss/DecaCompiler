@@ -92,7 +92,7 @@ public class While extends AbstractInst {
     
         mv.visitLabel(whileStart); // on visite le start
     
-        condition.codeGenByteBool(mv, false, whileEnd,compiler); // si la condition est fausse on sort du loop
+        condition.codeGenByteBool(mv, false, whileEnd,compiler); //si la condition est fausse on sort du loop
     
         body.codeGenListInstByte(mv,compiler); // on genere le bytecode pour le contenu du loop
     

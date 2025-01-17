@@ -139,14 +139,11 @@ public class IfThenElse extends AbstractInst {
         org.objectweb.asm.Label elseLabel = new org.objectweb.asm.Label();
         org.objectweb.asm.Label endLabel  = new org.objectweb.asm.Label();
      
-        // Instead of pushing 0/1, we do short-circuit branching:
-        condition.codeGenByteBool(mv, /* branchIfTrue = */ false, elseLabel,compiler);
+        condition.codeGenByteBool(mv,false, elseLabel,compiler);
     
-        // Then branch
         thenBranch.codeGenListInstByte(mv,compiler);
         mv.visitJumpInsn(Opcodes.GOTO, endLabel);
     
-        // Else
         mv.visitLabel(elseLabel);
         elseBranch.codeGenListInstByte(mv,compiler);
     

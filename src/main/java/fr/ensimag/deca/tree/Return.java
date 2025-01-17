@@ -55,8 +55,7 @@ public class Return extends AbstractInst{
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
+            getArgument().codeGenBytePrint(mv, compiler);
     }
 
 }
