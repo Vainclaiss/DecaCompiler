@@ -92,14 +92,14 @@ public class Instanceof extends AbstractExpr{
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'prettyPrintChildren'");
+        expr.prettyPrint(s,prefix,false);
+        compType.prettyPrint(s,prefix,true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'iterChildren'");
+        expr.iter(f);
+        compType.iter(f);
     }
 
 }

@@ -108,10 +108,10 @@ test_decac_b() {
 
 check_decompilation_idempotence() {
     prompt_check "- decac -p [idempotence]"
-    echo "$1" 1>"${2%.deca}_p2.deca"
-    decac -p "${2%.deca}_p2.deca" 1>"${2%.deca}_p3.deca"
-    if ! diff "${2%.deca}_p2.deca" "${2%.deca}_p3.deca"; then
-        failure "$3"
+    decac -p "$1" >"${1%.deca}_p2.deca"
+    decac -p "${1%.deca}_p2.deca" >"${1%.deca}_p3.deca"
+    if ! diff "${1%.deca}_p2.deca" "${1%.deca}_p3.deca"; then
+        failure "$2"
         exit 1
     fi
 }
@@ -153,9 +153,13 @@ test_decac_p() {
             prompt "- decac -p $file"
             decac_moins_p=$(decac -p "$file")
             check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
-            check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
+            if [ "$(basename "$file")" = "noMain.deca" ]; then
+                check_no_output "$decac_moins_p" "ERREUR: decac -p a produit une sortie pour le fichier $file."
+            else
+                check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
+            fi
             check_no_error "$decac_moins_p" "ERREUR: decac -p a produit une erreur pour le fichier $file."
-            check_decompilation_idempotence "$decac_moins_p" "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
+            check_decompilation_idempotence "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
             rm -f "${file%.deca}_p2.deca" "${file%.deca}_p3.deca"
         done
     }
