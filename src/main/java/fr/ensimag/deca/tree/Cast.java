@@ -26,7 +26,7 @@ import java.io.PrintStream;
 public class Cast extends AbstractExpr {
 
     final private AbstractIdentifier type;
-    final private AbstractExpr expr;
+    private AbstractExpr expr;
 
     public Cast(AbstractIdentifier type, AbstractExpr expr) {
         this.type = type;
@@ -50,14 +50,14 @@ public class Cast extends AbstractExpr {
         }
 
         try {
-            expr.verifyRValue(compiler, localEnv, currentClass, type2);
+            expr.verifyRValue(compiler, localEnv, currentClass, type1);
         } catch (ContextualError typeErr) {
-            try {
-                expr.verifyRValue(compiler, localEnv, currentClass, type1);
-            } catch (ContextualError typeErr2) {
+
+            if (!type1.subType(type2) && !(type1.isFloat() && type2.isInt()) && !(type1.isInt() && type2.isFloat())) {
                 throw new ContextualError("Error: Cannot cast " + type2.getName() + " to " + type1.getName(),
                         getLocation());
             }
+
         }
         
         setType(type1);
