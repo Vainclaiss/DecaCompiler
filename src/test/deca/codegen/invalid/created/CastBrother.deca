@@ -1,0 +1,24 @@
+// Description:
+//  remontée et redescente d'un cast vers un frère dans l'héritage
+// Resultats:
+//
+
+class A{
+
+}
+
+class B extends A{
+
+}
+
+class C extends A{
+    int a;
+}
+
+{
+    B newB = new B();
+    A newA = (A) (newB);
+    C newC = (C) (newA);
+    newC.a = 4;
+    println("ERRONE");
+}
