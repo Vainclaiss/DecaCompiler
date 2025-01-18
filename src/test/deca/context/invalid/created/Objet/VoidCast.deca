@@ -1,0 +1,11 @@
+// Description:
+//  Teste le cast d'un objet en void
+
+
+class A{
+}
+
+{
+    A newA = new A();
+    println((void)(newA));
+}

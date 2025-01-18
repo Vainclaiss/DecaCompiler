@@ -1,0 +1,10 @@
+// Description:
+//  Teste d'un cast invalide
+// Resultats:
+//  InvalidCast.deca:8:17: Error: Cannot cast boolean to int
+
+
+{
+    int b = (int)(true);
+
+}
