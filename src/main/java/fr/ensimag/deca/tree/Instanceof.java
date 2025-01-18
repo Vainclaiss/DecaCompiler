@@ -74,7 +74,7 @@ public class Instanceof extends AbstractExpr{
 
     @Override
     protected void codeExp(DecacCompiler compiler,int n) {
-
+        // ne marche pas pour n < 2
         Label loopLabel = new Label("instanceof_loop");
         loopLabel.getAndAddNewSuffixe();
         Label nextTableLabel = new Label("next_vtable");
@@ -89,10 +89,8 @@ public class Instanceof extends AbstractExpr{
         compiler.addInstruction(new LEA(((ClassType)compType.getType()).getDefinition().getDAddrOperand(), Register.R1));
         compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.getR(n))); // on remet à 0
 
-
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-        compiler.addInstruction(new SEQ(Register.getR(n)));
-        compiler.addInstruction(new BEQ(finLabel)); // null est est une instance de toute les classes
+        compiler.addInstruction(new BEQ(finLabel));
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
 
         compiler.addLabel(loopLabel);
@@ -112,18 +110,12 @@ public class Instanceof extends AbstractExpr{
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
+        codeGenBool(compiler, branchIfTrue, e, 2);
+    }
 
-        Label eFalse = new Label("e_false");
-        eFalse.getAndAddNewSuffixe();
-        Label branchLabel = (branchIfTrue) ? e : eFalse;
 
-        expr.codeExp(compiler, 2);
-        compiler.addInstruction(new LOAD(Register.getR(2), Register.R0));
-        compiler.addInstruction(new LOAD(((ClassType)compType.getType()).getDefinition().getDValOperand(), Register.R1));
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e, int n) {
 
-        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-        compiler.addInstruction(new BEQ(branchLabel)); // null est est une instance de toute les classes
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
 
         Label loopLabel = new Label("instanceof_loop");
         loopLabel.getAndAddNewSuffixe();
@@ -131,6 +123,19 @@ public class Instanceof extends AbstractExpr{
         nextTableLabel.getAndAddNewSuffixe();
         Label finLabel = new Label("fin_label");
         finLabel.getAndAddNewSuffixe();
+
+        Label eFalse = new Label("e_false");
+        eFalse.getAndAddNewSuffixe();
+        Label branchLabel = (branchIfTrue) ? e : eFalse;
+
+        expr.codeExp(compiler, n);
+        compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+        compiler.addInstruction(new LOAD(((ClassType)compType.getType()).getDefinition().getDValOperand(), Register.R1));
+
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+        compiler.addInstruction(new BEQ(finLabel));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+
 
         compiler.addLabel(loopLabel);
         compiler.addInstruction(new CMP(Register.R0, Register.R1));

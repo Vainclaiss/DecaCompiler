@@ -2,10 +2,13 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.IncompatibleCastError;
+import fr.ensimag.deca.codegen.execerrors.OverflowError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -64,13 +67,28 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        expr.codeExp(compiler, n);
+        compiler.addComment("debut du cast " + expr.getType().toString() + " vers " + type.getName().getName());
         if (type.getType().isInt()) {
+            expr.codeExp(compiler, n);
             compiler.addInstruction(new INT(Register.getR(n), Register.getR(n)));
         }
         else if (type.getType().isFloat()) {
+            expr.codeExp(compiler, n);
             compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
         }
+        else if (type.getType().isClass() && !expr.getType().isNull()) {
+
+            if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+                compiler.addExecError(IncompatibleCastError.INSTANCE);
+                //compiler.addInstruction(new BOV(OverflowError.INSTANCE.getLabel()));
+            }
+
+            (new Instanceof(expr, type)).codeGenBool(compiler, false, IncompatibleCastError.INSTANCE.getLabel(), n);
+        }
+        else {
+            expr.codeExp(compiler, n);
+        }
+        compiler.addComment("fin du cast " + expr.getType().toString() + " vers " + type.getName().getName());
     }
 
     @Override
