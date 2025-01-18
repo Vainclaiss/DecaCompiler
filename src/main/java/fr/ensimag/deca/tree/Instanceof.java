@@ -130,7 +130,7 @@ public class Instanceof extends AbstractExpr{
 
         expr.codeExp(compiler, n);
         compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
-        compiler.addInstruction(new LOAD(((ClassType)compType.getType()).getDefinition().getDValOperand(), Register.R1));
+        compiler.addInstruction(new LEA(((ClassType)compType.getType()).getDefinition().getDAddrOperand(), Register.R1));
 
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(finLabel));
