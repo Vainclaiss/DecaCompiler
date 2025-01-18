@@ -1,13 +1,7 @@
 // Description:
 //    champs et methodes simples
-//
 // Resultats:
 //    a.getX() = 1
-//
-// Historique:
-//    cree le 01/01/2025
-
-// Un exemple de programme Deca
 
 class A {
    protected int x ;

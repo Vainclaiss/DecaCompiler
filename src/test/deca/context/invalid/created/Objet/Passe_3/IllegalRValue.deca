@@ -1,8 +1,7 @@
 // Description:
 //    teste un return du mauvais type
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 9 : Error: Illegal RValue type, got int, expected boolean
+//    IllegalRValue.deca:8:15: Error: Illegal RValue type, got int, expected boolean
 
 class A {
     boolean m() {

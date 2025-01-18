@@ -1,8 +1,7 @@
 // Description:
 //    teste la declaration d'une methode qui à le meme nom qu'un field
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 9 : Error: A field with the same name is already declared at [8, 4]
+//    SameNameFields.deca:8:4: Error: A field with the same name is already declared at [7, 4]
 
 class A {
     int x;

@@ -1,8 +1,7 @@
 // Description:
 //    teste la declaration multiple d'une classe
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 11 : Error: Multiple declaration of A, first declaration at [6, 0]
+//    SameNameClass.deca:10:6: Error: Multiple declaration of 'A' , first declaration at [6, 0]
 
 class A {
 

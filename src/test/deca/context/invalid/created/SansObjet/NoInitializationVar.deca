@@ -1,7 +1,8 @@
-//
-//
-//
-//
+// Description:
+//    Teste la declaration d'une variable sans initialisation
+// Resultats:
+//   NoInitializationVar.deca:12:9: Error: Identifier 'm' is undefined
+
 class A{
 
 }

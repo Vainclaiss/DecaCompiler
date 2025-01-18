@@ -1,6 +1,7 @@
-// Resultats :
-//    Erreur contextuelle
-//    Ligne 6: Error: Invalid type for variable declaration
+// Description:
+//   Teste la declaration d'une variable avec un type invalide
+// Resultats:
+//    InvalidType.deca:7:4: Error: Type 'sfgs' is not defined
 
 {
     sfgs a;

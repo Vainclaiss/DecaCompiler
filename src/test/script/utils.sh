@@ -23,3 +23,14 @@ setup_path_and_cd() {
     PATH=./src/main/bin:"$PATH"
     PATH=./src/test/script/launchers:"$PATH"
 }
+
+check_gencode_file_format() {
+    if ! grep -q -e ".*\/\/ Description:.*" "$1"; then
+        failure "Invalid file $1: no description line."
+        exit 1
+    fi
+    if ! grep -q -e ".*\/\/ Resultats:.*" "$1"; then
+        failure "Invalid file $1: no results line."
+        exit 1
+    fi
+}

@@ -1,7 +1,7 @@
 // Description:
 //  Test d'accès à un attribut protégé
 // Resultats:
-//  PrivateSelection.deca:8:17: Error: Unauthorized access to the protected field 'x'
+//  ProtectedSelection.deca:13:17: Error: Unauthorized access to the protected field 'x'
 
 class A {
     protected int x;
