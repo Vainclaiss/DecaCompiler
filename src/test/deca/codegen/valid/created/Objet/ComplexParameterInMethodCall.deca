@@ -1,3 +1,9 @@
+// Description:
+//  Teste l'appel de méthode avec des paramètres complexes
+// Resultats:
+//  49
+//  ok
+
 class A {
     int m(int a, int b, int c) {
         return a + b + c;
