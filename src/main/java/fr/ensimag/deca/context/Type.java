@@ -70,21 +70,34 @@ public abstract class Type {
     }
 
 
-        public String toJVMDescriptor() {
-            if (this.isInt()) {
-                return "I";
-            } else if (this.isFloat()) {
-                return "F";
-            } else if (this.isBoolean()) {
-                return "Z";
-            } else if (this.isClass()) {
-                String internalName = this.getName().toString().replace('.', '/');
+    public String toJVMDescriptor() {
+        return typeToJVMDescriptor(this);
+    }
+    
+    public static String typeToJVMDescriptor(Type t) {
+        if (t.isInt()) {
+            return "I";
+        } else if (t.isFloat()) {
+            return "F";
+        } else if (t.isBoolean()) {
+            return "Z";
+        } else if (t.isClass()) {
+            // If it's the Deca builtin "Object", map it to java/lang/Object
+            String decaName = t.getName().getName(); 
+            if (decaName.equals("Object")) {
+                return "Ljava/lang/Object;";
+            } else {
+                // For normal user classes, e.g. "mypackage.MyClass"
+                // => "Lmypackage/MyClass;"
+                String internalName = decaName.replace('.', '/');
                 return "L" + internalName + ";";
-            } else if (this.isVoid()) {
-                return "V";
             }
-            throw new UnsupportedOperationException("Unsupported Deca Type for JVM descriptor: " + this);
+        } else if (t.isVoid()) {
+            return "V";
         }
+        throw new UnsupportedOperationException("Unsupported Deca Type for JVM descriptor: " + t);
+    }
+    
     
     
 

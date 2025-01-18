@@ -22,7 +22,7 @@ public abstract class AbstractDeclField extends Tree {
      * @param currentClass the class that contains the field
      * @param superClass the super class of the current class
      * @return
-     * @throws ContextualError
+     * 
      */
     protected abstract FieldDefinition verifyDeclField(DecacCompiler compiler, AbstractIdentifier superClass,
         AbstractIdentifier currentClass) throws ContextualError;
@@ -33,6 +33,6 @@ public abstract class AbstractDeclField extends Tree {
     public abstract Symbol getName();
 
     protected abstract void codeGenFieldInit(DecacCompiler compiler);
-    protected abstract void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName);
+    protected abstract void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName) throws ContextualError;
 
 }

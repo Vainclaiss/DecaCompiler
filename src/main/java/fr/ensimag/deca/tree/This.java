@@ -17,6 +17,9 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 public class This extends AbstractExpr {
 
     final private boolean impl;
@@ -53,6 +56,15 @@ public class This extends AbstractExpr {
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(dVal, Register.getR(compiler,n)));
     }
+
+    @Override
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+    
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+}
+
+
+    
 
     @Override
     public void decompile(IndentPrintStream s) {

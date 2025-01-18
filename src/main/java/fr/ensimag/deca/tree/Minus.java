@@ -5,6 +5,7 @@ import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.OverflowError;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -64,7 +65,7 @@ public class Minus extends AbstractOpArith {
      * 
      */
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
 
         getRightOperand().codeByteExp(mv, compiler);
         int rightVarIndex = compiler.allocateLocalIndex();

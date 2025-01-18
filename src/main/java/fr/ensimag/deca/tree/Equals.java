@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Type;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -46,13 +47,13 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) throws ContextualError  {
     getLeftOperand().codeByteExp(mv, compiler);
 
     getRightOperand().codeByteExp(mv, compiler);
 
     Type leftType = getLeftOperand().getType();
-    if (leftType.isInt()) {
+    if (leftType.isInt() || leftType.isBoolean()) {
         if (branchIfTrue) {
             mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
         } else {
@@ -68,11 +69,11 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
             mv.visitJumpInsn(Opcodes.IFNE, e);
         }
     }
-    else if (leftType.isBoolean()) {
+    else if (leftType.isClass() ) {
         if (branchIfTrue) {
-            mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
+            mv.visitJumpInsn(Opcodes.IF_ACMPEQ, e);
         } else {
-            mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
+            mv.visitJumpInsn(Opcodes.IF_ACMPNE, e);
         }
     } 
     else {

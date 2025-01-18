@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import org.objectweb.asm.MethodVisitor;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
@@ -30,7 +31,7 @@ public class Or extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) throws ContextualError  {
         if (branchIfTrue) {
            
             org.objectweb.asm.Label skipRight = new org.objectweb.asm.Label();

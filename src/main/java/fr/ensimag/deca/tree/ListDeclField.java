@@ -81,11 +81,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
      * Initialize each field in the **constructor** or an init method.
      * Called inside the generated constructor if you have explicit initial values.
      */
-    public void codeGenByteFieldsInit(
-            MethodVisitor mv,
-            DecacCompiler compiler,
-            String classInternalName
-    ) {
+    public void codeGenByteFieldsInit(MethodVisitor mv,DecacCompiler compiler,String classInternalName ) throws ContextualError  {
         for (AbstractDeclField f : getList()) {
             // We assume each f is actually a DeclField
             ((DeclField) f).codeGenByteFieldInit(mv, compiler, classInternalName);

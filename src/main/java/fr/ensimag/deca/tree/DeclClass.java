@@ -174,7 +174,7 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void codeGenClass(DecacCompiler compiler) {
+    protected void codeGenClass(DecacCompiler compiler) throws ContextualError  {
 
         compiler.resetTSTO();
         IMAProgram mainProgram = compiler.getProgram();
@@ -208,8 +208,8 @@ public class DeclClass extends AbstractDeclClass {
         }
 
         compiler.addFirst(new Line("sauvegarde des registres"));
-        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à
-                                                                                // cause de addFirst()
+        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); 
+                                                                               
         compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()),
                 compiler.getStackOverflowCounter().getDetailsMaxTSTO());
 
@@ -220,22 +220,26 @@ public class DeclClass extends AbstractDeclClass {
         declMethods.codeGenDeclMethods(compiler, name.getClassDefinition());
     }
 
-    public void codeGenByteClass(DecacCompiler compiler) {
+    public void codeGenByteClass(DecacCompiler compiler)throws ContextualError  {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         String classInternalName = name.getName().toString().replace('.', '/');
-        String superInternalName = superClass.getName().toString().replace('.', '/');
+        String superInternalName = superClass.getName().toString();
+
+        if (superInternalName.equals("Object")) {
+            superInternalName = "java/lang/Object";
+        } else {
+            superInternalName = superInternalName.replace('.', '/');
+        }
+    
         String filename = classInternalName + ".class"; 
 
     
         cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, classInternalName, null, superInternalName, null);
     
-        // 1) Declare fields (no initialization yet)
         declFields.codeGenByteFields(cw, compiler, classInternalName);
     
-        // 2) Generate default constructor
         generateDefaultConstructor(cw, compiler, classInternalName, superInternalName);
     
-        // 3) Generate methods
         declMethods.codeGenByteDeclMethods(cw, compiler, name.getClassDefinition());
     
         File outFile = new File(filename);
@@ -267,12 +271,9 @@ private void generateDefaultConstructor(ClassWriter cw,
     );
     mv.visitCode();
 
-    // Call super.<init>()
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superInternalName, "<init>", "()V", false);
 
-    // If you want to do field initialization in the constructor:
-    // e.g. declFields.codeGenByteFieldsInit(mv, compiler, classInternalName);
 
     mv.visitInsn(Opcodes.RETURN);
     mv.visitMaxs(1, 1);

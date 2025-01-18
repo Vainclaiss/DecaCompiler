@@ -107,7 +107,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
+    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError  {
 
         compiler.addComment("Code de la methode " + name.getName().toString() + " dans la classe " + currentClass.getType().toString());
         
@@ -150,11 +150,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     
     @Override
-    protected void codeGenByteDeclMethod(
-        ClassWriter cw,
-        DecacCompiler compiler,
-        ClassDefinition currentClass
-    ) {
+    protected void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError   {
         String methodName = name.getName().toString();
         String desc = buildMethodDescriptor(this.params, this.type.getType());
         int access = Opcodes.ACC_PUBLIC;
@@ -163,21 +159,19 @@ public class DeclMethod extends AbstractDeclMethod {
             access,
             methodName,
             desc,
-            null, // signature if generic
-            null  // exceptions
+            null, 
+            null  
         );
         mv.visitCode();
 
-        // Setup parameters in bytecode
         params.codeGenByteParamsInit(mv, compiler);
 
-        // Generate method body
         body.codeGenByteMethodBody(mv, compiler, type.getType());
 
         // TODO: Possibly we want IRETURN, FRETURN, or RETURN, etc. if we know method is non-void
-        // For now, rely on body to produce the correct RETURN
+        
 
-        mv.visitMaxs(0, 0); // or rely on COMPUTE_FRAMES
+        mv.visitMaxs(0, 0); 
         mv.visitEnd();
     }
     

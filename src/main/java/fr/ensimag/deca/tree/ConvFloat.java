@@ -12,6 +12,7 @@ import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
@@ -40,7 +41,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
+    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) throws ContextualError  {
         
         getOperand().codeByteExp(mv,compiler);
       

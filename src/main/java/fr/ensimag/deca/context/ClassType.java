@@ -33,6 +33,7 @@ public class ClassType extends Type {
     public boolean isClassOrNull() {
         return true;
     }
+    
 
     /**
      * Standard creation of a type class.
@@ -69,5 +70,7 @@ public class ClassType extends Type {
         return definition.getSuperClass().getType().isSubClassOf(potentialSuperClass);
     }
 
+
+    
 
 }

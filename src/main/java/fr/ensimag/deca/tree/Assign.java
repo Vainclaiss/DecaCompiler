@@ -15,6 +15,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -72,7 +73,7 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
         getRightOperand().codeByteExp(mv, compiler); 
     
         mv.visitInsn(Opcodes.DUP); 
@@ -109,38 +110,69 @@ public class Assign extends AbstractBinaryExpr {
         getLeftOperand().codeGenBool(compiler, branchIfTrue, e);
     }
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) throws ContextualError {
         codeGenByteInst(mv, compiler);
         getLeftOperand().codeGenByteBool(mv,branchIfTrue,e,compiler);
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-        getRightOperand().codeByteExp(mv,compiler);
-    
-        if (!(getLeftOperand() instanceof Identifier)) {
-            throw new DecacInternalError("Assign: left operand is not an Identifier.");
-        }
-        Identifier leftId = (Identifier) getLeftOperand();
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+    // 1) Generate the right side expression => top of stack
+    getRightOperand().codeByteExp(mv, compiler);
+
+    // 2) Check the left operand type
+    AbstractExpr lhs = getLeftOperand();
+
+    if (lhs instanceof Identifier) {
+        // Store into a local variable
+        Identifier leftId = (Identifier) lhs;
         VariableDefinition varDef = leftId.getVariableDefinition();
-    
         int localIndex = varDef.getLocalIndex();
 
         if (localIndex < 0) {
             throw new DecacInternalError("Variable local index not set before assignment.");
         }
-    
-        if (getType().isInt()) {
+
+        if (getType().isInt() || getType().isBoolean()) {
             mv.visitVarInsn(Opcodes.ISTORE, localIndex);
         } else if (getType().isFloat()) {
             mv.visitVarInsn(Opcodes.FSTORE, localIndex);
-        } else if (getType().isBoolean()){
-            mv.visitVarInsn(Opcodes.ISTORE,localIndex);
-        
+        } else if (getType().isClass()) {
+            mv.visitVarInsn(Opcodes.ASTORE, localIndex);
         } else {
             throw new DecacInternalError("Unsupported type for assignment: " + getType());
         }
     }
+    else if (lhs instanceof Selection) {
+        Selection selection = (Selection) lhs;
+    
+        // 1) Generate code for the *object* (left operand of selection)
+        //    so the stack has [objectRef].
+        selection.getLeftOperand().codeByteExp(mv, compiler);
+    
+        // 2) Null check if desired (similar to your getfield approach)
+    
+        // 3) Generate code for the *value* (the RHS)
+        getRightOperand().codeByteExp(mv, compiler);
+    
+        // => Now the stack is [objectRef, value].
+    
+        // 4) Do PUTFIELD
+        FieldDefinition fd = selection.getRightOperand().getFieldDefinition();
+        String ownerInternalName = fd.getContainingClass().getInternalName();
+        String fieldName = selection.getRightOperand().getName().toString();
+        String fieldDesc = getType().toJVMDescriptor();
+    
+        // store => pop [objectRef, value]
+        mv.visitFieldInsn(Opcodes.PUTFIELD, ownerInternalName, fieldName, fieldDesc);
+    }
+    
+    
+    else {
+        throw new DecacInternalError("Assignment to an unsupported LHS type: " + lhs.getClass().getName());
+    }
+}
+
     
     @Override
     protected String getOperatorName() {

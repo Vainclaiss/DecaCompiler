@@ -65,43 +65,48 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         }
     }
     public void codeGenByteParamsInit(MethodVisitor mv, DecacCompiler compiler) {
-        // Index 0 is 'this' for instance methods
+        // For instance methods, local #0 is 'this'.
+        // So parameters start at index 1
         int paramIndex = 1;
     
+        // Define start/end labels if you're using visitLocalVariable
+        org.objectweb.asm.Label startLabel = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label endLabel   = new org.objectweb.asm.Label();
+        
+        mv.visitLabel(startLabel);
+    
         for (AbstractDeclParam param : getList()) {
-            // We'll call verifyDeclParam again if you haven't stored the type
-            // This only works if calling it again won't break or re-check incorrectly
             Type paramType;
             try {
                 paramType = param.verifyDeclParam(compiler);
             } catch (ContextualError e) {
-                // If verification fails, handle or throw a runtime exception
                 throw new RuntimeException(e);
             }
-    
-            // A debug name for the local variable
             String paramName = param.getName().getName().toString();
-            // Convert it to JVM descriptor
             String paramDescriptor = paramType.toJVMDescriptor();
     
-            // Optionally define debug info for local variable
+            // store the local index in the ParamDefinition
+            ParamDefinition pd = (ParamDefinition) param.getName().getDefinition();
+            pd.setIndexInLocalTable(paramIndex);
+    
+            // Optionally define local variable debug info
             mv.visitLocalVariable(
                 paramName,
                 paramDescriptor,
                 null,
-                null,
-                null,
+                startLabel,
+                endLabel,
                 paramIndex
             );
     
-            // Move to the next local index
-            // If you do not handle 64-bit types, just do paramIndex++
+            // Move to next param index
             paramIndex++;
-    
-            // If you actually need to handle double/long, do something like:
-            // paramIndex += paramType.isDoubleOrLong() ? 2 : 1;
         }
+    
+        mv.visitLabel(endLabel);
     }
+    
+    
     
     
 

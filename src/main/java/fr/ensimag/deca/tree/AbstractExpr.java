@@ -14,6 +14,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 
@@ -171,7 +173,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
         throw new UnsupportedOperationException("not yet implemented");
     }
         
@@ -196,9 +198,13 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
  
-    protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
+        this.codeByteExp(mv, compiler); // Evaluate the expression (result on stack)
+        mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitInsn(Opcodes.SWAP); // Swap the PrintStream and the result
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(I)V", false);
     }
+    
 
     /**
      * Generate code to print the expression in hex if "this" is a float
@@ -218,7 +224,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler){
+    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
         codeGenBytePrint(mv,compiler);
     }
 
@@ -228,7 +234,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler){
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
         throw new UnsupportedOperationException("not yet implemented");
     }
 /* 
@@ -248,7 +254,7 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

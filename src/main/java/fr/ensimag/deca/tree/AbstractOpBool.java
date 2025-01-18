@@ -46,7 +46,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
+protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
     org.objectweb.asm.Label evalTrue = new org.objectweb.asm.Label();
     org.objectweb.asm.Label endLabel = new org.objectweb.asm.Label();
 

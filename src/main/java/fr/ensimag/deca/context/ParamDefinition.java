@@ -9,6 +9,7 @@ import fr.ensimag.deca.tree.Location;
  * @date 01/01/2025
  */
 public class ParamDefinition extends ExpDefinition {
+    private int localIndex;
 
     public ParamDefinition(Type type, Location location) {
         super(type, location);
@@ -28,5 +29,9 @@ public class ParamDefinition extends ExpDefinition {
     public boolean isParam() {
         return true;
     }
+
+     
+    public int getIndexInLocalTable() { return localIndex; }
+    public void setIndexInLocalTable(int i) { localIndex = i; }
 
 }

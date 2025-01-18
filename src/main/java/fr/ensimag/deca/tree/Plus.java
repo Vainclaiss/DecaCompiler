@@ -6,6 +6,7 @@ import org.objectweb.asm.Opcodes;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.IOError;
 import fr.ensimag.deca.codegen.execerrors.OverflowError;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -33,7 +34,7 @@ public class Plus extends AbstractOpArith {
     }
 
 @Override
-protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
     getLeftOperand().codeByteExp(mv, compiler);
     int leftVarIndex = compiler.allocateLocalIndex();
 

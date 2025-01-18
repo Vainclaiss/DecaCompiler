@@ -66,7 +66,7 @@ public abstract class AbstractPrint extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
         for (AbstractExpr arg : getArguments().getList()) {
             arg.codeGenBytePrint(mv, compiler);  // two-arg version
         }

@@ -106,7 +106,7 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
     // 1) Evaluate the left operand (object), pushing it on the stack.
     leftOperand.codeByteExp(mv, compiler);
 
@@ -192,6 +192,23 @@ ClassDefinition classDef = ctype.getDefinition();
     }
 
     @Override
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+    // Delegate the actual bytecode generation to codeByteExp
+    codeByteExp(mv, compiler);
+
+    // If the method returns a value and it's used in an expression, 
+    // the result remains on the stack. For an instruction context, we may need to pop it.
+    if (!this.getType().isVoid()) {
+        // If the method has a return type (e.g., int, float, object), and it's 
+        // called in a statement context, discard the result with a POP.
+        mv.visitInsn(Opcodes.POP);
+    }
+}
+
+
+
+
+    @Override
     protected void codeExp(DecacCompiler compiler) {
         codeExp(compiler, 2); // TODO : vraiment pas optimiser mais sinon possible erreur
     }
@@ -206,6 +223,45 @@ ClassDefinition classDef = ctype.getDefinition();
             compiler.addInstruction(new BNE(e));
         }
     }
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) throws ContextualError {
+    // Generate bytecode for left operand (the object)
+    leftOperand.codeByteExp(mv, compiler);
+
+    // Generate bytecode for method arguments
+    for (AbstractExpr arg : rightOperand.getList()) {
+        arg.codeByteExp(mv, compiler);
+    }
+
+    // Get the method definition
+    MethodDefinition methodDef = methodName.getMethodDefinition();
+    Type leftType = leftOperand.getType();
+    ClassType ctype = leftType.asClassType(
+        "Cannot cast left operand to ClassType",
+        leftOperand.getLocation()
+    );
+    String ownerInternalName = ctype.getDefinition().getInternalName();
+    
+    // Determine the owner class and method descriptor
+    String methodNameStr = methodName.getName().toString();
+    String methodDescriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
+
+    // Call the method
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, ownerInternalName, methodNameStr, methodDescriptor, false);
+
+    // If boolean, branch based on the result
+    if (methodDef.getType().isBoolean()) {
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IFNE, e); // Branch if true (non-zero result)
+        } else {
+            mv.visitJumpInsn(Opcodes.IFEQ, e); // Branch if false (zero result)
+        }
+    } else {
+        throw new UnsupportedOperationException("MethodCall: Expected boolean return type for codeGenByteBool");
+    }
+}
+
 
     @Override
     public void decompile(IndentPrintStream s) {

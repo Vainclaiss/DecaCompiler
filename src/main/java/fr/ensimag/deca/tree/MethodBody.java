@@ -61,21 +61,30 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    public void codeGenByteMethodBody(MethodVisitor mv, DecacCompiler compiler, Type returnType) {
-
+    public void codeGenByteMethodBody(MethodVisitor mv, DecacCompiler compiler, Type returnType) throws ContextualError {
+        // 1) Generate bytecode for declared variables
         variables.codeGenListDeclVarByte(mv, compiler);
-    
-       
+        // 2) Generate bytecode for instructions
         insts.codeGenListInstByte(mv, compiler);
     
-    
-        if (returnType.isVoid()) {
      
+        if (!returnType.isVoid()) {
+            if (returnType.isInt() || returnType.isBoolean()) {
+                mv.visitInsn(Opcodes.ICONST_0);   // push default 0
+                mv.visitInsn(Opcodes.IRETURN);    // then IRETURN
+            } else if (returnType.isFloat()) {
+                mv.visitInsn(Opcodes.FCONST_0);
+                mv.visitInsn(Opcodes.FRETURN);
+            } else if (returnType.isClass()) {
+                mv.visitInsn(Opcodes.ACONST_NULL);
+                mv.visitInsn(Opcodes.ARETURN);
+            }
+        } else {
+            // For void methods, if the user didn't produce a RETURN, do it automatically:
             mv.visitInsn(Opcodes.RETURN);
         }
-        
-     
     }
+    
     
 
 }

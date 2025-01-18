@@ -85,7 +85,7 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
-    public void codeGenByteProgram(DecacCompiler compiler) {
+    public void codeGenByteProgram(DecacCompiler compiler) throws ContextualError  {
 
         
         try (FileOutputStream textFileOut = new FileOutputStream("MainBytecode.txt");
@@ -176,7 +176,7 @@ public class Program extends AbstractProgram {
     
 
     @Override
-    public void codeGenProgram(DecacCompiler compiler) {
+    public void codeGenProgram(DecacCompiler compiler)throws ContextualError  {
         // TODO: compléter ce squelette très rudimentaire de code
 
         // generation de la table des methodes

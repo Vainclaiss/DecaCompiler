@@ -61,7 +61,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
 
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler){
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -110,7 +110,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
 
     @Override
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler){
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
 
         codeGenByteInst(mv,compiler);  
 
@@ -119,13 +119,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     
 
 
-    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type t2) throws ContextualError {
+    protected Type getTypeBinaryOp(DecacCompiler compiler, Type type1, Type t2) throws ContextualError  {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+            ClassDefinition currentClass) throws ContextualError  {
 
         Type type1 = leftOperand.verifyExpr(compiler, localEnv, currentClass);
         Type type2 = rightOperand.verifyExpr(compiler, localEnv, currentClass);

@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
@@ -46,7 +48,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
 
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) throws ContextualError {
     // on genere le bytecode du left operand et on le push sur le stack
     getLeftOperand().codeByteExp(mv,compiler);
     // on genere le bytecode du right operand et on le push sur le stack

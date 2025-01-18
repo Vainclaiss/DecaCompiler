@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -28,7 +29,7 @@ public class Println extends AbstractPrint {
     }
 
     @Override
-protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
 
     super.codeGenByteInst(mv,compiler);
 

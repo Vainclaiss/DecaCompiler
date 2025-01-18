@@ -38,7 +38,7 @@ public class Modulo extends AbstractOpArith {
 
     
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
         // Evaluate and store the right operand
         getRightOperand().codeByteExp(mv, compiler);
         int rightVarIndex = compiler.allocateLocalIndex();

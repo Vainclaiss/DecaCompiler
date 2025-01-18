@@ -1,13 +1,12 @@
-// Description:
-//  Test de l'appel de méthode dans le constructeur d'une classe héritée
-// Resultats:
-//  10
-
 class A {
-    int x = 5;
-    void A() {
+    int x;
+    
+    // "init" method instead of a Java constructor
+    void initA(int x) {
+        this.x = x;
         println(m());
     }
+
     int m() {
         return x;
     }
@@ -15,12 +14,21 @@ class A {
 
 class B extends A {
     int x = 10;
+    
+    void initB() {
+        // If you want to initialize parent's fields:
+        this.initA(10);
+    }
+
+    @Override
     int m() {
         return x;
     }
 }
 
+// In the main block:
 {
-    B b = new B(); // Attendu : 10, car le constructeur de `A` appelle `m` de `B` à cause de la liaison dynamique.
-    b.A();
+    B b = new B();    // This calls "new B()" which just allocates an object
+    b.initB();        // Now we call b.initB(), which in turn calls initA(10)
+                      // That ensures dynamic dispatch calls m() => prints 10
 }

@@ -90,7 +90,7 @@ public class DeclVar extends AbstractDeclVar {
 
 
 
-    protected void codeGenByteDeclVar(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteDeclVar(MethodVisitor mv, DecacCompiler compiler)throws ContextualError  {
         int localIndex = compiler.allocateLocalIndex();
         System.out.println(localIndex);
         varName.getVariableDefinition().setLocalIndex(localIndex);

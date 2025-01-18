@@ -46,7 +46,7 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    public void codeGenListInstByte(MethodVisitor mv,DecacCompiler compiler) {
+    public void codeGenListInstByte(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
         for (AbstractInst i : getList()) {
             i.codeGenByteInst(mv,compiler); 
 

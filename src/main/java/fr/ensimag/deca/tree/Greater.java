@@ -1,4 +1,5 @@
 package fr.ensimag.deca.tree;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Type;
 
 import org.objectweb.asm.MethodVisitor;
@@ -44,7 +45,7 @@ public class Greater extends AbstractOpIneq {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) throws ContextualError  {
     getLeftOperand().codeByteExp(mv,compiler);
 
     getRightOperand().codeByteExp(mv,compiler);
