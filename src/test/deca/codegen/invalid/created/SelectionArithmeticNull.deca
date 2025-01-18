@@ -1,18 +1,13 @@
 // Description:
-//  Operation Arithmetique avec une selection null
-// Resultats:
-//
+//  Test for arithmetic operation with a null selection
+// Expected result:
+//  Contextual error on cast ?
 
-class A{
-    int a;
-    void A(){
-        this.a = null;
-    }
+class A {
 }
 
 {
     A newA = new A();
-    int b;
-    newA.A();
-    b = newA.a + 1;
+    int b = (int)(newA) + 1;
+    println("ERRONE");
 }
