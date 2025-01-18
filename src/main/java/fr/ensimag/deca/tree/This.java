@@ -28,6 +28,11 @@ public class This extends AbstractExpr {
     }
 
     @Override
+    public boolean isImplicit() {
+        return this.impl;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 

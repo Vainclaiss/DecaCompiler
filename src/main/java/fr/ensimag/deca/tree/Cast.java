@@ -50,10 +50,10 @@ public class Cast extends AbstractExpr {
         }
 
         try {
-            expr.verifyRValue(compiler, localEnv, currentClass, type2);
+            expr.verifyRValue(compiler, localEnv, currentClass, type1);
         } catch (ContextualError typeErr) {
             try {
-                expr.verifyRValue(compiler, localEnv, currentClass, type1);
+                type.verifyRValue(compiler, localEnv, currentClass, type2);
             } catch (ContextualError typeErr2) {
                 throw new ContextualError("Error: Cannot cast " + type2.getName() + " to " + type1.getName(),
                         getLocation());

@@ -131,7 +131,10 @@ public class MethodCall extends AbstractExpr {
     @Override
     public void decompile(IndentPrintStream s) {
         leftOperand.decompile(s);
-        s.print(".");
+        if (!leftOperand.isImplicit()){
+            s.print(".");
+        }
+        
         methodName.decompile(s);
         s.print("(");
         rightOperand.decompile(s);

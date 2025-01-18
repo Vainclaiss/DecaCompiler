@@ -1,6 +1,6 @@
 // Description:
 //  Test for arithmetic operation with a null selection
-// Expected result:
+// Resultats:
 //  Contextual error on cast ?
 
 class A {
