@@ -1,0 +1,24 @@
+// Description:
+//   Teste l'initialisation d'attributs de classe avec des expressions complexes dans des méthodes
+// Resultats:
+//   16
+//   ok
+
+class A {
+    int a = (5 + 3) * 2;
+    boolean b = !true || (4 > 2);
+
+    void display() {
+        println(a);
+    }
+}
+
+{
+    A newA = new A();
+    newA.display();
+    if (newA.a == 16 && newA.b == true) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}
