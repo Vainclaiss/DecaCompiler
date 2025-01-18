@@ -91,10 +91,21 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO: gerer le cas de this
-        codeExp(compiler);
+
+        if (!(leftOperand.isSelection())) {
+            leftOperand.codeExp(compiler, n); // peut faire 2 fois la meme inst -> pas grave
+            //compiler.addInstruction(new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(n)), Register.getR(compiler, n)));
+        }
+
+
+        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+            compiler.addExecError(NullDereference.INSTANCE);
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler, n)));
+            compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
+        }
+        
         compiler.addInstruction(
-                new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, 0)),
+                new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, n)),
                         Register.getR(compiler, n)));
     }
 

@@ -60,21 +60,21 @@ public class Cast extends AbstractExpr {
             }
         }
         
-        expr.setType(type1);
         setType(type1);
         return type1;
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
+        int indexR = (n>=2) ? n : 2;
         compiler.addComment("debut du cast " + expr.getType().toString() + " vers " + type.getName().getName());
         if (type.getType().isInt()) {
-            expr.codeExp(compiler, n);
-            compiler.addInstruction(new INT(Register.getR(n), Register.getR(n)));
+            expr.codeExp(compiler, indexR);
+            compiler.addInstruction(new INT(Register.getR(indexR), Register.getR(indexR)));
         }
         else if (type.getType().isFloat()) {
-            expr.codeExp(compiler, n);
-            compiler.addInstruction(new FLOAT(Register.getR(n), Register.getR(n)));
+            expr.codeExp(compiler, indexR);
+            compiler.addInstruction(new FLOAT(Register.getR(indexR), Register.getR(indexR)));
         }
         else if (type.getType().isClass() && !expr.getType().isNull()) {
 
@@ -83,10 +83,13 @@ public class Cast extends AbstractExpr {
                 //compiler.addInstruction(new BOV(OverflowError.INSTANCE.getLabel()));
             }
 
-            (new Instanceof(expr, type)).codeGenBool(compiler, false, IncompatibleCastError.INSTANCE.getLabel(), n);
+            (new Instanceof(expr, type)).codeGenBool(compiler, false, IncompatibleCastError.INSTANCE.getLabel(), indexR);
         }
         else {
             expr.codeExp(compiler, n);
+        }
+        if (indexR != n) {
+            compiler.addInstruction(new LOAD(Register.getR(indexR), Register.getR(n)));
         }
         compiler.addComment("fin du cast " + expr.getType().toString() + " vers " + type.getName().getName());
     }

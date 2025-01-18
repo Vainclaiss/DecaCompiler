@@ -75,8 +75,8 @@ public class MethodCall extends AbstractExpr {
         compiler.addComment("Empilement des arguments de " + methodeLabel);
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
         // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
-        leftOperand.codeExp(compiler, 0); // method call, new, selection, variables in R0
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
+        leftOperand.codeExp(compiler, n); // method call, new, selection, variables in R0
+        compiler.addInstruction(new STORE(Register.getR(n), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         compiler.getStackOverflowCounter().addParamsOnStack(params.size());
