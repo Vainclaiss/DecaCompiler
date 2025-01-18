@@ -1,7 +1,7 @@
 // Description:
 //  remontée et redescente d'un cast vers un frère dans l'héritage
 // Resultats:
-//
+//  Error: Incompatible cast
 
 class A{
 

@@ -1,18 +1,13 @@
 // Description:
-//  Operation Arithmetique avec une selection null
+//  Test for arithmetic operation with a null selection
 // Resultats:
-//  SelectionArithmeticNull.deca:9:17: Error: Illegal RValue type, got null, expected int
+//  SelectionArithmeticNull.deca:11:17: Error: Cannot cast A to int
 
-class A{
-    int a;
-    void A(){
-        this.a = null;
-    }
+class A {
 }
 
 {
     A newA = new A();
-    int b;
-    newA.A();
-    b = newA.a + 1;
+    int b = (int)(newA) + 1;
+    println("ERRONE");
 }
