@@ -9,6 +9,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.NullOperand;
@@ -72,16 +73,20 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
-    public void setOperand(DAddr operand) {
+    public void setOperand(DVal operand) {
         this.operand = operand;
     }
 
-    public DAddr getOperand() {
+    public DAddr getDAddrOperand() {
+        return (DAddr)operand;
+    }
+
+    public DVal getDValOperand() {
         return operand;
     }
 
     // adresse de la classe i.e adresse du début de la vtable pour cette classe
-    private DAddr operand;
+    private DVal operand;
 
     private final EnvironmentExp members;
     private final ClassDefinition superClass;
@@ -136,14 +141,14 @@ public class ClassDefinition extends TypeDefinition {
 
         compiler.addComment("Code de la table des méthodes de " + getType().getName().toString());
         if (superClass != null) {
-            compiler.addInstruction(new LEA(superClass.getOperand(), Register.R0));
+            compiler.addInstruction(new LEA(superClass.getDAddrOperand(), Register.R0));
         }
         else {
             compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         }
 
         setOperand(new RegisterOffset(compiler.incrGBOffset(), Register.GB));
-        compiler.addInstruction(new STORE(Register.R0, operand));
+        compiler.addInstruction(new STORE(Register.R0, (DAddr)operand));
 
         for (Label label : vTable) {
             compiler.addInstruction(new LOAD(new LabelOperand(label), Register.R0));
