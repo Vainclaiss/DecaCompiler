@@ -4,7 +4,7 @@
 //  ok
 
 class A{
-    void genAsm() asm("WSTR \"ok\" ");
+    void genAsm() asm("WSTR \"a\nb\" ");
 
 }
 {
