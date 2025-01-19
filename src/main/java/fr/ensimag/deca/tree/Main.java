@@ -101,14 +101,13 @@ public class Main extends AbstractMain {
         insts.prettyPrint(s, prefix, true);
     }
 
-
     @Override
-    protected void codeGenByteMain(MethodVisitor mv,DecacCompiler compiler) {
+    protected void codeGenByteMain(MethodVisitor mv, DecacCompiler compiler) {
         declVariables.codeGenListDeclVarByte(mv, compiler); // On genere le bytecode pour les variables
-        
-            insts.codeGenListInstByte(mv,compiler); // On genere le bytecode pour toute les instructions
-            LOG.info("Bytecode generation for main method completed.");
-        
+
+        insts.codeGenListInstByte(mv, compiler); // On genere le bytecode pour toute les instructions
+        LOG.info("Bytecode generation for main method completed.");
+
     }
-    
+
 }

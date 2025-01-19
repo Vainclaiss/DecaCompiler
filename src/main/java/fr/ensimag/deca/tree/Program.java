@@ -1,16 +1,9 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.PrintStream;
-import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -23,13 +16,8 @@ import org.objectweb.asm.util.TraceClassVisitor;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.StackOverflowExecError;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -93,10 +81,12 @@ public class Program extends AbstractProgram {
             TraceClassVisitor tcv = new TraceClassVisitor(cw, textPrintWriter);
 
             // 1) Define the class header
+            String[] fileClassNameTab = fileName.substring(0, fileName.length() - 4).split("/");
+            String fileClassName = fileClassNameTab[fileClassNameTab.length - 1];
             tcv.visit(
                     Opcodes.V17, // Java 17 class file version
                     Opcodes.ACC_PUBLIC, // public class
-                    "Main", // internal class name
+                    fileClassName, // internal class name
                     null, // signature (no generics)
                     "java/lang/Object", // superclass: Object
                     null // no interfaces
