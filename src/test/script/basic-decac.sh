@@ -347,6 +347,7 @@ test_decac_a() {
 
 main() {
     setup_path_and_cd
+    clean_temp_test_files "src/test/deca/codegen"
     test_uncompatible_options
     test_decac_b
     test_decac_p
