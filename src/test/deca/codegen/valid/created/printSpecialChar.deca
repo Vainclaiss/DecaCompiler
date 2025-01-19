@@ -1,0 +1,9 @@
+// Description:
+//    teste les print avec des caractères spéciaux
+// Resultats:
+//    hello
+//    world
+
+{
+    print("hello\nworld");
+}
