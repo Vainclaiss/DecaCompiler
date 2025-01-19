@@ -623,7 +623,7 @@ multi_line_string returns[String text, Location location]
             $location = tokenLocation($s);
         }
     | s=MULTI_LINE_STRING {
-            $text = $s.text.replace();
+            $text = $s.text;
             $location = tokenLocation($s);
         }
     ;
