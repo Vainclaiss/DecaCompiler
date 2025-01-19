@@ -15,96 +15,77 @@
         <jacoco.report_dir>${project.build.directory}/site/jacoco</jacoco.report_dir>
     </properties>
 
-<dependencies>
-    <!-- ANTLR: runtime library -->
-    <dependency>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr4-runtime</artifactId>
-        <version>4.13.2</version>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <!-- ANTLR needs a runtime library -->
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.13.2</version>
+        </dependency>
 
-    <!-- log4j: logging API for Java -->
-    <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.17</version>
-    </dependency>
+        <dependency>
+            <!-- log4j: logging API for Java -->
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
 
-    <!-- We use the class Validate, to check preconditions -->
-    <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.6</version>
-    </dependency>
+        <dependency>
+            <!-- We use the class Validate, to check preconditions -->
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
 
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>5.11.3</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-params</artifactId>
-        <version>5.11.3</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.11.3</version>
-        <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
 
-    <!-- Mockito: mock framework -->
-    <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>5.14.2</version>
-    </dependency>
+        <dependency>
+            <!-- Mockup framework -->
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.14.2</version>
+        </dependency>
+        <dependency>
+            <!-- must be on the classpath -->
+            <groupId>org.jacoco</groupId>
+            <artifactId>org.jacoco.agent</artifactId>
+            <classifier>runtime</classifier>
+            <version>0.8.12</version>
+            <scope>test</scope>
+        </dependency>
+         <!-- ASM: main library for bytecode manipulation -->
+	    <dependency>
+		<groupId>org.ow2.asm</groupId>
+		<artifactId>asm</artifactId>
+		<version>9.5</version>
+	    </dependency>
 
-    <!-- JaCoCo agent for code coverage -->
-    <dependency>
-        <groupId>org.jacoco</groupId>
-        <artifactId>org.jacoco.agent</artifactId>
-        <classifier>runtime</classifier>
-        <version>0.8.12</version>
-        <scope>test</scope>
-    </dependency>        
-
-    <!-- Clojure, only if you truly need it -->
-    <dependency>
-        <groupId>org.clojure</groupId>
-        <artifactId>clojure</artifactId>
-        <version>1.10.1</version>
-    </dependency>
-
-    <!-- ASM: main library for bytecode manipulation -->
-    <dependency>
-        <groupId>org.ow2.asm</groupId>
-        <artifactId>asm</artifactId>
-        <version>9.5</version>
-    </dependency>
-
-    <!-- ASM utilities (TraceClassVisitor, etc.) -->
-    <dependency>
-        <groupId>org.ow2.asm</groupId>
-        <artifactId>asm-util</artifactId>
-        <version>9.5</version>
-    </dependency>
-
-    <!-- ByteBuddy (optional) -->
-    <dependency>
-        <groupId>net.bytebuddy</groupId>
-        <artifactId>byte-buddy</artifactId>
-        <version>1.14.7</version>
-    </dependency>
-</dependencies>
-
-
+	    <!-- ASM utilities (TraceClassVisitor, etc.) -->
+	    <dependency>
+		<groupId>org.ow2.asm</groupId>
+		<artifactId>asm-util</artifactId>
+		<version>9.5</version>
+	    </dependency>      
+    </dependencies>
     <build>
         <plugins>
-            <!-- Enforcer plugin: ensures correct Maven version -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -125,9 +106,8 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- usual plugin to compile Java code -->
             <plugin>
+                <!-- usual plugin to compile Java code -->
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.12.1</version>
                 <configuration>
@@ -144,7 +124,8 @@
             </plugin>            
 
             <plugin>
-                <!-- compute the classpath at build time -->
+                <!-- compute the classpath when building, for use by various
+                scripts (wrappers calling java) -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.6.1</version>
@@ -162,8 +143,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- JaCoCo plugin for code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -217,18 +196,22 @@
                     </execution>
                 </executions>
             </plugin>      
-
-            <!-- exec-maven-plugin: used to run custom scripts, etc. -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
-                    <!-- Put your test scripts here (basic-lex.sh, etc.) -->
+                    <!-- One <execution> per executable to launch. Execution
+                    failure (exit status != 0) will stop the tests. -->
                     <execution>
                         <id>basic-lex</id>
                         <configuration>
                             <executable>./src/test/script/basic-lex.sh</executable>
+                            <!-- If we need to pass arguments :
+                                 <arguments>
+                                 <argument>...</argument>
+                                 </arguments>
+                            -->
                         </configuration>
                         <phase>test</phase>
                         <goals>
@@ -245,11 +228,63 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!-- etc... other test scripts -->
+                    <execution>
+                        <!-- run a unit test by defining our own class with a main
+                        function -->
+                        <!-- warning: java assertions are not enabled -->
+                        <id>unit-test-symbol</id>
+                        <configuration>
+                            <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass>
+                            <classpathScope>test</classpathScope>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-context</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-context.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-gencode</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-gencode.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-decac</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-decac.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>common-tests</id>
+                        <configuration>
+                            <executable>./src/test/script/common-tests.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
-            <!-- ANTLR: generate parser code from .g4 grammars -->
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
@@ -262,23 +297,50 @@
                         <configuration>
                             <visitor>false</visitor>
                             <listener>false</listener>
-                            <!-- verbose, trace, etc. if needed -->
+                            <!-- Uncomment to print details about the grammar when
+                            compiling -->
+                            <!--
+                            <verbose>true</verbose>
+                            <printGrammar>true</printGrammar>
+                            -->
+                            <!-- Uncomment the following to debug the grammar. With
+                            trace enabled, the execution of the generated code
+                            will produce debug traces when entering/exiting
+                            each grammar rule. You need "mvn clean" for the
+                            option to be taken into account. -->
+                            <!-- <trace>true</trace> -->
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <!-- maven-assembly-plugin to create an uber-jar (jar-with-dependencies) -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                </configuration>
                 <version>3.6.0</version>
                 <executions>
                     <execution>
                         <id>make-jar</id>
                         <configuration>
+                            <!--
+                                Build an uber-jar that is packaged with all the other dependencies,
+                                such as the antlr-runtime and so on. You can run this as:
+                                
+                                java -jar Deca-0.0.1-jar-with-dependencies.jar foo.deca
+                                
+                                assuming you have a file called foo.deca to attempt a parse.
+                                
+                                Not really useful for developers, but may be useful for
+                                users.
+                            -->
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <!--
+                                Specify that we want the resulting jar to be executable
+                                via java -jar, which we do by modifying the manifest.
+                            -->
                             <archive>
                                 <manifest>
                                     <mainClass>fr.ensimag.deca.DecacMain</mainClass>
@@ -296,10 +358,16 @@
                             <appendAssemblyId>false</appendAssemblyId>
                             <finalName>package</finalName>
                             <descriptors>
-                                <!-- Possibly referencing src/main/assembly/unix.xml, if it exists -->
+                                <!-- Generate a package containing the .jar
+                                and a simple wrapper script -->
                                 <descriptor>src/main/assembly/unix.xml</descriptor>
                             </descriptors>
                         </configuration>
+                        <!--
+                            We don't want to have to specifically ask for the uber
+                            jar, so we attach the running of this plugin to the
+                            execution of the package life-cycle phase.
+                        -->
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -311,12 +379,15 @@
 
         <pluginManagement>
             <plugins>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>3.5.0</version>
                 </plugin>
-                <!-- This plugin config is used to store Eclipse m2e settings only. -->
+
+                <!--This plugin's configuration is used to store Eclipse m2e settings only.
+                It has no influence on the Maven build itself.-->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -326,15 +397,19 @@
                             <pluginExecutions>
                                 <pluginExecution>
                                     <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-clean-plugin</artifactId>
+                                        <groupId>
+                                            org.apache.maven.plugins
+                                        </groupId>
+                                        <artifactId>
+                                            maven-clean-plugin
+                                        </artifactId>
                                         <versionRange>[2.5,)</versionRange>
                                         <goals>
                                             <goal>clean</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore></ignore>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -347,7 +422,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore></ignore>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -360,13 +435,15 @@
 
     <reporting>
         <plugins>
-            <!-- JXR: cross-referenced code viewer -->
+
+            <!-- cross-referencable pretty-print of the code. Nice combination with FindBugs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
-            <!-- PMD, FindBugs, javadoc, etc. -->
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -375,6 +452,7 @@
                     <targetJdk>${compileSource}</targetJdk>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
@@ -385,6 +463,7 @@
                     <threshold>Exp</threshold>
                 </configuration>
             </plugin>
+      
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
