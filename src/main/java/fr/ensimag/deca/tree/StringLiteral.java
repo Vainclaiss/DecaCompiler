@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -69,7 +70,10 @@ public class StringLiteral extends AbstractStringLiteral {
                 compiler.addInstruction(new WSTR(new ImmediateString(value.substring(lastEnd, matcher.start()))));
             }
 
-            compiler.addInstruction(new LOAD(new ImmediateInteger(matcher.group().replace("\\n","\n").replace("\\r","\r").replace("\\t","\t").charAt(0)), Register.R1));
+            compiler.addInstruction(new LOAD(
+                    new ImmediateInteger(
+                            matcher.group().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t").charAt(0)),
+                    Register.R1));
             compiler.addInstruction(new WUTF8());
 
             lastEnd = matcher.end();
@@ -82,7 +86,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("\"" + getValue() + "\"");
+        s.print("\"" + value + "\"");
     }
 
     @Override
@@ -97,7 +101,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     String prettyPrintNode() {
-        return "StringLiteral (" + value + ")";
+        return "StringLiteral (" + StringEscapeUtils.escapeJava(value) + ")";
     }
 
 
