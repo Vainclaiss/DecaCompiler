@@ -167,7 +167,7 @@ public class DecacCompiler {
     public void addFirst(Instruction i) {
         program.addFirst(new Line(i));
     }
-    
+
     /**
      * @see
      *      fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction,
@@ -227,7 +227,7 @@ public class DecacCompiler {
 
     public void setProgram(IMAProgram program) {
         this.program = program;
-    } 
+    }
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -236,7 +236,7 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        String destFile = sourceFile.replace(".deca", ".ass");
+        String destFile = sourceFile.substring(0, sourceFile.length() - 5) + ".ass";
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -314,9 +314,11 @@ public class DecacCompiler {
         }
 
         addComment("start main program");
-        
+
         prog.codeGenProgram(this);
-        prog.codeGenByteProgram(this);
+        if (compilerOptions.getGenerateJavaClass()) {
+            prog.codeGenByteProgram(this, destName);
+        }
         addExecError(StackOverflowExecError.INSTANCE);
         genCodeAllExecErrors(); // genere le code de toutes les erreurs d'exécution à la fin du programme
         LOG.debug("Generated assembly code:" + nl + program.display());
@@ -363,7 +365,8 @@ public class DecacCompiler {
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
     }
- /**
+
+    /**
      * Reset the local variable index before generating bytecode for a new method.
      */
     public void resetLocalIndex() {

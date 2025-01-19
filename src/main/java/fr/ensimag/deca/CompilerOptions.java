@@ -55,6 +55,10 @@ public class CompilerOptions {
         return stopAfterVerification;
     }
 
+    public boolean getGenerateJavaClass() {
+        return generateJavaClass;
+    }
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -67,6 +71,7 @@ public class CompilerOptions {
     private boolean skipExecErrors = false;
     private boolean stopAfterParse = false;
     private boolean stopAfterVerification = false;
+    private boolean generateJavaClass = false;
     private List<File> sourceFiles = new ArrayList<>();
 
     public void parseArgs(String[] args) throws CLIException {
@@ -102,11 +107,6 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        // TODO : finir les arguments pour decac
-        // if (options.contains("-w")) {
-        // throw new NotImplementedException("Argument not yet implemented");
-        // }
-
         if (options.contains("-r")) {
             parseRCommand(args);
         }
@@ -121,6 +121,8 @@ public class CompilerOptions {
             throw new CLIException("Cannot use -b with other arguments");
         }
 
+
+        generateJavaClass = options.contains("-e");
         inParallel = options.contains("-P");
         doPrintBanner = options.contains("-b");
         skipExecErrors = options.contains("-n");
@@ -133,7 +135,7 @@ public class CompilerOptions {
                 sourceFiles.add(new File(arg));
             }
         }
-        if (!options.contains("-b") && sourceFiles.isEmpty()) {
+        if (!options.contains("-b") && sourceFiles.isEmpty() && args.length > 0) {
             throw new CLIException("No source file .deca specified");
         }
 
@@ -171,7 +173,7 @@ public class CompilerOptions {
     }
 
     protected void displayUsage() {
-        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] [-a] <fichier .deca>...] | [-b]");
+        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] [-a] [-e] <fichiers .deca>...] | [-b]");
         System.out.println(
                 "La commande decac, sans argument, affichera les options disponibles. On peut appeler la commande");
         System.out.println("decac avec un ou plusieurs fichiers sources Deca.");
@@ -194,10 +196,10 @@ public class CompilerOptions {
         System.out.println("  -P (parallel) : s'il y a plusieurs fichiers sources,");
         System.out.println("                  lance la compilation des fichiers en");
         System.out.println("                  parallèle (pour accélérer la compilation)");
-        System.out.println("  -w (warning) : active l'affichage des messages d'avertissement");
-        System.out.println("                 en cours de compilation.");
         System.out.println("  -a X (arithmetic rounding) : fixe le mode d'arrondi à X chiffres après");
         System.out.println("                la virgule pour les opérations arithmétiques. DÉFAUT À 2");
+        System.out.println("  -e (Java .class generation) : génère un fichier compilé .class en Java");
+        System.out.println("                 à partir du fichier source.");
     }
 
     protected void displayBanner() {

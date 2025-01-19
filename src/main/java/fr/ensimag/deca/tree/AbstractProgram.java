@@ -20,6 +20,6 @@ public abstract class AbstractProgram extends Tree {
 
     public abstract void codeGenProgram(DecacCompiler compiler);
 
-    public abstract void codeGenByteProgram(DecacCompiler compiler);
+    public abstract void codeGenByteProgram(DecacCompiler compiler, String fileName);
 
 }

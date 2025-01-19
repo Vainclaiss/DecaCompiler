@@ -11,9 +11,15 @@
 .antlr
 .vscode
 
+# Test related
 *.ass
 *.lis
 *.res
 *.expected
 *_p2.deca
 *_p3.deca
+
+# BYTECODE Extension related
+*.class
+*Bytecode.txt
+*RawBytes.txt
