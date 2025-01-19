@@ -1,0 +1,8 @@
+// Description:
+// Ferme un commentaire plusieurs fois.
+// Resultats:
+// WrongComment.deca:7:0: no viable alternative at input '*'
+/* test
+
+*/
+*/*/*/
