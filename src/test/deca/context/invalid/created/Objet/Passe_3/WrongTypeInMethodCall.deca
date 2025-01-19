@@ -1,8 +1,7 @@
 // Description:
 //    teste l'appel d'une méthode avec un mauvais type en argument
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 15 : Error: Illegal RValue type, got boolean, expected float
+//    WrongTypeInMethodCall.deca:14:16: Error: Illegal RValue type, got boolean, expected float
 
 class A {
     int m(float a, boolean b) {

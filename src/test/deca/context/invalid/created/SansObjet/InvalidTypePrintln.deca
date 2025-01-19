@@ -1,6 +1,7 @@
+// Description:
+//  Teste l'appel de println avec un boolean
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 6: Error: Expected expression type is int, float or string, got boolean
+//   InvalidTypePrintln.deca:7:12: Error: Expected expression type is int, float or string, got boolean
 
 {
     println(true);

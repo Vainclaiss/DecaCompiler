@@ -2,8 +2,7 @@
 //    teste la redefinition de methode avec un nouveau return type
 //    qui n'est pas une sous classe de l'initial
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 23 : Error: redefinition of a method with incompatible type
+//    DifferentMethodReturnTypes.deca:22:4: Error: redefinition of a method with incompatible type
 
 class A {
 

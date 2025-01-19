@@ -1,8 +1,7 @@
 // Description:
 //    teste la definition multiple d'un parametre
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 8 : Error: Multiple declaration of parameter a, first declaration at [8, 10]
+//    MultipleDeclarationParameter.deca:7:17: Error: Multiple declaration of parameter 'a' , first declaration at [7, 10]
 
 class A {
     int m(int a, boolean a) {

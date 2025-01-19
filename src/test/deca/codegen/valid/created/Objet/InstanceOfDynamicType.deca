@@ -3,6 +3,7 @@
 // Resultats:
 //  ok
 //  ok
+//  ok
 
 class A {
 
@@ -16,38 +17,20 @@ class B extends A {
     boolean result1 = a instanceof B; // true
     boolean result2 = ((B) (a)) instanceof B; // true (cast valide)
     boolean result3 = ((B) (a)) instanceof A; // true (cast valide)
-    if (result1) {
+    if (result1 && a instanceof B) {
         println("ok");
     } else {
         println("ERRONE");
     }
 
-    if (a instanceof B) {
+    if (result2 && ((B) (a)) instanceof B) {
         println("ok");
     } else {
         println("ERRONE");
     }
 
 
-    if (result2) {
-        println("ok");
-    } else {
-        println("ERRONE");
-    }
-
-    if (((B) (a)) instanceof B) {
-        println("ok");
-    } else {
-        println("ERRONE");
-    }
-
-    if (result3) {
-        println("ok");
-    } else {
-        println("ERRONE");
-    }
-
-    if (((B) (a)) instanceof A) {
+    if (result3 && ((B) (a)) instanceof A) {
         println("ok");
     } else {
         println("ERRONE");

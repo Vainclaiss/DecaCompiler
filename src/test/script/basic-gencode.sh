@@ -5,23 +5,12 @@
 
 . "$(dirname "$0")/utils.sh"
 
-check_gencode_file_format() {
-    if ! grep -q -e ".*\/\/ Description:.*" "$1"; then
-        failure "Invalid file $1: no description line."
-        exit 1
-    fi
-    if ! grep -q -e ".*\/\/ Resultats:.*" "$1"; then
-        failure "Invalid file $1: no results line."
-        exit 1
-    fi
-}
-
 check_compilation() {
     ass_file="${1%.deca}.ass"
     if ! ./src/main/bin/decac "$1"; then
         if [ "$2" = true ]; then
             failure "Compilation failed for $1, but it was expected to succeed."
-            # exit 1
+            exit 1
         fi
     # else
     #     if [ "$2" = false ]; then
@@ -31,7 +20,7 @@ check_compilation() {
     fi
     if [ "$2" = true ] && [ ! -f "$ass_file" ]; then
         failure "File $ass_file not generated for $1."
-        # exit 1
+        exit 1
     fi
 }
 
@@ -43,17 +32,17 @@ check_result() {
     if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
         failure "Incorrect result for $1."
         diff "${1%.deca}.expected" "${1%.deca}.res"
-        # exit 1
+        exit 1
     fi
 }
 
 # Valid tests
 make_valid_tests() {
-    find ./src/test/deca/codegen/valid/created -type f -name '*.deca' | while read -r file; do
+    find ./src/test/deca/codegen/valid -type f -name '*.deca' | while read -r file; do
         check_gencode_file_format "$file"
         check_compilation "$file" true
         check_result "$file" true
-        rm -f "${file%.deca}.ass" 2>/dev/null
+        # rm -f "${file%.deca}.ass" 2>/dev/null
         rm -f "${file%.deca}.res" 2>/dev/null
         rm -f "${file%.deca}.expected" 2>/dev/null
         success "[valid] Test passed for $file"

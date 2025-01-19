@@ -1,6 +1,7 @@
+// Description:
+//    Teste la déclaration multiple d'une variable
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 7: Error: Multiple declaration of a, first declaration at [6, 8]
+//    MultipleDeclVar.deca:8:8: Error: Multiple declaration of 'a' , first declaration at [7, 8]
 
 {
     int a;

@@ -1,5 +1,7 @@
+// Description:
+//    Teste l'opérateur '!' avec un type incompatible
 // Resultats:
-//    not.deca:3:8: Error: Incompatible type for operator '!' and type 'int'
+//   InvalidTypeNot.deca:9:8: Error: Incompatible type for operator '!' and type 'int'
 
 
 {

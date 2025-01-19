@@ -1,6 +1,7 @@
-// Resultats :
-//    Erreur contextuelle
-//    Ligne 6: Error: void cannot be used as a type for variable declaration
+// Description:
+//    Teste la déclaration d'une variable de type void
+// Resultats:
+//    VoidVar.deca:7:4: Error: 'void' cannot be used as a type for variable declaration
 
 {
     void a;

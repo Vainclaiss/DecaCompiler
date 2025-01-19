@@ -1,6 +1,7 @@
+// Description:
+//    Teste l'assignation d'un boolean a une variable de type int
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 7 : Illegal assignment beetween int and boolean
+//    IllegalAssignmentVar.deca:8:8: Error: Illegal RValue type, got boolean, expected int
 
 {
     int a;
