@@ -1,9 +1,13 @@
 // Description:
 //    teste les print avec des caractères spéciaux
+//    On ne teste pas le \r car mal interprété par /bin/sh pour les tests automatiques
 // Resultats:
-//    world
+//  hello
+//  world
+//  hel lo
 
 {
-    print("hello");
-    println("\rworld");
+    print("hello\n");
+    println("world");
+    print("hel\tlo");
 }

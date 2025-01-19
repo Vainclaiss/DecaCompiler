@@ -7,7 +7,7 @@ prompt_strong() {
 prompt_check() {
     printf "\033[0;35m%s\033[0m\n" "$1"
 }
-prompt(){
+prompt() {
     printf "\033[0;34m%s\033[0m\n" "$1"
 }
 success() {
@@ -33,4 +33,17 @@ check_gencode_file_format() {
         failure "Invalid file $1: no results line."
         exit 1
     fi
+}
+
+clean_temp_test_files() {
+    find "$1" -type f \
+        \( -name "*.ass" \
+        -o -name "*_p2.deca" \
+        -o -name "*_p3.deca" \
+        -o -name "*.expected" \
+        -o -name "*.res" \
+        -o -name "*.class" \
+        -o -name "*Bytecode.txt" \
+        -o -name "*RawBytes.txt" \) \
+        -delete
 }
