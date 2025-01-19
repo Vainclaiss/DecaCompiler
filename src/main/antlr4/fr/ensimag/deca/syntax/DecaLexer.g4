@@ -15,7 +15,7 @@ options {
 fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
 fragment DIGIT : '0' .. '9';
 fragment NUMPOS : '1' .. '9';
-fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
+fragment STRING_CAR : ~ ('"' | '\\' | '\n');
 //fragment FLOAT
 fragment SIGN : ('+' | '-' )?;
 fragment EXP : ('E' | 'e') SIGN DIGIT+;
@@ -26,14 +26,12 @@ fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN DIGIT+ ('F' | 'f')?;
 fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
-
 // Deca lexer rules.
 
 //SKIP
-EOL : ('\n' | '\r' | '\t') {skip();};
-COMMENT : ('//' (~('\n'))* | '/*'  (STRING_CAR | EOL | '\\"' | '\\\\')* '*/'){ skip(); };
+EOL : ('\n') {skip();};
 ESPACE : ' ' {skip();};
-
+COMMENT : ('//' (~('\n'))* | '/*' (~ ('"' | '\\' | '\n'  | '*') | ('*' ~'/')|EOL  | '\\"' | '\\\\')* '*/'){ skip(); };
 
 // SINGLE SYMBOLS
 OBRACE : '{';
@@ -82,7 +80,7 @@ PROTECTED : 'protected';
 ASM : 'asm';
 
 // EXPRESSIONS
-STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
+STRING : '"' (STRING_CAR |'\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"' ;
 MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 FLOAT : (FLOATDEC | FLOATHEX);
 INT : ('0' | NUMPOS DIGIT*);
