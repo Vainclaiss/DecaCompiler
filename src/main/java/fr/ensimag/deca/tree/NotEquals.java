@@ -5,6 +5,7 @@ import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -46,14 +47,17 @@ public class NotEquals extends AbstractOpExactCmp {
     
         getLeftOperand().codeByteExp(mv, compiler);
         getRightOperand().codeByteExp(mv, compiler);
+
+        Type leftType = getLeftOperand().getType();
+
     
-        if (getType().isInt() || getType().isBoolean()) {
+        if (leftType.isInt() || leftType.isBoolean()) {
             if (branchIfTrue) {
                 mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
             } else {
                 mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
             }
-        } else if (getType().isFloat()) {
+        } else if (leftType.isFloat()) {
             mv.visitInsn(Opcodes.FCMPG);
             if (branchIfTrue) {
                 mv.visitJumpInsn(Opcodes.IFNE, e);
@@ -61,7 +65,7 @@ public class NotEquals extends AbstractOpExactCmp {
                 mv.visitJumpInsn(Opcodes.IFEQ, e);
             }
         } 
-        else if (getType().isClass() || getType().isNull()) {
+        else if (leftType.isClass() || leftType.isNull()) {
           
             if (branchIfTrue) {
                 mv.visitJumpInsn(Opcodes.IF_ACMPNE, e);

@@ -82,13 +82,11 @@ public abstract class Type {
         } else if (t.isBoolean()) {
             return "Z";
         } else if (t.isClass()) {
-            // If it's the Deca builtin "Object", map it to java/lang/Object
             String decaName = t.getName().getName(); 
             if (decaName.equals("Object")) {
                 return "Ljava/lang/Object;";
             } else {
-                // For normal user classes, e.g. "mypackage.MyClass"
-                // => "Lmypackage/MyClass;"
+              
                 String internalName = decaName.replace('.', '/');
                 return "L" + internalName + ";";
             }

@@ -13,22 +13,20 @@ public class Main {
 
   // access flags 0x9
   public static main([Ljava/lang/String;)V
-    NEW A
-    DUP
-    INVOKESPECIAL A.<init> ()V
+    ACONST_NULL
     ASTORE 0
     ALOAD 0
-    DUP
-    IFNONNULL L0
-    NEW java/lang/NullPointerException
-    DUP
-    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
-    ATHROW
-   L0
-    INVOKEVIRTUAL A.getX ()I
+    ACONST_NULL
+    IF_ACMPEQ L0
     GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
-    SWAP
-    INVOKEVIRTUAL java/io/PrintStream.print (I)V
+    LDC "sup"
+    INVOKEVIRTUAL java/io/PrintStream.print (Ljava/lang/String;)V
+    GOTO L1
+   L0
+    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
+    LDC "hi"
+    INVOKEVIRTUAL java/io/PrintStream.print (Ljava/lang/String;)V
+   L1
     RETURN
     MAXSTACK = 0
     MAXLOCALS = 0

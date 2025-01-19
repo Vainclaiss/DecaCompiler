@@ -12,8 +12,9 @@ class A {
 {
     A a = null;
     if (a != null) {
-      println(a.m()); // Ne devrait pas être exécuté, car `a` est null.
-    } else {
-      println("ok"); // null reference ici
+      println("sup");// Ne devrait pas être exécuté, car `a` est null.
+    } 
+    else{
+        println("hi");
     }
 }
