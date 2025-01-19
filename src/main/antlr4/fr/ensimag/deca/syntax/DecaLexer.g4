@@ -15,7 +15,7 @@ options {
 fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
 fragment DIGIT : '0' .. '9';
 fragment NUMPOS : '1' .. '9';
-fragment STRING_CAR : ~ ('"' | '\\' | '\n');
+fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
 //fragment FLOAT
 fragment SIGN : ('+' | '-' )?;
 fragment EXP : ('E' | 'e') SIGN DIGIT+;
@@ -26,10 +26,12 @@ fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN DIGIT+ ('F' | 'f')?;
 fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
+
 // Deca lexer rules.
 
 //SKIP
-EOL : ('\n') {skip();};
+EOL : ('\n' | '\r' | '\t') {skip();};
+COMMENT : ('//' (~('\n'))* | '/*'  (STRING_CAR | EOL | '\\"' | '\\\\')* '*/'){ skip(); };
 ESPACE : ' ' {skip();};
 COMMENT : ('//' (~('\n'))* | '/*' (~ ('"' | '\\' | '\n'  | '*') | ('*' ~'/') | EOL | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\')* '*/'){ skip(); };
 
