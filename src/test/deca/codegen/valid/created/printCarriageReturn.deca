@@ -1,7 +1,7 @@
 // Description:
 //    teste les print avec des caractères spéciaux
 // Resultats:
-//    d
+//    world
 
 {
     print("hello");

@@ -30,8 +30,7 @@ fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 // Deca lexer rules.
 
 //SKIP
-EOL : ('\n' | '\r' | '\t') {skip();};
-COMMENT : ('//' (~('\n'))* | '/*'  (STRING_CAR | EOL | '\\"' | '\\\\')* '*/'){ skip(); };
+EOL : ('\n') {skip();};
 ESPACE : ' ' {skip();};
 COMMENT : ('//' (~('\n'))* | '/*' (~ ('"' | '\\' | '\n'  | '*') | ('*' ~'/') | EOL | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\')* '*/'){ skip(); };
 
@@ -83,7 +82,7 @@ ASM : 'asm';
 
 // EXPRESSIONS
 STRING : '"' (STRING_CAR | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"' ;
-MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"';
 FLOAT : (FLOATDEC | FLOATHEX);
 INT : ('0' | NUMPOS DIGIT*);
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
