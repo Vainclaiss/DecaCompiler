@@ -1,12 +1,10 @@
 // Description:
 //    teste asm
 // Resultats:
-//  ok
+//  okok
 
 class A{
-    void genAsm() asm("ADD R1, R2
-                       ADD #1, R2
-                       ADD R2, R2");
+    void genAsm() asm("WSTR \"ok\"\nWSTR \"ok\"");
 
 }
 {

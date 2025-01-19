@@ -15,7 +15,7 @@ options {
 fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
 fragment DIGIT : '0' .. '9';
 fragment NUMPOS : '1' .. '9';
-fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
+fragment STRING_CAR : ~ ('"' | '\\' | '\n');
 //fragment FLOAT
 fragment SIGN : ('+' | '-' )?;
 fragment EXP : ('E' | 'e') SIGN DIGIT+;
@@ -31,8 +31,8 @@ fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
 //SKIP
 EOL : ('\n') {skip();};
-ESPACE : ' ' {skip();};
-COMMENT : ('//' (~('\n'))* | '/*' (~ ('"' | '\\' | '\n'  | '*') | ('*' ~'/') | EOL | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\')* '*/'){ skip(); };
+ESPACE : (' ' | '\t' | '\r') {skip();};
+COMMENT : ('//' (~('\n'))* | '/*' ( ~('*'|'/') | '*' ~('/'))* '*/'){ skip(); };
 
 // SINGLE SYMBOLS
 OBRACE : '{';
