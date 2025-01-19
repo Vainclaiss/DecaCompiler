@@ -1,7 +1,7 @@
 // Description:
 //  Teste le Instanceof avec des int
 // Resultats:
-//  ok
+//  InstanceofInt.deca:8:9: Error: Incompatible types for operation: int instanceof int
 
 {
     int a;

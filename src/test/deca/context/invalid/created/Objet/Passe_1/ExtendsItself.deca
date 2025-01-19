@@ -1,8 +1,7 @@
 // Description:
 //    teste la declaration d'une classe en tant qu'extension d'une classe inexistante
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 7 : Error: The parent is not defined
+//    ExtendsItself.deca:6:0: Error: The parent is not defined
 
 class A extends A {
 

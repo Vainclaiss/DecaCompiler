@@ -1,7 +1,7 @@
 // Description:
 //    test de readInt avec une conversion int -> float
 // Resultats:
-//    "affiche x"
+//    ReadFloatToInt.deca:7:12: Error: Illegal RValue type, got float, expected int
 
 {   
     int x = readFloat();

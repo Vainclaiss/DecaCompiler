@@ -1,6 +1,7 @@
+// Description:
+//    Teste la declaration d'une variable sans type
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 6: Error: Identifier a must have a definition
+//    NoTypeVar.deca:7:4: Error: Identifier 'a' is undefined
 
 {
     a = 1;

@@ -1,7 +1,7 @@
 // Description:
 //  Methode appelé sans argument
 // Resultats:
-//
+//  MethodCallMissingArgument.deca:19:11: Error: Too few arguments in method call
 
 class A{
     int valA;

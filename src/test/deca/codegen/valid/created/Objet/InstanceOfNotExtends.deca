@@ -1,0 +1,23 @@
+// Description:
+//  Teste l'opérateur instanceof avec des classes pas reliés
+// Resultats:
+// ok
+
+
+class A {
+
+}
+
+class B {
+
+}
+
+{
+    A newA = new A();
+    boolean result1 = newA instanceof B; // false
+    if (!result1 && !(newA instanceof B)) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

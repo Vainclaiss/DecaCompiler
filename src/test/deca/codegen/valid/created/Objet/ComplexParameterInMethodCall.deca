@@ -1,0 +1,26 @@
+// Description:
+//  Teste l'appel de méthode avec des paramètres complexes
+// Resultats:
+//  49
+//  ok
+
+class A {
+    int m(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    void e() {
+        int result = m((3 + 4) * 2, 5 * 6, 7 - 2);
+        println(result);
+    }
+}
+
+{
+    A newA = new A();
+    newA.e();
+    if (newA.m((3 + 4) * 2, 5 * 6, 7 - 2) == 49) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

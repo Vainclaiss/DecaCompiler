@@ -1,0 +1,30 @@
+// Description:
+//  Teste le Instanceof avec une classe (null reference)
+// Resultats:
+//  ok
+//  ok
+
+class A{
+
+}
+
+class B extends A{
+
+}
+
+{
+    A newA = new A();
+    B newB = null;
+
+    if (newB instanceof B){
+        println("ERRONE");
+    } else {
+        println("ok");
+    }
+
+    if (newB instanceof A){
+        println("ERRONE");
+    } else {
+        println("ok");
+    }
+}

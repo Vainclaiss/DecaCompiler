@@ -1,3 +1,8 @@
+// Description:
+// Invalid method call
+// Resultats:
+// MethodCall.deca:9:8: Error: MethodCall identifer must be a method
+
 class A {
     int b;
     void a(){

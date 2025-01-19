@@ -1,8 +1,7 @@
 // Description:
 //  Test d'expressions booleennes avec des entiers
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 8 : Error: Illegal RValue type, got null, expected boolean
+//    BoolExprWithIntegers.deca:7:16: Error: Illegal RValue type, got null, expected boolean
 
 {
     boolean x = null;

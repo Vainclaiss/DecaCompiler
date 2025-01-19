@@ -1,0 +1,38 @@
+// Description:
+//   Teste l'initialisation d'attributs de classe avec des expressions complexes
+// Resultats:
+//  50
+//  24
+//  ok
+
+
+class A {
+    int x = (getValue() + 3) * (this.nestedCalc(2) - 1);
+    int y = recursiveCalc(4);
+
+    int getValue() {
+        return 7;
+    }
+
+    int nestedCalc(int n) {
+        return n * (n + 1);
+    }
+
+    int recursiveCalc(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+        return n * recursiveCalc(n - 1);
+    }
+}
+
+{
+    A newA = new A();
+    println(newA.x);
+    println(newA.y);
+    if (newA.x == 50 && newA.y == 24) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

@@ -1,5 +1,18 @@
+// Description:
+// Test divers et variés de cast
+// Resultats:
+// 1.00000e+00
+// 0x1p+0
+
+class A{
+    int m(){
+        return 1;
+    }
+}
+
 {
     int a = 1;
     int b = 2;
     println((float)(1));
+    printlnx((float)(new A().m()));
 }

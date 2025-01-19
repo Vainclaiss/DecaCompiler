@@ -34,6 +34,10 @@ public class Selection extends AbstractLValue {
         this.rightOperand = rightOperand;
     }
 
+    boolean isSelection() {
+        return true;
+    }
+
     @Override
     public DVal getDVal() {
         return new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.R0);
@@ -72,7 +76,10 @@ public class Selection extends AbstractLValue {
     @Override
     protected void codeExp(DecacCompiler compiler) {
 
-        leftOperand.codeExp(compiler, 0);
+        if (!(leftOperand.isSelection())) {
+            leftOperand.codeExp(compiler, 0); // peut faire 2 fois la meme inst -> pas grave
+        }
+
         compiler.addInstruction(new LOAD(leftOperand.getDVal(), Register.getR(compiler, 0)));
 
         if (!compiler.getCompilerOptions().getSkipExecErrors()) {
@@ -84,10 +91,21 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO: gerer le cas de this
-        codeExp(compiler);
+
+        leftOperand.codeExp(compiler, n); // peut faire 2 fois la meme inst -> pas grave
+        // if (leftOperand.isSelection()) {
+        //     compiler.addInstruction(new LOAD(Register.R0, Register.getR(compiler, n)));
+        // }
+
+        if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+            compiler.addExecError(NullDereference.INSTANCE);
+            compiler.addInstruction(new CMP(new NullOperand(), Register.getR(compiler, n)));
+            compiler.addInstruction(new BEQ(NullDereference.INSTANCE.getLabel()));
+        }
+        
+        //compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
         compiler.addInstruction(
-                new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, 0)),
+                new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, n)),
                         Register.getR(compiler, n)));
     }
 

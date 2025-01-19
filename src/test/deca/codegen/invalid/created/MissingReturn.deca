@@ -1,7 +1,7 @@
 // Description:
 //  Methode int sans return
 // Resultats:
-//  Error: Missing return statement
+//  Error: return instruction missing in A.a
 
 class A{
     int a(){

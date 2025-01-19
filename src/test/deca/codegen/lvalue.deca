@@ -1,9 +1,0 @@
-// Description:
-//    Invalid Lvalue assignement
-// Resultats:
-//    Error: division by 0
-
-//{
-//    2 = 3;
-//    print(x);
-//}

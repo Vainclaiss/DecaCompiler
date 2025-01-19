@@ -75,8 +75,8 @@ public class MethodCall extends AbstractExpr {
         compiler.addComment("Empilement des arguments de " + methodeLabel);
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
         // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
-        leftOperand.codeExp(compiler, 0); // method call, new, selection, variables in R0
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
+        leftOperand.codeExp(compiler, n); // method call, new, selection, variables in R0
+        compiler.addInstruction(new STORE(Register.getR(n), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         compiler.getStackOverflowCounter().addParamsOnStack(params.size());
@@ -119,6 +119,7 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         codeExp(compiler, 2);
+        // TODO : peut etre metre R2 au lieu de R0 pour plus de securité
         compiler.addInstruction(new CMP(1, Register.R0));
         if (branchIfTrue) {
             compiler.addInstruction(new BEQ(e));
@@ -130,7 +131,10 @@ public class MethodCall extends AbstractExpr {
     @Override
     public void decompile(IndentPrintStream s) {
         leftOperand.decompile(s);
-        s.print(".");
+        if (!leftOperand.isImplicit()){
+            s.print(".");
+        }
+        
         methodName.decompile(s);
         s.print("(");
         rightOperand.decompile(s);

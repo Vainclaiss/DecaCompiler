@@ -1,0 +1,12 @@
+// Description:
+//  Teste le cast d'un objet en void
+// Resultats:
+// VoidCast.deca:11:18: Error: Cannot cast void
+
+class A{
+}
+
+{
+    A newA = new A();
+    println((void)(newA));
+}

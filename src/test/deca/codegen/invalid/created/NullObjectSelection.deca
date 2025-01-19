@@ -1,0 +1,20 @@
+// Description:
+// Selection d'un objet passé à null
+// Resultats:
+//  Error: Null dereference
+
+class A{
+    int a;
+    void A(int a){
+        this.a = a;
+    }
+}
+
+{
+    A newA = new A();
+    newA.A(1);
+    while(newA != null){
+        newA = null;
+    }
+    println(newA.a);
+}
