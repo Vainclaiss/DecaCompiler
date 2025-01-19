@@ -236,9 +236,19 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        String destFile = sourceFile.substring(0, sourceFile.length() - 5) + ".ass";
+        String destFile;
         PrintStream err = System.err;
         PrintStream out = System.out;
+
+        int lastIndex = sourceFile.lastIndexOf(".deca");
+        if (lastIndex != -1) {
+            destFile = sourceFile.substring(0, lastIndex) + ".ass";
+        }
+        else {
+            err.println("The given file is not a .deca file");
+            return true;
+        }
+
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
         try {
             return doCompile(sourceFile, destFile, out, err);

@@ -15,7 +15,7 @@ options {
 fragment LETTER : ('a' .. 'z' | 'A' .. 'Z');
 fragment DIGIT : '0' .. '9';
 fragment NUMPOS : '1' .. '9';
-fragment STRING_CAR : ~ ('"' | '\\' | '\n' | '\r' | '\t');
+fragment STRING_CAR : ~ ('"' | '\\' | '\n');
 //fragment FLOAT
 fragment SIGN : ('+' | '-' )?;
 fragment EXP : ('E' | 'e') SIGN DIGIT+;
@@ -31,9 +31,8 @@ fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
 //SKIP
 EOL : ('\n') {skip();};
-COMMENT : ('//' (~('\n'))* | '/*'  (STRING_CAR | EOL | '\\"' | '\\\\'|'\t' |'\\')* '*/'){ skip(); };
-ESPACE : ' ' {skip();};
-
+ESPACE : (' ' | '\t' | '\r') {skip();};
+COMMENT : ('//' (~('\n'))* | '/*' ( ~('*'|'/') | '*' ~('/'))* '*/'){ skip(); };
 
 // SINGLE SYMBOLS
 OBRACE : '{';
@@ -82,8 +81,8 @@ PROTECTED : 'protected';
 ASM : 'asm';
 
 // EXPRESSIONS
-STRING : '"' (STRING_CAR | '\\"' | '\\\\' )* '"' ;
-MULTI_LINE_STRING : '"' (STRING_CAR | EOL |'\r'|'\t'| '\\n' | '\\r' | '\\t'| '\\"' | '\\\\')* '"';
+STRING : '"' (STRING_CAR | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"' ;
+MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"';
 FLOAT : (FLOATDEC | FLOATHEX);
 INT : ('0' | NUMPOS DIGIT*);
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;

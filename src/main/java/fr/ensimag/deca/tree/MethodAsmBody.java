@@ -26,7 +26,7 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition curretClass, Label fiLabel) {
-        compiler.add(new InlinePortion(code.getValue()));
+        compiler.add(new InlinePortion(code.getValue().replace("\\n","\n").replace("\\r","\r").replace("\\t","\t")));
     }
 
     @Override

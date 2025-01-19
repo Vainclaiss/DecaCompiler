@@ -42,7 +42,7 @@ make_valid_tests() {
         check_gencode_file_format "$file"
         check_compilation "$file" true
         check_result "$file" true
-        # rm -f "${file%.deca}.ass" 2>/dev/null
+        rm -f "${file%.deca}.ass" 2>/dev/null
         rm -f "${file%.deca}.res" 2>/dev/null
         rm -f "${file%.deca}.expected" 2>/dev/null
         success "[valid] Test passed for $file"
@@ -168,6 +168,7 @@ make_valid_interactive_tests() {
 main() {
     prompt_strong "Running basic-gencode tests..."
     setup_path_and_cd
+    clean_temp_test_files ./src/test/deca/codegen/
     make_valid_tests
     make_invalid_tests
     make_valid_interactive_tests
