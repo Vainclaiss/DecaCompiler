@@ -173,7 +173,7 @@ public class CompilerOptions {
     }
 
     protected void displayUsage() {
-        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] [-a] [-e] <fichiers .deca>...] | [-b]");
+        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-a] [-e] <fichiers .deca>...] | [-b]");
         System.out.println(
                 "La commande decac, sans argument, affichera les options disponibles. On peut appeler la commande");
         System.out.println("decac avec un ou plusieurs fichiers sources Deca.");

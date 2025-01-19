@@ -178,16 +178,16 @@ public class Instanceof extends AbstractExpr{
         compType.iter(f);
     }
 
-    @Override
-    protected int getJumpOpcodeForInt() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getJumpOpcodeForInt'");
-    }
+    // @Override
+    // protected int getJumpOpcodeForInt() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getJumpOpcodeForInt'");
+    // }
 
-    @Override
-    protected int getJumpOpcodeForFloat() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getJumpOpcodeForFloat'");
-    }
+    // @Override
+    // protected int getJumpOpcodeForFloat() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getJumpOpcodeForFloat'");
+    // }
 
 }
