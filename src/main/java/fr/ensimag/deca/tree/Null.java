@@ -18,6 +18,9 @@ import fr.ensimag.ima.pseudocode.Register;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import fr.ensimag.deca.context.NullType;
 
 public class Null extends AbstractExpr{
@@ -50,6 +53,14 @@ public class Null extends AbstractExpr{
     protected void codeExp(DecacCompiler compiler, int n) {
         compiler.addInstruction(new LOAD(getDVal() , Register.getR(compiler,n)));
     }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+        mv.visitInsn(Opcodes.ACONST_NULL);
+    }
+    
+
+
 
     @Override
     String prettyPrintNode() {

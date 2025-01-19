@@ -69,7 +69,7 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
             mv.visitJumpInsn(Opcodes.IFNE, e);
         }
     }
-    else if (leftType.isClass() ) {
+    else if (leftType.isClass()|| getType().isNull() ) {
         if (branchIfTrue) {
             mv.visitJumpInsn(Opcodes.IF_ACMPEQ, e);
         } else {
