@@ -31,7 +31,7 @@ fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 //SKIP
 EOL : ('\n') {skip();};
 ESPACE : ' ' {skip();};
-COMMENT : ('//' (~('\n'))* | '/*' (~ ('"' | '\\' | '\n'  | '*') | ('*' ~'/')|EOL  | '\\"' | '\\\\')* '*/'){ skip(); };
+COMMENT : ('//' (~('\n'))* | '/*' (~ ('"' | '\\' | '\n'  | '*') | ('*' ~'/') | EOL | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\')* '*/'){ skip(); };
 
 // SINGLE SYMBOLS
 OBRACE : '{';
@@ -80,7 +80,7 @@ PROTECTED : 'protected';
 ASM : 'asm';
 
 // EXPRESSIONS
-STRING : '"' (STRING_CAR |'\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"' ;
+STRING : '"' (STRING_CAR | '\\t' | '\\r' |'\\n' | '\\"' | '\\\\' )* '"' ;
 MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 FLOAT : (FLOATDEC | FLOATHEX);
 INT : ('0' | NUMPOS DIGIT*);
