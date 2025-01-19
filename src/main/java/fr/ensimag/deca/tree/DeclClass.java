@@ -258,10 +258,7 @@ public class DeclClass extends AbstractDeclClass {
 }
 
     
-private void generateDefaultConstructor(ClassWriter cw,
-                                        DecacCompiler compiler,
-                                        String classInternalName,
-                                        String superInternalName) {
+private void generateDefaultConstructor( ClassWriter cw, DecacCompiler compiler,String classInternalName, String superInternalName) throws ContextualError {
     MethodVisitor mv = cw.visitMethod(
         Opcodes.ACC_PUBLIC, 
         "<init>",
@@ -274,9 +271,12 @@ private void generateDefaultConstructor(ClassWriter cw,
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superInternalName, "<init>", "()V", false);
 
+    
+    declFields.codeGenByteFieldsInit(mv, compiler, classInternalName);
 
     mv.visitInsn(Opcodes.RETURN);
-    mv.visitMaxs(1, 1);
+
+    mv.visitMaxs(2, 1);
     mv.visitEnd();
 }
 

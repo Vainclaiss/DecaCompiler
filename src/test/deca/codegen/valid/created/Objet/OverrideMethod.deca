@@ -18,5 +18,5 @@ class B extends A {
 }
 
 {
-    println("ok")
+    println("ok");
 }

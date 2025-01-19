@@ -17,18 +17,6 @@ public class Main {
     DUP
     INVOKESPECIAL A.<init> ()V
     ASTORE 0
-    NEW A
-    DUP
-    INVOKESPECIAL A.<init> ()V
-    ASTORE 1
-    ALOAD 1
-    ALOAD 0
-    ALOAD 1
-    PUTFIELD A.other : LA;
-    ALOAD 0
-    ALOAD 1
-    ALOAD 0
-    PUTFIELD A.other : LA;
     ALOAD 0
     DUP
     IFNONNULL L0
@@ -37,32 +25,10 @@ public class Main {
     INVOKESPECIAL java/lang/NullPointerException.<init> ()V
     ATHROW
    L0
-    GETFIELD A.other : LA;
-    ALOAD 1
-    IF_ACMPNE L1
+    INVOKEVIRTUAL A.getX ()I
     GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
-    LDC "ok"
-    INVOKEVIRTUAL java/io/PrintStream.print (Ljava/lang/String;)V
-    GOTO L2
-   L1
-   L2
-    ALOAD 1
-    DUP
-    IFNONNULL L3
-    NEW java/lang/NullPointerException
-    DUP
-    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
-    ATHROW
-   L3
-    GETFIELD A.other : LA;
-    ALOAD 0
-    IF_ACMPNE L4
-    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
-    LDC "ok"
-    INVOKEVIRTUAL java/io/PrintStream.print (Ljava/lang/String;)V
-    GOTO L5
-   L4
-   L5
+    SWAP
+    INVOKEVIRTUAL java/io/PrintStream.print (I)V
     RETURN
     MAXSTACK = 0
     MAXLOCALS = 0

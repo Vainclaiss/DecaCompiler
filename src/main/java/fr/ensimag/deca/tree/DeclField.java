@@ -130,35 +130,47 @@ public class DeclField extends AbstractDeclField {
         FieldVisitor fv = cw.visitField(accessFlags, fieldName, fieldDesc, null, null);
         fv.visitEnd();
     }
-    @Override
-    public void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName) throws ContextualError  {
-        mv.visitVarInsn(Opcodes.ALOAD, 0);
-    
-        Type trueType = type.getType();
-        if (init.isNoInitialization()) {
-            if (trueType.isClass()) {
+   
 
-                mv.visitInsn(Opcodes.ACONST_NULL);
-            } else if (trueType.isInt() || trueType.isBoolean()) {
+    public void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName)
+        throws ContextualError {
+    mv.visitVarInsn(Opcodes.ALOAD, 0);  
 
-                mv.visitInsn(Opcodes.ICONST_0);
-            } else if (trueType.isFloat()) {
+    Type trueType = type.getType();
+    String fieldName = name.getName().toString();
+    String fieldDesc = trueType.toJVMDescriptor();
 
-                mv.visitInsn(Opcodes.FCONST_0);
-            } else {
-                throw new UnsupportedOperationException("Unsupported field type for initialization: " + trueType);
-            }
+    if (init.isNoInitialization()) {
+
+        if (trueType.isClass()) {
+            mv.visitInsn(Opcodes.ACONST_NULL);
+        } else if (trueType.isInt() || trueType.isBoolean()) {
+            mv.visitInsn(Opcodes.ICONST_0);
+        } else if (trueType.isFloat()) {
+            mv.visitInsn(Opcodes.FCONST_0);
         } else {
-            int localIndex= compiler.allocateLocalIndex();
-            init.codeGenByteInitialization(mv, localIndex, compiler);
+            throw new UnsupportedOperationException("Unsupported field type: " + trueType);
         }
-    
-        String fieldName = name.getName().toString();
-        String fieldDesc = trueType.toJVMDescriptor();
-        mv.visitFieldInsn(Opcodes.PUTFIELD, classInternalName, fieldName, fieldDesc);
+    } else {
+        int localIndex = compiler.allocateLocalIndex();
+        init.codeGenByteInitialization(mv, localIndex, compiler);
+       
+
+        if (trueType.isInt() || trueType.isBoolean()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        } else if (trueType.isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, localIndex);
+        } else if (trueType.isClass()) {
+            mv.visitVarInsn(Opcodes.ALOAD, localIndex);
+        } else {
+            throw new UnsupportedOperationException("Unsupported field type: " + trueType);
+        }
     }
-    
-    
+
+    mv.visitFieldInsn(Opcodes.PUTFIELD, classInternalName, fieldName, fieldDesc);
+}
+
+
 
     public static String typeToJVMDescriptor(Type t) {
         if (t.isInt()) {
