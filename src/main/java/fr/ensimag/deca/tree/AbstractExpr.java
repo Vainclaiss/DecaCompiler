@@ -199,22 +199,22 @@ public abstract class AbstractExpr extends AbstractInst {
 
  
     protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
-        this.codeByteExp(mv, compiler);
         mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        mv.visitInsn(Opcodes.SWAP); 
     
-        if (getType().isInt()) {
+        codeByteExp(mv, compiler);
+    
+        Type type = getType();
+        if (type.isInt()) {
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(I)V", false);
-        } else if (getType().isFloat()) {
+        } else if (type.isFloat()) {
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(F)V", false);
-        } else if (getType().isBoolean()) {
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Z)V", false);
-        } else if (getType().isString()) {
+        } else if (type.isString()) {
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V", false);
         } else {
-            throw new DecacInternalError("Unsupported type for printing: " + getType().toString());
+            throw new UnsupportedOperationException("Unsupported print type: " + type);
         }
     }
+    
     
     
 

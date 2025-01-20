@@ -350,7 +350,7 @@ public class Identifier extends AbstractIdentifier {
     
     
 
-
+/* 
     @Override
     protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
         mv.visitFieldInsn(
@@ -392,6 +392,8 @@ public class Identifier extends AbstractIdentifier {
             );
         }
     }
+
+    */
 
 
 
