@@ -44,7 +44,7 @@ public class LowerOrEqual extends AbstractOpIneq {
         return "<=";
     }
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) throws ContextualError  {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler)   {
         getLeftOperand().codeByteExp(mv, compiler);
     
         getRightOperand().codeByteExp(mv, compiler);

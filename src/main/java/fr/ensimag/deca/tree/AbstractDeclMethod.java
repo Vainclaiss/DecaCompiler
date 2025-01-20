@@ -31,7 +31,7 @@ public abstract class AbstractDeclMethod extends Tree {
 
     public abstract AbstractIdentifier getName();
 
-    protected abstract void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError;
-    protected abstract void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError;
+    protected abstract void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) ;
+    protected abstract void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass);
 
 }

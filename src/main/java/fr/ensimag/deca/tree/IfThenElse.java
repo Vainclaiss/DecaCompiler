@@ -135,7 +135,7 @@ public class IfThenElse extends AbstractInst {
         elseBranch.prettyPrint(s, prefix, true);
     }
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler)  {
         org.objectweb.asm.Label elseLabel = new org.objectweb.asm.Label();
         org.objectweb.asm.Label endLabel  = new org.objectweb.asm.Label();
      

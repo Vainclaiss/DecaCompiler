@@ -36,7 +36,7 @@ public class Lower extends AbstractOpIneq {
     @Override
     protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, 
                                    org.objectweb.asm.Label target, 
-                                   DecacCompiler compiler) throws ContextualError {
+                                   DecacCompiler compiler)  {
 
         getLeftOperand().codeByteExp(mv, compiler);
     

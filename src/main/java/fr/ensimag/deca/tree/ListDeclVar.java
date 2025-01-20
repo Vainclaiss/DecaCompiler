@@ -57,7 +57,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         compiler.getStackOverflowCounter().addVariables(getList().size());
     }
 
-    protected void codeGenListDeclVarByte(MethodVisitor mv,DecacCompiler compiler) throws ContextualError  {
+    protected void codeGenListDeclVarByte(MethodVisitor mv,DecacCompiler compiler)  {
         for (AbstractDeclVar declVar : getList()) {
             declVar.codeGenByteDeclVar(mv,compiler); 
             

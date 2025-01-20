@@ -156,9 +156,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         ClassDefinition classDef = (ClassDefinition) compiler.environmentType.defOfType(name.getName());
-        if (!classDef.equals(name.getClassDefinition())) {
-            throw new ContextualError("Error: Class definitions missmatch", getLocation());
-        }
+       
 
         EnvironmentExp envExp = classDef.getMembers();
         // Passe 3
@@ -220,7 +218,7 @@ public class DeclClass extends AbstractDeclClass {
         declMethods.codeGenDeclMethods(compiler, name.getClassDefinition());
     }
 
-    public void codeGenByteClass(DecacCompiler compiler)throws ContextualError  {
+    public void codeGenByteClass(DecacCompiler compiler) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         String classInternalName = name.getName().toString().replace('.', '/');
         String superInternalName = superClass.getName().toString();
@@ -258,7 +256,7 @@ public class DeclClass extends AbstractDeclClass {
 }
 
     
-private void generateDefaultConstructor( ClassWriter cw, DecacCompiler compiler,String classInternalName, String superInternalName) throws ContextualError {
+private void generateDefaultConstructor( ClassWriter cw, DecacCompiler compiler,String classInternalName, String superInternalName) {
     MethodVisitor mv = cw.visitMethod(
         Opcodes.ACC_PUBLIC, 
         "<init>",

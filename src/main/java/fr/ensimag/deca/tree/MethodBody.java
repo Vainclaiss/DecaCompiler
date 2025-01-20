@@ -61,7 +61,7 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    public void codeGenByteMethodBody(MethodVisitor mv, DecacCompiler compiler, Type returnType) throws ContextualError {
+    public void codeGenByteMethodBody(MethodVisitor mv, DecacCompiler compiler, Type returnType)  {
         variables.codeGenListDeclVarByte(mv, compiler);
 
         insts.codeGenListInstByte(mv, compiler);

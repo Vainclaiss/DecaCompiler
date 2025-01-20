@@ -48,7 +48,7 @@ public abstract class AbstractDeclClass extends Tree {
      */
     protected abstract void codeGenClass(DecacCompiler compiler) throws ContextualError;
 
-    protected abstract void codeGenByteClass(DecacCompiler compiler) throws ContextualError;
+    protected abstract void codeGenByteClass(DecacCompiler compiler) ;
 
 
 }

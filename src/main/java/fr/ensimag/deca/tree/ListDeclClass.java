@@ -54,9 +54,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
     }
 
-        public void codeGenByteClass(DecacCompiler compiler)throws ContextualError  {
+        public void codeGenByteClass(DecacCompiler compiler)  {
             for (AbstractDeclClass decl : getList()) {
-                decl.codeGenByteClass(compiler);  // calls DeclClass.codeGenByteClass
+                decl.codeGenByteClass(compiler);  
             }
         }
     

@@ -55,7 +55,7 @@ public class Null extends AbstractExpr{
     }
 
     @Override
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
         mv.visitInsn(Opcodes.ACONST_NULL);
     }
     

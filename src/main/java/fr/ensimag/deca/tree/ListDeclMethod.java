@@ -54,7 +54,6 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    // ------------------ IMA Code Generation ------------------ //
 
     public void codeGenDeclMethods(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError  {
         for (AbstractDeclMethod m : getList()) {
@@ -62,15 +61,8 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    // ------------------ ASM Bytecode Generation ------------------ //
-
-    /**
-     * Generate all method declarations in bytecode for this list of methods.
-     * 
-     * @param compiler The current Decac compiler
-     * @param currentClass The class definition these methods belong to
-     */
-    public void codeGenByteDeclMethods(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError  {
+   
+    public void codeGenByteDeclMethods(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) {
      
         for (AbstractDeclMethod m : getList()) {
             m.codeGenByteDeclMethod(cw, compiler, currentClass);

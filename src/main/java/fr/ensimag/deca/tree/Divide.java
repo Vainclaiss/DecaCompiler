@@ -52,7 +52,7 @@ public class Divide extends AbstractOpArith {
    
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)   {
         
         getRightOperand().codeByteExp(mv, compiler);
         int rightVarIndex = compiler.allocateLocalIndex();

@@ -107,7 +107,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError  {
+    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass)   {
 
         compiler.addComment("Code de la methode " + name.getName().toString() + " dans la classe " + currentClass.getType().toString());
         
@@ -150,7 +150,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     
     @Override
-    protected void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError   {
+    protected void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass)    {
         String methodName = name.getName().toString();
         String desc = buildMethodDescriptor(this.params, this.type.getType());
         int access = Opcodes.ACC_PUBLIC;
@@ -168,7 +168,6 @@ public class DeclMethod extends AbstractDeclMethod {
 
         body.codeGenByteMethodBody(mv, compiler, type.getType());
 
-        // TODO: Possibly we want IRETURN, FRETURN, or RETURN, etc. if we know method is non-void
         
 
         mv.visitMaxs(0, 0); 
@@ -188,7 +187,6 @@ public class DeclMethod extends AbstractDeclMethod {
     public static String buildMethodDescriptor(Signature signature, Type returnType) {
         StringBuilder sb = new StringBuilder("(");
     
-        // Use the getter to access parameter types
         for (Type paramType : signature.getParameters()) {
             sb.append(paramType.toJVMDescriptor());
         }

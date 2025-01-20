@@ -65,7 +65,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         compiler.addInstruction(new CMP(op1, r));
     }
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler)  {
         
         getLeftOperand().codeByteExp(mv,compiler);
     

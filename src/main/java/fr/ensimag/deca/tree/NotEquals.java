@@ -43,7 +43,7 @@ public class NotEquals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler)
-            throws ContextualError {
+             {
     
         getLeftOperand().codeByteExp(mv, compiler);
         getRightOperand().codeByteExp(mv, compiler);

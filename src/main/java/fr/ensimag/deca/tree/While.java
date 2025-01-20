@@ -86,7 +86,7 @@ public class While extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
+    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler)  {
         org.objectweb.asm.Label whileStart = new org.objectweb.asm.Label();
         org.objectweb.asm.Label whileEnd = new org.objectweb.asm.Label();
     

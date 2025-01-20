@@ -17,7 +17,7 @@ public abstract class AbstractMethodBody extends Tree {
             ClassDefinition currentClass, Type returnType) throws ContextualError;
 
     public abstract void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass, Label finLabel);
-    public abstract void codeGenByteMethodBody(MethodVisitor mv,DecacCompiler compiler, Type returnType) throws ContextualError;
+    public abstract void codeGenByteMethodBody(MethodVisitor mv,DecacCompiler compiler, Type returnType) ;
 
     public abstract void decompile(IndentPrintStream s);
 

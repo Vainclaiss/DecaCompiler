@@ -173,7 +173,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
         throw new UnsupportedOperationException("not yet implemented");
     }
         
@@ -198,7 +198,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
  
-    protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
+    protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
         this.codeByteExp(mv, compiler); // Evaluate the expression (result on stack)
         mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
         mv.visitInsn(Opcodes.SWAP); // Swap the PrintStream and the result
@@ -224,7 +224,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
+    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) {
         codeGenBytePrint(mv,compiler);
     }
 
@@ -234,7 +234,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 /* 
@@ -254,7 +254,7 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) throws ContextualError {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler)  {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

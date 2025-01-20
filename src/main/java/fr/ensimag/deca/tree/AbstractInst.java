@@ -44,7 +44,7 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
 
-    protected abstract void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) throws ContextualError;
+    protected abstract void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) ;
 
     
     /**

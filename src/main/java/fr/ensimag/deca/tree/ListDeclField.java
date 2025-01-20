@@ -51,39 +51,29 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         }
     }
 
-    // ------------------ IMA Code Generation ------------------ //
     public void codeGenFieldsInit(DecacCompiler compiler) {
         for (AbstractDeclField f : getList()) {
             f.codeGenFieldInit(compiler);
         }
-        // Possibly end with RTS if it's a subroutine:
-        // compiler.addInstruction(new RTS());
+        
     }
 
-    // ------------------ ASM Bytecode Generation ------------------ //
-
-    /**
-     * Declare each field in the `.class` (signature only, no init).
-     * Called by DeclClass for field **declarations**.
-     */
+  
     public void codeGenByteFields(
             ClassWriter cw,
             DecacCompiler compiler,
             String classInternalName
     ) {
         for (AbstractDeclField f : getList()) {
-            // We assume each f is actually a DeclField
+            
             ((DeclField) f).codeGenByteField(cw, compiler, classInternalName);
         }
     }
 
-    /**
-     * Initialize each field in the **constructor** or an init method.
-     * Called inside the generated constructor if you have explicit initial values.
-     */
-    public void codeGenByteFieldsInit(MethodVisitor mv,DecacCompiler compiler,String classInternalName ) throws ContextualError  {
+    
+    public void codeGenByteFieldsInit(MethodVisitor mv,DecacCompiler compiler,String classInternalName )  {
         for (AbstractDeclField f : getList()) {
-            // We assume each f is actually a DeclField
+
             ((DeclField) f).codeGenByteFieldInit(mv, compiler, classInternalName);
         }
     }

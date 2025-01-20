@@ -85,7 +85,7 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
-    public void codeGenByteProgram(DecacCompiler compiler) throws ContextualError  {
+    public void codeGenByteProgram(DecacCompiler compiler)   {
 
         
         try (FileOutputStream textFileOut = new FileOutputStream("MainBytecode.txt");

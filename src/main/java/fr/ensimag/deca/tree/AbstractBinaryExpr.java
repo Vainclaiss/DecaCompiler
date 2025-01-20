@@ -61,7 +61,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
 
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError{
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -110,7 +110,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
 
     @Override
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
 
         codeGenByteInst(mv,compiler);  
 

@@ -65,11 +65,9 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         }
     }
     public void codeGenByteParamsInit(MethodVisitor mv, DecacCompiler compiler) {
-        // For instance methods, local #0 is 'this'.
-        // So parameters start at index 1
+        
         int paramIndex = 1;
     
-        // Define start/end labels if you're using visitLocalVariable
         org.objectweb.asm.Label startLabel = new org.objectweb.asm.Label();
         org.objectweb.asm.Label endLabel   = new org.objectweb.asm.Label();
         
@@ -85,11 +83,9 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
             String paramName = param.getName().getName().toString();
             String paramDescriptor = paramType.toJVMDescriptor();
     
-            // store the local index in the ParamDefinition
             ParamDefinition pd = (ParamDefinition) param.getName().getDefinition();
             pd.setIndexInLocalTable(paramIndex);
     
-            // Optionally define local variable debug info
             mv.visitLocalVariable(
                 paramName,
                 paramDescriptor,
@@ -99,7 +95,6 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
                 paramIndex
             );
     
-            // Move to next param index
             paramIndex++;
         }
     

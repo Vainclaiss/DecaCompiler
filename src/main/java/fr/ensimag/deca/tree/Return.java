@@ -77,18 +77,16 @@ public class Return extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
-        // 1) Evaluate the expression to return
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
         getArgument().codeByteExp(mv, compiler);
     
-        // 2) According to the type, do IRETURN, FRETURN, ARETURN, etc.
         Type retType = getArgument().getType();
         if (retType.isInt() || retType.isBoolean()) {
-            mv.visitInsn(Opcodes.IRETURN);  // int return
+            mv.visitInsn(Opcodes.IRETURN);  
         } else if (retType.isFloat()) {
-            mv.visitInsn(Opcodes.FRETURN);  // float return
+            mv.visitInsn(Opcodes.FRETURN);  
         } else if (retType.isClass()) {
-            mv.visitInsn(Opcodes.ARETURN);  // reference return
+            mv.visitInsn(Opcodes.ARETURN);  
         } else {
             throw new UnsupportedOperationException("Return: unsupported type " + retType);
         }

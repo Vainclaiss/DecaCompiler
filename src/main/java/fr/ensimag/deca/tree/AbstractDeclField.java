@@ -33,6 +33,6 @@ public abstract class AbstractDeclField extends Tree {
     public abstract Symbol getName();
 
     protected abstract void codeGenFieldInit(DecacCompiler compiler);
-    protected abstract void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName) throws ContextualError;
+    protected abstract void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName);
 
 }

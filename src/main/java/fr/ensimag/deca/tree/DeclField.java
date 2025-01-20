@@ -133,7 +133,7 @@ public class DeclField extends AbstractDeclField {
    
 
     public void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName)
-        throws ContextualError {
+         {
     mv.visitVarInsn(Opcodes.ALOAD, 0);  
 
     Type trueType = type.getType();

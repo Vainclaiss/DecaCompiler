@@ -41,7 +41,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) throws ContextualError  {
+    protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler)   {
         
         getOperand().codeByteExp(mv,compiler);
       

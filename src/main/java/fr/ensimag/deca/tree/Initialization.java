@@ -67,7 +67,7 @@ public class Initialization extends AbstractInitialization {
         expression.prettyPrint(s, prefix, true);
     }
     @Override
-    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex, DecacCompiler compiler) throws ContextualError {
+    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex, DecacCompiler compiler)  {
        
       
             expression.codeByteExp(mv, compiler);

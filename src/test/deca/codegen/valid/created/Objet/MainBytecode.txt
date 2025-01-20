@@ -13,20 +13,74 @@ public class Main {
 
   // access flags 0x9
   public static main([Ljava/lang/String;)V
-    ACONST_NULL
+    NEW A
+    DUP
+    INVOKESPECIAL A.<init> ()V
     ASTORE 0
     ALOAD 0
-    ACONST_NULL
-    IF_ACMPEQ L0
-    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
-    LDC "sup"
-    INVOKEVIRTUAL java/io/PrintStream.print (Ljava/lang/String;)V
-    GOTO L1
+    DUP
+    IFNONNULL L0
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
    L0
-    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
-    LDC "hi"
-    INVOKEVIRTUAL java/io/PrintStream.print (Ljava/lang/String;)V
+    LDC 4
+    INVOKEVIRTUAL A.A (I)V
+    ALOAD 0
+    DUP
+    IFNONNULL L1
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
    L1
+    INVOKEVIRTUAL A.m ()LA;
+    DUP
+    IFNONNULL L2
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
+   L2
+    INVOKEVIRTUAL A.m ()LA;
+    DUP
+    IFNONNULL L3
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
+   L3
+    INVOKEVIRTUAL A.m ()LA;
+    DUP
+    IFNONNULL L4
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
+   L4
+    INVOKEVIRTUAL A.m ()LA;
+    DUP
+    IFNONNULL L5
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
+   L5
+    INVOKEVIRTUAL A.m ()LA;
+    POP
+    ALOAD 0
+    DUP
+    IFNONNULL L6
+    NEW java/lang/NullPointerException
+    DUP
+    INVOKESPECIAL java/lang/NullPointerException.<init> ()V
+    ATHROW
+   L6
+    GETFIELD A.x : I
+    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
+    SWAP
+    INVOKEVIRTUAL java/io/PrintStream.print (I)V
     RETURN
     MAXSTACK = 0
     MAXLOCALS = 0

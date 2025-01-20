@@ -29,7 +29,7 @@ public class Println extends AbstractPrint {
     }
 
     @Override
-protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)   {
 
     super.codeGenByteInst(mv,compiler);
 

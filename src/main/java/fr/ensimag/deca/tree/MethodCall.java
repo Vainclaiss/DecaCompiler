@@ -106,7 +106,7 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
     leftOperand.codeByteExp(mv, compiler);
 
     
@@ -171,7 +171,7 @@ String ownerInternalName = classDef.getType().getName().toString().replace('.', 
     }
 
     @Override
-protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError {
+protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
     codeByteExp(mv, compiler);
 
     if (!this.getType().isVoid()) {
@@ -199,7 +199,7 @@ protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws 
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) throws ContextualError {
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler)  {
     leftOperand.codeByteExp(mv, compiler);
 
     for (AbstractExpr arg : rightOperand.getList()) {
@@ -208,10 +208,7 @@ protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objec
 
     MethodDefinition methodDef = methodName.getMethodDefinition();
     Type leftType = leftOperand.getType();
-    ClassType ctype = leftType.asClassType(
-        "Cannot cast left operand to ClassType",
-        leftOperand.getLocation()
-    );
+    ClassType ctype = (ClassType) leftType;
     String ownerInternalName = ctype.getDefinition().getInternalName();
     
     String methodNameStr = methodName.getName().toString();

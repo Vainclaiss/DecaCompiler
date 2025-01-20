@@ -102,7 +102,7 @@ public class Selection extends AbstractLValue {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)   {
     leftOperand.codeByteExp(mv, compiler);
 
     if (!compiler.getCompilerOptions().getSkipExecErrors()) {

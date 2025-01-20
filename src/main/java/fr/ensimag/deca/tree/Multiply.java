@@ -33,7 +33,7 @@ public class Multiply extends AbstractOpArith {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) throws ContextualError  {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
         
         getLeftOperand().codeByteExp(mv, compiler);
         int leftVarIndex = compiler.allocateLocalIndex(); 

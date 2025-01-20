@@ -46,7 +46,7 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    public void codeGenListInstByte(MethodVisitor mv,DecacCompiler compiler) throws ContextualError {
+    public void codeGenListInstByte(MethodVisitor mv,DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
             i.codeGenByteInst(mv,compiler); 
 
@@ -67,7 +67,6 @@ public class ListInst extends TreeList<AbstractInst> {
     }
 
     public IfThenElse get(int i) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'get'");
     }
 }
