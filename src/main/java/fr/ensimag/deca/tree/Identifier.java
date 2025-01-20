@@ -301,88 +301,57 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
-    
-    int localIndex = getVariableDefinition().getLocalIndex();
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
 
-    Type t = getType();
+        int localIndex = getVariableDefinition().getLocalIndex();
 
-    if (t.isInt()) {
-        mv.visitVarInsn(Opcodes.ILOAD, localIndex);
-    } else if (t.isFloat()) {
-        mv.visitVarInsn(Opcodes.FLOAD, localIndex);
-    } else if (t.isBoolean()){
-        mv.visitVarInsn(Opcodes.ILOAD,localIndex);
+        Type t = getType();
+
+        if (t.isInt()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        } else if (t.isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, localIndex);
+        } else if (t.isBoolean()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        } else {
+            throw new UnsupportedOperationException(
+                    "Identifier: unsupported type for codeGenByteExp: " + t);
+
+        }
     }
-    else{
-        throw new UnsupportedOperationException(
-            "Identifier: unsupported type for codeGenByteExp: " + t
-        );
-
-    }
-}
-
-
 
     @Override
-    protected void codeGenBytePrint(MethodVisitor mv,DecacCompiler compiler) {
+    protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
         Type type = getType();
         mv.visitFieldInsn(
-            Opcodes.GETSTATIC,
-            "java/lang/System",
-            "out",
-            "Ljava/io/PrintStream;"
-        );
-    
+                Opcodes.GETSTATIC,
+                "java/lang/System",
+                "out",
+                "Ljava/io/PrintStream;");
+
         int localIndex = getVariableDefinition().getLocalIndex();
-        
+
         if (type.isInt()) {
             mv.visitVarInsn(Opcodes.ILOAD, localIndex);
-        mv.visitMethodInsn(
-            Opcodes.INVOKEVIRTUAL,
-            "java/io/PrintStream",
-            "println",
-            "(I)V",
-            false
-        );
-    }
-        else if(type.isFloat()){
+            mv.visitMethodInsn(
+                    Opcodes.INVOKEVIRTUAL,
+                    "java/io/PrintStream",
+                    "println",
+                    "(I)V",
+                    false);
+        } else if (type.isFloat()) {
             mv.visitVarInsn(Opcodes.FLOAD, localIndex);
             mv.visitMethodInsn(
-                Opcodes.INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(F)V",
-                false
-            );
+                    Opcodes.INVOKEVIRTUAL,
+                    "java/io/PrintStream",
+                    "println",
+                    "(F)V",
+                    false);
 
-        }
-}
-
-
-
-    
-
-
-    /**
-     * Generate code to print the expression
-     *
-     * @param compiler
-     */
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getDVal(), Register.R1));
-        Type type = getType();
-        if (type.isInt()) {
-            compiler.addInstruction(new WINT());
-        } else if (type.isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        } else {
-            throw new UnsupportedOperationException("Print of this type identifier not yet implemented");
         }
     }
 
-        /**
+    /**
      * Generate code to print the expression
      *
      * @param compiler
@@ -392,50 +361,44 @@ protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
         Type type = getType();
         if (type.isFloat()) {
             compiler.addInstruction(new WFLOATX());
-        }
-        else {
+        } else {
             codeGenPrint(compiler);
         }
     }
 
     @Override
-    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) {
-        Type type= getType();
-        
-        if(type.isFloat()){
+    protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
+        Type type = getType();
+
+        if (type.isFloat()) {
 
             mv.visitFieldInsn(
-                Opcodes.GETSTATIC,
-                "java/lang/System",
-                "out",
-                "Ljava/io/PrintStream;"
-            );
-            
-            int localIndex = getVariableDefinition().getLocalIndex();
+                    Opcodes.GETSTATIC,
+                    "java/lang/System",
+                    "out",
+                    "Ljava/io/PrintStream;");
 
+            int localIndex = getVariableDefinition().getLocalIndex();
 
             mv.visitVarInsn(Opcodes.FLOAD, localIndex);
 
             mv.visitMethodInsn(
-                Opcodes.INVOKESTATIC,
-                "java/lang/Float",      
-                "toHexString",           
-                "(F)Ljava/lang/String;", // prend un float et retourne un string
-                false
-            );
+                    Opcodes.INVOKESTATIC,
+                    "java/lang/Float",
+                    "toHexString",
+                    "(F)Ljava/lang/String;", // prend un float et retourne un string
+                    false);
 
             mv.visitMethodInsn(
-                Opcodes.INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(Ljava/lang/String;)V",
-                false
-            );
-            
+                    Opcodes.INVOKEVIRTUAL,
+                    "java/io/PrintStream",
+                    "println",
+                    "(Ljava/lang/String;)V",
+                    false);
+
         }
     }
-    
-    
+
     private Definition definition;
 
     @Override
@@ -451,17 +414,16 @@ protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue,
-                               org.objectweb.asm.Label e, DecacCompiler compiler) {
-    codeByteExp(mv, compiler);
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue,
+            org.objectweb.asm.Label e, DecacCompiler compiler) {
+        codeByteExp(mv, compiler);
 
-    if (branchIfTrue) {
-        mv.visitJumpInsn(Opcodes.IFNE, e);
-    } else {
-        mv.visitJumpInsn(Opcodes.IFEQ, e);
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IFNE, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IFEQ, e);
+        }
     }
-}
-
 
     @Override
     protected void iterChildren(TreeFunction f) {
