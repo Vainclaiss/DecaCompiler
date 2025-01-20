@@ -236,9 +236,32 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) {
-        codeGenBytePrint(mv,compiler);
+    protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
+        if (getType().isFloat()) {
+            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            
+            this.codeByteExp(mv, compiler);  
+    
+            mv.visitMethodInsn(
+                Opcodes.INVOKESTATIC,
+                "java/lang/Float",      
+                "toHexString",           
+                "(F)Ljava/lang/String;", 
+                false
+            );
+    
+            mv.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(Ljava/lang/String;)V",
+                false
+            );
+        } else {
+            codeGenBytePrint(mv, compiler);
+        }
     }
+    
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
