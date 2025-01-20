@@ -33,6 +33,11 @@ protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)   {
 
     super.codeGenByteInst(mv,compiler);
 
+    mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+    mv.visitLdcInsn("\n");
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V", false);
+
+
 }
 
     
