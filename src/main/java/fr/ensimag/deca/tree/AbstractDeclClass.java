@@ -46,9 +46,9 @@ public abstract class AbstractDeclClass extends Tree {
      * @param compiler
      * @throws ContextualError 
      */
-    protected abstract void codeGenClass(DecacCompiler compiler) throws ContextualError;
+    protected abstract void codeGenClass(DecacCompiler compiler);
 
-    protected abstract void codeGenByteClass(DecacCompiler compiler) ;
+    protected abstract void codeGenByteClass(DecacCompiler compiler, String filename);
 
 
 }

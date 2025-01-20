@@ -1,0 +1,9 @@
+// Description:
+//    Division par 0
+// Resultats:
+//    Infinity
+
+
+{
+    print(2.0/0);
+}

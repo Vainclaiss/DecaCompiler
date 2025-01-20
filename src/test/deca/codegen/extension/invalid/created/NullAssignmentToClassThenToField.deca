@@ -1,0 +1,16 @@
+// Description:
+//    Assigne null à une classe
+// Resultats:
+//  Exception in thread "main" java.lang.NullPointerException: Cannot assign field "a" because "<local0>" is null
+// 	at NullAssignmentToClassThenToField.main(Unknown Source)
+
+class A{
+    int a;
+}
+
+{
+    A newA = new A();
+    newA = null;
+    newA.a = 4;
+    println("ok");
+}

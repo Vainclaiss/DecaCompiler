@@ -72,7 +72,6 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // TODO: rajouter la table des methodes.
         declVariables.codeGenListDeclVar(compiler, null);
 
         compiler.addComment("Beginning of main instructions:");
@@ -101,14 +100,13 @@ public class Main extends AbstractMain {
         insts.prettyPrint(s, prefix, true);
     }
 
-
     @Override
-    protected void codeGenByteMain(MethodVisitor mv,DecacCompiler compiler) {
+    protected void codeGenByteMain(MethodVisitor mv, DecacCompiler compiler) {
         declVariables.codeGenListDeclVarByte(mv, compiler); // On genere le bytecode pour les variables
-        
-            insts.codeGenListInstByte(mv,compiler); // On genere le bytecode pour toute les instructions
-            System.out.println("Bytecode generation for main method completed.");
-        
+
+        insts.codeGenListInstByte(mv, compiler); // On genere le bytecode pour toute les instructions
+        LOG.info("Bytecode generation for main method completed.");
+
     }
-    
+
 }

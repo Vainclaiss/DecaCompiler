@@ -1,8 +1,7 @@
 // Description:
 //    teste la declaration d'une classe en tant qu'extension d'un type qui n'est pas une classe
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 7 : Error: The parent is not a class
+//    NotAClassExtends.deca:6:0: Error: The parent is not a class
 
 class A extends void {
 

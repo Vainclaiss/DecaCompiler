@@ -23,13 +23,13 @@ public class MethodAsmBody extends AbstractMethodBody {
     @Override
     public void verifyMethodBody(DecacCompiler compiler, EnvironmentExp envExpParams,
             ClassDefinition currentClass, Type returnType) throws ContextualError {
-                
+
         code.setType(compiler.environmentType.STRING);
     }
 
     @Override
     public void codeGenMethodBody(DecacCompiler compiler, ClassDefinition curretClass, Label fiLabel) {
-        compiler.add(new InlinePortion(code.getValue()));
+        compiler.add(new InlinePortion(code.getValue().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t")));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     public void decompile(IndentPrintStream s) {
-        s.print("asm(" + code.decompile() + ");");
+        s.print("asm(\"" + code.decompile().substring(1, code.decompile().length() - 1).replace("\"", "\\\"") + "\");");
     }
 
     @Override

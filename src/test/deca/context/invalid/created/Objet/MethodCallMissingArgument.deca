@@ -1,0 +1,21 @@
+// Description:
+//  Methode appelé sans argument
+// Resultats:
+//  MethodCallMissingArgument.deca:19:11: Error: Too few arguments in method call
+
+class A{
+    int valA;
+    void A(int valA){
+        this.valA = valA;
+    }
+    int m(int arg){
+        this.valA = this.valA + arg;
+    }
+}
+
+{
+    A newA = new A();
+    newA.A(1);
+    newA.m();
+    println(newA.valA);
+}

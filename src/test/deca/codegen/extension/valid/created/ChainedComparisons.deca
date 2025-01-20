@@ -1,0 +1,22 @@
+// Description:
+//    Test des comparaisons chaînées
+// Resultats:
+//  ok
+//  ok
+
+{
+    int x = 5;
+    // true || false chainée
+    boolean result = ((1 < x && x < 10) || (x == 6 && x != 4)) || ((1 < x && x < 10) || (x == 6 && x != 4)) || ((1 < x && x < 10) || (x == 6 && x != 4)); // Comparaison chaînée
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+
+    if (((1 < x && x < 10) || (x == 6 && x != 4)) || ((1 < x && x < 10) || (x == 6 && x != 4)) || ((1 < x && x < 10) || (x == 6 && x != 4))){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

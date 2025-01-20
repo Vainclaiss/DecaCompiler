@@ -1,0 +1,16 @@
+// Description:
+// Test de l'instanceof avec heritage sur le parent
+// Resultats:
+// ok
+
+
+class A {}
+class B extends A {}
+
+{
+    A a = new A();
+    boolean result1 = a instanceof B; // false
+    if (!result1){
+        println("ok");
+    }
+}

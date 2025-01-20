@@ -1,8 +1,7 @@
 // Description:
 //    teste l'affectation d'un type illegal à un field
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 9 : Error: à compléter
+//    IllegalFieldAffectation.deca:9:14: Error: Illegal RValue type, got float, expected boolean
 
 class A {
     boolean a = true;

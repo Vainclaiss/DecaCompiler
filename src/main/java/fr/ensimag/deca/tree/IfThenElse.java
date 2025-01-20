@@ -107,6 +107,45 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler, Label finLabel) {
+        Label finIf = new Label("fin_if");
+        finIf.getAndAddNewSuffixe();
+
+        IfThenElse currIf = this;
+        boolean hasElseBranch = currIf.getElseBranch().size() > 0;
+
+        while ((currIf.getElseBranch().size() == 1) && currIf.getElseBranch().getList().get(0).isIfThenElse()) {
+            Label elseLabel = new Label("else");
+            elseLabel.getAndAddNewSuffixe();
+
+            IfThenElse nextIf = (IfThenElse) currIf.getElseBranch().getList().get(0);
+            boolean hasNextElseBranch = nextIf.getElseBranch().size() > 0;
+
+            currIf.getCondition().codeGenBool(compiler, false, elseLabel);
+            currIf.getThenBranch().codeGenListInst(compiler, finLabel);
+            compiler.addInstruction(new BRA(finIf));
+            compiler.addLabel(elseLabel);
+
+            currIf = nextIf;
+            hasElseBranch = hasNextElseBranch;
+        }
+
+        Label elseLabel = new Label("else");
+        elseLabel.getAndAddNewSuffixe();
+
+        currIf.getCondition().codeGenBool(compiler, false, hasElseBranch ? elseLabel : finIf);
+        currIf.getThenBranch().codeGenListInst(compiler, finLabel);
+        if (hasElseBranch) {
+            compiler.addInstruction(new BRA(finIf));
+            compiler.addLabel(elseLabel);
+            currIf.getElseBranch().codeGenListInst(compiler, finLabel);
+        }
+
+        // Ajoute l'étiquette de fin
+        compiler.addLabel(finIf);
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print("if (");
         getCondition().decompile(s);

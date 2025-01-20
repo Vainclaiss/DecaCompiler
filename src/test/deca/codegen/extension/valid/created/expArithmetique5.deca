@@ -1,0 +1,8 @@
+// Description:
+//    test d'addition d'un entier et d'un flottant
+// Resultats:
+//    5.0
+
+{
+    println(2+3.0);
+}

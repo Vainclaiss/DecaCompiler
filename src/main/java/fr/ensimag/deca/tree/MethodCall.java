@@ -74,18 +74,17 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO : gerer le cas de this
         String methodeLabel = methodName.getMethodDefinition().getLabel().toString().replace("code.", "");
         compiler.addComment("Empilement des arguments de " + methodeLabel);
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
-        // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
-        leftOperand.codeExp(compiler, 0); // method call, new, selection, variables in R0
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
+
+        leftOperand.codeExp(compiler, n); // method call, new, selection, variables in R0
+        compiler.addInstruction(new STORE(Register.getR(n), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         compiler.getStackOverflowCounter().addParamsOnStack(params.size());
         for (int i = params.size(); i > 0; i--) {
-            params.get(i - 1).codeExp(compiler, n); // TODO : checker le numero de registre
+            params.get(i - 1).codeExp(compiler, n);
             compiler.addInstruction(new STORE(Register.getR(compiler, n), new RegisterOffset(-i, Register.SP)));
         }
 
@@ -106,59 +105,53 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
-    leftOperand.codeByteExp(mv, compiler);
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        leftOperand.codeByteExp(mv, compiler);
 
-    
-    org.objectweb.asm.Label notNullLabel = new org.objectweb.asm.Label();
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
-    // If null => throw a NullPointerException, or jump to some error handler
-    mv.visitTypeInsn(Opcodes.NEW, "java/lang/NullPointerException");
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(
-        Opcodes.INVOKESPECIAL,
-        "java/lang/NullPointerException",
-        "<init>",
-        "()V",
-        false
-    );
-    mv.visitInsn(Opcodes.ATHROW);
-    mv.visitLabel(notNullLabel);
+        org.objectweb.asm.Label notNullLabel = new org.objectweb.asm.Label();
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
+        // If null => throw a NullPointerException, or jump to some error handler
+        mv.visitTypeInsn(Opcodes.NEW, "java/lang/NullPointerException");
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitMethodInsn(
+                Opcodes.INVOKESPECIAL,
+                "java/lang/NullPointerException",
+                "<init>",
+                "()V",
+                false);
+        mv.visitInsn(Opcodes.ATHROW);
+        mv.visitLabel(notNullLabel);
 
-    for (AbstractExpr arg : rightOperand.getList()) {
-        arg.codeByteExp(mv, compiler);
-       
+        for (AbstractExpr arg : rightOperand.getList()) {
+            arg.codeByteExp(mv, compiler);
+
+        }
+
+        MethodDefinition methodDef = methodName.getMethodDefinition();
+        Type leftType = leftOperand.getType();
+
+        if (!leftType.isClass()) {
+
+            return;
+        }
+        ClassType ctype = (ClassType) leftType;
+        ClassDefinition classDef = ctype.getDefinition();
+
+        String ownerInternalName = classDef.getType().getName().toString().replace('.', '/');
+
+        String jvmMethodName = methodName.getName().toString();
+
+        String descriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
+
+        mv.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                ownerInternalName,
+                jvmMethodName,
+                descriptor,
+                false);
+
     }
-
-
-    MethodDefinition methodDef = methodName.getMethodDefinition();
-Type leftType = leftOperand.getType();
-
-if (!leftType.isClass()) {
-
-    return;
-}
-ClassType ctype = (ClassType) leftType;
-ClassDefinition classDef = ctype.getDefinition();
-
-String ownerInternalName = classDef.getType().getName().toString().replace('.', '/');
-
-    String jvmMethodName = methodName.getName().toString();
-
-   
-    String descriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
-
-    mv.visitMethodInsn(
-        Opcodes.INVOKEVIRTUAL, 
-        ownerInternalName, 
-        jvmMethodName, 
-        descriptor, 
-        false
-    );
-
-   
-}
 
     @Override
     public DVal getDVal() {
@@ -171,20 +164,17 @@ String ownerInternalName = classDef.getType().getName().toString().replace('.', 
     }
 
     @Override
-protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
-    codeByteExp(mv, compiler);
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+        codeByteExp(mv, compiler);
 
-    if (!this.getType().isVoid()) {
-        mv.visitInsn(Opcodes.POP);
+        if (!this.getType().isVoid()) {
+            mv.visitInsn(Opcodes.POP);
+        }
     }
-}
-
-
-
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        codeExp(compiler, 2); // TODO : vraiment pas optimiser mais sinon possible erreur
+        codeExp(compiler, 2);
     }
 
     @Override
@@ -199,39 +189,42 @@ protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler)  {
-    leftOperand.codeByteExp(mv, compiler);
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,
+            DecacCompiler compiler) {
+        leftOperand.codeByteExp(mv, compiler);
 
-    for (AbstractExpr arg : rightOperand.getList()) {
-        arg.codeByteExp(mv, compiler);
-    }
-
-    MethodDefinition methodDef = methodName.getMethodDefinition();
-    Type leftType = leftOperand.getType();
-    ClassType ctype = (ClassType) leftType;
-    String ownerInternalName = ctype.getDefinition().getInternalName();
-    
-    String methodNameStr = methodName.getName().toString();
-    String methodDescriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
-
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, ownerInternalName, methodNameStr, methodDescriptor, false);
-
-    if (methodDef.getType().isBoolean()) {
-        if (branchIfTrue) {
-            mv.visitJumpInsn(Opcodes.IFNE, e); 
-        } else {
-            mv.visitJumpInsn(Opcodes.IFEQ, e); 
+        for (AbstractExpr arg : rightOperand.getList()) {
+            arg.codeByteExp(mv, compiler);
         }
-    } else {
-        throw new UnsupportedOperationException("MethodCall: Expected boolean return type for codeGenByteBool");
-    }
-}
 
+        MethodDefinition methodDef = methodName.getMethodDefinition();
+        Type leftType = leftOperand.getType();
+        ClassType ctype = (ClassType) leftType;
+        String ownerInternalName = ctype.getDefinition().getInternalName();
+
+        String methodNameStr = methodName.getName().toString();
+        String methodDescriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
+
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, ownerInternalName, methodNameStr, methodDescriptor, false);
+
+        if (methodDef.getType().isBoolean()) {
+            if (branchIfTrue) {
+                mv.visitJumpInsn(Opcodes.IFNE, e);
+            } else {
+                mv.visitJumpInsn(Opcodes.IFEQ, e);
+            }
+        } else {
+            throw new UnsupportedOperationException("MethodCall: Expected boolean return type for codeGenByteBool");
+        }
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
         leftOperand.decompile(s);
-        s.print(".");
+        if (!leftOperand.isImplicit()) {
+            s.print(".");
+        }
+
         methodName.decompile(s);
         s.print("(");
         rightOperand.decompile(s);

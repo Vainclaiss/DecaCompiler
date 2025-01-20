@@ -5,7 +5,7 @@
 
 {
     if (false) {
-        println("test");
+        println("ERRONE");
     }
     else if (false) {
         println("ERRONE");

@@ -1,6 +1,7 @@
+// Description:
+//    Teste l'erreur de type dans une condition
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 10 : Error: Incompatible types for boolean operation: boolean || int
+//    InvalidTypeInIf.deca:11:20: Error: Incompatible types for boolean operation: boolean || int
 
 {
     if(true && false) {

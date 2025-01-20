@@ -2,11 +2,17 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.execerrors.IncompatibleCastError;
+import fr.ensimag.deca.codegen.execerrors.OverflowError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -20,11 +26,16 @@ import java.io.PrintStream;
 public class Cast extends AbstractExpr {
 
     final private AbstractIdentifier type;
-    final private AbstractExpr expr;
+    private AbstractExpr expr;
 
     public Cast(AbstractIdentifier type, AbstractExpr expr) {
         this.type = type;
         this.expr = expr;
+    }
+
+    @Override
+    protected DVal getDVal() {
+        return expr.getDVal();
     }
 
     @Override
@@ -39,32 +50,48 @@ public class Cast extends AbstractExpr {
         }
 
         try {
-            type.verifyRValue(compiler, localEnv, currentClass, type2);
+            expr.verifyRValue(compiler, localEnv, currentClass, type1);
         } catch (ContextualError typeErr) {
-            try {
-                expr.verifyRValue(compiler, localEnv, currentClass, type1);
-            } catch (ContextualError typeErr2) {
+
+            if (!type1.subType(type2) && !(type1.isFloat() && type2.isInt()) && !(type1.isInt() && type2.isFloat())) {
                 throw new ContextualError("Error: Cannot cast " + type2.getName() + " to " + type1.getName(),
                         getLocation());
             }
+
         }
-        System.out.println(type.decompile());
-        // new (new A()).m())
-        // (new A()).m(new B)
+        
         setType(type1);
         return type1;
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-
-    }
-
-    @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        throw new UnsupportedOperationException("not yet implemented");
+        int indexR = (n>=2) ? n : 2;
+        compiler.addComment("debut du cast " + expr.getType().toString() + " vers " + type.getName().getName());
+        if (type.getType().isInt()) {
+            expr.codeExp(compiler, indexR);
+            compiler.addInstruction(new INT(Register.getR(indexR), Register.getR(indexR)));
+        }
+        else if (type.getType().isFloat()) {
+            expr.codeExp(compiler, indexR);
+            compiler.addInstruction(new FLOAT(Register.getR(indexR), Register.getR(indexR)));
+        }
+        else if (type.getType().isClass() && !expr.getType().isNull()) {
 
+            if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+                compiler.addExecError(IncompatibleCastError.INSTANCE);
+                //compiler.addInstruction(new BOV(OverflowError.INSTANCE.getLabel()));
+            }
+
+            (new Instanceof(expr, type)).codeGenBool(compiler, false, IncompatibleCastError.INSTANCE.getLabel(), indexR);
+        }
+        else {
+            expr.codeExp(compiler, n);
+        }
+        if (indexR != n) {
+            compiler.addInstruction(new LOAD(Register.getR(indexR), Register.getR(n)));
+        }
+        compiler.addComment("fin du cast " + expr.getType().toString() + " vers " + type.getName().getName());
     }
 
     @Override

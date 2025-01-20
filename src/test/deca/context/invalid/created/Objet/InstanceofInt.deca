@@ -1,0 +1,11 @@
+// Description:
+//  Teste le Instanceof avec des int
+// Resultats:
+//  InstanceofInt.deca:8:9: Error: Incompatible types for operation: int instanceof int
+
+{
+    int a;
+    if(a instanceof int){
+        println("ok");
+    }
+}

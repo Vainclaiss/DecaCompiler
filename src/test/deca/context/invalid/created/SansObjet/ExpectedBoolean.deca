@@ -1,6 +1,7 @@
+// Description:
+//     Teste si une expression de type float est bien une expression de type boolean
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 6 : Error: Expected expression type is boolean, got float
+//    ExpectedBoolean.deca:7:7: Error: Expected expression type is 'boolean', got 'float'
 
 {
     if(3.7) {

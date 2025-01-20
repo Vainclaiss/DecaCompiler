@@ -1,16 +1,9 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.PrintStream;
-import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -21,17 +14,10 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.util.CheckClassAdapter;
 import org.objectweb.asm.util.TraceClassVisitor;
 
-
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.StackOverflowExecError;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -71,8 +57,6 @@ public class Program extends AbstractProgram {
         return main;
     }
 
-
-
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
@@ -85,103 +69,98 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
-    public void codeGenByteProgram(DecacCompiler compiler)   {
+    @Override
+    public void codeGenByteProgram(DecacCompiler compiler, String fileName) {
 
-        
-        try (FileOutputStream textFileOut = new FileOutputStream("MainBytecode.txt");
-             PrintWriter textPrintWriter = new PrintWriter(textFileOut, true))
-        {
+        String bytecodeTxtFileName = fileName.substring(0, fileName.length() - 4) + "Bytecode.txt";
+        try (FileOutputStream textFileOut = new FileOutputStream(bytecodeTxtFileName);
+                PrintWriter textPrintWriter = new PrintWriter(textFileOut, true)) {
             ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-    
-            //Pour afficher le bytecode en forme readable
+
+            // Pour afficher le bytecode en forme readable
             TraceClassVisitor tcv = new TraceClassVisitor(cw, textPrintWriter);
-    
+
             // 1) Define the class header
+            String[] fileClassNameTab = fileName.substring(0, fileName.length() - 4).split("/");
+            String fileClassName = fileClassNameTab[fileClassNameTab.length - 1];
             tcv.visit(
-                Opcodes.V17,                // Java 17 class file version
-                Opcodes.ACC_PUBLIC,         // public class
-                "Main",                     // internal class name
-                null,                       // signature (no generics)
-                "java/lang/Object",         // superclass: Object
-                null                        // no interfaces
+                    Opcodes.V17, // Java 17 class file version
+                    Opcodes.ACC_PUBLIC, // public class
+                    fileClassName, // internal class name
+                    null, // signature (no generics)
+                    "java/lang/Object", // superclass: Object
+                    null // no interfaces
             );
-    
+
             // 2) Constructor: public Main() { super(); }
 
             // on declare le constructeur et on retourne un method visitor
             MethodVisitor ctor = tcv.visitMethod(
-                Opcodes.ACC_PUBLIC,
-                "<init>",
-                "()V",
-                null,
-                null
-            );
+                    Opcodes.ACC_PUBLIC,
+                    "<init>",
+                    "()V",
+                    null,
+                    null);
             ctor.visitCode(); // on entre dans le corps du constructeur c comme ouvrir {}
             ctor.visitVarInsn(Opcodes.ALOAD, 0);
             ctor.visitMethodInsn( // fait appel à super() dans java
-                Opcodes.INVOKESPECIAL, // le invokespecial ici pour dire qu'on va appeler le constructeur
-                "java/lang/Object",
-                "<init>", // pour dire constructeur
-                "()V",// prend rien, retourne rien
-                false
-            );
+                    Opcodes.INVOKESPECIAL, // le invokespecial ici pour dire qu'on va appeler le constructeur
+                    "java/lang/Object",
+                    "<init>", // pour dire constructeur
+                    "()V", // prend rien, retourne rien
+                    false);
             ctor.visitInsn(Opcodes.RETURN); // visitInsn car on insere une instruction sans argument ici return
             ctor.visitMaxs(1, 1);
             ctor.visitEnd();
-    
+
             // 3) Main method
             MethodVisitor mv = tcv.visitMethod(
-                Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC,
-                "main",
-                "([Ljava/lang/String;)V",
-                null,
-                null
-            );
+                    Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC,
+                    "main",
+                    "([Ljava/lang/String;)V",
+                    null,
+                    null);
             mv.visitCode();
-    
+
             // on entre dans la main method
 
             this.getMain().codeGenByteMain(mv,compiler); // on appelle cette fct pour generer le bytecode suivant l'arbre
-            this.getClasses().codeGenByteClass(compiler);
+            this.getClasses().codeGenByteClass(compiler, fileName);
     
             // 5) On retourne du main
             mv.visitInsn(Opcodes.RETURN); // on ajoute le return pour le compter dans le stack en bas
             mv.visitMaxs(0, 0); // vu qu'on ne sera pas sûr de la profondeur de la pile on rajoute 0,0
             mv.visitEnd();
-    
+
             // 6) La classe est finit
             tcv.visitEnd();
-    
-            
+
             byte[] bytecode = cw.toByteArray();
 
-    
-            try (FileOutputStream fos = new FileOutputStream("Main.class")) {
+            String classFileName = fileName.substring(0, fileName.length() - 4) + ".class";
+            try (FileOutputStream fos = new FileOutputStream(classFileName)) {
                 fos.write(bytecode);
                 LOG.info("Wrote .class successfully.");
             }
-           
-            try (PrintWriter rawByteWriter = new PrintWriter("MainRawBytes.txt")) {
+
+            String rawBytesFileName = fileName.substring(0, fileName.length() - 4) + "RawBytes.txt";
+            try (PrintWriter rawByteWriter = new PrintWriter(rawBytesFileName)) {
                 for (byte b : bytecode) {
                     rawByteWriter.printf("%02X ", b);
                 }
                 rawByteWriter.println();
                 LOG.info("Wrote MainRawBytes.txt with a hex dump of the .class file");
             }
-    
+
         } catch (IOException e) {
             throw new RuntimeException("Error writing bytecode output", e);
         }
     }
-    
 
     @Override
-    public void codeGenProgram(DecacCompiler compiler)throws ContextualError  {
-        // TODO: compléter ce squelette très rudimentaire de code
-
+    public void codeGenProgram(DecacCompiler compiler) {
         // generation de la table des methodes
         classes.codeGenVtable(compiler);
-        compiler.getStackOverflowCounter().addVariables(1); //
 
         // generation du programme principal
         compiler.addComment("Main program");
@@ -208,7 +187,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("Initialisation de Object");
         compiler.addLabel(new Label("init.Object"));
         compiler.addInstruction(new RTS());
-        
+
         classes.codeGenClass(compiler);
     }
 

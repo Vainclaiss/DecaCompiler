@@ -32,7 +32,7 @@ public class DeclParam extends AbstractDeclParam {
         Type paramType = type.verifyType(compiler);
         if (paramType.isVoid()) {
             throw new ContextualError(
-                "Method parameters cannot have a void type",
+                "Error: Method parameters cannot have a void type",
                 getLocation()
             );
         }

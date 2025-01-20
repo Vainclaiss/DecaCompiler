@@ -9,12 +9,23 @@ import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.WUTF8;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import java.io.PrintStream;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -47,19 +58,30 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new WSTR(new ImmediateString(value)));
-    }
+        String regex = "(\\\\n|\\\\r|\\\\t)";
 
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
 
+        int lastEnd = 0;
 
-    @Override
-    protected DVal getDVal() {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+        while (matcher.find()) {
+            if (matcher.start() > lastEnd) {
+                compiler.addInstruction(new WSTR(new ImmediateString(value.substring(lastEnd, matcher.start()))));
+            }
 
-    @Override
-    protected void codeExp(DecacCompiler compiler, int n) {
-        throw new UnsupportedOperationException("not yet implemented");
+            compiler.addInstruction(new LOAD(
+                    new ImmediateInteger(
+                            matcher.group().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t").charAt(0)),
+                    Register.R1));
+            compiler.addInstruction(new WUTF8());
+
+            lastEnd = matcher.end();
+        }
+
+        if (lastEnd < value.length()) {
+            compiler.addInstruction(new WSTR(new ImmediateString(value.substring(lastEnd))));
+        }
     }
 
     @Override
@@ -75,7 +97,7 @@ protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("\"" + getValue() + "\"");
+        s.print("\"" + value + "\"");
     }
 
     @Override
@@ -90,7 +112,7 @@ protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
 
     @Override
     String prettyPrintNode() {
-        return "StringLiteral (" + value + ")";
+        return "StringLiteral (" + StringEscapeUtils.escapeJava(value) + ")";
     }
 
 

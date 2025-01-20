@@ -1,7 +1,7 @@
 // Description:
 // Test d'accès à un attribut protégé via un extends (condition 2 Sélection)
 // Resultats:
-// PrivateSelectionExtends.deca:8:17: Error: Unauthorized access to the protected field 'x'
+// ProtectedSelectionExtends.deca:13:20: Error: Unauthorized access to the protected field 'x'
 
 class A {
     protected int x;
@@ -9,8 +9,8 @@ class A {
 
 class X {
     void m(){
-        a = new A();
-        println(a.x);
+        A newA = new A();
+        println(newA.x);
     }
 }
 

@@ -77,7 +77,7 @@ public class New extends AbstractExpr {
             compiler.addInstruction(new BOV(HeapOverflowError.INSTANCE.getLabel()));
         }
 
-        compiler.addInstruction(new LEA(nameDef.getOperand(), Register.R0));
+        compiler.addInstruction(new LEA(nameDef.getDAddrOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.getR(compiler,n))));
         compiler.addInstruction(new PUSH(Register.getR(compiler,n)));
         compiler.addInstruction(new BSR(new Label("init." + nameDef.getType().toString())));

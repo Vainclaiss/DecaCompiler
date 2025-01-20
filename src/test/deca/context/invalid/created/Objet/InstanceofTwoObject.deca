@@ -1,0 +1,16 @@
+// Description:
+//  Teste le Instanceof avec deux objets
+// Resultats:
+//  InstanceofTwoObject.deca:13:23: Error: Type 'newNewA' is not defined
+
+class A{
+
+}
+
+{
+    A newA = new A();
+    A newNewA = new A();
+    if(newA instanceof newNewA){
+        println("ok");
+    }
+}

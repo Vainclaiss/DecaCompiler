@@ -1,0 +1,14 @@
+// Description:
+//    teste un convFloat sur le return
+// Resultats:
+//    
+
+class A {
+    float m() {
+        return 3;
+    }
+}
+
+{
+
+}

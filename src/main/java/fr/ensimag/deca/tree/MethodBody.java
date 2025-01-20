@@ -53,7 +53,7 @@ public class MethodBody extends AbstractMethodBody {
     public void decompile(IndentPrintStream s) {
         s.println("{");
         s.indent();
-        s.indent(); // TODO: trouver un autre moyen j'aime pas le double indent
+        s.indent();
         variables.decompile(s);
         insts.decompile(s);
         s.unindent();

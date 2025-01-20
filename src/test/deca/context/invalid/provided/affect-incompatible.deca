@@ -1,11 +1,8 @@
 // Description:
 //    Affectation et typage
-//
 // Resultats:
-//    Ligne 15: Affectation de types incompatibles.
-// 
-// Historique:
-//    cree le 01/01/2025
+//    affect-incompatible.deca:12:7: Error: Illegal RValue type, got boolean, expected int
+
 
 {
    int a;

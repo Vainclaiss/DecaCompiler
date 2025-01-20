@@ -287,7 +287,9 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        codeExp(compiler, 0);
+        if (getDefinition().isField()) {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+        }
         // nothing to do, used for Assign codeGenInst
     }
 
@@ -406,77 +408,52 @@ public class Identifier extends AbstractIdentifier {
      * @param compiler
      */
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getDVal(), Register.R1));
-        Type type = getType();
-        if (type.isInt()) {
-            compiler.addInstruction(new WINT());
-        } else if (type.isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        } else {
-            throw new UnsupportedOperationException("Print of this type identifier not yet implemented");
-        }
-    }
-
-        /**
-     * Generate code to print the expression
-     *
-     * @param compiler
-     */
-    @Override
     protected void codeGenPrintHex(DecacCompiler compiler) {
         Type type = getType();
         if (type.isFloat()) {
             compiler.addInstruction(new WFLOATX());
-        }
-        else {
+        } else {
             codeGenPrint(compiler);
         }
     }
 
     @Override
-    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler) {
-        Type type= getType();
-        
-        if(type.isFloat()){
+    protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
+        Type type = getType();
+
+        if (type.isFloat()) {
 
             mv.visitFieldInsn(
-                Opcodes.GETSTATIC,
-                "java/lang/System",
-                "out",
-                "Ljava/io/PrintStream;"
-            );
-            
-            int localIndex = getVariableDefinition().getLocalIndex();
+                    Opcodes.GETSTATIC,
+                    "java/lang/System",
+                    "out",
+                    "Ljava/io/PrintStream;");
 
+            int localIndex = getVariableDefinition().getLocalIndex();
 
             mv.visitVarInsn(Opcodes.FLOAD, localIndex);
 
             mv.visitMethodInsn(
-                Opcodes.INVOKESTATIC,
-                "java/lang/Float",      
-                "toHexString",           
-                "(F)Ljava/lang/String;", // prend un float et retourne un string
-                false
-            );
+                    Opcodes.INVOKESTATIC,
+                    "java/lang/Float",
+                    "toHexString",
+                    "(F)Ljava/lang/String;", // prend un float et retourne un string
+                    false);
 
             mv.visitMethodInsn(
-                Opcodes.INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(Ljava/lang/String;)V",
-                false
-            );
-            
+                    Opcodes.INVOKEVIRTUAL,
+                    "java/io/PrintStream",
+                    "println",
+                    "(Ljava/lang/String;)V",
+                    false);
+
         }
     }
-    
-    
+
     private Definition definition;
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
-        // TODO : gerer le cas des selection, method call etc
         compiler.addInstruction(new LOAD(getDVal(), Register.R0));
         compiler.addInstruction(new CMP(1, Register.R0));
         if (branchIfTrue) {
@@ -487,17 +464,16 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue,
-                               org.objectweb.asm.Label e, DecacCompiler compiler) {
-    codeByteExp(mv, compiler);
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue,
+            org.objectweb.asm.Label e, DecacCompiler compiler) {
+        codeByteExp(mv, compiler);
 
-    if (branchIfTrue) {
-        mv.visitJumpInsn(Opcodes.IFNE, e);
-    } else {
-        mv.visitJumpInsn(Opcodes.IFEQ, e);
+        if (branchIfTrue) {
+            mv.visitJumpInsn(Opcodes.IFNE, e);
+        } else {
+            mv.visitJumpInsn(Opcodes.IFEQ, e);
+        }
     }
-}
-
 
     @Override
     protected void iterChildren(TreeFunction f) {

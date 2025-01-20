@@ -140,7 +140,6 @@ public class DeclClass extends AbstractDeclClass {
             }
         }
 
-        // TODO: duplication de code à simplifier
         for (Map.Entry<Symbol, ExpDefinition> entry : envMethods.getCurrEnv().entrySet()) {
             Symbol symbol = entry.getKey();
             ExpDefinition definition = entry.getValue();
@@ -174,8 +173,7 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void codeGenClass(DecacCompiler compiler) throws ContextualError  {
-
+    protected void codeGenClass(DecacCompiler compiler) {
         compiler.resetTSTO();
         IMAProgram mainProgram = compiler.getProgram();
         compiler.setProgram(new IMAProgram());
@@ -198,7 +196,7 @@ public class DeclClass extends AbstractDeclClass {
 
         TSTOCounter stackOverflowCounter = compiler.getStackOverflowCounter();
         int maxSavedRegisters = stackOverflowCounter.getMaxRegisterUsed();
-        stackOverflowCounter.addSavedRegisters((maxSavedRegisters == 0) ? 0 : maxSavedRegisters-1);
+        stackOverflowCounter.addSavedRegisters((maxSavedRegisters == 0) ? 0 : maxSavedRegisters - 1);
 
         compiler.addFirst(new Line("fields initialization"));
         compiler.add(new Line("restauration des registres"));
@@ -208,8 +206,8 @@ public class DeclClass extends AbstractDeclClass {
         }
 
         compiler.addFirst(new Line("sauvegarde des registres"));
-        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); 
-                                                                               
+        compiler.addFirst(new BOV(StackOverflowExecError.INSTANCE.getLabel())); // ordre des 2 instructions inversé à
+                                                                                // cause de addFirst()
         compiler.addFirst(new TSTO(compiler.getStackOverflowCounter().getMaxTSTO()),
                 compiler.getStackOverflowCounter().getDetailsMaxTSTO());
 
@@ -220,7 +218,8 @@ public class DeclClass extends AbstractDeclClass {
         declMethods.codeGenDeclMethods(compiler, name.getClassDefinition());
     }
 
-    public void codeGenByteClass(DecacCompiler compiler) {
+
+    public void codeGenByteClass(DecacCompiler compiler, String filename) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         String classInternalName = name.getName().toString().replace('.', '/');
         String superInternalName = superClass.getName().toString();
@@ -230,8 +229,8 @@ public class DeclClass extends AbstractDeclClass {
         } else {
             superInternalName = superInternalName.replace('.', '/');
         }
-    
-        String filename = classInternalName + ".class"; 
+        
+        String classFilename = filename.substring(0, filename.lastIndexOf(File.separator)) + File.separator + classInternalName + ".class";
 
     
         cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, classInternalName, null, superInternalName, null);
@@ -242,7 +241,7 @@ public class DeclClass extends AbstractDeclClass {
     
         declMethods.codeGenByteDeclMethods(cw, compiler, name.getClassDefinition());
     
-        File outFile = new File(filename);
+        File outFile = new File(classFilename);
 
         cw.visitEnd();
         byte[] bytecode = cw.toByteArray();

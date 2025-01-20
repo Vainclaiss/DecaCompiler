@@ -55,7 +55,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     }
 
 
-    public void codeGenDeclMethods(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError  {
+    public void codeGenDeclMethods(DecacCompiler compiler, ClassDefinition currentClass) {
         for (AbstractDeclMethod m : getList()) {
             m.codeGenDeclMethod(compiler, currentClass);
         }

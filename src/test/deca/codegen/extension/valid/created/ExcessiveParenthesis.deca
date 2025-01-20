@@ -1,0 +1,11 @@
+// Description:
+//  Test avec beaucoup de parenthèses superflues
+// Resultats:
+//  5
+
+{
+    int x = 3;
+    int y = 4;
+    int result = (((((x + y)))) * (((((x - y)))))) + (((x * y))) - (((x / y)));
+    println(result);
+}

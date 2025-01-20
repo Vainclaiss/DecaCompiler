@@ -1,6 +1,7 @@
-// Resultats :
-//    Erreur contextuelle
-//    Ligne 6
+// Description:
+//    Teste l'assignation d'une chaine de caractere a un booleen
+// Resultats:
+//    WrongTypeAssign.deca:7:16: Error: Illegal RValue type, got string, expected boolean
 
 {
     boolean b = "aaa";

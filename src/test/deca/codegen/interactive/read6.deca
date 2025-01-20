@@ -1,0 +1,10 @@
+// Description:
+//    test de readInt et readFloat directement dans un println
+// Resultats:
+//    "affiche les entrés"
+
+
+{
+    println(readInt());
+    println(readFloat());
+}

@@ -1,0 +1,21 @@
+// Description:
+//  Downcast
+// Resultats:
+//  Error: Incompatible cast
+
+class A{
+    int m(){
+        return 1;
+    }
+}
+
+class B extends A{
+    int f(){
+        return 2;
+    }
+}
+
+{
+    A newA = new A();
+    println(((B)(newA)).f());
+}

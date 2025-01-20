@@ -1,0 +1,12 @@
+// Description:
+// while true
+// Resultats:
+// -2147483648
+
+{
+    int a = 2;
+    while(a>0){
+        a = a+a;
+    }
+    println(a);
+}

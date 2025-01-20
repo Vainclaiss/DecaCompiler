@@ -5,23 +5,12 @@
 
 . "$(dirname "$0")/utils.sh"
 
-check_gencode_file_format() {
-    if ! grep -q -e ".*\/\/ Description:.*" "$1"; then
-        failure "Invalid file $1: no description line."
-        exit 1
-    fi
-    if ! grep -q -e ".*\/\/ Resultats:.*" "$1"; then
-        failure "Invalid file $1: no results line."
-        exit 1
-    fi
-}
-
 check_compilation() {
     ass_file="${1%.deca}.ass"
     if ! ./src/main/bin/decac "$1"; then
         if [ "$2" = true ]; then
             failure "Compilation failed for $1, but it was expected to succeed."
-            # exit 1
+            exit 1
         fi
     # else
     #     if [ "$2" = false ]; then
@@ -31,7 +20,7 @@ check_compilation() {
     fi
     if [ "$2" = true ] && [ ! -f "$ass_file" ]; then
         failure "File $ass_file not generated for $1."
-        # exit 1
+        exit 1
     fi
 }
 
@@ -43,21 +32,50 @@ check_result() {
     if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
         failure "Incorrect result for $1."
         diff "${1%.deca}.expected" "${1%.deca}.res"
-        # exit 1
+        exit 1
     fi
 }
 
 # Valid tests
 make_valid_tests() {
-    find ./src/test/deca/codegen/valid/created -type f -name '*.deca' | while read -r file; do
+    find ./src/test/deca/codegen/valid -type f -name '*.deca' | while read -r file; do
         check_gencode_file_format "$file"
         check_compilation "$file" true
         check_result "$file" true
-        rm -f "${file%.deca}.ass" 2>/dev/null
-        rm -f "${file%.deca}.res" 2>/dev/null
-        rm -f "${file%.deca}.expected" 2>/dev/null
+        clean_temp_test_files ./src/test/deca/codegen/valid
         success "[valid] Test passed for $file"
     done
+
+    # Make HeapOverflow
+    check_gencode_file_format "src/test/deca/codegen/valid/created/LValueHell.deca"
+    check_compilation "src/test/deca/codegen/valid/created/LValueHell.deca" true
+    ass_file="src/test/deca/codegen/valid/created/LValueHell.ass"
+    echo "Error: Heap Overflow" >"src/test/deca/codegen/valid/created/LValueHell.expected"
+    ./global/bin/ima -t 10 "$ass_file" >"src/test/deca/codegen/valid/created/LValueHell.res"
+
+    if ! diff -B -w -q "src/test/deca/codegen/valid/created/LValueHell.expected" "src/test/deca/codegen/valid/created/LValueHell.res" >/dev/null; then
+        failure "Incorrect result for src/test/deca/codegen/valid/created/LValueHell.deca."
+        diff "src/test/deca/codegen/valid/created/LValueHell.expected" "src/test/deca/codegen/valid/created/LValueHell.res"
+        clean_temp_test_files ./src/test/deca/codegen/valid
+        exit 1
+    fi
+    clean_temp_test_files ./src/test/deca/codegen/valid
+
+    # Make StackOverflow
+    check_gencode_file_format "src/test/deca/codegen/valid/created/minus.deca"
+    check_compilation "src/test/deca/codegen/valid/created/minus.deca" true
+    ass_file="src/test/deca/codegen/valid/created/minus.ass"
+    echo "Error: Stack Overflow" >"src/test/deca/codegen/valid/created/minus.expected"
+    ./global/bin/ima -p 1 "$ass_file" >"src/test/deca/codegen/valid/created/minus.res"
+
+    if ! diff -B -w -q "src/test/deca/codegen/valid/created/minus.expected" "src/test/deca/codegen/valid/created/minus.res" >/dev/null; then
+        failure "Incorrect result for src/test/deca/codegen/valid/created/minus.deca."
+        diff "src/test/deca/codegen/valid/created/minus.expected" "src/test/deca/codegen/valid/created/minus.res"
+        clean_temp_test_files ./src/test/deca/codegen/valid
+        exit 1
+    fi
+    clean_temp_test_files ./src/test/deca/codegen/valid
+
 }
 
 # Invalid tests
@@ -86,7 +104,7 @@ check_valid_interactive_result() {
         if [ $count -le "$nb_args" ]; then
             input_args="${input_args}${input_args:+\\n}$arg"
         else
-            outputs="$outputs $arg"
+            outputs="${outputs}${outputs:+\\n}$arg"
         fi
         count=$((count + 1))
     done
@@ -157,11 +175,12 @@ make_invalid_interactive_tests() {
     check_invalid_interactive_result ./src/test/deca/codegen/interactive/read3.deca 1 3.0 3.00000e+00
     check_invalid_interactive_result ./src/test/deca/codegen/interactive/read4.deca 2 2.0 3.0 5.00000e+00
     check_invalid_interactive_result ./src/test/deca/codegen/interactive/read5.deca 2 2.0 3 5.00000e+00
+    check_invalid_interactive_result ./src/test/deca/codegen/interactive/read6.deca 2 2 3.00000e+00 2 3
 }
 
 make_valid_interactive_tests() {
     i=1
-    while [ $i -le 5 ]; do
+    while [ $i -le 6 ]; do
         file="./src/test/deca/codegen/interactive/read${i}.deca"
         check_compilation "$file" false
         i=$((i + 1))
@@ -172,15 +191,17 @@ make_valid_interactive_tests() {
     check_valid_interactive_result ./src/test/deca/codegen/interactive/read3.deca 1 3 3.00000e+00
     check_valid_interactive_result ./src/test/deca/codegen/interactive/read4.deca 2 2 3 5.00000e+00
     check_valid_interactive_result ./src/test/deca/codegen/interactive/read5.deca 2 2 3.00000e+00 5.00000e+00
+    check_valid_interactive_result ./src/test/deca/codegen/interactive/read6.deca 2 2 3.00000e+00 2 3.00000e+00
 }
 
 main() {
     prompt_strong "Running basic-gencode tests..."
     setup_path_and_cd
+    clean_temp_test_files ./src/test/deca/codegen/
     make_valid_tests
-    # make_invalid_tests
-    # make_valid_interactive_tests
-    # make_invalid_interactive_tests
+    make_invalid_tests
+    make_valid_interactive_tests
+    make_invalid_interactive_tests
 }
 
 main

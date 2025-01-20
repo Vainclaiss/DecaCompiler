@@ -1,0 +1,8 @@
+// Description:
+//    test des expressions arithmetiques sur UnaryMinus
+// Resultats:
+//    -6
+
+{
+    println(3*-2);
+}

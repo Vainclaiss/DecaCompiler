@@ -50,7 +50,7 @@ public abstract class AbstractPrint extends AbstractInst {
                         a.getLocation());
             }
         }
-    } // TODO : faire des tests qui levent cette erreur
+    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
@@ -67,29 +67,17 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
-        
         if(printHex){
             for (AbstractExpr a : getArguments().getList()) {
                 a.codeGenBytePrintHex(mv,compiler);
             }
             
-
-        }
-        else{
+        } else{
             for (AbstractExpr arg : getArguments().getList()) {
                 arg.codeGenBytePrint(mv, compiler);  
             }
-
         }
-
-        
-        
     }
-    
-
-
-
-
 
     private boolean getPrintHex() {
         return printHex;

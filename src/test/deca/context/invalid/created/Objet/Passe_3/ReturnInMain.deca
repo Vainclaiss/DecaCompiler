@@ -1,8 +1,7 @@
 // Description:
 //    teste un return du mauvais type
 // Resultats:
-//    Erreur contextuelle
-//    Ligne 9 : Error: Main does not return anything
+//    ReturnInMain.deca:7:4: Error: Main does not return anything
 
 {
     return false;

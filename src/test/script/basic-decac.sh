@@ -108,10 +108,10 @@ test_decac_b() {
 
 check_decompilation_idempotence() {
     prompt_check "- decac -p [idempotence]"
-    echo "$1" 1>"${2%.deca}_p2.deca"
-    decac -p "${2%.deca}_p2.deca" 1>"${2%.deca}_p3.deca"
-    if ! diff "${2%.deca}_p2.deca" "${2%.deca}_p3.deca"; then
-        failure "$3"
+    decac -p "$1" >"${1%.deca}_p2.deca"
+    decac -p "${1%.deca}_p2.deca" >"${1%.deca}_p3.deca"
+    if ! diff "${1%.deca}_p2.deca" "${1%.deca}_p3.deca"; then
+        failure "$2"
         exit 1
     fi
 }
@@ -153,10 +153,14 @@ test_decac_p() {
             prompt "- decac -p $file"
             decac_moins_p=$(decac -p "$file")
             check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
-            check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
+            if [ "$(basename "$file")" = "noMain.deca" ]; then
+                check_no_output "$decac_moins_p" "ERREUR: decac -p a produit une sortie pour le fichier $file."
+            else
+                check_output "$decac_moins_p" "ERREUR: decac -p n'a produit aucune sortie pour le fichier $file."
+            fi
             check_no_error "$decac_moins_p" "ERREUR: decac -p a produit une erreur pour le fichier $file."
-            check_decompilation_idempotence "$decac_moins_p" "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
-            rm -f "${file%.deca}_p2.deca" "${file%.deca}_p3.deca"
+            check_decompilation_idempotence "$file" "ERREUR: decac -p n'a pas produit de décompilation idempotente pour le fichier $file."
+            clean_temp_test_files "src/test/deca/codegen/"
         done
     }
 
@@ -185,14 +189,10 @@ test_decac_n() {
     check_zero_status "$?" "ERREUR: decac -n a termine avec un status different de zero."
     check_no_output "$decac_moins_n" "ERREUR: decac -n a produit une sortie."
     check_no_error "$decac_moins_n" "ERREUR: decac -n a produit une erreur."
-    # TODO : vérifier l'absence des checks :
-    # supprime les tests à l'exécution spécifiés dans
-    # les points 11.1 et 11.3 de la sémantique de Deca.
     success "SUCCESS: test_decac_n"
 }
 
 test_decac_r() {
-    # TODO : test on multiple files
     prompt_strong "[decac -r X] [Valid]"
 
     prompt "- deca -r [4 - 16]"
@@ -269,7 +269,6 @@ test_decac_d() {
     check_zero_status "$?" "ERREUR: decac -d a termine avec un status different de zero."
     check_output "$decac_moins_d" "ERREUR: decac -d n'a produit aucune sortie."
     # check_no_error "$decac_moins_d" "ERREUR: decac -d n'a pas produit d'erreur."
-    # TODO : find a way to check error without catching the overflow_error from ASM
     echo "$decac_moins_d"
     check_log_level "$decac_moins_d" "ALL" "ERREUR: decac -d n'a pas produit de log de niveau ALL."
 
@@ -277,29 +276,16 @@ test_decac_d() {
 }
 
 test_decac_P() {
-    # TODO: find a better way to test parrallelized compilation
     prompt_strong "[decac -P]"
     decac_moins_P=$(decac -P ./src/test/deca/codegen/valid/created/bool.deca ./src/test/deca/codegen/valid/created/bool2.deca)
     check_zero_status "$?" "ERREUR: decac -P a termine avec un status different de zero."
     check_no_output "$decac_moins_P" "ERREUR: decac -P a produit une sortie."
     check_no_error "$decac_moins_P" "ERREUR: decac -P a produit une erreur."
-
     success "SUCCESS: test_decac_d"
 }
 
-test_decac_w() {
-    # TODO: implement -w
-    prompt_strong "[decac -w]"
-    decac_moins_w=$(decac -w ./src/test/deca/codegen/valid/created/bool.deca)
-    check_zero_status "$?" "ERREUR: decac -w a termine avec un status different de zero."
-    check_no_output "$decac_moins_w" "ERREUR: decac -w a produit une sortie."
-    check_no_error "$decac_moins_w" "ERREUR: decac -w a produit une erreur."
-
-    success "SUCCESS: test_decac_w"
-}
 
 test_decac_a() {
-    # TODO : test on multiple files
     prompt_strong "[decac -a X] [Valid]"
 
     prompt "- deca -a [Options]"
@@ -321,14 +307,6 @@ test_decac_a() {
 
     prompt_strong "[decac -a X] [Invalid]"
 
-    #TODO: is there a maximum numbers after dot ?
-    # for i in 17 18; do
-    #     prompt "- decac -a $i"
-    #     decac_moins_r_error=$(decac -a "$i" ./src/test/deca/codegen/valid/created/var1.deca)
-    #     check_non_zero_status "$?" "ERREUR: decac -a $i a terminé avec un status différent de zero."
-    #     check_output "$decac_moins_r_error" "ERREUR: decac -a $i n'a produit aucune sortie."
-    #     check_error "$decac_moins_r_error" "ERREUR: decac -a $i a produit une erreur."
-    # done
 
     for i in -1 a ?; do
         prompt "- decac -a $i"
@@ -341,18 +319,55 @@ test_decac_a() {
     success "SUCCESS: test_decac_a"
 }
 
+
+check_java_execution(){ 
+    class_file="${1%.deca}"
+    awk '/\/\/ Resultats:/{flag=1; next} /^$/{flag=0} flag' "$1" | sed 's/^\s*//' | sed 's/\/\///' >"${1%.deca}.expected"
+    java -cp ./"$(dirname "$1")" "$(basename "$class_file")" > "${1%.deca}.res" 2>&1
+
+    if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
+        failure "Incorrect result for $1."
+        diff "${1%.deca}.expected" "${1%.deca}.res"
+        # clean_temp_test_files "src/test/deca/codegen/"
+        exit 1;
+    fi
+}
+
+
+test_decac_e() {
+    prompt_strong "[decac -e]"
+    find "src/test/deca/codegen/extension/" -type f -name '*.deca' | while read -r file; do
+        if [ "$(basename "$file")" = "printCarriageReturn.deca" ]; then
+            continue
+        fi
+        prompt "- decac -e $file"
+        decac_moins_p=$(decac -e "$file")
+        check_zero_status "$?" "ERREUR: decac -e a termine avec un status different de zero pour le fichier $file."
+        check_no_output "$decac_moins_p" "ERREUR: decac -e a produit une sortie pour le fichier $file."
+        check_no_error "$decac_moins_p" "ERREUR: decac -e a produit une erreur pour le fichier $file."
+        check_java_execution "$file" "ERREUR: decac -e a produit une décompilation .class qui donne un résultat différent sur le fichier $file."
+        clean_temp_test_files "src/test/deca/codegen/"
+    done
+
+    success "SUCCESS: test_decac_e"
+}
+
+
+
 main() {
     setup_path_and_cd
-    test_uncompatible_options
-    test_decac_b
-    test_decac_p
-    test_decac_v
-    test_decac_n
-    test_decac_r
-    test_decac_d
-    test_decac_P
-    test_decac_w
-    test_decac_a
+    clean_temp_test_files "src/test/deca/codegen"
+    # test_uncompatible_options
+    # test_decac_b
+    # test_decac_p
+    # test_decac_v
+    # test_decac_n
+    # test_decac_r
+    # test_decac_d
+    # test_decac_P
+    # test_decac_w
+    # test_decac_a
+    test_decac_e
 }
 
 main

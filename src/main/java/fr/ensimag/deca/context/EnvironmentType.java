@@ -9,6 +9,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.NullOperand;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
@@ -58,6 +59,7 @@ public class EnvironmentType {
         } catch (DoubleDefException e) {
             // impossible case
         }
+        OBJECT.getDefinition().setOperand(new NullOperand());
         envTypes.put(objectSymb, OBJECT.getDefinition());
 
         Symbol nullSymb = compiler.createSymbol("null");
