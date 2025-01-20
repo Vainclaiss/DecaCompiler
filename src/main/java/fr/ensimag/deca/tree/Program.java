@@ -160,11 +160,8 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // TODO: compléter ce squelette très rudimentaire de code
-
         // generation de la table des methodes
         classes.codeGenVtable(compiler);
-        compiler.getStackOverflowCounter().addVariables(1); //
 
         // generation du programme principal
         compiler.addComment("Main program");

@@ -53,7 +53,6 @@ public class While extends AbstractInst {
         condition.codeGenBool(compiler, true, debut);
     }
 
-    // TODO : copié-collé degueux
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Label whileCond = new Label("while_cond");

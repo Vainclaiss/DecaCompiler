@@ -41,107 +41,101 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-                           ClassDefinition currentClass) throws ContextualError {
-    
-        // TODO: pour les classes : lvalue verif
+            ClassDefinition currentClass) throws ContextualError {
         Type type1 = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, type1));
         setType(type1);
-        
+
         return type1;
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-
-        // TODO : ordre pas incroyable, on peut eventuellement perdre la valeur stocké dans 2, faire un push ??
         getRightOperand().codeExp(compiler, 2);
         getLeftOperand().codeExp(compiler);
-        
-        compiler.addInstruction(new STORE(Register.getR(compiler,2), (DAddr)getLeftOperand().getDVal()));
+
+        compiler.addInstruction(new STORE(Register.getR(compiler, 2), (DAddr) getLeftOperand().getDVal()));
     }
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        
-        // TODO : ordre pas incroyable, on peut eventuellement perdre la valeur stocké dans 2, faire un push ??
         getRightOperand().codeExp(compiler, n);
         getLeftOperand().codeExp(compiler);
-        
-        compiler.addInstruction(new STORE(Register.getR(compiler,n), (DAddr)getLeftOperand().getDVal()));
+
+        compiler.addInstruction(new STORE(Register.getR(compiler, n), (DAddr) getLeftOperand().getDVal()));
     }
 
     @Override
     protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
-        getRightOperand().codeByteExp(mv, compiler); 
-    
-        mv.visitInsn(Opcodes.DUP); 
-    
+        getRightOperand().codeByteExp(mv, compiler);
+
+        mv.visitInsn(Opcodes.DUP);
+
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");
         }
-    
+
         Identifier leftId = (Identifier) getLeftOperand();
         VariableDefinition varDef = leftId.getVariableDefinition();
         int localIndex = varDef.getLocalIndex();
-    
+
         if (localIndex < 0) {
             throw new DecacInternalError("Variable local index not set before assignment.");
         }
-    
+
         if (getType().isInt()) {
             mv.visitVarInsn(Opcodes.ISTORE, localIndex);
         } else if (getType().isFloat()) {
-            mv.visitVarInsn(Opcodes.FSTORE, localIndex); 
-        }else if (getType().isBoolean()){
-            mv.visitVarInsn(Opcodes.ISTORE,localIndex);
+            mv.visitVarInsn(Opcodes.FSTORE, localIndex);
+        } else if (getType().isBoolean()) {
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);
         } else {
             throw new DecacInternalError("Unsupported type for assignment: " + getType());
         }
-    
-        
+
     }
-    
-    
+
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         codeGenInst(compiler);
         getLeftOperand().codeGenBool(compiler, branchIfTrue, e);
     }
+
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,
+            DecacCompiler compiler) {
         codeGenByteInst(mv, compiler);
-        getLeftOperand().codeGenByteBool(mv,branchIfTrue,e,compiler);
+        getLeftOperand().codeGenByteBool(mv, branchIfTrue, e, compiler);
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-        getRightOperand().codeByteExp(mv,compiler);
-    
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+        getRightOperand().codeByteExp(mv, compiler);
+
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");
         }
         Identifier leftId = (Identifier) getLeftOperand();
         VariableDefinition varDef = leftId.getVariableDefinition();
-    
+
         int localIndex = varDef.getLocalIndex();
 
         if (localIndex < 0) {
             throw new DecacInternalError("Variable local index not set before assignment.");
         }
-    
+
         if (getType().isInt()) {
             mv.visitVarInsn(Opcodes.ISTORE, localIndex);
         } else if (getType().isFloat()) {
             mv.visitVarInsn(Opcodes.FSTORE, localIndex);
-        } else if (getType().isBoolean()){
-            mv.visitVarInsn(Opcodes.ISTORE,localIndex);
-        
+        } else if (getType().isBoolean()) {
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+
         } else {
             throw new DecacInternalError("Unsupported type for assignment: " + getType());
         }
     }
-    
+
     @Override
     protected String getOperatorName() {
         return "=";

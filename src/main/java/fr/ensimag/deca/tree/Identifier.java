@@ -403,7 +403,6 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
-        // TODO : gerer le cas des selection, method call etc
         compiler.addInstruction(new LOAD(getDVal(), Register.R0));
         compiler.addInstruction(new CMP(1, Register.R0));
         if (branchIfTrue) {

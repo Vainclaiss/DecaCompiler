@@ -79,7 +79,7 @@ public abstract class AbstractDecaLexer extends Lexer {
             }
         } catch (ParseCancellationException e) {
             if (e.getCause() instanceof LocationException) {
-                ((LocationException)e.getCause()).display(System.err);
+                ((LocationException) e.getCause()).display(System.err);
             }
             return true;
         } catch (DecaRecognitionException e) {
@@ -103,8 +103,8 @@ public abstract class AbstractDecaLexer extends Lexer {
      * arguments.
      * 
      * @param args
-     *            Either empty (read from stdin), or 1-element array (the file
-     *            to read from)
+     *             Either empty (read from stdin), or 1-element array (the file
+     *             to read from)
      * @return The lexer built from args
      * @throws IOException
      */
@@ -132,7 +132,8 @@ public abstract class AbstractDecaLexer extends Lexer {
     }
 
     // Code needed to implement the #include directive.
-    // Adapted from https://theantlrguy.atlassian.net/wiki/pages/viewpage.action?pageId=2686987
+    // Adapted from
+    // https://theantlrguy.atlassian.net/wiki/pages/viewpage.action?pageId=2686987
     private static class IncludeSaveStruct {
         IncludeSaveStruct(CharStream input, int line, int charPositionInline) {
             this.input = input;
@@ -154,9 +155,9 @@ public abstract class AbstractDecaLexer extends Lexer {
      * 
      * @return An ANTLR stream to read from
      * @throws IOException
-     *             when the file was found but could not be opened
+     *                             when the file was found but could not be opened
      * @throws IncludeFileNotFound
-     *             when the file was not found.
+     *                             when the file was not found.
      */
     CharStream findFile(String name) throws IOException,
             IncludeFileNotFound {
@@ -177,11 +178,12 @@ public abstract class AbstractDecaLexer extends Lexer {
         final URL url = ClassLoader.getSystemResource("include/" + name);
         if (url != null) {
             LOG.debug("Using library " + url);
-            // Use fromReader(Reader, String) to catch the file name --- fromStream(InputStream) does not.
+            // Use fromReader(Reader, String) to catch the file name ---
+            // fromStream(InputStream) does not.
             return CharStreams.fromReader(new InputStreamReader(url.openStream()), url.getFile());
         }
 
-        throw new IncludeFileNotFound(name, this, getInputStream()); // TODO: check this
+        throw new IncludeFileNotFound(name, this, getInputStream());
     }
 
     /**
@@ -192,9 +194,10 @@ public abstract class AbstractDecaLexer extends Lexer {
      * saved an {@link #includes} and will be restored by {@link #nextToken()}.
      * 
      * @throws IncludeFileNotFound
-     *             When the file could not be found or opened.
+     *                             When the file could not be found or opened.
      * @throws CircularInclude
-     *             When an attempt to perform a circular inclusion is done
+     *                             When an attempt to perform a circular inclusion
+     *                             is done
      */
     void doInclude(String includeDirective) throws IncludeFileNotFound, CircularInclude {
         String name = includeDirective.substring(includeDirective.indexOf('"') + 1,
@@ -243,8 +246,9 @@ public abstract class AbstractDecaLexer extends Lexer {
 
     /**
      * Override method nextToken for <code>#include</code> management.
+     * 
      * @return the next Token which is read in an included files on
-     *    a <code>#include</code>
+     *         a <code>#include</code>
      */
     @Override
     @SuppressWarnings("InfiniteRecursion")

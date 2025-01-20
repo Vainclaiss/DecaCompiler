@@ -193,7 +193,6 @@ test_decac_n() {
 }
 
 test_decac_r() {
-    # TODO : test on multiple files
     prompt_strong "[decac -r X] [Valid]"
 
     prompt "- deca -r [4 - 16]"
@@ -270,7 +269,6 @@ test_decac_d() {
     check_zero_status "$?" "ERREUR: decac -d a termine avec un status different de zero."
     check_output "$decac_moins_d" "ERREUR: decac -d n'a produit aucune sortie."
     # check_no_error "$decac_moins_d" "ERREUR: decac -d n'a pas produit d'erreur."
-    # TODO : find a way to check error without catching the overflow_error from ASM
     echo "$decac_moins_d"
     check_log_level "$decac_moins_d" "ALL" "ERREUR: decac -d n'a pas produit de log de niveau ALL."
 
@@ -278,7 +276,6 @@ test_decac_d() {
 }
 
 test_decac_P() {
-    # TODO: find a better way to test parrallelized compilation
     prompt_strong "[decac -P]"
     decac_moins_P=$(decac -P ./src/test/deca/codegen/valid/created/bool.deca ./src/test/deca/codegen/valid/created/bool2.deca)
     check_zero_status "$?" "ERREUR: decac -P a termine avec un status different de zero."
@@ -289,7 +286,6 @@ test_decac_P() {
 
 
 test_decac_a() {
-    # TODO : test on multiple files
     prompt_strong "[decac -a X] [Valid]"
 
     prompt "- deca -a [Options]"
@@ -311,14 +307,6 @@ test_decac_a() {
 
     prompt_strong "[decac -a X] [Invalid]"
 
-    #TODO: is there a maximum numbers after dot ?
-    # for i in 17 18; do
-    #     prompt "- decac -a $i"
-    #     decac_moins_r_error=$(decac -a "$i" ./src/test/deca/codegen/valid/created/var1.deca)
-    #     check_non_zero_status "$?" "ERREUR: decac -a $i a terminé avec un status différent de zero."
-    #     check_output "$decac_moins_r_error" "ERREUR: decac -a $i n'a produit aucune sortie."
-    #     check_error "$decac_moins_r_error" "ERREUR: decac -a $i a produit une erreur."
-    # done
 
     for i in -1 a ?; do
         prompt "- decac -a $i"

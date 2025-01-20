@@ -94,7 +94,6 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void codeGenFieldInit(DecacCompiler compiler) {
-        // TODO : ajouter la sauvegarde de registres + TSTO
         Type trueType = type.getType();
         if (init.isNoInitialization()) {
             if (trueType.isClass()) {
@@ -112,7 +111,6 @@ public class DeclField extends AbstractDeclField {
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
             init.codeGenInitialization(compiler, new RegisterOffset(name.getFieldDefinition().getIndex(), Register.R1));
         }
-        // TODO : ajouter le cas avec initialization -> done maybe
         FieldDefinition fieldDef = name.getFieldDefinition();
         fieldDef.setOperand(new RegisterOffset(fieldDef.getIndex(), Register.R0));
     }
@@ -125,7 +123,7 @@ public class DeclField extends AbstractDeclField {
         }
         type.decompile(s);
         s.print(" ");
-        name.decompile(s); // TODO: J'ai field dans le poly pas name...
+        name.decompile(s);
         init.decompile(s);
         s.print(";");
     }

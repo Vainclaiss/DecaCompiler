@@ -70,18 +70,17 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {
-        // TODO : gerer le cas de this
         String methodeLabel = methodName.getMethodDefinition().getLabel().toString().replace("code.", "");
         compiler.addComment("Empilement des arguments de " + methodeLabel);
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
-        // TODO : c'est frauduleux !!! il faut gerer tout type d'exp
+
         leftOperand.codeExp(compiler, n); // method call, new, selection, variables in R0
         compiler.addInstruction(new STORE(Register.getR(n), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         compiler.getStackOverflowCounter().addParamsOnStack(params.size());
         for (int i = params.size(); i > 0; i--) {
-            params.get(i - 1).codeExp(compiler, n); // TODO : checker le numero de registre
+            params.get(i - 1).codeExp(compiler, n);
             compiler.addInstruction(new STORE(Register.getR(compiler, n), new RegisterOffset(-i, Register.SP)));
         }
 
@@ -113,13 +112,12 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void codeExp(DecacCompiler compiler) {
-        codeExp(compiler, 2); // TODO : vraiment pas optimiser mais sinon possible erreur
+        codeExp(compiler, 2);
     }
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         codeExp(compiler, 2);
-        // TODO : peut etre metre R2 au lieu de R0 pour plus de securité
         compiler.addInstruction(new CMP(1, Register.R0));
         if (branchIfTrue) {
             compiler.addInstruction(new BEQ(e));

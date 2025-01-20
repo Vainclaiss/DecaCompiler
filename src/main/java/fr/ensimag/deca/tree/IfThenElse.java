@@ -106,7 +106,6 @@ public class IfThenElse extends AbstractInst {
         compiler.addLabel(finIf);
     }
 
-    // TODO : copié-collé degueux
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label finLabel) {
         Label finIf = new Label("fin_if");

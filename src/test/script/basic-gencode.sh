@@ -42,11 +42,40 @@ make_valid_tests() {
         check_gencode_file_format "$file"
         check_compilation "$file" true
         check_result "$file" true
-        rm -f "${file%.deca}.ass" 2>/dev/null
-        rm -f "${file%.deca}.res" 2>/dev/null
-        rm -f "${file%.deca}.expected" 2>/dev/null
+        clean_temp_test_files ./src/test/deca/codegen/valid
         success "[valid] Test passed for $file"
     done
+
+    # Make HeapOverflow
+    check_gencode_file_format "src/test/deca/codegen/valid/created/LValueHell.deca"
+    check_compilation "src/test/deca/codegen/valid/created/LValueHell.deca" true
+    ass_file="src/test/deca/codegen/valid/created/LValueHell.ass"
+    echo "Error: Heap Overflow" >"src/test/deca/codegen/valid/created/LValueHell.expected"
+    ./global/bin/ima -t 10 "$ass_file" >"src/test/deca/codegen/valid/created/LValueHell.res"
+
+    if ! diff -B -w -q "src/test/deca/codegen/valid/created/LValueHell.expected" "src/test/deca/codegen/valid/created/LValueHell.res" >/dev/null; then
+        failure "Incorrect result for src/test/deca/codegen/valid/created/LValueHell.deca."
+        diff "src/test/deca/codegen/valid/created/LValueHell.expected" "src/test/deca/codegen/valid/created/LValueHell.res"
+        clean_temp_test_files ./src/test/deca/codegen/valid
+        exit 1
+    fi
+    clean_temp_test_files ./src/test/deca/codegen/valid
+
+    # Make StackOverflow
+    check_gencode_file_format "src/test/deca/codegen/valid/created/minus.deca"
+    check_compilation "src/test/deca/codegen/valid/created/minus.deca" true
+    ass_file="src/test/deca/codegen/valid/created/minus.ass"
+    echo "Error: Stack Overflow" >"src/test/deca/codegen/valid/created/minus.expected"
+    ./global/bin/ima -p 1 "$ass_file" >"src/test/deca/codegen/valid/created/minus.res"
+
+    if ! diff -B -w -q "src/test/deca/codegen/valid/created/minus.expected" "src/test/deca/codegen/valid/created/minus.res" >/dev/null; then
+        failure "Incorrect result for src/test/deca/codegen/valid/created/minus.deca."
+        diff "src/test/deca/codegen/valid/created/minus.expected" "src/test/deca/codegen/valid/created/minus.res"
+        clean_temp_test_files ./src/test/deca/codegen/valid
+        exit 1
+    fi
+    clean_temp_test_files ./src/test/deca/codegen/valid
+
 }
 
 # Invalid tests
