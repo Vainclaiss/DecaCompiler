@@ -348,7 +348,7 @@ check_java_execution(){
 
 test_decac_e() {
     prompt_strong "[decac -e]"
-    find "src/test/deca/codegen/valid/created" -type f -name '*.deca' | while read -r file; do
+    find "src/test/deca/codegen/extension/" -type f -name '*.deca' | while read -r file; do
         if [ "$(basename "$file")" = "printCarriageReturn.deca" ]; then
             continue
         fi

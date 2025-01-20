@@ -1,0 +1,17 @@
+// Description:
+//    Test de l'assignation dans une expression booleenne
+// Resultats:
+//    ok
+//    5
+
+
+{
+    int x = 0;
+    boolean result = (x = 5) == 5; // Assignation puis comparaison
+    if(result){
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+    println(x);
+}

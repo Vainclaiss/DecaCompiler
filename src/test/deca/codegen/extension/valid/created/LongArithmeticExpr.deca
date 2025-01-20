@@ -1,0 +1,29 @@
+// Description:
+//    Test d'opérations arithmétiques longues
+// Resultats:
+// -2
+// -2.0
+// -2.180851
+// -2
+// -2.180851
+
+
+{
+    int a = 5;
+    int b = 10;
+    int c = 15;
+    int d = 20;
+    float d_float = 20.0;
+
+    int result = ((a + b) * c - d) / (a + (b - c) * d + (c - a) / b);
+    float result_2 = ((a + b) * c - d) / (a + (b - c) * d + (c - a) / b);
+    float result_float = ((a + b) * c - d_float) / (a + (b - c) * d_float + (c - a) / b);
+    
+    // simplification : -205/94
+
+    println(result);
+    println(result_2);
+    println(result_float);
+    println(((a + b) * c - d) / (a + (b - c) * d + (c - a) / b));
+    println(((a + b) * c - d_float) / (a + (b - c) * d_float + (c - a) / b));
+}

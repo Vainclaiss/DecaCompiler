@@ -1,0 +1,33 @@
+// Description:
+//    teste la redeclaration d'une methode avec un return type 
+//    qui est une sous classe de celui de la methode initiale
+// Resultats:
+//    ok
+
+class A {
+
+}
+
+class B extends A {
+
+}
+
+class C extends B {
+
+}
+
+class D {
+    A getx() {
+
+    }
+}
+
+class E extends D {
+    C getx() {
+
+    }
+}
+
+{
+    println("ok");
+}

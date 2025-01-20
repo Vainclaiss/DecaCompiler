@@ -1,0 +1,10 @@
+// Description:
+//    test les manipulations de variables
+// Resultats:
+//    10
+
+{
+    int a = 10;
+    int b = a;
+    println(b);
+}

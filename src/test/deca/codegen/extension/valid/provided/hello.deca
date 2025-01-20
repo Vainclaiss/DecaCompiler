@@ -1,0 +1,8 @@
+// Description:
+//    Programme minimaliste utilisant println.
+// Resultats:
+//    Hello
+
+{
+        println("Hello");
+}

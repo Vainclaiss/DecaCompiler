@@ -1,0 +1,9 @@
+// Description:
+//    Division par 0
+// Resultats:
+//    Error: division by 0
+
+
+{
+    print(2/0);
+}

@@ -1,0 +1,14 @@
+// Description:
+//  Methode int sans return
+// Resultats:
+//  Error: return instruction missing in A.a
+
+class A{
+    int a(){
+    }
+}
+
+{
+    A newA = new A();
+    newA.a();
+}

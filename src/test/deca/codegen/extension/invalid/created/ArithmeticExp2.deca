@@ -1,0 +1,8 @@
+// Description:
+//    Division par 0 (par modulo)
+// Resultats:
+//    Error: division by 0
+
+{
+    int a = 3 % 0;
+}

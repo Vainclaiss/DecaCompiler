@@ -1,0 +1,17 @@
+// Description:
+// Test de la création d'une longue chaîne d'additions.
+// Resultats:
+// 22
+
+class A{
+    int x = 1;
+    int getX(){
+        return x;
+    }
+}
+
+{
+    A newA = new A();
+    int res = (1 + (1 + (1 + (1 + (1 + (1 + (1 + (1 + (1 + (1 + (newA.x + (1 + (1 + 1 + (1 + (1 + 1))))))))))))) + 1 + 1 + (1 + (1 + newA.getX()))));
+    println(res);
+}

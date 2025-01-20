@@ -1,0 +1,13 @@
+// Description:
+//    test sur les while
+// Resultats:
+//    ok
+
+{
+    int counter = 5;
+    int i = 0;
+        while (counter > i) {
+        counter = counter - 1 ;
+    }
+    println("ok");
+}

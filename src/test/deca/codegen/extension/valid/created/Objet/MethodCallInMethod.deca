@@ -1,0 +1,28 @@
+// Description:
+//   Teste l'appel de méthode dans une méthode
+// Resultats:
+//   12
+//   ok
+
+
+
+class A {
+    int multiply(int x, int y) {
+        return x * y;
+    }
+
+    void calculate() {
+        int result = multiply(3, 4);
+        println(result);
+    }
+}
+
+{
+    A newA = new A();
+    newA.calculate();
+    if (newA.multiply(3, 4) == 12) {
+        println("ok");
+    } else {
+        println("ERRONE");
+    }
+}

@@ -1,0 +1,17 @@
+// Description:
+//    Test de if else if else
+// Resultats:
+//    20
+
+{
+    int x = 15;
+    if (x > 10 && x < 20) {
+        x = x + 5;
+    } else if (x > 5) {
+        x = x - 5;
+    } else {
+        x = x * 2;
+    }
+    println(x);
+
+}

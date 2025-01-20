@@ -1,0 +1,8 @@
+// Description:
+//    teste un appel a println avec plusieurs arguments
+// Resultats:
+//    hello2world
+
+{
+    println("hello", 2, "world");
+}

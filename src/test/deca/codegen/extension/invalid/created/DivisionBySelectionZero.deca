@@ -1,0 +1,18 @@
+// Description:
+//  Division par une Selection nulle
+// Resultats:
+//  Error: Overflow during arithmetic operation
+
+class A{
+    float a;
+    void A(){
+        this.a = 0.0;
+    }
+}
+
+{
+    A newA = new A();
+    float b = 10.0;
+    newA.A();
+    b = b / newA.a;
+}
