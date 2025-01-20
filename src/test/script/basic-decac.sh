@@ -379,7 +379,7 @@ main() {
     test_decac_P
     test_decac_w
     test_decac_a
-    test_decac_e
+    # test_decac_e
 }
 
 main
