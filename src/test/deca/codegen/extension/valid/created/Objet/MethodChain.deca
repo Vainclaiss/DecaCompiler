@@ -1,0 +1,24 @@
+// Description:
+//  Test de la chaine de méthodes
+// Resultats:
+//  36
+
+class A {
+    int x = 0;
+
+    A setX(int x) {
+        this.x = x;
+        return this;
+    }
+
+    A incrementX() {
+        x = x + 1;
+        return this;
+    }
+}
+
+{
+    A a = new A().setX(0).incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX().incrementX();
+    int res = a.x;
+    println(res);
+}

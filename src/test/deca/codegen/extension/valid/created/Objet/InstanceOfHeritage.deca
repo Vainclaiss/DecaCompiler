@@ -1,0 +1,138 @@
+// Description:
+// Test de l'operateur instanceof avec heritage
+// Resultats:
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+// ok
+
+class A {}
+class B extends A {}
+class C extends B {}
+class D extends C {}
+class E extends D {}
+class F extends E {}
+class G extends F {}
+class H extends G {}
+class I extends H {}
+class J extends I {}
+class K extends J {}
+class L extends K {}
+class M extends L {}
+class N extends M {}
+class O extends N {}
+class P extends O {}
+class Q extends P {}
+class R extends Q {}
+class S extends R {}
+class T extends S {}
+class U extends T {}
+class V extends U {}
+class W extends V {}
+class X extends W {}
+class Y extends X {}
+class Z extends Y {}
+
+{
+    Z newZ = new Z();
+    if (newZ instanceof A) {
+        println("ok");
+    }
+    if (newZ instanceof B) {
+        println("ok");
+    }
+    if (newZ instanceof C) {
+        println("ok");
+    }
+    if (newZ instanceof D) {
+        println("ok");
+    }
+    if (newZ instanceof E) {
+        println("ok");
+    }
+    if (newZ instanceof F) {
+        println("ok");
+    }
+    if (newZ instanceof G) {
+        println("ok");
+    }
+    if (newZ instanceof H) {
+        println("ok");
+    }
+    if (newZ instanceof I) {
+        println("ok");
+    }
+    if (newZ instanceof J) {
+        println("ok");
+    }
+    if (newZ instanceof K) {
+        println("ok");
+    }
+    if (newZ instanceof L) {
+        println("ok");
+    }
+    if (newZ instanceof M) {
+        println("ok");
+    }
+    if (newZ instanceof N) {
+        println("ok");
+    }
+    if (newZ instanceof O) {
+        println("ok");
+    }
+    if (newZ instanceof P) {
+        println("ok");
+    }
+    if (newZ instanceof Q) {
+        println("ok");
+    }
+    if (newZ instanceof R) {
+        println("ok");
+    }
+    if (newZ instanceof S) {
+        println("ok");
+    }
+    if (newZ instanceof T) {
+        println("ok");
+    }
+    if (newZ instanceof U) {
+        println("ok");
+    }
+    if (newZ instanceof V) {
+        println("ok");
+    }
+    if (newZ instanceof W) {
+        println("ok");
+    }
+    if (newZ instanceof X) {
+        println("ok");
+    }
+    if (newZ instanceof Y) {
+        println("ok");
+    }
+    if (newZ instanceof Z) {
+        println("ok");
+    }
+}

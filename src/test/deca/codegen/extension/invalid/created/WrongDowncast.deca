@@ -1,0 +1,22 @@
+// Description:
+//  Downcast
+// Resultats:
+//  Exception in thread "main" java.lang.ClassCastException: class A cannot be cast to class B (A and B are in unnamed module of loader 'app')
+// at WrongDowncast.main(Unknown Source)
+
+class A{
+    int m(){
+        return 1;
+    }
+}
+
+class B extends A{
+    int f(){
+        return 2;
+    }
+}
+
+{
+    A newA = new A();
+    println(((B)(newA)).f());
+}

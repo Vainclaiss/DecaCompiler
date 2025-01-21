@@ -1,0 +1,13 @@
+// Description:
+//    teste asm
+// Resultats:
+//  okok
+
+class A{
+    void genAsm() asm("WSTR \"ok\"\nWSTR \"ok\"");
+
+}
+{
+    A newA = new A();
+    newA.genAsm();
+}

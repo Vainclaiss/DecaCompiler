@@ -1,0 +1,12 @@
+// Description:
+//    teste un appel a printlnx avec un int
+// Resultats:
+//    2
+
+
+{
+   
+
+   printlnx(2);
+
+}
