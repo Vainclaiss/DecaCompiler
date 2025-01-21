@@ -25,7 +25,6 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
-
 import java.beans.MethodDescriptor;
 import java.io.PrintStream;
 import java.util.List;
