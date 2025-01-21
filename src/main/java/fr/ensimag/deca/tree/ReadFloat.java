@@ -16,6 +16,9 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 /**
  *
  * @author gl01
@@ -37,6 +40,34 @@ public class ReadFloat extends AbstractReadExpr {
         compiler.addExecError(IOError.INSTANCE);
         compiler.addInstruction(new BOV(IOError.INSTANCE.getLabel()));
     }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+
+        mv.visitTypeInsn(Opcodes.NEW, "java/util/Scanner");
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V", false);
+    
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/util/Scanner", "hasNextFloat", "()Z", false);
+        org.objectweb.asm.Label validInput = new org.objectweb.asm.Label();
+        
+        mv.visitJumpInsn(Opcodes.IFNE, validInput);
+    
+        mv.visitTypeInsn(Opcodes.NEW, "java/lang/RuntimeException");
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitLdcInsn("Invalid float input.");  
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/RuntimeException", "<init>", "(Ljava/lang/String;)V", false);
+        mv.visitInsn(Opcodes.ATHROW);
+    
+        mv.visitLabel(validInput);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/util/Scanner", "nextFloat", "()F", false);
+    
+      
+    }
+    
+    
 
     @Override
     protected void codeExp(DecacCompiler compiler, int n) {

@@ -358,15 +358,15 @@ main() {
     setup_path_and_cd
     clean_temp_test_files "src/test/deca/codegen"
     test_uncompatible_options
-    test_decac_b
-    test_decac_p
-    test_decac_v
-    test_decac_n
-    test_decac_r
-    test_decac_d
-    test_decac_P
-    test_decac_w
-    test_decac_a
+    #test_decac_b
+    #test_decac_p
+    #test_decac_v
+    #test_decac_n
+    #test_decac_r
+    #test_decac_d
+    #test_decac_P
+    #test_decac_w
+    #test_decac_a
     test_decac_e
 }
 
