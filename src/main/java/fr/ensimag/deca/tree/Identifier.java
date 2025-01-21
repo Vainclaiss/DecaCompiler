@@ -301,32 +301,30 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD(getDVal(), Register.getR(compiler, n)));
     }
 
-   @Override
+    @Override
     protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
         ExpDefinition def = getExpDefinition();
         Type t = getType();
-
+    
         if (def.isParam()) {
-           
             ParamDefinition paramDef = (ParamDefinition) def;
             int localIndex = paramDef.getIndexInLocalTable();
-
             loadLocalVarParam(mv, t, localIndex);
-
+    
         } else if (def.isVar()) {
-            VariableDefinition varDef = getVariableDefinition();
+            VariableDefinition varDef = (VariableDefinition) def;
             int localIndex = varDef.getLocalIndex();
             loadLocalVarParam(mv, t, localIndex);
-
+    
         } else if (def.isField()) {
             FieldDefinition fd = getFieldDefinition();
             String ownerInternalName = fd.getContainingClass().getInternalName();
             String fieldName = this.getName().toString();
             String fieldDesc = t.toJVMDescriptor();
-
+    
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, ownerInternalName, fieldName, fieldDesc);
-
+    
         } else {
             throw new UnsupportedOperationException(
                 "Identifier: definition for " + getName()
@@ -334,6 +332,7 @@ public class Identifier extends AbstractIdentifier {
             );
         }
     }
+    
 
     private void loadLocalVarParam(MethodVisitor mv, Type t, int localIndex) {
         if (t.isInt() || t.isBoolean()) {

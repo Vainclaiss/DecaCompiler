@@ -205,6 +205,8 @@ public abstract class AbstractExpr extends AbstractInst {
  
     protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
         mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+
+        
     
         codeByteExp(mv, compiler);
     
@@ -242,10 +244,11 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
+       
         if (getType().isFloat()) {
             mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             
-            this.codeByteExp(mv, compiler);  
+            codeByteExp(mv, compiler);  
     
             mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
@@ -258,7 +261,7 @@ public abstract class AbstractExpr extends AbstractInst {
             mv.visitMethodInsn(
                 Opcodes.INVOKEVIRTUAL,
                 "java/io/PrintStream",
-                "println",
+                "print",
                 "(Ljava/lang/String;)V",
                 false
             );

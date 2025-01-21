@@ -23,6 +23,9 @@ import fr.ensimag.ima.pseudocode.Register;
 
 import java.io.PrintStream;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 public class Cast extends AbstractExpr {
 
     final private AbstractIdentifier type;
@@ -93,6 +96,43 @@ public class Cast extends AbstractExpr {
         }
         compiler.addComment("fin du cast " + expr.getType().toString() + " vers " + type.getName().getName());
     }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        expr.codeByteExp(mv, compiler);
+    
+        if (type.getType().isInt()) {
+            if (expr.getType().isFloat()) {
+                mv.visitInsn(Opcodes.F2I); 
+            }
+        } else if (type.getType().isFloat()) {
+            if (expr.getType().isInt()) {
+                mv.visitInsn(Opcodes.I2F); 
+            }
+        } else if (type.getType().isClass() && !expr.getType().isNull()) {
+            mv.visitInsn(Opcodes.DUP);
+            
+            org.objectweb.asm.Label castSuccess = new org.objectweb.asm.Label();
+            org.objectweb.asm.Label castFail = new org.objectweb.asm.Label();
+    
+            // If not null, attempt casting
+            mv.visitJumpInsn(Opcodes.IFNONNULL, castSuccess);
+    
+            // Print error message if cast fails
+            mv.visitLabel(castFail);
+            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            mv.visitLdcInsn("Error: Incompatible cast");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            mv.visitInsn(Opcodes.POP); // Remove the duplicate object from the stack
+            mv.visitInsn(Opcodes.ACONST_NULL); // Return null to avoid crashing
+    
+            // Label for successful cast
+            mv.visitLabel(castSuccess);
+            mv.visitTypeInsn(Opcodes.CHECKCAST, type.getName().getName().replace('.', '/'));
+        }
+    }
+    
+
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -8,3 +8,4 @@
     float b = 1;
     printlnx(a + b);
 }
+

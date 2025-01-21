@@ -6,6 +6,8 @@ import static org.mockito.Mockito.never;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -109,6 +111,30 @@ public class Instanceof extends AbstractExpr{
     }
 
     @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        org.objectweb.asm.Label isInstance = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label endLabel = new org.objectweb.asm.Label();
+    
+        expr.codeByteExp(mv, compiler);
+    
+        // Load the class reference for comparison
+        String classInternalName = compType.getName().toString().replace('.', '/');
+        mv.visitTypeInsn(Opcodes.INSTANCEOF, classInternalName);
+    
+        mv.visitJumpInsn(Opcodes.IFNE, isInstance);
+    
+        mv.visitInsn(Opcodes.ICONST_0);
+        mv.visitJumpInsn(Opcodes.GOTO, endLabel);
+    
+        mv.visitLabel(isInstance);
+        mv.visitInsn(Opcodes.ICONST_1);
+    
+        mv.visitLabel(endLabel);
+    }
+    
+
+
+    @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
         codeGenBool(compiler, branchIfTrue, e, 2);
     }
@@ -155,6 +181,23 @@ public class Instanceof extends AbstractExpr{
         }
 
     }
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) {
+    expr.codeByteExp(mv, compiler);
+
+    String classInternalName = compType.getName().toString().replace('.', '/');
+    mv.visitTypeInsn(Opcodes.INSTANCEOF, classInternalName);
+
+    if (branchIfTrue) {
+        mv.visitJumpInsn(Opcodes.IFNE, e);
+    } else {
+        mv.visitJumpInsn(Opcodes.IFEQ, e);
+    }
+}
+
+
+    
 
 
     @Override

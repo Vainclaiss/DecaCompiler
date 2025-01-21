@@ -150,11 +150,11 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     
     @Override
-    protected void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass)    {
+    protected void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) {
         String methodName = name.getName().toString();
         String desc = buildMethodDescriptor(this.params, this.type.getType());
         int access = Opcodes.ACC_PUBLIC;
-
+    
         MethodVisitor mv = cw.visitMethod(
             access,
             methodName,
@@ -163,16 +163,22 @@ public class DeclMethod extends AbstractDeclMethod {
             null  
         );
         mv.visitCode();
-
+    
         params.codeGenByteParamsInit(mv, compiler);
-
+    
         body.codeGenByteMethodBody(mv, compiler, type.getType());
-
-        
-
+    
+        if (!type.getType().isVoid()) {
+            mv.visitInsn(Opcodes.ACONST_NULL);  
+            mv.visitInsn(Opcodes.ATHROW);      
+        } else {
+            mv.visitInsn(Opcodes.RETURN);      
+        }
+    
         mv.visitMaxs(0, 0); 
         mv.visitEnd();
     }
+    
     
     public static String buildMethodDescriptor(ListDeclParam params, Type returnType) {
         StringBuilder sb = new StringBuilder("(");
