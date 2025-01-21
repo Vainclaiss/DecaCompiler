@@ -1,16 +1,17 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+import java.util.List;
+
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.execerrors.IOError;
 import fr.ensimag.deca.codegen.execerrors.NullDereference;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
@@ -18,19 +19,11 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.RINT;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
-
-import java.beans.MethodDescriptor;
-import java.io.PrintStream;
-import java.util.List;
 
 public class MethodCall extends AbstractExpr {
 
@@ -75,7 +68,7 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
 
         leftOperand.codeExp(compiler, n); // method call, new, selection, variables in R0
-        compiler.addInstruction(new STORE(Register.getR(n), new RegisterOffset(0, Register.SP)));
+        compiler.addInstruction(new STORE(Register.getR(compiler, n), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         compiler.getStackOverflowCounter().addParamsOnStack(params.size());

@@ -1,6 +1,5 @@
 package fr.ensimag.deca.context;
 
-import java.rmi.registry.Registry;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
