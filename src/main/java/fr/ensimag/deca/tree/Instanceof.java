@@ -1,8 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.never;
-
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -87,9 +84,9 @@ public class Instanceof extends AbstractExpr{
         compiler.addComment("calcul de l'operande gauche de instanceof");
         expr.codeExp(compiler, n);
         compiler.addComment("debut de instanceof");
-        compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+        compiler.addInstruction(new LOAD(Register.getR(compiler, n), Register.R0));
         compiler.addInstruction(new LEA(((ClassType)compType.getType()).getDefinition().getDAddrOperand(), Register.R1));
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.getR(n))); // on remet à 0
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.getR(compiler, n))); // on remet à 0
 
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(finLabel));
@@ -97,7 +94,7 @@ public class Instanceof extends AbstractExpr{
 
         compiler.addLabel(loopLabel);
         compiler.addInstruction(new CMP(Register.R0, Register.R1));
-        compiler.addInstruction(new SEQ(Register.getR(n)));
+        compiler.addInstruction(new SEQ(Register.getR(compiler, n)));
         compiler.addInstruction(new BNE(nextTableLabel));
         compiler.addInstruction(new BRA(finLabel));
 
@@ -155,7 +152,7 @@ public class Instanceof extends AbstractExpr{
         Label branchLabel = (branchIfTrue) ? e : eFalse;
 
         expr.codeExp(compiler, n);
-        compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+        compiler.addInstruction(new LOAD(Register.getR(compiler, n), Register.R0));
         compiler.addInstruction(new LEA(((ClassType)compType.getType()).getDefinition().getDAddrOperand(), Register.R1));
 
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
