@@ -257,24 +257,18 @@ public class DeclClass extends AbstractDeclClass {
 }
 
     
-private void generateDefaultConstructor( ClassWriter cw, DecacCompiler compiler,String classInternalName, String superInternalName)  {
-    MethodVisitor mv = cw.visitMethod(
-        Opcodes.ACC_PUBLIC, 
-        "<init>",
-        "()V",
-        null,
-        null
-    );
+private void generateDefaultConstructor(ClassWriter cw, DecacCompiler compiler, 
+                                        String classInternalName, String superInternalName) {
+    MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
     mv.visitCode();
 
-    mv.visitVarInsn(Opcodes.ALOAD, 0);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superInternalName, "<init>", "()V", false);
+    if (!classInternalName.equals("Object")) {
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superInternalName, "<init>", "()V", false);
+    }
 
-    
     declFields.codeGenByteFieldsInit(mv, compiler, classInternalName);
-
     mv.visitInsn(Opcodes.RETURN);
-
     mv.visitMaxs(2, 1);
     mv.visitEnd();
 }
