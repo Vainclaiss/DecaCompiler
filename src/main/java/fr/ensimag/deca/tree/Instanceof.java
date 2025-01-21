@@ -114,7 +114,6 @@ public class Instanceof extends AbstractExpr{
     
         expr.codeByteExp(mv, compiler);
     
-        // Load the class reference for comparison
         String classInternalName = compType.getName().toString().replace('.', '/');
         mv.visitTypeInsn(Opcodes.INSTANCEOF, classInternalName);
     
