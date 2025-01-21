@@ -4,11 +4,15 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 
 import java.lang.reflect.Field;
+import java.io.PrintStream;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
@@ -56,6 +60,18 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         for (AbstractDeclField f : getList()) {
             f.decompile(s);
             s.println();
+        }
+    }
+
+    public void codeGenByteFields(ClassWriter cw, DecacCompiler compiler, String classInternalName) {
+        for (AbstractDeclField f : getList()) {
+            ((DeclField) f).codeGenByteField(cw, compiler, classInternalName);
+        }
+    }
+
+    public void codeGenByteFieldsInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName) {
+        for (AbstractDeclField f : getList()) {
+            ((DeclField) f).codeGenByteFieldInit(mv, compiler, classInternalName);
         }
     }
 

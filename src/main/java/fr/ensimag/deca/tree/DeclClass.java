@@ -1,9 +1,15 @@
 package fr.ensimag.deca.tree;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.TSTOCounter;
@@ -168,7 +174,6 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenClass(DecacCompiler compiler) {
-
         compiler.resetTSTO();
         IMAProgram mainProgram = compiler.getProgram();
         compiler.setProgram(new IMAProgram());
@@ -212,6 +217,64 @@ public class DeclClass extends AbstractDeclClass {
 
         declMethods.codeGenDeclMethods(compiler, name.getClassDefinition());
     }
+
+
+    public void codeGenByteClass(DecacCompiler compiler, String filename) {
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+        String classInternalName = name.getName().toString().replace('.', '/');
+        String superInternalName = superClass.getName().toString();
+
+        if (superInternalName.equals("Object")) {
+            superInternalName = "java/lang/Object";
+        } else {
+            superInternalName = superInternalName.replace('.', '/');
+        }
+        
+        String classFilename = filename.substring(0, filename.lastIndexOf(File.separator)) + File.separator + classInternalName + ".class";
+
+    
+        cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, classInternalName, null, superInternalName, null);
+    
+        declFields.codeGenByteFields(cw, compiler, classInternalName);
+    
+        generateDefaultConstructor(cw, compiler, classInternalName, superInternalName);
+    
+        declMethods.codeGenByteDeclMethods(cw, compiler, name.getClassDefinition());
+    
+        File outFile = new File(classFilename);
+
+        cw.visitEnd();
+        byte[] bytecode = cw.toByteArray();
+
+        try (FileOutputStream fos = new FileOutputStream(outFile)) {
+            fos.write(bytecode);
+            fos.flush();
+        }
+    catch (IOException e) {
+                throw new RuntimeException("Error writing bytecode output", e);
+
+    }
+}
+
+    
+private void generateDefaultConstructor(ClassWriter cw, DecacCompiler compiler, 
+                                        String classInternalName, String superInternalName) {
+    MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
+    mv.visitCode();
+
+    if (!classInternalName.equals("Object")) {
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superInternalName, "<init>", "()V", false);
+    }
+
+    declFields.codeGenByteFieldsInit(mv, compiler, classInternalName);
+    mv.visitInsn(Opcodes.RETURN);
+    mv.visitMaxs(2, 1);
+    mv.visitEnd();
+}
+
+
+
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {

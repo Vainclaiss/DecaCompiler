@@ -1,7 +1,9 @@
 // Description:
 //  remontée et redescente d'un cast vers un frère dans l'héritage
 // Resultats:
-//  Error: Incompatible cast
+//  Exception in thread "main" java.lang.ClassCastException: class B cannot be cast to class C (B and C are in unnamed module of loader 'app') 
+// at CastBrother.main(Unknown Source)
+
 
 class A{
 

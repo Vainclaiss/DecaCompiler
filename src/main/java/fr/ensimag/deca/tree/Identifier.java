@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -302,54 +303,103 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
-
-        int localIndex = getVariableDefinition().getLocalIndex();
-
+        ExpDefinition def = getExpDefinition();
         Type t = getType();
+    
+        if (def.isParam()) {
+            ParamDefinition paramDef = (ParamDefinition) def;
+            int localIndex = paramDef.getIndexInLocalTable();
+            loadLocalVarParam(mv, t, localIndex);
+    
+        } else if (def.isVar()) {
+            VariableDefinition varDef = (VariableDefinition) def;
+            int localIndex = varDef.getLocalIndex();
+            loadLocalVarParam(mv, t, localIndex);
+    
+        } else if (def.isField()) {
+            FieldDefinition fd = getFieldDefinition();
+            String ownerInternalName = fd.getContainingClass().getInternalName();
+            String fieldName = this.getName().toString();
+            String fieldDesc = t.toJVMDescriptor();
+    
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, ownerInternalName, fieldName, fieldDesc);
+    
+        } else {
+            throw new UnsupportedOperationException(
+                "Identifier: definition for " + getName()
+                + " is not a local var, param, or field."
+            );
+        }
+    }
+    
 
-        if (t.isInt()) {
+    private void loadLocalVarParam(MethodVisitor mv, Type t, int localIndex) {
+        if (t.isInt() || t.isBoolean()) {
             mv.visitVarInsn(Opcodes.ILOAD, localIndex);
         } else if (t.isFloat()) {
             mv.visitVarInsn(Opcodes.FLOAD, localIndex);
-        } else if (t.isBoolean()) {
-            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        } else if (t.isClass()) {
+            mv.visitVarInsn(Opcodes.ALOAD, localIndex);
         } else {
             throw new UnsupportedOperationException(
-                    "Identifier: unsupported type for codeGenByteExp: " + t);
-
+                "Identifier: unsupported local param/var type for codeByteExp: " + t
+            );
         }
     }
 
+    
+    
+
+/* 
     @Override
     protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
-        Type type = getType();
         mv.visitFieldInsn(
-                Opcodes.GETSTATIC,
-                "java/lang/System",
-                "out",
-                "Ljava/io/PrintStream;");
+            Opcodes.GETSTATIC,
+            "java/lang/System",
+            "out",
+            "Ljava/io/PrintStream;"
+        );
+        this.codeByteExp(mv, compiler);
 
-        int localIndex = getVariableDefinition().getLocalIndex();
-
-        if (type.isInt()) {
-            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        Type type = getType();
+        if (type.isInt() || type.isBoolean()) {
             mv.visitMethodInsn(
-                    Opcodes.INVOKEVIRTUAL,
-                    "java/io/PrintStream",
-                    "println",
-                    "(I)V",
-                    false);
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(I)V",
+                false
+            );
         } else if (type.isFloat()) {
-            mv.visitVarInsn(Opcodes.FLOAD, localIndex);
             mv.visitMethodInsn(
-                    Opcodes.INVOKEVIRTUAL,
-                    "java/io/PrintStream",
-                    "println",
-                    "(F)V",
-                    false);
-
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(F)V",
+                false
+            );
+        } else if (type.isClass()) {
+            mv.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(Ljava/lang/Object;)V",
+                false
+            );
+        } else {
+            throw new UnsupportedOperationException(
+                "Print of this type identifier not yet implemented in bytecode: " + type
+            );
         }
     }
+
+    */
+
+
+
+    
+
 
     /**
      * Generate code to print the expression

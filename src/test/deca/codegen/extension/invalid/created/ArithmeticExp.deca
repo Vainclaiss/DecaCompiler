@@ -1,9 +1,9 @@
 // Description:
 //    Division par 0
 // Resultats:
-//    Error: division by 0
+//    Infinity
 
 
 {
-    print(2/0);
+    print(2.0/0);
 }

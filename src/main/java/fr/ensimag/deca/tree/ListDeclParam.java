@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 
+import org.objectweb.asm.MethodVisitor;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -62,6 +64,46 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
             param.getName().getExpDefinition().setOperand(new RegisterOffset(offset--, Register.LB));
         }
     }
+    public void codeGenByteParamsInit(MethodVisitor mv, DecacCompiler compiler) {
+        
+        int paramIndex = 1;
+    
+        org.objectweb.asm.Label startLabel = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label endLabel   = new org.objectweb.asm.Label();
+        
+        mv.visitLabel(startLabel);
+    
+        for (AbstractDeclParam param : getList()) {
+            Type paramType;
+            try {
+                paramType = param.verifyDeclParam(compiler);
+            } catch (ContextualError e) {
+                throw new RuntimeException(e);
+            }
+            String paramName = param.getName().getName().toString();
+            String paramDescriptor = paramType.toJVMDescriptor();
+    
+            ParamDefinition pd = (ParamDefinition) param.getName().getDefinition();
+            pd.setIndexInLocalTable(paramIndex);
+    
+            mv.visitLocalVariable(
+                paramName,
+                paramDescriptor,
+                null,
+                startLabel,
+                endLabel,
+                paramIndex
+            );
+    
+            paramIndex++;
+        }
+    
+        mv.visitLabel(endLabel);
+    }
+    
+    
+    
+    
 
     @Override
     public void decompile(IndentPrintStream s) {

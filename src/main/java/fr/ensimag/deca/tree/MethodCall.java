@@ -1,16 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+import java.util.List;
+
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.execerrors.IOError;
 import fr.ensimag.deca.codegen.execerrors.NullDereference;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
@@ -18,19 +20,17 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.RINT;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
-
 import java.beans.MethodDescriptor;
 import java.io.PrintStream;
 import java.util.List;
+
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class MethodCall extends AbstractExpr {
 
@@ -75,7 +75,7 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new ADDSP(rightOperand.size() + 1));
 
         leftOperand.codeExp(compiler, n); // method call, new, selection, variables in R0
-        compiler.addInstruction(new STORE(Register.getR(n), new RegisterOffset(0, Register.SP)));
+        compiler.addInstruction(new STORE(Register.getR(compiler, n), new RegisterOffset(0, Register.SP)));
 
         List<AbstractExpr> params = rightOperand.getList();
         compiler.getStackOverflowCounter().addParamsOnStack(params.size());
@@ -101,6 +101,29 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        leftOperand.codeByteExp(mv, compiler);
+    
+    
+        for (AbstractExpr arg : rightOperand.getList()) {
+            arg.codeByteExp(mv, compiler);
+        }
+    
+        MethodDefinition methodDef = methodName.getMethodDefinition();
+        String ownerInternalName = ((ClassType) leftOperand.getType()).getDefinition().getInternalName();
+        String descriptor = DeclMethod.buildMethodDescriptor(methodDef.getSignature(), methodDef.getType());
+    
+        mv.visitMethodInsn(
+            Opcodes.INVOKEVIRTUAL,
+            ownerInternalName,
+            methodName.getName().toString(),
+            descriptor,
+            false
+        );
+    }
+    
+
+    @Override
     public DVal getDVal() {
         return Register.R0;
     }
@@ -108,6 +131,15 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         codeExp(compiler);
+    }
+
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+        codeByteExp(mv, compiler);
+
+        if (!this.getType().isVoid()) {
+            mv.visitInsn(Opcodes.POP);
+        }
     }
 
     @Override
@@ -127,12 +159,24 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) {
+        codeByteExp(mv, compiler);
+    
+        if (methodName.getMethodDefinition().getType().isBoolean()) {
+            mv.visitJumpInsn(branchIfTrue ? Opcodes.IFNE : Opcodes.IFEQ, e);
+        } else {
+            throw new UnsupportedOperationException("Expected boolean return type for codeGenByteBool");
+        }
+    }
+    
+
+    @Override
     public void decompile(IndentPrintStream s) {
         leftOperand.decompile(s);
-        if (!leftOperand.isImplicit()){
+        if (!leftOperand.isImplicit()) {
             s.print(".");
         }
-        
+
         methodName.decompile(s);
         s.print("(");
         rightOperand.decompile(s);

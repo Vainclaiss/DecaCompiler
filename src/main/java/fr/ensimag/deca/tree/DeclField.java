@@ -3,6 +3,10 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -115,6 +119,85 @@ public class DeclField extends AbstractDeclField {
         fieldDef.setOperand(new RegisterOffset(fieldDef.getIndex(), Register.R0));
     }
 
+    public void codeGenByteField(ClassWriter cw, DecacCompiler compiler, String classInternalName) {
+        String fieldName = name.getName().toString(); 
+        String fieldDesc = typeToJVMDescriptor(type.getType()); 
+    
+        int accessFlags = visibilityToAccessFlags(visibility);
+        FieldVisitor fv = cw.visitField(accessFlags, fieldName, fieldDesc, null, null);
+        fv.visitEnd();
+    }
+   
+
+    public void codeGenByteFieldInit(MethodVisitor mv, DecacCompiler compiler, String classInternalName)
+         {
+    mv.visitVarInsn(Opcodes.ALOAD, 0);  
+
+    Type trueType = type.getType();
+    String fieldName = name.getName().toString();
+    String fieldDesc = trueType.toJVMDescriptor();
+
+    if (init.isNoInitialization()) {
+
+        if (trueType.isClass()) {
+            mv.visitInsn(Opcodes.ACONST_NULL);
+        } else if (trueType.isInt() || trueType.isBoolean()) {
+            mv.visitInsn(Opcodes.ICONST_0);
+        } else if (trueType.isFloat()) {
+            mv.visitInsn(Opcodes.FCONST_0);
+        } else {
+            throw new UnsupportedOperationException("Unsupported field type: " + trueType);
+        }
+    } else {
+        int localIndex = compiler.allocateLocalIndex();
+        init.codeGenByteInitialization(mv, localIndex, compiler);
+       
+
+        if (trueType.isInt() || trueType.isBoolean()) {
+            mv.visitVarInsn(Opcodes.ILOAD, localIndex);
+        } else if (trueType.isFloat()) {
+            mv.visitVarInsn(Opcodes.FLOAD, localIndex);
+        } else if (trueType.isClass()) {
+            mv.visitVarInsn(Opcodes.ALOAD, localIndex);
+        } else {
+            throw new UnsupportedOperationException("Unsupported field type: " + trueType);
+        }
+    }
+
+    mv.visitFieldInsn(Opcodes.PUTFIELD, classInternalName, fieldName, fieldDesc);
+}
+
+
+
+    public static String typeToJVMDescriptor(Type t) {
+        if (t.isInt()) {
+            return "I";      
+        } else if (t.isFloat()) {
+            return "F";      
+        } else if (t.isBoolean()) {
+            return "Z";      
+        } else if (t.isClass()) {
+           
+            String internalName = t.getName().toString().replace('.', '/');
+            return "L" + internalName + ";";
+        } else if (t.isVoid()) {
+            return "V";    
+        }
+        throw new UnsupportedOperationException("Unsupported Deca Type for JVM descriptor: " + t);
+    }
+
+    public static int visibilityToAccessFlags(Visibility visibility) {
+        switch (visibility) {
+            case PUBLIC:
+                return Opcodes.ACC_PUBLIC;
+            case PROTECTED:
+                return Opcodes.ACC_PROTECTED;
+            default:
+                return Opcodes.ACC_PUBLIC;
+        }
+    }
+    
+    
     @Override
     public void decompile(IndentPrintStream s) {
         if (!visibility.equals(Visibility.PUBLIC)) {

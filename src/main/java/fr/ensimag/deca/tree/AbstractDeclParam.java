@@ -11,14 +11,16 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-public abstract class AbstractDeclParam extends Tree{
+public abstract class AbstractDeclParam extends Tree {
 
     public abstract Type verifyDeclParam(DecacCompiler compiler) throws ContextualError;
 
-    public abstract void codeGenDeclParam(DecacCompiler compiler) ;
+    public abstract void codeGenDeclParam(DecacCompiler compiler);
 
     protected abstract ParamDefinition verifyDeclParamBody(DecacCompiler compiler) throws ContextualError;
 
     protected abstract AbstractIdentifier getName();
+
+    protected abstract Type getType();
 
 }

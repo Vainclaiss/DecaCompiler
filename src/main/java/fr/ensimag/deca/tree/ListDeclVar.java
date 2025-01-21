@@ -56,7 +56,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         compiler.getStackOverflowCounter().addVariables(getList().size());
     }
 
-    protected void codeGenListDeclVarByte(MethodVisitor mv,DecacCompiler compiler) {
+    protected void codeGenListDeclVarByte(MethodVisitor mv,DecacCompiler compiler)  {
         for (AbstractDeclVar declVar : getList()) {
             declVar.codeGenByteDeclVar(mv,compiler); 
             

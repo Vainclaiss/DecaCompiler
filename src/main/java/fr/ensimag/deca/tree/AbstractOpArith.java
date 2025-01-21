@@ -34,7 +34,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
 
     @Override
-protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
+protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler)  {
    
     codeByteExp(mv,compiler);
 

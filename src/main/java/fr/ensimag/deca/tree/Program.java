@@ -124,9 +124,9 @@ public class Program extends AbstractProgram {
 
             // on entre dans la main method
 
-            this.getMain().codeGenByteMain(mv, compiler); // on appelle cette fct pour generer le bytecode suivant
-                                                          // l'arbre
-
+            this.getMain().codeGenByteMain(mv,compiler); // on appelle cette fct pour generer le bytecode suivant l'arbre
+            this.getClasses().codeGenByteClass(compiler, fileName);
+    
             // 5) On retourne du main
             mv.visitInsn(Opcodes.RETURN); // on ajoute le return pour le compter dans le stack en bas
             mv.visitMaxs(0, 0); // vu qu'on ne sera pas sûr de la profondeur de la pile on rajoute 0,0
@@ -136,7 +136,6 @@ public class Program extends AbstractProgram {
             tcv.visitEnd();
 
             byte[] bytecode = cw.toByteArray();
-            CheckClassAdapter.verify(new ClassReader(bytecode), false, new PrintWriter(System.out));
 
             String classFileName = fileName.substring(0, fileName.length() - 4) + ".class";
             try (FileOutputStream fos = new FileOutputStream(classFileName)) {

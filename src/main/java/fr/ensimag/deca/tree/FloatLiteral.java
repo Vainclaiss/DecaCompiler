@@ -65,6 +65,8 @@ public class FloatLiteral extends AbstractExpr {
         s.print(java.lang.Float.toHexString(value));
     }
 
+    
+
     @Override
     String prettyPrintNode() {
         return "Float (" + getValue() + ")";
@@ -76,6 +78,8 @@ public class FloatLiteral extends AbstractExpr {
  
         mv.visitLdcInsn(value);
     }
+
+    
 
     
 

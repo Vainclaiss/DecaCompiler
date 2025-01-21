@@ -41,7 +41,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         compiler.addInstruction(new OPP(Register.getR(compiler,n), Register.getR(compiler,n)));
     }
     @Override
-protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler) {
+protected void codeByteExp(MethodVisitor mv,DecacCompiler compiler)  {
     getOperand().codeByteExp(mv,compiler);
 
     Type operandType = getOperand().getType();

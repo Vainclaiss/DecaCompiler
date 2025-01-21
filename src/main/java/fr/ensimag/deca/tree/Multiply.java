@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.OverflowError;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
@@ -32,7 +33,7 @@ public class Multiply extends AbstractOpArith {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
         
         getLeftOperand().codeByteExp(mv, compiler);
         int leftVarIndex = compiler.allocateLocalIndex(); 

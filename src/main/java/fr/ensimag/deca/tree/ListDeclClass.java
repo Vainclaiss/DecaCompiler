@@ -54,6 +54,14 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
     }
 
+        public void codeGenByteClass(DecacCompiler compiler, String filename)  {
+            for (AbstractDeclClass decl : getList()) {
+                decl.codeGenByteClass(compiler, filename);  
+            }
+        }
+    
+    
+
     public void codeGenVtable(DecacCompiler compiler) {
         ClassDefinition objectDef = compiler.environmentType.OBJECT.getDefinition();
         objectDef.completeVtable();

@@ -14,6 +14,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 
@@ -176,7 +178,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
         throw new UnsupportedOperationException("not yet implemented");
     }
         
@@ -202,8 +204,26 @@ public abstract class AbstractExpr extends AbstractInst {
 
  
     protected void codeGenBytePrint(MethodVisitor mv, DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+
+        
+    
+        codeByteExp(mv, compiler);
+    
+        Type type = getType();
+        if (type.isInt()) {
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(I)V", false);
+        } else if (type.isFloat()) {
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(F)V", false);
+        } else if (type.isString()) {
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V", false);
+        } else {
+            throw new UnsupportedOperationException("Unsupported print type: " + type);
+        }
     }
+    
+    
+    
 
     /**
      * Generate code to print the expression in hex if "this" is a float
@@ -223,9 +243,33 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected void codeGenBytePrintHex(MethodVisitor mv,DecacCompiler compiler){
-        codeGenBytePrint(mv,compiler);
+    protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
+       
+        if (getType().isFloat()) {
+            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            
+            codeByteExp(mv, compiler);  
+    
+            mv.visitMethodInsn(
+                Opcodes.INVOKESTATIC,
+                "java/lang/Float",      
+                "toHexString",           
+                "(F)Ljava/lang/String;", 
+                false
+            );
+    
+            mv.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "print",
+                "(Ljava/lang/String;)V",
+                false
+            );
+        } else {
+            codeGenBytePrint(mv, compiler);
+        }
     }
+    
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
@@ -253,7 +297,7 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler)  {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

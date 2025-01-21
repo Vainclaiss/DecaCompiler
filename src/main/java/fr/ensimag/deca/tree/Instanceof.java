@@ -1,11 +1,10 @@
 package fr.ensimag.deca.tree;
 
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.never;
-
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -85,9 +84,9 @@ public class Instanceof extends AbstractExpr{
         compiler.addComment("calcul de l'operande gauche de instanceof");
         expr.codeExp(compiler, n);
         compiler.addComment("debut de instanceof");
-        compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+        compiler.addInstruction(new LOAD(Register.getR(compiler, n), Register.R0));
         compiler.addInstruction(new LEA(((ClassType)compType.getType()).getDefinition().getDAddrOperand(), Register.R1));
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.getR(n))); // on remet à 0
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.getR(compiler, n))); // on remet à 0
 
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(finLabel));
@@ -95,7 +94,7 @@ public class Instanceof extends AbstractExpr{
 
         compiler.addLabel(loopLabel);
         compiler.addInstruction(new CMP(Register.R0, Register.R1));
-        compiler.addInstruction(new SEQ(Register.getR(n)));
+        compiler.addInstruction(new SEQ(Register.getR(compiler, n)));
         compiler.addInstruction(new BNE(nextTableLabel));
         compiler.addInstruction(new BRA(finLabel));
 
@@ -107,6 +106,29 @@ public class Instanceof extends AbstractExpr{
 
         compiler.addLabel(finLabel);
     }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        org.objectweb.asm.Label isInstance = new org.objectweb.asm.Label();
+        org.objectweb.asm.Label endLabel = new org.objectweb.asm.Label();
+    
+        expr.codeByteExp(mv, compiler);
+    
+        String classInternalName = compType.getName().toString().replace('.', '/');
+        mv.visitTypeInsn(Opcodes.INSTANCEOF, classInternalName);
+    
+        mv.visitJumpInsn(Opcodes.IFNE, isInstance);
+    
+        mv.visitInsn(Opcodes.ICONST_0);
+        mv.visitJumpInsn(Opcodes.GOTO, endLabel);
+    
+        mv.visitLabel(isInstance);
+        mv.visitInsn(Opcodes.ICONST_1);
+    
+        mv.visitLabel(endLabel);
+    }
+    
+
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
@@ -129,7 +151,7 @@ public class Instanceof extends AbstractExpr{
         Label branchLabel = (branchIfTrue) ? e : eFalse;
 
         expr.codeExp(compiler, n);
-        compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+        compiler.addInstruction(new LOAD(Register.getR(compiler, n), Register.R0));
         compiler.addInstruction(new LEA(((ClassType)compType.getType()).getDefinition().getDAddrOperand(), Register.R1));
 
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
@@ -155,6 +177,23 @@ public class Instanceof extends AbstractExpr{
         }
 
     }
+
+    @Override
+protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler) {
+    expr.codeByteExp(mv, compiler);
+
+    String classInternalName = compType.getName().toString().replace('.', '/');
+    mv.visitTypeInsn(Opcodes.INSTANCEOF, classInternalName);
+
+    if (branchIfTrue) {
+        mv.visitJumpInsn(Opcodes.IFNE, e);
+    } else {
+        mv.visitJumpInsn(Opcodes.IFEQ, e);
+    }
+}
+
+
+    
 
 
     @Override

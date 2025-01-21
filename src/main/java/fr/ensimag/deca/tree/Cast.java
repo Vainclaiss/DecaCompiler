@@ -1,27 +1,22 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.IncompatibleCastError;
-import fr.ensimag.deca.codegen.execerrors.OverflowError;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.ImmediateString;
-import fr.ensimag.ima.pseudocode.Register;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-import java.io.PrintStream;
 
 public class Cast extends AbstractExpr {
 
@@ -89,10 +84,44 @@ public class Cast extends AbstractExpr {
             expr.codeExp(compiler, n);
         }
         if (indexR != n) {
-            compiler.addInstruction(new LOAD(Register.getR(indexR), Register.getR(n)));
+            compiler.addInstruction(new LOAD(Register.getR(indexR), Register.getR(compiler, n)));
         }
         compiler.addComment("fin du cast " + expr.getType().toString() + " vers " + type.getName().getName());
     }
+
+    @Override
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        expr.codeByteExp(mv, compiler);
+    
+        if (type.getType().isInt()) {
+            if (expr.getType().isFloat()) {
+                mv.visitInsn(Opcodes.F2I); 
+            }
+        } else if (type.getType().isFloat()) {
+            if (expr.getType().isInt()) {
+                mv.visitInsn(Opcodes.I2F); 
+            }
+        } else if (type.getType().isClass() && !expr.getType().isNull()) {
+            mv.visitInsn(Opcodes.DUP);
+            
+            org.objectweb.asm.Label castSuccess = new org.objectweb.asm.Label();
+            org.objectweb.asm.Label castFail = new org.objectweb.asm.Label();
+    
+            mv.visitJumpInsn(Opcodes.IFNONNULL, castSuccess);
+    
+            mv.visitLabel(castFail);
+            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            mv.visitLdcInsn("Error: Incompatible cast");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            mv.visitInsn(Opcodes.POP); 
+            mv.visitInsn(Opcodes.ACONST_NULL); 
+    
+            mv.visitLabel(castSuccess);
+            mv.visitTypeInsn(Opcodes.CHECKCAST, type.getName().getName().replace('.', '/'));
+        }
+    }
+    
+
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -4,6 +4,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -40,32 +42,43 @@ public class NotEquals extends AbstractOpExactCmp {
     }
 
     @Override
-protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler) {
-    getLeftOperand().codeByteExp(mv,compiler);
-    getRightOperand().codeByteExp(mv,compiler);
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e, DecacCompiler compiler)
+             {
+    
+        getLeftOperand().codeByteExp(mv, compiler);
+        getRightOperand().codeByteExp(mv, compiler);
 
-    if (getType().isInt() || getType().isBoolean()) {
-        if (branchIfTrue) {
-            
-            mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
+        Type leftType = getLeftOperand().getType();
+
+    
+        if (leftType.isInt() || leftType.isBoolean()) {
+            if (branchIfTrue) {
+                mv.visitJumpInsn(Opcodes.IF_ICMPNE, e);
+            } else {
+                mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
+            }
+        } else if (leftType.isFloat()) {
+            mv.visitInsn(Opcodes.FCMPG);
+            if (branchIfTrue) {
+                mv.visitJumpInsn(Opcodes.IFNE, e);
+            } else {
+                mv.visitJumpInsn(Opcodes.IFEQ, e);
+            }
+        } 
+        else if (leftType.isClass() || leftType.isNull()) {
+          
+            if (branchIfTrue) {
+                mv.visitJumpInsn(Opcodes.IF_ACMPNE, e);
+            } else {
+                mv.visitJumpInsn(Opcodes.IF_ACMPEQ, e);
+            }
         } else {
-
-            mv.visitJumpInsn(Opcodes.IF_ICMPEQ, e);
+            throw new DecacInternalError(
+              "NotEquals: Unsupported type for '!=' operator: " + getType());
         }
-    } else if (getType().isFloat()) {
-        mv.visitInsn(Opcodes.FCMPG); 
-
-        if (branchIfTrue) {
-            
-            mv.visitJumpInsn(Opcodes.IFNE, e);
-        } else {
-           
-            mv.visitJumpInsn(Opcodes.IFEQ, e);
-        }
-    } else {
-        throw new DecacInternalError("NotEquals: Unsupported type for '!=' operator: " + getType());
     }
-}
+    
+
 
 
 

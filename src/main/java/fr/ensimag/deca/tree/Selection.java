@@ -26,6 +26,9 @@ import fr.ensimag.ima.pseudocode.instructions.RINT;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 public class Selection extends AbstractLValue {
 
     final private AbstractExpr leftOperand;
@@ -38,6 +41,13 @@ public class Selection extends AbstractLValue {
 
     boolean isSelection() {
         return true;
+    }
+
+    AbstractExpr getLeftOperand(){
+        return leftOperand;
+    }
+    AbstractIdentifier getRightOperand(){
+        return rightOperand;
     }
 
     @Override
@@ -110,6 +120,39 @@ public class Selection extends AbstractLValue {
                 new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, n)),
                         Register.getR(compiler, n)));
     }
+
+    @Override
+protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)   {
+    leftOperand.codeByteExp(mv, compiler);
+
+    if (!compiler.getCompilerOptions().getSkipExecErrors()) {
+        org.objectweb.asm.Label notNullLabel = new org.objectweb.asm.Label();
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
+
+        mv.visitTypeInsn(Opcodes.NEW, "java/lang/NullPointerException");
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitMethodInsn(
+            Opcodes.INVOKESPECIAL,
+            "java/lang/NullPointerException",
+            "<init>",
+            "()V",
+            false
+        );
+        mv.visitInsn(Opcodes.ATHROW);
+
+        mv.visitLabel(notNullLabel);
+    }
+
+    FieldDefinition fd = rightOperand.getFieldDefinition();
+    String ownerInternalName = fd.getContainingClass().getInternalName();
+   
+    String fieldName = rightOperand.getName().toString(); 
+    String fieldDesc = getType().toJVMDescriptor(); 
+
+    mv.visitFieldInsn(Opcodes.GETFIELD, ownerInternalName, fieldName, fieldDesc);
+}
+
 
     @Override
     protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {

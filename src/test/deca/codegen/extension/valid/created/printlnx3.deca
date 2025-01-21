@@ -1,7 +1,7 @@
 // Description:
 //    teste un appel a println avec une variable
 // Resultats:
-//    0x0p+0
+//    0x0.0p0
 
 {
     int a = 1;

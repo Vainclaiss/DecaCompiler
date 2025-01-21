@@ -46,9 +46,10 @@ public class NoOperation extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codeGenByteInst'");
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
+        // nothing to do
     }
+
+   
 
 }

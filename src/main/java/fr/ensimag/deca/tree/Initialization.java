@@ -67,24 +67,29 @@ public class Initialization extends AbstractInitialization {
         expression.prettyPrint(s, prefix, true);
     }
     @Override
-    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex, DecacCompiler compiler) {
+    protected void codeGenByteInitialization(MethodVisitor mv, int localIndex, DecacCompiler compiler)  {
+       
+      
+            expression.codeByteExp(mv, compiler);
         
-        expression.codeByteExp(mv,compiler);
     
         Type exprType = expression.getType();
     
         if (exprType.isInt()) {
-            mv.visitVarInsn(Opcodes.ISTORE, localIndex);  
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);
         } else if (exprType.isFloat()) {
-            mv.visitVarInsn(Opcodes.FSTORE, localIndex);  
+            mv.visitVarInsn(Opcodes.FSTORE, localIndex);
         } else if (exprType.isBoolean()) {
-            mv.visitVarInsn(Opcodes.ISTORE, localIndex);  
-        } else if (exprType.isString()) {
-            mv.visitVarInsn(Opcodes.ASTORE, localIndex);  
+            mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+        } else if (exprType.isString() || exprType.isClass() || exprType.isNull()) {
+            mv.visitVarInsn(Opcodes.ASTORE, localIndex);
         } else {
             throw new UnsupportedOperationException("Unsupported type for initialization: " + exprType);
         }
     }
     
+
+    }
     
-}
+    
+

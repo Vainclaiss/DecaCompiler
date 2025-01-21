@@ -3,6 +3,9 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.TSTOCounter;
@@ -104,7 +107,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
+    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass)   {
 
         compiler.addComment("Code de la methode " + name.getName().toString() + " dans la classe " + currentClass.getType().toString());
         
@@ -145,7 +148,62 @@ public class DeclMethod extends AbstractDeclMethod {
         mainProgram.append(compiler.getProgram());
         compiler.setProgram(mainProgram);
     }
+    
+    @Override
+    protected void codeGenByteDeclMethod(ClassWriter cw, DecacCompiler compiler, ClassDefinition currentClass) {
+        String methodName = name.getName().toString();
+        String desc = buildMethodDescriptor(this.params, this.type.getType());
+        int access = Opcodes.ACC_PUBLIC;
+    
+        MethodVisitor mv = cw.visitMethod(
+            access,
+            methodName,
+            desc,
+            null, 
+            null  
+        );
+        mv.visitCode();
+    
+        params.codeGenByteParamsInit(mv, compiler);
+    
+        body.codeGenByteMethodBody(mv, compiler, type.getType());
+    
+        if (!type.getType().isVoid()) {
+            mv.visitInsn(Opcodes.ACONST_NULL);  
+            mv.visitInsn(Opcodes.ATHROW);      
+        } else {
+            mv.visitInsn(Opcodes.RETURN);      
+        }
+    
+        mv.visitMaxs(0, 0); 
+        mv.visitEnd();
+    }
+    
+    
+    public static String buildMethodDescriptor(ListDeclParam params, Type returnType) {
+        StringBuilder sb = new StringBuilder("(");
+        for (AbstractDeclParam param : params.getList()) {
+            sb.append(param.getType().toJVMDescriptor());
+        }
+        sb.append(")");
+        sb.append(returnType.toJVMDescriptor());
+        return sb.toString();
+    }
 
+    public static String buildMethodDescriptor(Signature signature, Type returnType) {
+        StringBuilder sb = new StringBuilder("(");
+    
+        for (Type paramType : signature.getParameters()) {
+            sb.append(paramType.toJVMDescriptor());
+        }
+    
+        sb.append(")");
+        sb.append(returnType.toJVMDescriptor());
+        return sb.toString();
+    }
+    
+    
+    
     @Override
     public AbstractIdentifier getName() {
         return name;
@@ -174,5 +232,7 @@ public class DeclMethod extends AbstractDeclMethod {
         params.iter(f);
         body.iter(f);
     }
+
+
 
 }

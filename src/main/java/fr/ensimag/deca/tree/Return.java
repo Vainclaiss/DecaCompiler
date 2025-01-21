@@ -17,6 +17,7 @@ import fr.ensimag.ima.pseudocode.instructions.RTS;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class Return extends AbstractInst {
     private AbstractExpr argument;
@@ -76,9 +77,21 @@ public class Return extends AbstractInst {
     }
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv,DecacCompiler compiler) {
-            getArgument().codeGenBytePrint(mv, compiler);
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)  {
+        getArgument().codeByteExp(mv, compiler);
+    
+        Type retType = getArgument().getType();
+        if (retType.isInt() || retType.isBoolean()) {
+            mv.visitInsn(Opcodes.IRETURN);  
+        } else if (retType.isFloat()) {
+            mv.visitInsn(Opcodes.FRETURN);  
+        } else if (retType.isClass()) {
+            mv.visitInsn(Opcodes.ARETURN);  
+        } else {
+            throw new UnsupportedOperationException("Return: unsupported type " + retType);
+        }
     }
+    
     
     protected void codeGenInst(DecacCompiler compiler) {
         // TODO Auto-generated method stub

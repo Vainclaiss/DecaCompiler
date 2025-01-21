@@ -1,8 +1,8 @@
 // Description:
 // Test divers et variés de cast
 // Resultats:
-// 1.00000e+00
-// 0x1p+0
+// 1.0
+// 0x1.0p0
 
 class A{
     int m(){

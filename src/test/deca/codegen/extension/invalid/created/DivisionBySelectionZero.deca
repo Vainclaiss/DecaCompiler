@@ -1,18 +1,19 @@
 // Description:
 //  Division par une Selection nulle
 // Resultats:
-//  Error: Overflow during arithmetic operation
+//  Exception in thread "main" java.lang.ArithmeticException: / by zero
+//	at DivisionBySelectionZero.main(Unknown Source)
 
 class A{
-    float a;
+    int a;
     void A(){
-        this.a = 0.0;
+        this.a = 0;
     }
 }
 
 {
     A newA = new A();
-    float b = 10.0;
+    int b = 10;
     newA.A();
     b = b / newA.a;
 }

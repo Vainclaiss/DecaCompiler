@@ -20,5 +20,5 @@ public abstract class AbstractMain extends Tree {
      */
     protected abstract void verifyMain(DecacCompiler compiler) throws ContextualError;
 
-    protected abstract void codeGenByteMain(MethodVisitor mv, DecacCompiler compiler);
+    protected abstract void codeGenByteMain(MethodVisitor mv, DecacCompiler compiler) ;
 }

@@ -1,7 +1,8 @@
 // Description:
 //    Division par 0 (par modulo)
 // Resultats:
-//    Error: division by 0
+//  Exception in thread "main" java.lang.ArithmeticException: / by zero
+// 	at ArithmeticExp2.main(Unknown Source)
 
 {
     int a = 3 % 0;

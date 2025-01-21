@@ -6,6 +6,7 @@ import org.objectweb.asm.Opcodes;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.execerrors.OverflowError;
 import fr.ensimag.deca.codegen.execerrors.ZeroDivisionError;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -51,7 +52,7 @@ public class Divide extends AbstractOpArith {
    
 
     @Override
-    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler)   {
         
         getRightOperand().codeByteExp(mv, compiler);
         int rightVarIndex = compiler.allocateLocalIndex();

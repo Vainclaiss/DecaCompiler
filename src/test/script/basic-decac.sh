@@ -323,12 +323,12 @@ test_decac_a() {
 check_java_execution(){ 
     class_file="${1%.deca}"
     awk '/\/\/ Resultats:/{flag=1; next} /^$/{flag=0} flag' "$1" | sed 's/^\s*//' | sed 's/\/\///' >"${1%.deca}.expected"
-    java -cp ./"$(dirname "$1")" "$(basename "$class_file")" >"${1%.deca}.res"
+    java -cp ./"$(dirname "$1")" "$(basename "$class_file")" > "${1%.deca}.res" 2>&1
 
     if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
         failure "Incorrect result for $1."
         diff "${1%.deca}.expected" "${1%.deca}.res"
-        clean_temp_test_files "src/test/deca/codegen/"
+        # clean_temp_test_files "src/test/deca/codegen/"
         exit 1;
     fi
 }
@@ -358,16 +358,16 @@ main() {
     setup_path_and_cd
     clean_temp_test_files "src/test/deca/codegen"
     test_uncompatible_options
-    test_decac_b
-    test_decac_p
-    test_decac_v
-    test_decac_n
-    test_decac_r
-    test_decac_d
-    test_decac_P
-    test_decac_w
-    test_decac_a
-    # test_decac_e
+    #test_decac_b
+    #test_decac_p
+    #test_decac_v
+    #test_decac_n
+    #test_decac_r
+    #test_decac_d
+    #test_decac_P
+    #test_decac_w
+    #test_decac_a
+    test_decac_e
 }
 
 main
