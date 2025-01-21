@@ -11,10 +11,12 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -107,6 +109,18 @@ public class Selection extends AbstractLValue {
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(rightOperand.getFieldDefinition().getIndex(), Register.getR(compiler, n)),
                         Register.getR(compiler, n)));
+    }
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, boolean branchIfTrue, Label e) {
+        codeExp(compiler, 2);
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R0));
+        compiler.addInstruction(new CMP(1, Register.R0));
+        if (branchIfTrue) {
+            compiler.addInstruction(new BEQ(e));
+        } else {
+            compiler.addInstruction(new BNE(e));
+        }
     }
 
     @Override
