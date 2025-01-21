@@ -241,7 +241,17 @@ class Asm {
         if (nouvelle_x == nourriture_x && nouvelle_y == nourriture_y) {
             nourriture_x = (randomGenerator.random(grille_largeur) + grille_largeur) % grille_largeur;
             nourriture_y = (randomGenerator.random(grille_hauteur) + grille_hauteur) % grille_hauteur;
-            println(nourriture_x, nourriture_y);
+            courant = tete.suivant;
+            while (courant != null) {
+                if (courant.x == nourriture_x && courant.y == nourriture_y) {
+                    nourriture_x = (randomGenerator.random(grille_largeur) + grille_largeur) % grille_largeur;
+                    nourriture_y = (randomGenerator.random(grille_hauteur) + grille_hauteur) % grille_hauteur;
+                    courant = null;
+                }
+                if (courant != null) {
+                    courant = courant.suivant;
+                }
+            }
         } else {
             // Supprimer le dernier segment (queue)
             avant_queue = tete;
