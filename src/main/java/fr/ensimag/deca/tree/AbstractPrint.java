@@ -68,8 +68,8 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
         if(printHex){
-            for (AbstractExpr a : getArguments().getList()) {
-                a.codeGenBytePrintHex(mv,compiler);
+            for (AbstractExpr arg : getArguments().getList()) {
+                arg.codeGenBytePrintHex(mv,compiler);
             }
             
         } else{

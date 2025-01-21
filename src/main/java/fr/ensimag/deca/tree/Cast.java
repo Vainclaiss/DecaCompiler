@@ -115,18 +115,15 @@ public class Cast extends AbstractExpr {
             org.objectweb.asm.Label castSuccess = new org.objectweb.asm.Label();
             org.objectweb.asm.Label castFail = new org.objectweb.asm.Label();
     
-            // If not null, attempt casting
             mv.visitJumpInsn(Opcodes.IFNONNULL, castSuccess);
     
-            // Print error message if cast fails
             mv.visitLabel(castFail);
             mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("Error: Incompatible cast");
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-            mv.visitInsn(Opcodes.POP); // Remove the duplicate object from the stack
-            mv.visitInsn(Opcodes.ACONST_NULL); // Return null to avoid crashing
+            mv.visitInsn(Opcodes.POP); 
+            mv.visitInsn(Opcodes.ACONST_NULL); 
     
-            // Label for successful cast
             mv.visitLabel(castSuccess);
             mv.visitTypeInsn(Opcodes.CHECKCAST, type.getName().getName().replace('.', '/'));
         }
