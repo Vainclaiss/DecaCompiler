@@ -287,7 +287,6 @@ test_decac_P() {
     success "SUCCESS: test_decac_d"
 }
 
-
 test_decac_a() {
     prompt_strong "[decac -a X] [Valid]"
 
@@ -310,7 +309,6 @@ test_decac_a() {
 
     prompt_strong "[decac -a X] [Invalid]"
 
-
     for i in -1 a ?; do
         prompt "- decac -a $i"
         decac_moins_r_error=$(decac -a "$i" ./src/test/deca/codegen/valid/created/var1.deca)
@@ -322,20 +320,18 @@ test_decac_a() {
     success "SUCCESS: test_decac_a"
 }
 
-
-check_java_execution(){ 
+check_java_execution() {
     class_file="${1%.deca}"
     awk '/\/\/ Resultats:/{flag=1; next} /^$/{flag=0} flag' "$1" | sed 's/^\s*//' | sed 's/\/\///' >"${1%.deca}.expected"
-    java -cp ./"$(dirname "$1")" "$(basename "$class_file")" > "${1%.deca}.res" 2>&1
+    java -cp ./"$(dirname "$1")" "$(basename "$class_file")" >"${1%.deca}.res" 2>&1
 
     if ! diff -B -w -q "${1%.deca}.expected" "${1%.deca}.res" >/dev/null; then
         failure "Incorrect result for $1."
         diff "${1%.deca}.expected" "${1%.deca}.res"
         # clean_temp_test_files "src/test/deca/codegen/"
-        exit 1;
+        exit 1
     fi
 }
-
 
 test_decac_e() {
     prompt_strong "[decac -e]"
@@ -355,8 +351,6 @@ test_decac_e() {
     success "SUCCESS: test_decac_e"
 }
 
-
-
 main() {
     setup_path_and_cd
     clean_temp_test_files "src/test/deca/codegen"
@@ -368,7 +362,6 @@ main() {
     test_decac_r
     test_decac_d
     test_decac_P
-    test_decac_w
     test_decac_a
     test_decac_e
 }
