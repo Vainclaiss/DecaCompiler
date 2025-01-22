@@ -85,19 +85,18 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
-protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
-    
-    String processedValue = value.replace("\\n", "\n")
-                                .replace("\\t", "\t")
-                                .replace("\\r", "\r");
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
 
-    mv.visitLdcInsn(processedValue);
-}
+        String processedValue = value.replace("\\n", "\n")
+                .replace("\\t", "\t")
+                .replace("\\r", "\r");
 
+        mv.visitLdcInsn(processedValue);
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("\"" + value + "\"");
+        s.print("\"" + StringEscapeUtils.escapeJava(value) + "\"");
     }
 
     @Override
@@ -114,18 +113,5 @@ protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
     String prettyPrintNode() {
         return "StringLiteral (" + StringEscapeUtils.escapeJava(value) + ")";
     }
-
-
-
-
-
-    
-
-    
-
-
-
-
-
 
 }

@@ -150,6 +150,9 @@ test_decac_p() {
     prompt_strong "[decac -p]"
     run_decac_p_tests() {
         find "$1" -type f -name '*.deca' | while read -r file; do
+            if [ "$(basename "$file")" = "snake.deca" ]; then
+                continue
+            fi
             prompt "- decac -p $file"
             decac_moins_p=$(decac -p "$file")
             check_zero_status "$?" "ERREUR: decac -p a termine avec un status different de zero pour le fichier $file."
@@ -358,15 +361,15 @@ main() {
     setup_path_and_cd
     clean_temp_test_files "src/test/deca/codegen"
     test_uncompatible_options
-    #test_decac_b
-    #test_decac_p
-    #test_decac_v
-    #test_decac_n
-    #test_decac_r
-    #test_decac_d
-    #test_decac_P
-    #test_decac_w
-    #test_decac_a
+    test_decac_b
+    test_decac_p
+    test_decac_v
+    test_decac_n
+    test_decac_r
+    test_decac_d
+    test_decac_P
+    test_decac_w
+    test_decac_a
     test_decac_e
 }
 

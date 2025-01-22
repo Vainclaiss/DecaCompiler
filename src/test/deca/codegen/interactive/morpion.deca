@@ -1,0 +1,202 @@
+class TicTacToe {
+    int cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9;
+    int currentPlayer;
+
+    void TicTacToe() {
+        currentPlayer = 1; // 1 pour 'X', 2 pour 'O'
+        initializeBoard();
+    }
+
+    // Initialiser le plateau avec des espaces vides
+    void initializeBoard() {
+        cell1 = 0;
+        cell2 = 0;
+        cell3 = 0;
+        cell4 = 0;
+        cell5 = 0;
+        cell6 = 0;
+        cell7 = 0;
+        cell8 = 0;
+        cell9 = 0;
+    }                                                                      
+
+
+    // Afficher le plateau actuel
+    void printBoard() {
+        println("-------------");
+        print("| ");
+        print(getMark(cell1));
+        print(" | ");
+        print(getMark(cell2));
+        print(" | ");
+        print(getMark(cell3));
+        println(" |");
+        println("-------------");
+        
+        print("| ");
+        print(getMark(cell4));
+        print(" | ");
+        print(getMark(cell5));
+        print(" | ");
+        print(getMark(cell6));
+        println(" |");
+        println("-------------");
+        
+        print("| ");
+        print(getMark(cell7));
+        print(" | ");
+        print(getMark(cell8));
+        print(" | ");
+        print(getMark(cell9));
+        println(" |");
+        println("-------------");
+    }
+
+    // Convertir la valeur de la cellule en marque
+    int getMark(int cell) {
+        if (cell == 1) {
+            return 1; // 'X'
+        } else if (cell == 2) {
+            return 2; // 'O'
+        } else {
+            return 0; // '-'
+        }
+    }
+
+    // Vérifier si le plateau est plein
+    boolean isBoardFull() {
+        return (cell1 != 0 && cell2 != 0 && cell3 != 0 &&
+                cell4 != 0 && cell5 != 0 && cell6 != 0 &&
+                cell7 != 0 && cell8 != 0 && cell9 != 0);
+    }
+
+    // Vérifier s'il y a une victoire
+    boolean checkForWin() {
+        return (checkRowsForWin() || checkColumnsForWin() || checkDiagonalsForWin());
+    }
+
+    // Vérifier les lignes pour une victoire
+    boolean checkRowsForWin() {
+        return (checkRowCol(cell1, cell2, cell3) ||
+                checkRowCol(cell4, cell5, cell6) ||
+                checkRowCol(cell7, cell8, cell9));
+    }
+
+    // Vérifier les colonnes pour une victoire
+    boolean checkColumnsForWin() {
+        return (checkRowCol(cell1, cell4, cell7) ||
+                checkRowCol(cell2, cell5, cell8) ||
+                checkRowCol(cell3, cell6, cell9));
+    }
+
+    // Vérifier les diagonales pour une victoire
+    boolean checkDiagonalsForWin() {
+        return (checkRowCol(cell1, cell5, cell9) ||
+                checkRowCol(cell3, cell5, cell7));
+    }
+
+    // Vérifier si les trois valeurs sont les mêmes (et non vides) indiquant une victoire
+    boolean checkRowCol(int c1, int c2, int c3) {
+        return (c1 != 0 && c1 == c2 && c2 == c3);
+    }
+
+    // Faire un mouvement
+    boolean placeMark(int row, int col) {
+        if (row == 1 && col == 1 && cell1 == 0) {
+            cell1 = currentPlayer;
+        } else if (row == 1 && col == 2 && cell2 == 0) {
+            cell2 = currentPlayer;
+        } else if (row == 1 && col == 3 && cell3 == 0) {
+            cell3 = currentPlayer;
+        } else if (row == 2 && col == 1 && cell4 == 0) {
+            cell4 = currentPlayer;
+        } else if (row == 2 && col == 2 && cell5 == 0) {
+            cell5 = currentPlayer;
+        } else if (row == 2 && col == 3 && cell6 == 0) {
+            cell6 = currentPlayer;
+        } else if (row == 3 && col == 1 && cell7 == 0) {
+            cell7 = currentPlayer;
+        } else if (row == 3 && col == 2 && cell8 == 0) {
+            cell8 = currentPlayer;
+        } else if (row == 3 && col == 3 && cell9 == 0) {
+            cell9 = currentPlayer;
+        } else {
+            return false;
+        }
+        if (currentPlayer == 1) {
+            currentPlayer = 2;
+        } else {
+            currentPlayer = 1;
+        }
+        return true;
+    }
+
+    void printTitle(){
+        println("        ______     _________ ______   __  __  ____  _____  _____ _____ ____  _   _ ");
+        println("       |  _ \\ \\   / /__   __|  ____| |  \\/  |/ __ \\|  __ \\|  __ \\_   _/ __ \\| \\ | |           ");
+        println("       | |_) \\ \\_/ /   | |  | |__    | \\  / | |  | | |__) | |__) || || |  | |  \\| |           ");
+        println("       |  _ < \\   /    | |  |  __|   | |\\/| | |  | |  _  /|  ___/ | || |  | | . ` |           ");
+        println("       | |_) | | |     | |  | |____  | |  | | |__| | | \\ \\| |    _| || |__| | |\\  |           ");
+        println("       |____/  |_|     |_|  |______| |_|  |_|\\____/|_|  \\_\\_|   |_____\\____/|_| \\_|           ");
+        println("");
+        println("");
+    }
+
+
+    void flush() {
+        println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printTitle();                                                                              
+    }
+}
+
+
+
+{
+    TicTacToe game = new TicTacToe();
+    int move;
+    int row;
+    int col;
+    boolean gameWon = false;
+    boolean gameTied = false;
+    game.TicTacToe();
+    game.flush();
+    
+    while (!gameWon && !gameTied) {
+        game.printBoard();
+        if (game.currentPlayer == 1) {
+            println("Joueur 1, entrez votre mouvement (1-9) : ");
+        } else {
+            println("Joueur 2, entrez votre mouvement (1-9) : ");
+        }
+        move = readInt();
+        if (move < 1 || move > 9) {
+            println("Entrée invalide. Veuillez entrer un nombre entre 1 et 9.");
+        } else {
+            row = 3 - (move - 1) / 3;
+            col = (move - 1) % 3 + 1;
+
+            if (game.placeMark(row, col)) {
+                if (game.checkForWin()) {
+                    game.flush();
+                    game.printBoard();
+                    if (game.currentPlayer == 1) {
+                        println("Joueur 2 gagne !");
+                    } else {
+                        println("Joueur 1 gagne !");
+                    }
+                    gameWon = true;
+                } else if (game.isBoardFull()) {
+                    game.flush();
+                    game.printBoard();
+                    println("Le jeu est un match nul !");
+                    gameTied = true;
+                }
+            } else {
+                println("Ce mouvement n'est pas valide");
+            }
+        }
+        if (!gameWon && !gameTied) {
+            game.flush();
+        }
+    }
+}
