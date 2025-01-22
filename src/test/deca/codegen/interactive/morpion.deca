@@ -25,34 +25,87 @@ class TicTacToe {
     void printBoard() {
         println("-------------");
         print("| ");
-        print(getMark(cell1));
+        if (cell1 == 1) {
+            print("X");
+        } else if (cell1 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         print(" | ");
-        print(getMark(cell2));
+        if (cell2 == 1) {
+            print("X");
+        } else if (cell2 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         print(" | ");
-        print(getMark(cell3));
+        if (cell3 == 1) {
+            print("X");
+        } else if (cell3 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         println(" |");
         println("-------------");
         
         print("| ");
-        print(getMark(cell4));
+        if (cell4 == 1) {
+            print("X");
+        } else if (cell4 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         print(" | ");
-        print(getMark(cell5));
+        if (cell5 == 1) {
+            print("X");
+        } else if (cell5 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         print(" | ");
-        print(getMark(cell6));
+        if (cell6 == 1) {
+            print("X");
+        } else if (cell6 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         println(" |");
         println("-------------");
         
         print("| ");
-        print(getMark(cell7));
+        if (cell7 == 1) {
+            print("X");
+        } else if (cell7 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         print(" | ");
-        print(getMark(cell8));
+        if (cell8 == 1) {
+            print("X");
+        } else if (cell8 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         print(" | ");
-        print(getMark(cell9));
+        if (cell9 == 1) {
+            print("X");
+        } else if (cell9 == 2) {
+            print("O");
+        } else {
+            print(" ");
+        }
         println(" |");
         println("-------------");
     }
 
-    // Convertir la valeur de la cellule en marque
     int getMark(int cell) {
         if (cell == 1) {
             return 1; // 'X'
@@ -63,44 +116,37 @@ class TicTacToe {
         }
     }
 
-    // Vérifier si le plateau est plein
     boolean isBoardFull() {
         return (cell1 != 0 && cell2 != 0 && cell3 != 0 &&
                 cell4 != 0 && cell5 != 0 && cell6 != 0 &&
                 cell7 != 0 && cell8 != 0 && cell9 != 0);
     }
 
-    // Vérifier s'il y a une victoire
     boolean checkForWin() {
         return (checkRowsForWin() || checkColumnsForWin() || checkDiagonalsForWin());
     }
 
-    // Vérifier les lignes pour une victoire
     boolean checkRowsForWin() {
         return (checkRowCol(cell1, cell2, cell3) ||
                 checkRowCol(cell4, cell5, cell6) ||
                 checkRowCol(cell7, cell8, cell9));
     }
 
-    // Vérifier les colonnes pour une victoire
     boolean checkColumnsForWin() {
         return (checkRowCol(cell1, cell4, cell7) ||
                 checkRowCol(cell2, cell5, cell8) ||
                 checkRowCol(cell3, cell6, cell9));
     }
 
-    // Vérifier les diagonales pour une victoire
     boolean checkDiagonalsForWin() {
         return (checkRowCol(cell1, cell5, cell9) ||
                 checkRowCol(cell3, cell5, cell7));
     }
 
-    // Vérifier si les trois valeurs sont les mêmes (et non vides) indiquant une victoire
     boolean checkRowCol(int c1, int c2, int c3) {
         return (c1 != 0 && c1 == c2 && c2 == c3);
     }
 
-    // Faire un mouvement
     boolean placeMark(int row, int col) {
         if (row == 1 && col == 1 && cell1 == 0) {
             cell1 = currentPlayer;

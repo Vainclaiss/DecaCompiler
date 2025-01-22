@@ -11,7 +11,7 @@ class Segment {
 }
 
 class Random {
-    int X = 123456789;
+    int X;
     int a = 1664525;
     int b = 1013904223;
     int m = 2147483647;
@@ -24,9 +24,15 @@ class Random {
 }
 
 class Asm {
+    void getIMAClock() asm("
+        SCLK
+        LOAD 37(GB), R0
+        STORE R1, 1(R0)
+    ");
+
     void readInput() asm ("
         RUTF8
-        STORE R1, 29(GB)
+        STORE R1, 30(GB)
     ");
 
     void hideCursor() asm ("
@@ -146,10 +152,12 @@ class Asm {
     tete.init(5,5);
     queue = tete;
     direction = 100;
+    asmCode.getIMAClock();
     nourriture_x = (randomGenerator.random(grille_largeur) + grille_largeur) % grille_largeur;
     nourriture_y = (randomGenerator.random(grille_hauteur) + grille_hauteur) % grille_hauteur;
     jeu_actif = true;
 
+    
     while (jeu_actif) {
 
         asmCode.hideCursor();
@@ -241,7 +249,7 @@ class Asm {
         if (nouvelle_x == nourriture_x && nouvelle_y == nourriture_y) {
             nourriture_x = (randomGenerator.random(grille_largeur) + grille_largeur) % grille_largeur;
             nourriture_y = (randomGenerator.random(grille_hauteur) + grille_hauteur) % grille_hauteur;
-            courant = tete.suivant;
+            courant = tete;
             while (courant != null) {
                 if (courant.x == nourriture_x && courant.y == nourriture_y) {
                     nourriture_x = (randomGenerator.random(grille_largeur) + grille_largeur) % grille_largeur;
