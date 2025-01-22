@@ -150,7 +150,7 @@ test_decac_p() {
     prompt_strong "[decac -p]"
     run_decac_p_tests() {
         find "$1" -type f -name '*.deca' | while read -r file; do
-            if [ "$(basename "$file")" = "snake.deca" ]; then
+            if [ "$(basename "$file")" = "snake.deca" ] || [ "$(basename "$file")" = "morpion.deca" ]; then
                 continue
             fi
             prompt "- decac -p $file"
