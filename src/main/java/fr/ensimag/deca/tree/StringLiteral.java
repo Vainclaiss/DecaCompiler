@@ -100,6 +100,12 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
+    public void codeGenInst(DecacCompiler compiler) {
+        // nothing to do
+    }
+
+
+    @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }

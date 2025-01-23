@@ -50,6 +50,8 @@ public class DeclVar extends AbstractDeclVar {
         if (realType.isVoid())
             throw new ContextualError("Error: 'void' cannot be used as a type for variable declaration", getLocation());
 
+        initialization.verifyInitialization(compiler, realType, localEnv, currentClass);
+        
         VariableDefinition varDef = new VariableDefinition(realType, varName.getLocation());
         varName.setDefinition(varDef);
         try {
@@ -59,8 +61,6 @@ public class DeclVar extends AbstractDeclVar {
                     + "' , first declaration at " + localEnv.get(varName.getName()).getLocation(),
                     varName.getLocation());
         }
-
-        initialization.verifyInitialization(compiler, realType, localEnv, currentClass);
     }
 
     @Override

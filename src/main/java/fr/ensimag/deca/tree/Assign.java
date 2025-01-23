@@ -68,11 +68,11 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler)  {
-        getRightOperand().codeByteExp(mv, compiler); 
-    
-        mv.visitInsn(Opcodes.DUP); 
-    
+    protected void codeByteExp(MethodVisitor mv, DecacCompiler compiler) {
+        getRightOperand().codeByteExp(mv, compiler);
+
+        mv.visitInsn(Opcodes.DUP);
+
         if (!(getLeftOperand() instanceof Identifier)) {
             throw new DecacInternalError("Assign: left operand is not an Identifier.");
         }
@@ -104,88 +104,87 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,DecacCompiler compiler)  {
+    protected void codeGenByteBool(MethodVisitor mv, boolean branchIfTrue, org.objectweb.asm.Label e,
+            DecacCompiler compiler) {
         codeGenByteInst(mv, compiler);
         getLeftOperand().codeGenByteBool(mv, branchIfTrue, e, compiler);
     }
 
-  @Override
-protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
-    getRightOperand().codeByteExp(mv, compiler);
-
-    AbstractExpr lhs = getLeftOperand();
-
-    if (lhs instanceof Identifier) {
-        Identifier leftId = (Identifier) lhs;
-
-        if (leftId.getDefinition().isParam()) {
-            // Handle method parameters
-            ParamDefinition paramDef = (ParamDefinition) leftId.getDefinition();
-            int index = paramDef.getIndexInLocalTable();
-
-            if (getType().isInt() || getType().isBoolean()) {
-                mv.visitVarInsn(Opcodes.ISTORE, index);
-            } else if (getType().isFloat()) {
-                mv.visitVarInsn(Opcodes.FSTORE, index);
-            } else if (getType().isClass()) {
-                mv.visitVarInsn(Opcodes.ASTORE, index);
-            } else {
-                throw new DecacInternalError("Unsupported param type for assignment: " + getType());
-            }
-
-        } else if (leftId.getDefinition().isVar()) {
-            // Handle local variables
-            VariableDefinition varDef = leftId.getVariableDefinition();
-            int localIndex = varDef.getLocalIndex();
-
-            if (localIndex < 0) {
-                throw new DecacInternalError("Variable local index not set before assignment.");
-            }
-
-            if (getType().isInt() || getType().isBoolean()) {
-                mv.visitVarInsn(Opcodes.ISTORE, localIndex);
-            } else if (getType().isFloat()) {
-                mv.visitVarInsn(Opcodes.FSTORE, localIndex);
-            } else if (getType().isClass()) {
-                mv.visitVarInsn(Opcodes.ASTORE, localIndex);
-            } else {
-                throw new DecacInternalError("Unsupported type for assignment: " + getType());
-            }
-
-        } else if (leftId.getDefinition().isField()) {
-            // Handle class fields
-            FieldDefinition fieldDef = leftId.getFieldDefinition();
-            String ownerInternalName = fieldDef.getContainingClass().getInternalName();
-            String fieldName = leftId.getName().toString();
-            String fieldDesc = getType().toJVMDescriptor();
-
-            mv.visitVarInsn(Opcodes.ALOAD, 0); // Load "this" reference
-            getRightOperand().codeByteExp(mv, compiler); // Evaluate right operand
-            mv.visitFieldInsn(Opcodes.PUTFIELD, ownerInternalName, fieldName, fieldDesc);
-
-        } else {
-            throw new DecacInternalError("Unsupported identifier definition type for assignment.");
-        }
-    } else if (lhs instanceof Selection) {
-        // Handle object field assignment via selection (e.g., obj.field = value)
-        Selection selection = (Selection) lhs;
-
-        selection.getLeftOperand().codeByteExp(mv, compiler);
+    @Override
+    protected void codeGenByteInst(MethodVisitor mv, DecacCompiler compiler) {
         getRightOperand().codeByteExp(mv, compiler);
 
-        FieldDefinition fd = selection.getRightOperand().getFieldDefinition();
-        String ownerInternalName = fd.getContainingClass().getInternalName();
-        String fieldName = selection.getRightOperand().getName().toString();
-        String fieldDesc = getType().toJVMDescriptor();
+        AbstractExpr lhs = getLeftOperand();
 
-        mv.visitFieldInsn(Opcodes.PUTFIELD, ownerInternalName, fieldName, fieldDesc);
-    } else {
-        throw new DecacInternalError("Assignment to an unsupported LHS type: " + lhs.getClass().getName());
+        if (lhs instanceof Identifier) {
+            Identifier leftId = (Identifier) lhs;
+
+            if (leftId.getDefinition().isParam()) {
+                // Handle method parameters
+                ParamDefinition paramDef = (ParamDefinition) leftId.getDefinition();
+                int index = paramDef.getIndexInLocalTable();
+
+                if (getType().isInt() || getType().isBoolean()) {
+                    mv.visitVarInsn(Opcodes.ISTORE, index);
+                } else if (getType().isFloat()) {
+                    mv.visitVarInsn(Opcodes.FSTORE, index);
+                } else if (getType().isClass()) {
+                    mv.visitVarInsn(Opcodes.ASTORE, index);
+                } else {
+                    throw new DecacInternalError("Unsupported param type for assignment: " + getType());
+                }
+
+            } else if (leftId.getDefinition().isVar()) {
+                // Handle local variables
+                VariableDefinition varDef = leftId.getVariableDefinition();
+                int localIndex = varDef.getLocalIndex();
+
+                if (localIndex < 0) {
+                    throw new DecacInternalError("Variable local index not set before assignment.");
+                }
+
+                if (getType().isInt() || getType().isBoolean()) {
+                    mv.visitVarInsn(Opcodes.ISTORE, localIndex);
+                } else if (getType().isFloat()) {
+                    mv.visitVarInsn(Opcodes.FSTORE, localIndex);
+                } else if (getType().isClass()) {
+                    mv.visitVarInsn(Opcodes.ASTORE, localIndex);
+                } else {
+                    throw new DecacInternalError("Unsupported type for assignment: " + getType());
+                }
+
+            } else if (leftId.getDefinition().isField()) {
+                // Handle class fields
+                FieldDefinition fieldDef = leftId.getFieldDefinition();
+                String ownerInternalName = fieldDef.getContainingClass().getInternalName();
+                String fieldName = leftId.getName().toString();
+                String fieldDesc = getType().toJVMDescriptor();
+
+                mv.visitVarInsn(Opcodes.ALOAD, 0); // Load "this" reference
+                getRightOperand().codeByteExp(mv, compiler); // Evaluate right operand
+                mv.visitFieldInsn(Opcodes.PUTFIELD, ownerInternalName, fieldName, fieldDesc);
+
+            } else {
+                throw new DecacInternalError("Unsupported identifier definition type for assignment.");
+            }
+        } else if (lhs instanceof Selection) {
+            // Handle object field assignment via selection (e.g., obj.field = value)
+            Selection selection = (Selection) lhs;
+
+            selection.getLeftOperand().codeByteExp(mv, compiler);
+            getRightOperand().codeByteExp(mv, compiler);
+
+            FieldDefinition fd = selection.getRightOperand().getFieldDefinition();
+            String ownerInternalName = fd.getContainingClass().getInternalName();
+            String fieldName = selection.getRightOperand().getName().toString();
+            String fieldDesc = getType().toJVMDescriptor();
+
+            mv.visitFieldInsn(Opcodes.PUTFIELD, ownerInternalName, fieldName, fieldDesc);
+        } else {
+            throw new DecacInternalError("Assignment to an unsupported LHS type: " + lhs.getClass().getName());
+        }
     }
-}
 
-
-    
     @Override
     protected String getOperatorName() {
         return "=";
