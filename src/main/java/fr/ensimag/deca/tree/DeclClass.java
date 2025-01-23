@@ -80,6 +80,7 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
 
         TypeDefinition superDef = compiler.environmentType.defOfType(superClass.getName());
+        
         if (superDef == null) {
             throw new ContextualError("Error: The parent is not defined", getLocation());
         }

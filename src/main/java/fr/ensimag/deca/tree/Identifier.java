@@ -416,38 +416,7 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    @Override
-    protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
-        Type type = getType();
-
-        if (type.isFloat()) {
-
-            mv.visitFieldInsn(
-                    Opcodes.GETSTATIC,
-                    "java/lang/System",
-                    "out",
-                    "Ljava/io/PrintStream;");
-
-            int localIndex = getVariableDefinition().getLocalIndex();
-
-            mv.visitVarInsn(Opcodes.FLOAD, localIndex);
-
-            mv.visitMethodInsn(
-                    Opcodes.INVOKESTATIC,
-                    "java/lang/Float",
-                    "toHexString",
-                    "(F)Ljava/lang/String;", // prend un float et retourne un string
-                    false);
-
-            mv.visitMethodInsn(
-                    Opcodes.INVOKEVIRTUAL,
-                    "java/io/PrintStream",
-                    "println",
-                    "(Ljava/lang/String;)V",
-                    false);
-
-        }
-    }
+    
 
     private Definition definition;
 

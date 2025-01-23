@@ -244,19 +244,27 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected void codeGenBytePrintHex(MethodVisitor mv, DecacCompiler compiler) {
-       
-        if (getType().isFloat()) {
-            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            
-            codeByteExp(mv, compiler);  
+        Type type = getType();
     
+        codeByteExp(mv, compiler);
+    
+        if (type.isFloat()) {
             mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
-                "java/lang/Float",      
-                "toHexString",           
-                "(F)Ljava/lang/String;", 
+                "java/lang/Float",
+                "toHexString",
+                "(F)Ljava/lang/String;",
                 false
             );
+    
+            mv.visitFieldInsn(
+                Opcodes.GETSTATIC,
+                "java/lang/System",
+                "out",
+                "Ljava/io/PrintStream;"
+            );
+    
+            mv.visitInsn(Opcodes.SWAP);
     
             mv.visitMethodInsn(
                 Opcodes.INVOKEVIRTUAL,
@@ -265,6 +273,7 @@ public abstract class AbstractExpr extends AbstractInst {
                 "(Ljava/lang/String;)V",
                 false
             );
+    
         } else {
             codeGenBytePrint(mv, compiler);
         }
