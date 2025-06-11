@@ -20,12 +20,3 @@ Il comprend à la fois le code source du compilateur et l’ensemble des documen
 - **[Bilan_Equipe.pdf](docs/Bilan_Equipe.pdf)** : répartition des tâches et retour d’expérience de l’équipe.
 - **[Soutenance_GL.pdf](docs/Soutenance_GL.pdf)** : diapositive de soutenance du projet.
 
-## ▶️ Utilisation
-
-```bash
-# Compilation du compilateur
-./compile.sh
-
-# Compilation d’un programme Deca
-java -jar decac.jar exemple.deca
-
