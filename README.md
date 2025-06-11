@@ -29,5 +29,3 @@ Il comprend à la fois le code source du compilateur et l’ensemble des documen
 # Compilation d’un programme Deca
 java -jar decac.jar exemple.deca
 
-# Exécution sur machine virtuelle
-ima exemple.ass
